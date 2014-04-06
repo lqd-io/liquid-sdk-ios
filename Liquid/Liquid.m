@@ -22,6 +22,10 @@
 #import "LQLiquidPackage.h"
 #import "LQConstants.h"
 
+#define kLQServerUrl @"http://api.lqd.io/collect/"
+#define kLQVersion @"0.3.0"
+#define kLQBundle @"com.liquid"
+
 @interface Liquid ()
 
 @property(nonatomic, strong) NSString *apiToken;

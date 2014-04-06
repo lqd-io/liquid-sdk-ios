@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define kLQServerUrl @"http://api.lqd.io/collect/"
-#define kLQVersion @"0.3.0"
-#define kLQBundle @"com.liquid"
 #define kLQDefaultSessionTimeout @30 //seconds
 #define kLQQueueSizeLimit 250 // datapoints
 #ifdef DEBUG
