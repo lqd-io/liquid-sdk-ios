@@ -33,6 +33,7 @@
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
+@property(nonatomic, strong) NSNumber *inBackground;
 @property(nonatomic, strong) dispatch_queue_t queue;
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
@@ -105,6 +106,11 @@ static Liquid *sharedInstance = nil;
     return self;
 }
 
+-(NSNumber *)inBackground {
+    if(!_inBackground) _inBackground = [NSNumber numberWithBool:NO];
+    return _inBackground;
+}
+
 #pragma mark - UIApplication notifications
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
@@ -121,6 +127,11 @@ static Liquid *sharedInstance = nil;
         // Restore queue from plist
         self.httpQueue = [Liquid unarchiveQueueForToken:self.apiToken];
     });
+
+    if([self.inBackground isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+        [self track:@"_restoreSession"];
+        self.inBackground = [NSNumber numberWithBool:NO];
+    }
 }
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
@@ -132,6 +143,7 @@ static Liquid *sharedInstance = nil;
     
     [self track:@"_pauseSession"];
 
+    self.inBackground = [NSNumber numberWithBool:YES];
     self.enterBackgroundTime = [NSDate new];
     dispatch_async(self.queue, ^() {
         if (self.flushOnBackground) {
