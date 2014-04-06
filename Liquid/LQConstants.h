@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+// Customizable options
 #define kLQDefaultSessionTimeout @30 //seconds
 #define kLQQueueSizeLimit 250 // datapoints
 #ifdef DEBUG
@@ -21,6 +22,12 @@
 #define kLQValuesFileName @"LiquidVariables"
 #define kLQSendBundleVariablesOnDebugMode YES
 
+#define kLQLogLevel 3
+
+// Liquid internal constants
+#define kLQServerUrl @"http://api.lqd.io/collect/"
+#define kLQVersion @"0.3.0"
+#define kLQBundle @"com.liquid"
 #define kLQLogLevelPaths     7
 #define kLQLogLevelHttp      6
 #define kLQLogLevelData      5
@@ -28,8 +35,6 @@
 #define kLQLogLevelDataPoint 3
 #define kLQLogLevelWarning   2
 #define kLQLogLevelError     1
-
-#define kLQLogLevel 3
 
 #ifdef DEBUG
 #   define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)
