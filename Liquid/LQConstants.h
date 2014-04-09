@@ -10,7 +10,7 @@
 
 // Customizable options
 #define kLQDefaultSessionTimeout @30 //seconds
-#define kLQQueueSizeLimit 250 // datapoints
+#define kLQQueueSizeLimit 500 // datapoints
 #ifdef DEBUG
 #    define kLQDefaultFlushInterval @5 //seconds
 #else
