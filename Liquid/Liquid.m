@@ -125,7 +125,7 @@ static Liquid *sharedInstance = nil;
     });
 
     if([self.inBackground isEqualToNumber:[NSNumber numberWithBool:YES]]) {
-        [self track:@"_restoreSession"];
+        [self track:@"_resumeSession"];
         self.inBackground = [NSNumber numberWithBool:NO];
     }
 }
