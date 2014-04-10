@@ -25,6 +25,7 @@
 @interface Liquid ()
 
 @property(nonatomic, strong) NSString *apiToken;
+@property(nonatomic, assign) BOOL developmentMode;
 @property(nonatomic, strong) LQUser *currentUser;
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
@@ -56,6 +57,14 @@ static Liquid *sharedInstance = nil;
     return sharedInstance;
 }
 
++ (Liquid *)sharedInstanceWithToken:(NSString *)apiToken development:(BOOL)development {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[super alloc] initWithToken:apiToken development:development];
+    });
+    return sharedInstance;
+}
+
 + (Liquid *)sharedInstance {
     if (sharedInstance == nil) LQLog(kLQLogLevelWarning, @"<Liquid> Warning: %@ sharedInstance called before sharedInstanceWithToken:", self);
     return sharedInstance;
@@ -64,6 +73,10 @@ static Liquid *sharedInstance = nil;
 #pragma mark - Instantiation
 
 - (instancetype)initWithToken:(NSString *)apiToken {
+    return [self initWithToken:apiToken development:NO];
+}
+
+- (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt {
     if (apiToken == nil) apiToken = @"";
     if ([apiToken length] == 0) LQLog(kLQLogLevelWarning, @"<Liquid> Warning: %@ empty API Token", self);
     if (self = [self init]) {
@@ -81,8 +94,7 @@ static Liquid *sharedInstance = nil;
         
         // Start auto flush timer
         [self startFlushTimer];
-#   ifdef DEBUG
-        if (kLQSendBundleVariablesOnDebugMode)
+        if (_developmentMode && kLQSendBundleVariablesInDevelopmentMode)
             [self sendBundleVariables];
 
         if(!_appliedLiquidPackage) [self loadLiquidPackageSynced];

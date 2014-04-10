@@ -145,8 +145,10 @@
  When using this singleton accessor, <code>sharedIntanceWithToken:</code>
  must be called first, because it performs the initialization to the API.
  @param apiToken        your api token
+ @param development     set to YES if you're compiling your app in a development environment
  */
 + (Liquid *)sharedInstanceWithToken:(NSString *)apiToken;
++ (Liquid *)sharedInstanceWithToken:(NSString *)apiToken development:(BOOL)development;
 
 /*!
  @method
@@ -169,8 +171,10 @@
  Useful for multiple API keys.
  
  @param apiToken        your api token
+ @param development     set to YES if you're compiling your app in a development environment
  */
--(instancetype)initWithToken:(NSString*)apiToken;
+-(instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt;
+-(instancetype)initWithToken:(NSString *)apiToken;
 
 /*!
  @method

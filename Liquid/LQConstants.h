@@ -20,7 +20,7 @@
 #define kLQDefaultFlushOnBackground YES
 #define kLQDirectory kLQBundle
 #define kLQValuesFileName @"LiquidVariables"
-#define kLQSendBundleVariablesOnDebugMode YES
+#define kLQSendBundleVariablesInDevelopmentMode YES
 
 #define kLQLogLevel 3
 
