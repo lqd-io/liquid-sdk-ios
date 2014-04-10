@@ -28,14 +28,18 @@
 
 -(NSDictionary *)jsonDictionary {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
-    if ([_user jsonDictionary])
-        [dictionary setObject:[_user jsonDictionary] forKey:@"user"];
-    if ([_device jsonDictionary])
-        [dictionary setObject:[_device jsonDictionary] forKey:@"device"];
-    if ([_session jsonDictionary])
-        [dictionary setObject:[_session jsonDictionary] forKey:@"session"];
-    if ([_event jsonDictionary])
-        [dictionary setObject:[_event jsonDictionary] forKey:@"event"];
+    NSDictionary *userDict = [_user jsonDictionary];
+    NSDictionary *deviceDict = [_device jsonDictionary];
+    NSDictionary *sessionDict = [_session jsonDictionary];
+    NSDictionary *eventDict = [_event jsonDictionary];
+    if (userDict)
+        [dictionary setObject:userDict forKey:@"user"];
+    if (deviceDict)
+        [dictionary setObject:deviceDict forKey:@"device"];
+    if (sessionDict)
+        [dictionary setObject:sessionDict forKey:@"session"];
+    if (eventDict)
+        [dictionary setObject:eventDict forKey:@"event"];
     
     NSMutableArray *targetsArray = [[NSMutableArray alloc] init];
     for (LQTarget *target in _targets)
