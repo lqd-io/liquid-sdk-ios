@@ -15,7 +15,7 @@
 -(NSDictionary *)jsonDictionary;
 +(NSDictionary *)dictionaryFromArrayOfValues:(NSArray *)values;
 
-@property(nonatomic, strong, readonly) NSNumber *identifier;
+@property(nonatomic, strong, readonly) NSString *identifier;
 @property(nonatomic, strong, readonly) id value;
 @property(nonatomic, strong, readonly) LQVariable *variable;
 @property(nonatomic, strong, readonly) NSNumber *isDefault;

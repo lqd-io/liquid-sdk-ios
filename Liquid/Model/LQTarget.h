@@ -10,9 +10,9 @@
 
 @interface LQTarget : NSObject<NSCoding>
 
--(id)initFromDictionary:(NSDictionary *)dict;
+-(instancetype)initFromDictionary:(NSDictionary *)dict;
 -(NSDictionary *)jsonDictionary;
 
-@property(nonatomic, strong, readonly) id identifier;
+@property(nonatomic, strong, readonly) NSString *identifier;
 
 @end

@@ -13,7 +13,7 @@
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(NSDictionary *)jsonDictionary;
 
-@property(nonatomic, strong, readonly) NSNumber* identifier;
+@property(nonatomic, strong, readonly) NSString* identifier;
 @property(nonatomic, strong, readonly) NSString* name;
 @property(nonatomic, strong, readonly) id defaultValue;
 
