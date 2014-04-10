@@ -300,18 +300,14 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
-    [self track:eventName withAttributes:attributes withUser:self.currentUser withDevice:self.device withSession:self.currentSession];
-}
-
--(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes withUser:(LQUser *)user withDevice:(LQDevice *)device withSession:(LQSession *)session {
     LQLog(kLQLogLevelDataPoint, @"<Liquid> Tracking event %@", eventName);
     dispatch_async(self.queue, ^{
         //[Liquid assertEventAttributeTypes:attributes];
-        if(user == nil) {
+        if(self.currentUser == nil) {
             LQLog(kLQLogLevelWarning, @"<Liquid> When tracking event %@: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.", eventName);
             return;
         }
-        if(session == nil) {
+        if(self.currentSession == nil) {
             LQLog(kLQLogLevelWarning, @"<Liquid> When tracking event %@: A session has not been initialized yet. Please call [Liquid identifyUser] beforehand.", eventName);
             return;
         }
@@ -321,9 +317,9 @@ static Liquid *sharedInstance = nil;
             finalEventName = @"unnamedEvent";
         }
         LQEvent *event = [[LQEvent alloc] initWithName:finalEventName withAttributes:attributes];
-        LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithUser:user
-                                                        withDevice:device
-                                                       withSession:session
+        LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithUser:self.currentUser
+                                                        withDevice:self.device
+                                                       withSession:self.currentSession
                                                          withEvent:event
                                                        withTargets:_appliedLiquidPackage.targets
                                                         withValues:_appliedLiquidPackage.values];
