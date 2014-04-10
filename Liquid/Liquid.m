@@ -185,7 +185,7 @@ static Liquid *sharedInstance = nil;
                                                  withLocation:location];
         
         // Create session for identified user
-        [self newSessionInThread:NO];
+        [self newSessionInCurrentThread:YES];
         
         // Request variables from API
         [self requestNewLiquidPackage];
@@ -255,7 +255,7 @@ static Liquid *sharedInstance = nil;
     }
 }
 
--(void)newSessionInThread:(BOOL)inThread {
+-(void)newSessionInCurrentThread:(BOOL)inThread {
     __block void (^newSessionBlock)() = ^() {
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelWarning, @"<Liquid> Warning: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
