@@ -317,7 +317,7 @@ static Liquid *sharedInstance = nil;
         NSString *finalEventName = eventName;
         if (eventName == nil || [eventName length] == 0) {
             LQLog(kLQLogLevelWarning, @"<Liquid> Tracking unnammed event.");
-            finalEventName = @"unnamed_event";
+            finalEventName = @"unnamedEvent";
         }
         LQEvent *event = [[LQEvent alloc] initWithName:finalEventName withAttributes:attributes];
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithUser:user
