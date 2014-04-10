@@ -84,7 +84,8 @@ static Liquid *sharedInstance = nil;
 #   ifdef DEBUG
         if (kLQSendBundleVariablesOnDebugMode)
             [self sendBundleVariables];
-#   endif
+
+        if(!_appliedLiquidPackage) [self loadLiquidPackageSynced];
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -176,8 +177,6 @@ static Liquid *sharedInstance = nil;
         return;
     }
     dispatch_async(self.queue, ^() {
-        if(!_appliedLiquidPackage) [self loadLiquidPackageSynced];
-
         [self destroySession];
 
         // Create user from identifier, attributes and location
