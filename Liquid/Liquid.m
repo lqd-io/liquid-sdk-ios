@@ -29,7 +29,7 @@
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
-@property(nonatomic, strong) NSNumber *inBackground;
+@property(nonatomic, assign) BOOL inBackground;
 @property(nonatomic, strong) dispatch_queue_t queue;
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
@@ -102,8 +102,8 @@ static Liquid *sharedInstance = nil;
     return self;
 }
 
--(NSNumber *)inBackground {
-    if(!_inBackground) _inBackground = [NSNumber numberWithBool:NO];
+-(BOOL)inBackground {
+    if(!_inBackground) _inBackground = NO;
     return _inBackground;
 }
 
@@ -111,7 +111,7 @@ static Liquid *sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     // Check for session timeout on app resume
-    [self checkSessionTimeout];
+    BOOL sessionTimedOut = [self checkSessionTimeout];
     
     // Restart flush timer
     [self startFlushTimer];
@@ -124,9 +124,9 @@ static Liquid *sharedInstance = nil;
         self.httpQueue = [Liquid unarchiveQueueForToken:self.apiToken];
     });
 
-    if([self.inBackground isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+    if(!sessionTimedOut && self.inBackground) {
         [self track:@"_resumeSession"];
-        self.inBackground = [NSNumber numberWithBool:NO];
+        _inBackground = NO;
     }
 }
 
@@ -271,15 +271,17 @@ static Liquid *sharedInstance = nil;
         dispatch_async(self.queue, newSessionBlock);
 }
 
--(void)checkSessionTimeout {
+-(BOOL)checkSessionTimeout {
     if(self.currentSession != nil) {
         NSDate *now = [NSDate new];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
         if(interval >= _sessionTimeout) {
             [self destroySession];
-            [self newSessionInThread:NO];
+            [self newSessionInCurrentThread:NO];
+            return YES;
         }
     }
+    return NO;
 }
 
 -(void)setSessionAttribute:(id)attribute forKey:(NSString *)key {
