@@ -152,7 +152,7 @@ static Liquid *sharedInstance = nil;
     
     [self track:@"_pauseSession"];
 
-    self.inBackground = [NSNumber numberWithBool:YES];
+    self.inBackground = YES;
     self.enterBackgroundTime = [NSDate new];
     dispatch_async(self.queue, ^() {
         if (self.flushOnBackground) {
