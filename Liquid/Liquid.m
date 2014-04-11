@@ -718,7 +718,7 @@ static Liquid *sharedInstance = nil;
 
 + (UIColor *)colorFromString:(NSString *)hexString {
     if (![hexString isKindOfClass:[NSString class]]) {
-        LQLog(kLQLogLevelError, @"<Liquid> Warning: cannot get a color from a nil value. Expected an NSString instead.");
+        LQLog(kLQLogLevelWarning, @"<Liquid> Warning: cannot get a color from a nil value. Expected an NSString instead.");
         return nil;
     }
     if([hexString rangeOfString:@"#"].location != 0)
