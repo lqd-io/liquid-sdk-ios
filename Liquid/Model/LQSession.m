@@ -12,7 +12,7 @@
 
 #pragma mark - Initializer
 
--(id)initWithTimeout:(NSNumber*)timeout {
+-(id)initWithDate:(NSDate *)date withTimeout:(NSNumber*)timeout {
     self = [super init];
     if(self) {
         _identifier = [LQSession newSessionIdentifier];

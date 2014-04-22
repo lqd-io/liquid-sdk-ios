@@ -11,7 +11,7 @@
 
 @interface LQEvent : NSObject
 
--(id)initWithName:(NSString*)name withAttributes:(NSDictionary*)attributes;
+-(id)initWithName:(NSString*)name withAttributes:(NSDictionary*)attributes withDate:(NSDate *)date;
 -(NSDictionary *)jsonDictionary;
 -(NSDictionary *)jsonDictionaryWithUser:(LQUser*)user withDevice:(LQDevice*)device withSession:(LQSession *)session;
 

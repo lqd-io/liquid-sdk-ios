@@ -12,7 +12,7 @@
 
 #pragma mark - Initializer
 
--(id)initWithName:(NSString *)name withAttributes:(NSDictionary *)attributes {
+-(id)initWithName:(NSString *)name withAttributes:(NSDictionary *)attributes withDate:(NSDate *)date {
     self = [super init];
     if(self) {
         _name = name;
@@ -20,7 +20,7 @@
             _attributes = [NSDictionary new];
         else
             _attributes = attributes;
-        _date = [NSDate date];
+        _date = date;
     }
     return self;
 }

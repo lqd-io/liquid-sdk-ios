@@ -16,7 +16,7 @@
 
 @interface LQDataPoint : NSObject
 
--(id)initWithUser:(LQUser *)user withDevice:(LQDevice *)device withSession:(LQSession *)session withEvent:(LQEvent *)event withTargets:(NSArray *)targets withValues:(NSArray *)values;
+-(id)initWithDate:(NSDate *)date withUser:(LQUser *)user withDevice:(LQDevice *)device withSession:(LQSession *)session withEvent:(LQEvent *)event withTargets:(NSArray *)targets withValues:(NSArray *)values;
 -(NSDictionary *)jsonDictionary;
 
 @property(nonatomic, strong, readonly) LQUser* user;

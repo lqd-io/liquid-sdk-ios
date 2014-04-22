@@ -269,12 +269,13 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)newSessionInCurrentThread:(BOOL)inThread {
+    NSDate *now = [NSDate new];
     __block void (^newSessionBlock)() = ^() {
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelWarning, @"<Liquid> Warning: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
         }
-        self.currentSession = [[LQSession alloc] initWithTimeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
+        self.currentSession = [[LQSession alloc] initWithDate:now withTimeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
         [self track:@"_startSession"];
     };
     if(inThread)
@@ -314,6 +315,7 @@ static Liquid *sharedInstance = nil;
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
     LQLog(kLQLogLevelDataPoint, @"<Liquid> Tracking event %@", eventName);
+    NSDate *now = [NSDate new];
     dispatch_async(self.queue, ^{
         //[Liquid assertEventAttributeTypes:attributes];
         if(self.currentUser == nil) {
@@ -329,8 +331,9 @@ static Liquid *sharedInstance = nil;
             LQLog(kLQLogLevelWarning, @"<Liquid> Tracking unnammed event.");
             finalEventName = @"unnamedEvent";
         }
-        LQEvent *event = [[LQEvent alloc] initWithName:finalEventName withAttributes:attributes];
-        LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithUser:self.currentUser
+        LQEvent *event = [[LQEvent alloc] initWithName:finalEventName withAttributes:attributes withDate:now];
+        LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
+                                                          withUser:self.currentUser
                                                         withDevice:self.device
                                                        withSession:self.currentSession
                                                          withEvent:event

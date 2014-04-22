@@ -12,7 +12,7 @@
 
 @interface LQSession : NSObject
 
--(id)initWithTimeout:(NSNumber*)timeout;
+-(id)initWithDate:(NSDate *)date withTimeout:(NSNumber*)timeout;
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key;
 -(id)attributeForKey:(NSString *)key;
