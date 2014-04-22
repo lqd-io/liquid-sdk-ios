@@ -288,7 +288,7 @@ static Liquid *sharedInstance = nil;
     if(self.currentSession != nil) {
         NSDate *now = [NSDate new];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
-        if(interval >= _sessionTimeout) {
+        if(interval >= _sessionTimeout || interval > [kLQDefaultSessionMaxLimit intValue]) {
             [self destroySession];
             [self newSessionInCurrentThread:NO];
             return YES;

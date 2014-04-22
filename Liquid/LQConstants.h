@@ -21,6 +21,7 @@
 #define kLQDirectory kLQBundle
 #define kLQValuesFileName @"LiquidVariables"
 #define kLQSendBundleVariablesInDevelopmentMode YES
+#define kLQDefaultSessionMaxLimit @7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
 
 #define kLQLogLevel 3
 
