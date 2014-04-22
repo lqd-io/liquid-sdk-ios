@@ -55,7 +55,7 @@
     [dictionary setObject:valuesArray forKey:@"values"];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
     [dictionary setObject:[dateFormatter stringFromDate:_timestamp] forKey:@"timestamp"];
     return dictionary;
 }

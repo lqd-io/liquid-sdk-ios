@@ -37,7 +37,7 @@
     [dictionary setObject:_name forKey:@"name"];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
     [dictionary setObject:[dateFormatter stringFromDate:_date] forKey:@"date"];
     
     if(user != nil)

@@ -50,7 +50,7 @@
     [dictionary addEntriesFromDictionary:_attributes];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dictionary setObject:_identifier forKey:@"unique_id"];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
     [dictionary setObject:[dateFormatter stringFromDate:_start] forKey:@"started_at"];
     [dictionary setObject:_timeout forKey:@"timeout"];
     if(_end != nil)
