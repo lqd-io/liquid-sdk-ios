@@ -106,8 +106,8 @@ static Liquid *sharedInstance = nil;
                                    name:UIApplicationDidBecomeActiveNotification
                                  object:nil];
         [notificationCenter addObserver:self
-                               selector:@selector(applicationDidEnterBackground:)
-                                   name:UIApplicationDidEnterBackgroundNotification
+                               selector:@selector(applicationWillResignActive:)
+                                   name:UIApplicationWillResignActiveNotification
                                  object:nil];
         
         LQLog(kLQLogLevelEvent, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
@@ -143,17 +143,15 @@ static Liquid *sharedInstance = nil;
     }
 }
 
-- (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
+- (void)applicationWillResignActive:(NSNotificationCenter *)notification {
+    self.enterBackgroundTime = [NSDate new];
+    self.inBackground = YES;
+
     // Stop flush timer on app pause
     [self stopFlushTimer];
     
-    // Request variables on app pause
-    [self requestNewLiquidPackage];
-    
     [self track:@"_pauseSession"];
 
-    self.inBackground = YES;
-    self.enterBackgroundTime = [NSDate new];
     dispatch_async(self.queue, ^() {
         if (self.flushOnBackground) {
             [self flush];
@@ -164,6 +162,9 @@ static Liquid *sharedInstance = nil;
             self.httpQueue = [NSMutableArray new];
         });
     });
+
+    // Request variables on app pause
+    [self requestNewLiquidPackage];
 }
 
 #pragma mark - User Interaction
