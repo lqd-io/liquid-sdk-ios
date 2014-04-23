@@ -186,7 +186,7 @@ static Liquid *sharedInstance = nil;
 #pragma mark - User Interaction
 
 -(void)identifyUser {
-    [self identifyUserWithIdentifier:[Liquid automaticUserIdentifier]];
+    [self identifyUserWithIdentifier:nil];
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier {
@@ -201,7 +201,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location {
-    if (!identifier || identifier.length == 0) {
+    if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
     }
@@ -344,7 +344,7 @@ static Liquid *sharedInstance = nil;
     }
     if(self.currentUser == nil) {
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user");
-        [self identifyUserSyncedWithIdentifier:[Liquid automaticUserIdentifier]
+        [self identifyUserSyncedWithIdentifier:nil
                                 withAttributes:nil
                                   withLocation:nil];
     }
@@ -773,30 +773,6 @@ static Liquid *sharedInstance = nil;
     float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-}
-
-+ (NSString *)automaticUserIdentifier {
-    NSString *automaticUserIdentifier = nil;
-    
-    if (NSClassFromString(@"ASIdentifierManager")) {
-        automaticUserIdentifier = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    }
-    
-    if (automaticUserIdentifier == nil) {
-        LQLog(kLQLogLevelError, @"<Liquid> %@ error getting IFA, trying UUID", self);
-        NSString *liquidUUIDKey = @"com.liquid.UUID";
-        NSString *uuid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
-        if(uuid == nil) {
-            uuid = [[NSUUID UUID] UUIDString];
-            [[NSUserDefaults standardUserDefaults]setObject:uuid forKey:liquidUUIDKey];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-        }
-        automaticUserIdentifier = uuid;
-    }
-    if (!automaticUserIdentifier) {
-        LQLog(kLQLogLevelError, @"<Liquid> %@ could not get automatic user identifier.", self);
-    }
-    return automaticUserIdentifier;
 }
 
 + (id)fromJSON:(NSData *)data {
