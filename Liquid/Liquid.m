@@ -20,7 +20,6 @@
 #import "LQTarget.h"
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
-#import "LQConstants.h"
 
 @interface Liquid ()
 
@@ -362,6 +361,7 @@ static Liquid *sharedInstance = nil;
             liquidPacakge = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
             [liquidPacakge saveToDisk];
             
+            [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
             if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
                 [self.delegate performSelectorOnMainThread:@selector(liquidDidReceiveValues)
                                                 withObject:nil
@@ -399,6 +399,7 @@ static Liquid *sharedInstance = nil;
         _appliedValues = [Liquid loadBundleValues];
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:@{ @"values": _appliedValues }];
     if([self.delegate respondsToSelector:@selector(liquidDidLoadValues)]) {
         [self.delegate performSelectorOnMainThread:@selector(liquidDidLoadValues)
                                         withObject:nil

@@ -29,6 +29,8 @@
 #define kLQServerUrl @"http://api.lqd.io/collect/"
 #define kLQVersion @"0.3.0"
 #define kLQBundle @"com.liquid"
+#define LQDidReceiveValues @"com.liquid.Notifications:LQDidReceiveValues"
+#define LQDidLoadValues @"com.liquid.Notifications:DidLoadValues"
 #define kLQLogLevelPaths     7
 #define kLQLogLevelHttp      6
 #define kLQLogLevelData      5

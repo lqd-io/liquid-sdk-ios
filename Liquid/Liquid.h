@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIColor.h>
+#import "LQConstants.h"
 
 @protocol LiquidDelegate <NSObject>
 @optional
 - (void)liquidDidReceiveValues;
 - (void)liquidDidLoadValues;
 @end
-
 
 /*!
  @class
