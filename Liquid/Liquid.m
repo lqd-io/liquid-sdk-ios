@@ -29,6 +29,8 @@
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
+@property(nonatomic, strong) NSDate *veryFirstMoment;
+@property(nonatomic, assign) BOOL firstEventSent;
 @property(nonatomic, assign) BOOL inBackground;
 @property(nonatomic, strong) dispatch_queue_t queue;
 @property(nonatomic, strong) NSTimer *timer;
@@ -69,13 +71,16 @@ static Liquid *sharedInstance = nil;
     return sharedInstance;
 }
 
-#pragma mark - Instantiation
+
+
+#pragma mark - Initialization
 
 - (instancetype)initWithToken:(NSString *)apiToken {
     return [self initWithToken:apiToken development:NO];
 }
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt {
+    [self veryFirstMoment];
     if (apiToken == nil) apiToken = @"";
     if ([apiToken length] == 0) LQLog(kLQLogLevelWarning, @"<Liquid> Warning: %@ empty API Token", self);
     if (self = [self init]) {
@@ -114,9 +119,21 @@ static Liquid *sharedInstance = nil;
     return self;
 }
 
--(BOOL)inBackground {
-    if(!_inBackground) _inBackground = NO;
+#pragma mark - Lazy initialization
+
+- (BOOL)inBackground {
+    if (!_inBackground) _inBackground = NO;
     return _inBackground;
+}
+
+- (BOOL)firstEventSent {
+    if (!_firstEventSent) _firstEventSent = NO;
+    return _firstEventSent;
+}
+
+- (NSDate *)veryFirstMoment {
+    if (!_veryFirstMoment) _veryFirstMoment = [NSDate new];
+    return _veryFirstMoment;
 }
 
 #pragma mark - UIApplication notifications
@@ -318,7 +335,13 @@ static Liquid *sharedInstance = nil;
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
     LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@", eventName);
-    NSDate *now = [NSDate new];
+    NSDate *now;
+    if ([self firstEventSent]) {
+        now = [self veryFirstMoment];
+        _firstEventSent = YES;
+    } else {
+        now = [NSDate new];
+    }
     if(self.currentUser == nil) {
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user");
         [self identifyUserSyncedWithIdentifier:[Liquid automaticUserIdentifier]
