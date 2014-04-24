@@ -194,7 +194,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location {
-    [self destroySession];
+    [self destroySessionIfExists];
 
     // Create user from identifier, attributes and location
     self.currentUser = [[LQUser alloc] initWithIdentifier:identifier
@@ -264,7 +264,7 @@ static Liquid *sharedInstance = nil;
     }
 }
 
--(void)destroySession {
+-(void)destroySessionIfExists {
     if(self.currentUser != nil && self.currentSession != nil) {
         [[self currentSession] endSessionOnDate:self.enterBackgroundTime];
         [self track:@"_endSession"];
@@ -292,7 +292,7 @@ static Liquid *sharedInstance = nil;
         NSDate *now = [NSDate new];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
         if(interval >= _sessionTimeout || interval > [kLQDefaultSessionMaxLimit intValue]) {
-            [self destroySession];
+            [self destroySessionIfExists];
             [self newSessionInCurrentThread:NO];
             return YES;
         }
