@@ -109,7 +109,7 @@ static Liquid *sharedInstance = nil;
                                    name:UIApplicationWillResignActiveNotification
                                  object:nil];
         
-        LQLog(kLQLogLevelEvent, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }
     return self;
 }
@@ -207,7 +207,7 @@ static Liquid *sharedInstance = nil;
     // Request variables from API
     [self requestNewLiquidPackage];
 
-    LQLog(kLQLogLevelEvent, @"<Liquid> From now on, we're identifying the User by the identifier '%@'", identifier);
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> From now on, we're identifying the User by the identifier '%@'", identifier);
 }
 
 -(NSString *)userIdentifier {
@@ -317,10 +317,10 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
-    LQLog(kLQLogLevelDataPoint, @"<Liquid> Tracking event %@", eventName);
+    LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@", eventName);
     NSDate *now = [NSDate new];
     if(self.currentUser == nil) {
-        LQLog(kLQLogLevelDataPoint, @"<Liquid> Auto identifying user");
+        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user");
         [self identifyUserSyncedWithIdentifier:[Liquid automaticUserIdentifier]
                                 withAttributes:nil
                                   withLocation:nil];
@@ -407,7 +407,7 @@ static Liquid *sharedInstance = nil;
                                         withObject:nil
                                      waitUntilDone:NO];
     }
-    LQLog(kLQLogLevelEvent, @"<Liquid> Applied Values: %@", _appliedValues);
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Applied Values: %@", _appliedValues);
 }
 
 -(void)loadLiquidPackage {
@@ -439,7 +439,7 @@ static Liquid *sharedInstance = nil;
             for (NSString *name in newVariablesDict) {
                 NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name",
                                           [newVariablesDict objectForKey:name], @"default_value", nil];
-                LQLog(kLQLogLevelEvent, @"<Liquid> Sending bundle Variable %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
+                LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending bundle Variable %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
                 BOOL res = [self sendData:[Liquid toJSON:variable]
                                toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
                               usingMethod:@"POST"];
@@ -529,7 +529,7 @@ static Liquid *sharedInstance = nil;
         NSMutableArray *failedQueue = [NSMutableArray new];
         while (self.httpQueue.count > 0) {
             LQQueue *queuedHttp = [self.httpQueue firstObject];
-            LQLog(kLQLogLevelEvent, @"<Liquid> Flushing %@", [queuedHttp description]);
+            LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Flushing %@", [queuedHttp description]);
             BOOL res = [self sendData:queuedHttp.json
                            toEndpoint:queuedHttp.url
                           usingMethod:queuedHttp.httpMethod];
@@ -570,7 +570,7 @@ static Liquid *sharedInstance = nil;
                                                         selector:@selector(flush)
                                                         userInfo:nil
                                                          repeats:YES];
-            LQLog(kLQLogLevelEvent, @"<Liquid> %@ started flush timer: %@", self, self.timer);
+            LQLog(kLQLogLevelInfoVerbose, @"<Liquid> %@ started flush timer: %@", self, self.timer);
         }
     });
     
@@ -580,7 +580,7 @@ static Liquid *sharedInstance = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.timer) {
             [self.timer invalidate];
-            LQLog(kLQLogLevelEvent,@"<Liquid> %@ stopped flush timer: %@", self, self.timer);
+            LQLog(kLQLogLevelInfoVerbose,@"<Liquid> %@ stopped flush timer: %@", self, self.timer);
         }
         self.timer = nil;
     });

@@ -31,13 +31,13 @@
 #define kLQBundle @"com.liquid"
 #define LQDidReceiveValues @"com.liquid.Notifications:LQDidReceiveValues"
 #define LQDidLoadValues @"com.liquid.Notifications:DidLoadValues"
-#define kLQLogLevelPaths     7
-#define kLQLogLevelHttp      6
-#define kLQLogLevelData      5
-#define kLQLogLevelEvent     4
-#define kLQLogLevelDataPoint 3
-#define kLQLogLevelWarning   2
-#define kLQLogLevelError     1
+#define kLQLogLevelPaths       7
+#define kLQLogLevelHttp        6
+#define kLQLogLevelData        5
+#define kLQLogLevelInfoVerbose 4
+#define kLQLogLevelInfo        3
+#define kLQLogLevelWarning     2
+#define kLQLogLevelError       1
 
 #ifdef DEBUG
 #   define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)
