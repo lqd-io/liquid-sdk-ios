@@ -189,21 +189,25 @@ static Liquid *sharedInstance = nil;
         return;
     }
     dispatch_async(self.queue, ^() {
-        [self destroySession];
-
-        // Create user from identifier, attributes and location
-        self.currentUser = [[LQUser alloc] initWithIdentifier:identifier
-                                               withAttributes:attributes
-                                                 withLocation:location];
-        
-        // Create session for identified user
-        [self newSessionInCurrentThread:YES];
-        
-        // Request variables from API
-        [self requestNewLiquidPackage];
-        
-        LQLog(kLQLogLevelEvent, @"<Liquid> From now on, we're identifying the User by the identifier '%@'", identifier);
+        [self identifyUserSyncedWithIdentifier:identifier withAttributes:attributes withLocation:location];
     });
+}
+
+-(void)identifyUserSyncedWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location {
+    [self destroySession];
+
+    // Create user from identifier, attributes and location
+    self.currentUser = [[LQUser alloc] initWithIdentifier:identifier
+                                           withAttributes:attributes
+                                             withLocation:location];
+
+    // Create session for identified user
+    [self newSessionInCurrentThread:YES];
+
+    // Request variables from API
+    [self requestNewLiquidPackage];
+
+    LQLog(kLQLogLevelEvent, @"<Liquid> From now on, we're identifying the User by the identifier '%@'", identifier);
 }
 
 -(NSString *)userIdentifier {
@@ -315,16 +319,14 @@ static Liquid *sharedInstance = nil;
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
     LQLog(kLQLogLevelDataPoint, @"<Liquid> Tracking event %@", eventName);
     NSDate *now = [NSDate new];
+    if(self.currentUser == nil) {
+        LQLog(kLQLogLevelDataPoint, @"<Liquid> Auto identifying user");
+        [self identifyUserSyncedWithIdentifier:[Liquid automaticUserIdentifier]
+                                withAttributes:nil
+                                  withLocation:nil];
+    }
     dispatch_async(self.queue, ^{
         //[Liquid assertEventAttributeTypes:attributes];
-        if(self.currentUser == nil) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> When tracking event %@: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.", eventName);
-            return;
-        }
-        if(self.currentSession == nil) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> When tracking event %@: A session has not been initialized yet. Please call [Liquid identifyUser] beforehand.", eventName);
-            return;
-        }
         NSString *finalEventName = eventName;
         if (eventName == nil || [eventName length] == 0) {
             LQLog(kLQLogLevelWarning, @"<Liquid> Tracking unnammed event.");
