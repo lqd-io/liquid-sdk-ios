@@ -224,7 +224,7 @@ static Liquid *sharedInstance = nil;
     // Request variables from API
     [self requestNewLiquidPackage];
 
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> From now on, we're identifying the User by the identifier '%@'", identifier);
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> From now on, we're identifying the User by identifier '%@'", self.currentUser.identifier);
 }
 
 -(NSString *)userIdentifier {
@@ -334,7 +334,6 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
-    LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@", eventName);
     NSDate *now;
     if ([self firstEventSent]) {
         now = [self veryFirstMoment];
@@ -348,6 +347,7 @@ static Liquid *sharedInstance = nil;
                                 withAttributes:nil
                                   withLocation:nil];
     }
+    LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@", eventName);
     dispatch_async(self.queue, ^{
         //[Liquid assertEventAttributeTypes:attributes];
         NSString *finalEventName = eventName;
