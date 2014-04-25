@@ -53,11 +53,20 @@
         if (value.identifier)
             [valuesArray addObject:[value jsonDictionary]];
     [dictionary setObject:valuesArray forKey:@"values"];
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+
+    NSDateFormatter *dateFormatter = [[self class] isoDateFormatter];
     [dictionary setObject:[dateFormatter stringFromDate:_timestamp] forKey:@"timestamp"];
     return dictionary;
+}
+
++(NSDateFormatter *)isoDateFormatter {
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+    [formatter setCalendar:gregorianCalendar];
+    [formatter setDateStyle:NSDateFormatterFullStyle];
+    [formatter setTimeStyle:NSDateFormatterFullStyle];
+    return formatter;
 }
 
 @end

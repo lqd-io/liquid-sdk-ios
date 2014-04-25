@@ -36,8 +36,7 @@
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_name forKey:@"name"];
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+    NSDateFormatter *dateFormatter = [[self class] isoDateFormatter];
     [dictionary setObject:[dateFormatter stringFromDate:_date] forKey:@"date"];
     
     if(user != nil)
@@ -47,6 +46,16 @@
     if(session != nil)
         [dictionary setObject:[session jsonDictionary] forKey:@"session"];
     return dictionary;
+}
+
++(NSDateFormatter *)isoDateFormatter {
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+    [formatter setCalendar:gregorianCalendar];
+    [formatter setDateStyle:NSDateFormatterFullStyle];
+    [formatter setTimeStyle:NSDateFormatterFullStyle];
+    return formatter;
 }
 
 @end

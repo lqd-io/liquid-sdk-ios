@@ -46,11 +46,10 @@
 }
 
 -(NSDictionary *)jsonDictionaryWithUser:(LQUser *)user withDevice:(LQDevice *)device {
+    NSDateFormatter *dateFormatter = [[self class] isoDateFormatter];
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dictionary setObject:_identifier forKey:@"unique_id"];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
     [dictionary setObject:[dateFormatter stringFromDate:_start] forKey:@"started_at"];
     [dictionary setObject:_timeout forKey:@"timeout"];
     if(_end != nil)
@@ -75,6 +74,16 @@
     NSMutableData *data = [NSMutableData dataWithLength:length];
     SecRandomCopyBytes(kSecRandomDefault, length, data.mutableBytes);
     return data;
+}
+
++(NSDateFormatter *)isoDateFormatter {
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+    [formatter setCalendar:gregorianCalendar];
+    [formatter setDateStyle:NSDateFormatterFullStyle];
+    [formatter setTimeStyle:NSDateFormatterFullStyle];
+    return formatter;
 }
 
 @end
