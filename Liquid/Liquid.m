@@ -81,6 +81,7 @@ static Liquid *sharedInstance = nil;
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt {
     [self veryFirstMoment];
+    if (developemnt) _developmentMode = YES; else _developmentMode = NO;
     if (apiToken == nil) apiToken = @"";
     if ([apiToken length] == 0) LQLog(kLQLogLevelWarning, @"<Liquid> Warning: %@ empty API Token", self);
     if (self = [self init]) {
