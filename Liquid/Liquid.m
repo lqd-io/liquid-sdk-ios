@@ -81,6 +81,7 @@ static Liquid *sharedInstance = nil;
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt {
     [self veryFirstMoment];
+    _firstEventSent = NO;
     if (developemnt) _developmentMode = YES; else _developmentMode = NO;
     if (apiToken == nil) apiToken = @"";
     if ([apiToken length] == 0) LQLog(kLQLogLevelWarning, @"<Liquid> Warning: %@ empty API Token", self);
@@ -125,11 +126,6 @@ static Liquid *sharedInstance = nil;
 - (BOOL)inBackground {
     if (!_inBackground) _inBackground = NO;
     return _inBackground;
-}
-
-- (BOOL)firstEventSent {
-    if (!_firstEventSent) _firstEventSent = NO;
-    return _firstEventSent;
 }
 
 - (NSDate *)veryFirstMoment {
@@ -335,20 +331,22 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
-    NSDate *now;
-    if ([self firstEventSent]) {
-        now = [self veryFirstMoment];
-        _firstEventSent = YES;
-    } else {
-        now = [NSDate new];
-    }
     if(self.currentUser == nil) {
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user");
         [self identifyUserSyncedWithIdentifier:nil
                                 withAttributes:nil
                                   withLocation:nil];
     }
-    LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@", eventName);
+
+    NSDate *now;
+    if (!_firstEventSent) {
+        now = [self veryFirstMoment];
+        _firstEventSent = YES;
+    } else {
+        now = [NSDate new];
+    }
+
+    LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [[Liquid isoDateFormatter] stringFromDate:now]);
     dispatch_async(self.queue, ^{
         //[Liquid assertEventAttributeTypes:attributes];
         NSString *finalEventName = eventName;
@@ -375,7 +373,12 @@ static Liquid *sharedInstance = nil;
 #pragma mark - Liquid Package
 
 -(LQLiquidPackage *)requestNewLiquidPackageSynced {
-    if(self.currentUser != nil && self.currentSession != nil) {
+    if(self.currentUser == nil || self.currentSession == nil) {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user");
+        [self identifyUserSyncedWithIdentifier:nil
+                                withAttributes:nil
+                                  withLocation:nil];
+    } else {
         NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
         NSData *dataFromServer = [self getDataFromEndpoint:endPoint];
         LQLiquidPackage *liquidPacakge = nil;
@@ -398,8 +401,6 @@ static Liquid *sharedInstance = nil;
             }
         }
         return liquidPacakge;
-    } else {
-        LQLog(kLQLogLevelError, @"<Liquid> A session and a user have not been initialized yet. Please call [Liquid identifyUser] beforehand.");
     }
     return nil;
 }
@@ -815,6 +816,14 @@ static Liquid *sharedInstance = nil;
     NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" "
                                                                           withString:@""];
     return dataStr;
+}
+
++(NSDateFormatter *)isoDateFormatter {
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+    [formatter setCalendar:gregorianCalendar];
+    return formatter;
 }
 
 @end
