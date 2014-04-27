@@ -16,7 +16,7 @@
 #define kLQQueueNumberOfTries @"NumberOfTries"
 
 NSInteger const LQQueueStatusOk = 0;
-NSInteger const LQQueueStatusFailed = 1;
+NSInteger const LQQueueStatusUnreachable = 1;
 NSInteger const LQQueueStatusUnauthorized = 2;
 NSInteger const LQQueueStatusRejected = 3;
 

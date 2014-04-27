@@ -19,7 +19,7 @@
 @property(nonatomic, strong, readonly) NSNumber* numberOfTries;
 
 extern NSInteger const LQQueueStatusOk;
-extern NSInteger const LQQueueStatusFailed;
+extern NSInteger const LQQueueStatusUnreachable;
 extern NSInteger const LQQueueStatusUnauthorized;
 extern NSInteger const LQQueueStatusRejected;
 

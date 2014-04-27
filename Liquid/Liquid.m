@@ -652,7 +652,7 @@ static Liquid *sharedInstance = nil;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
             LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", error.code);
-            return LQQueueStatusFailed;
+            return LQQueueStatusUnreachable;
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
             LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", error.code);
             return LQQueueStatusUnauthorized;
