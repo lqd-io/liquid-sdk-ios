@@ -852,6 +852,7 @@ static Liquid *sharedInstance = nil;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
     [formatter setCalendar:gregorianCalendar];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     return formatter;
 }
 
