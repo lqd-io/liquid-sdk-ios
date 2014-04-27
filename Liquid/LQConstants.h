@@ -14,9 +14,9 @@
 #ifdef DEBUG
 #    define kLQDefaultFlushInterval @5 //seconds
 #else
-#    define kLQDefaultFlushInterval @10 //seconds
+#    define kLQDefaultFlushInterval @15 //seconds
 #endif
-#define kLQMaxNumberOfTries 40
+#define kLQMaxNumberOfTries 60
 #define kLQDefaultFlushOnBackground YES
 #define kLQDirectory kLQBundle
 #define kLQValuesFileName @"LiquidVariables"
