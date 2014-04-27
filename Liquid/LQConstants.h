@@ -22,8 +22,7 @@
 #define kLQValuesFileName @"LiquidVariables"
 #define kLQSendBundleVariablesInDevelopmentMode YES
 #define kLQDefaultSessionMaxLimit @7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
-
-#define kLQLogLevel 3
+#define kLQLogLevel 2
 
 // Liquid internal constants
 #define kLQVersion @"0.3.2"
@@ -35,9 +34,9 @@
 #define kLQLogLevelHttp        6
 #define kLQLogLevelData        5
 #define kLQLogLevelInfoVerbose 4
-#define kLQLogLevelInfo        3
-#define kLQLogLevelWarning     2
-#define kLQLogLevelError       1
+#define kLQLogLevelWarning     3
+#define kLQLogLevelError       2
+#define kLQLogLevelInfo        1
 
 #ifdef DEBUG
 #   define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)

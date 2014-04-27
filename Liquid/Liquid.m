@@ -67,7 +67,7 @@ static Liquid *sharedInstance = nil;
 }
 
 + (Liquid *)sharedInstance {
-    if (sharedInstance == nil) LQLog(kLQLogLevelWarning, @"<Liquid> Warning: %@ sharedInstance called before sharedInstanceWithToken:", self);
+    if (sharedInstance == nil) LQLog(kLQLogLevelError, @"<Liquid> Error: %@ sharedInstance called before sharedInstanceWithToken:", self);
     return sharedInstance;
 }
 
@@ -84,7 +84,7 @@ static Liquid *sharedInstance = nil;
     _firstEventSent = NO;
     if (developemnt) _developmentMode = YES; else _developmentMode = NO;
     if (apiToken == nil) apiToken = @"";
-    if ([apiToken length] == 0) LQLog(kLQLogLevelWarning, @"<Liquid> Warning: %@ empty API Token", self);
+    if ([apiToken length] == 0) LQLog(kLQLogLevelError, @"<Liquid> Error: %@ empty API Token", self);
     if (self = [self init]) {
         self.httpQueue = [Liquid unarchiveQueueForToken:apiToken];
         
@@ -226,7 +226,7 @@ static Liquid *sharedInstance = nil;
 
 -(NSString *)userIdentifier {
     if(self.currentUser == nil) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Warning: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+        LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
     }
     return self.currentUser.identifier;
 }
@@ -234,7 +234,7 @@ static Liquid *sharedInstance = nil;
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key {
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Warning: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
         }
         [self.currentUser setAttribute:attribute
@@ -245,7 +245,7 @@ static Liquid *sharedInstance = nil;
 -(void)setUserLocation:(CLLocation *)location {
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Warning: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
         }
         [self.currentUser setLocation:location];
@@ -257,7 +257,7 @@ static Liquid *sharedInstance = nil;
 -(void)setDeviceAttribute:(id)attribute forKey:(NSString *)key {
     dispatch_async(self.queue, ^() {
         if(self.device == nil) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Warning: A device has not been initialized. Please call [Liquid sharedInstanceWithToken:] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> Error: A device has not been initialized. Please call [Liquid sharedInstanceWithToken:] beforehand.");
             return;
         }
         [self.device setAttribute:attribute forKey:key];
@@ -289,7 +289,7 @@ static Liquid *sharedInstance = nil;
     NSDate *now = [NSDate new];
     __block void (^newSessionBlock)() = ^() {
         if(self.currentUser == nil) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Warning: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
         }
         self.currentSession = [[LQSession alloc] initWithDate:now withTimeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
@@ -317,7 +317,7 @@ static Liquid *sharedInstance = nil;
 -(void)setSessionAttribute:(id)attribute forKey:(NSString *)key {
     dispatch_async(self.queue, ^() {
         if(self.currentSession == nil) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> A session has not been initialized. Please call [Liquid identifyUser] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> A session has not been initialized. Please call [Liquid identifyUser] beforehand.");
             return;
         }
         [self.currentSession setAttribute:attribute forKey:key];
@@ -651,7 +651,7 @@ static Liquid *sharedInstance = nil;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", error.code);
             return LQQueueStatusUnreachable;
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
             LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", error.code);
@@ -692,7 +692,7 @@ static Liquid *sharedInstance = nil;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", error.code);
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
             LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Unauthorized (check App Token)", error.code);
         } else {
