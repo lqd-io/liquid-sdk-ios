@@ -18,4 +18,9 @@
 @property(nonatomic, strong, readonly) NSData* json;
 @property(nonatomic, strong, readonly) NSNumber* numberOfTries;
 
+extern NSInteger const LQQueueStatusOk;
+extern NSInteger const LQQueueStatusFailed;
+extern NSInteger const LQQueueStatusUnauthorized;
+extern NSInteger const LQQueueStatusRejected;
+
 @end

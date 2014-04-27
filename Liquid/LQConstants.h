@@ -16,7 +16,7 @@
 #else
 #    define kLQDefaultFlushInterval @10 //seconds
 #endif
-#define kLQMaxNumberOfTries 10
+#define kLQMaxNumberOfTries 40
 #define kLQDefaultFlushOnBackground YES
 #define kLQDirectory kLQBundle
 #define kLQValuesFileName @"LiquidVariables"

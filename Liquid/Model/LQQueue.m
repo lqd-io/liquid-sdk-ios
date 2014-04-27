@@ -15,6 +15,12 @@
 #define kLQQueueJSON @"JSON"
 #define kLQQueueNumberOfTries @"NumberOfTries"
 
+NSInteger const LQQueueStatusOk = 0;
+NSInteger const LQQueueStatusFailed = 1;
+NSInteger const LQQueueStatusUnauthorized = 2;
+NSInteger const LQQueueStatusRejected = 3;
+
+
 #pragma mark - Initializer
 
 -(id)initWithUrl:(NSString *)url withHttpMethod:(NSString *)httpMethod withJSON:(NSData *)json {
