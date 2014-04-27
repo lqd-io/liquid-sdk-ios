@@ -551,24 +551,28 @@ static Liquid *sharedInstance = nil;
 
 -(void)flush {
     dispatch_async(self.queue, ^{
-        NSMutableArray *failedQueue = [NSMutableArray new];
-        while (self.httpQueue.count > 0) {
-            LQQueue *queuedHttp = [self.httpQueue firstObject];
-            LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Flushing %@", [queuedHttp description]);
-            NSInteger res = [self sendData:queuedHttp.json
-                           toEndpoint:queuedHttp.url
-                          usingMethod:queuedHttp.httpMethod];
-            [self.httpQueue removeObject:queuedHttp];
-            if(res != LQQueueStatusOk) {
-                if([[queuedHttp numberOfTries] intValue] < kLQMaxNumberOfTries) {
-                    if (res == LQQueueStatusRejected || res == LQQueueStatusUnauthorized)
-                        [queuedHttp incrementNumberOfTries];
-                    [failedQueue addObject:queuedHttp];
+        if (![self.device reachesInternet]) {
+            LQLog(kLQLogLevelWarning, @"<Liquid> There's no Internet connection. Will try to deliver data points later.");
+        } else {
+            NSMutableArray *failedQueue = [NSMutableArray new];
+            while (self.httpQueue.count > 0) {
+                LQQueue *queuedHttp = [self.httpQueue firstObject];
+                LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Flushing %@", [queuedHttp description]);
+                NSInteger res = [self sendData:queuedHttp.json
+                               toEndpoint:queuedHttp.url
+                              usingMethod:queuedHttp.httpMethod];
+                [self.httpQueue removeObject:queuedHttp];
+                if(res != LQQueueStatusOk) {
+                    if([[queuedHttp numberOfTries] intValue] < kLQMaxNumberOfTries) {
+                        if (res == LQQueueStatusRejected || res == LQQueueStatusUnauthorized)
+                            [queuedHttp incrementNumberOfTries];
+                        [failedQueue addObject:queuedHttp];
+                    }
                 }
             }
+            [self.httpQueue addObjectsFromArray:failedQueue];
+            [Liquid archiveQueue:self.httpQueue forToken:_apiToken];
         }
-        [self.httpQueue addObjectsFromArray:failedQueue];
-        [Liquid archiveQueue:self.httpQueue forToken:_apiToken];
     });
 }
 
@@ -651,13 +655,13 @@ static Liquid *sharedInstance = nil;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while sending data to server: Server is unreachable", error.code);
             return LQQueueStatusUnreachable;
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", error.code);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while sending data to server: Unauthorized (check App Token)", error.code);
             return LQQueueStatusUnauthorized;
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Server error", error.code);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while sending data to server: Server error", error.code);
             return LQQueueStatusRejected;
         }
     } else {
@@ -665,7 +669,7 @@ static Liquid *sharedInstance = nil;
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return LQQueueStatusOk;
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Server error", httpResponse.statusCode);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while sending data to server: Server error", httpResponse.statusCode);
             return LQQueueStatusRejected;
         }
     }
@@ -692,11 +696,11 @@ static Liquid *sharedInstance = nil;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while getting data from server: Server is unreachable", error.code);
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Unauthorized (check App Token)", error.code);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while getting data from server: Unauthorized (check App Token)", error.code);
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Server error", error.code);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while getting data from server: Server error", error.code);
         }
         return nil;
     } else {
@@ -704,7 +708,7 @@ static Liquid *sharedInstance = nil;
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return responseData;
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Server error", httpResponse.statusCode);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while getting data from server: Server error", httpResponse.statusCode);
             return nil;
         }
     }

@@ -232,4 +232,12 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     }
 }
 
+- (BOOL)reachesInternet {
+    if (_internetConnectivity == nil || ![_internetConnectivity isEqualToString:kLQDeviceNoConnectivity]) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 @end

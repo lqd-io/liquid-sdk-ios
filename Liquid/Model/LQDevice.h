@@ -18,6 +18,7 @@
 
 -(NSDictionary*)jsonDictionary;
 -(NSDictionary*)jsonDictionaryWithUser:(LQUser*)user;
+-(BOOL)reachesInternet;
 
 @property(nonatomic, strong, readonly) NSString* vendor;
 @property(nonatomic, strong, readonly) NSString* deviceModel;
