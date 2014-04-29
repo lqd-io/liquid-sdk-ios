@@ -27,7 +27,7 @@
 // Liquid internal constants
 #define kLQVersion @"0.3.3"
 #define kLQBundle @"com.liquid"
-#define kLQServerUrl @"http://api.lqd.io/collect/"
+#define kLQServerUrl @"https://api.lqd.io/collect/"
 #define LQDidReceiveValues @"com.liquid.Notifications:LQDidReceiveValues"
 #define LQDidLoadValues @"com.liquid.Notifications:DidLoadValues"
 #define kLQLogLevelPaths       7
