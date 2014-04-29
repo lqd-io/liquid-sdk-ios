@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-// Customizable options
 #define kLQDefaultSessionTimeout @30 //seconds
 #define kLQQueueSizeLimit 500 // datapoints
 #ifdef DEBUG
@@ -24,8 +23,7 @@
 #define kLQDefaultSessionMaxLimit @7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
 #define kLQLogLevel 2
 
-// Liquid internal constants
-#define kLQVersion @"0.3.3"
+#define kLQVersion @"0.4.0-beta"
 #define kLQBundle @"com.liquid"
 #define kLQServerUrl @"https://api.lqd.io/collect/"
 #define LQDidReceiveValues @"com.liquid.Notifications:LQDidReceiveValues"

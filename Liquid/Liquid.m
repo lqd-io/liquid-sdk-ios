@@ -426,7 +426,8 @@ static Liquid *sharedInstance = nil;
         _appliedValues = [Liquid loadBundleValues];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:@{ @"values": _appliedValues }];
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:_appliedValues, @"values", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:userInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidLoadValues)]) {
         [self.delegate performSelectorOnMainThread:@selector(liquidDidLoadValues)
                                         withObject:nil
