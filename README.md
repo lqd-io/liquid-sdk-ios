@@ -25,7 +25,7 @@ In your **AppDelegate.m** file initialize Liquid in `application:willFinishLaunc
 
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     # ifdef DEBUG
-        [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES" development:YES];
+        [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
     # else
         [Liquid sharedInstanceWithToken:@"YOUR-PRODUCTION-APP-TOKEN"];
     # endif
