@@ -252,18 +252,6 @@ static Liquid *sharedInstance = nil;
     });
 }
 
-#pragma mark - Device
-
--(void)setDeviceAttribute:(id)attribute forKey:(NSString *)key {
-    dispatch_async(self.queue, ^() {
-        if(self.device == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A device has not been initialized. Please call [Liquid sharedInstanceWithToken:] beforehand.");
-            return;
-        }
-        [self.device setAttribute:attribute forKey:key];
-    });
-}
-
 #pragma mark - Session
 
 - (NSInteger)sessionTimeout {
@@ -312,16 +300,6 @@ static Liquid *sharedInstance = nil;
         }
     }
     return NO;
-}
-
--(void)setSessionAttribute:(id)attribute forKey:(NSString *)key {
-    dispatch_async(self.queue, ^() {
-        if(self.currentSession == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> A session has not been initialized. Please call [Liquid identifyUser] beforehand.");
-            return;
-        }
-        [self.currentSession setAttribute:attribute forKey:key];
-    });
 }
 
 #pragma mark - Event
