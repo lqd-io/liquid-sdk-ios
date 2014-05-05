@@ -447,7 +447,7 @@ static Liquid *sharedInstance = nil;
                 NSInteger res = [self sendData:[Liquid toJSON:variable]
                                toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
                               usingMethod:@"POST"];
-                if(res != LQQueueStatusOk) LQLog(kLQLogLevelError, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
+                if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
             }
         }
     });
@@ -640,7 +640,7 @@ static Liquid *sharedInstance = nil;
             LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while sending data to server: Unauthorized (check App Token)", error.code);
             return LQQueueStatusUnauthorized;
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while sending data to server: Server error", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while sending data to server: Server error", error.code);
             return LQQueueStatusRejected;
         }
     } else {
@@ -648,7 +648,7 @@ static Liquid *sharedInstance = nil;
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return LQQueueStatusOk;
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while sending data to server: Server error", httpResponse.statusCode);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while sending data to server: Server error", httpResponse.statusCode);
             return LQQueueStatusRejected;
         }
     }
@@ -679,7 +679,7 @@ static Liquid *sharedInstance = nil;
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
             LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while getting data from server: Unauthorized (check App Token)", error.code);
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while getting data from server: Server error", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while getting data from server: Server error", error.code);
         }
         return nil;
     } else {
@@ -687,7 +687,7 @@ static Liquid *sharedInstance = nil;
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return responseData;
         } else {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while getting data from server: Server error", httpResponse.statusCode);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while getting data from server: Server error", httpResponse.statusCode);
             return nil;
         }
     }
