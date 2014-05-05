@@ -35,8 +35,8 @@
 @property(nonatomic, strong) dispatch_queue_t queue;
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
-@property(nonatomic, strong) NSDictionary *appliedValues;
-@property(nonatomic, strong) LQLiquidPackage *appliedLiquidPackage; // (includes applied Targets and applied Values)
+@property(nonatomic, strong) NSDictionary *loadedValues;
+@property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 
 @end
 
@@ -103,7 +103,7 @@ static Liquid *sharedInstance = nil;
         if (_developmentMode && kLQSendBundleVariablesInDevelopmentMode)
             [self sendBundleVariables];
 
-        if(!_appliedLiquidPackage) [self loadLiquidPackageSynced];
+        if(!_loadedLiquidPackage) [self loadLiquidPackageSynced];
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -360,8 +360,8 @@ static Liquid *sharedInstance = nil;
                                                         withDevice:self.device
                                                        withSession:self.currentSession
                                                          withEvent:event
-                                                       withTargets:_appliedLiquidPackage.targets
-                                                        withValues:_appliedLiquidPackage.values];
+                                                       withTargets:_loadedLiquidPackage.targets
+                                                        withValues:_loadedLiquidPackage.values];
     
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
         [self addToHttpQueue:[dataPoint jsonDictionary]
@@ -418,22 +418,22 @@ static Liquid *sharedInstance = nil;
 -(void)loadLiquidPackageSynced {
     LQLiquidPackage *liquidPackage = [LQLiquidPackage loadFromDisk];
     if (liquidPackage) {
-        _appliedLiquidPackage = liquidPackage;
-        _appliedValues = [LQValue dictionaryFromArrayOfValues:_appliedLiquidPackage.values];
+        _loadedLiquidPackage = liquidPackage;
+        _loadedValues = [LQValue dictionaryFromArrayOfValues:_loadedLiquidPackage.values];
     } else {
         NSArray *emptyArray = [[NSArray alloc] initWithObjects:nil];
-        _appliedLiquidPackage = [[LQLiquidPackage alloc] initWithTargets:emptyArray withValues:emptyArray];
-        _appliedValues = [Liquid loadBundleValues];
+        _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithTargets:emptyArray withValues:emptyArray];
+        _loadedValues = [Liquid loadBundleValues];
     }
     
-    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:_appliedValues, @"values", nil];
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:_loadedValues, @"values", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:userInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidLoadValues)]) {
         [self.delegate performSelectorOnMainThread:@selector(liquidDidLoadValues)
                                         withObject:nil
                                      waitUntilDone:NO];
     }
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Applied Values: %@", _appliedValues);
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", _loadedValues);
 }
 
 -(void)loadLiquidPackage {
@@ -478,25 +478,25 @@ static Liquid *sharedInstance = nil;
 #pragma mark - Values with Data Types
 
 -(id)valueForVariable:(NSString *)variableName {
-    if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
+    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
         return nil;
     else
-        return [_appliedValues objectForKey:variableName];
+        return [_loadedValues objectForKey:variableName];
 }
 
 -(NSDate *)dateValueForVariable:(NSString *)variableName {
-    if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
+    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
         return nil;
-    else if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSDate class]])
-        return [_appliedValues objectForKey:variableName];
+    else if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSDate class]])
+        return [_loadedValues objectForKey:variableName];
     return nil;
 }
 
 -(UIColor *)colorValueForVariable:(NSString *)variableName {
-    if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
+    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
         return nil;
     @try {
-        id color = [Liquid colorFromString:[_appliedValues objectForKey:variableName]];
+        id color = [Liquid colorFromString:[_loadedValues objectForKey:variableName]];
         if([color isKindOfClass:[UIColor class]])
             return color;
         return nil;
@@ -508,28 +508,28 @@ static Liquid *sharedInstance = nil;
 }
 
 -(NSString *)stringValueForVariable:(NSString *)variableName {
-    if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
+    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
         return nil;
-    else if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSString class]])
-        return [[_appliedValues objectForKey:variableName] stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+    else if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSString class]])
+        return [[_loadedValues objectForKey:variableName] stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
     return nil;
 }
 
 -(NSInteger)intValueForVariable:(NSString *)variableName {
-    if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
-        return [[_appliedValues objectForKey:variableName] integerValue];
+    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
+        return [[_loadedValues objectForKey:variableName] integerValue];
     return 0;
 }
 
 -(CGFloat)floatValueForVariable:(NSString *)variableName {
-    if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
-        return [[_appliedValues objectForKey:variableName] floatValue];
+    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
+        return [[_loadedValues objectForKey:variableName] floatValue];
     return 0.0f;
 }
 
 -(BOOL)boolValueForVariable:(NSString *)variableName {
-    if([[_appliedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
-        return [[_appliedValues objectForKey:variableName] boolValue];
+    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
+        return [[_loadedValues objectForKey:variableName] boolValue];
     return NO;
 }
 
@@ -627,8 +627,8 @@ static Liquid *sharedInstance = nil;
     self.enterBackgroundTime = nil;
     self.timer = nil;
     self.httpQueue = nil;
-    self.appliedValues = nil;
-    self.appliedLiquidPackage = nil;
+    self.loadedValues = nil;
+    self.loadedLiquidPackage = nil;
 }
 
 #pragma mark - Networking
