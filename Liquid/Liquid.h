@@ -279,37 +279,6 @@
  */
 
 -(void)setUserLocation:(CLLocation*)location;
-/*!
- @method
- 
- @abstract
- Sets a device attribute for a given key.
- 
- @discussion
- This will set an attribute to better classify the device on the
- Liquid analytics. Attribute must be either NSString or NSNumber.
- 
- @param attribute         user attribute
- @param key               key to identify the attribute
- */
-
--(void)setDeviceAttribute:(id)attribute forKey:(NSString*)key;
-
-/*!
- @method
- 
- @abstract
- Sets a session attribute for a given key.
- 
- @discussion
- This will set an attribute to better classify the user session on the
- Liquid analytics. Attribute must be either NSString or NSNumber.
- 
- @param attribute         user attribute
- @param key               key to identify the attribute
- */
-
--(void)setSessionAttribute:(id)attribute forKey:(NSString*)key;
 
 /*!
  @method
