@@ -152,21 +152,14 @@
 }
 
 +(NSString*)uid {
-    NSString *uid;
-    if (NSClassFromString(@"ASIdentifierManager")) {
-        uid = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    NSString *liquidUUIDKey = @"com.liquid.UUID";
+    NSString *uuid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
+    if(uuid == nil) {
+        uuid = [[NSUUID UUID] UUIDString];
+        [[NSUserDefaults standardUserDefaults]setObject:uuid forKey:liquidUUIDKey];
+        [[NSUserDefaults standardUserDefaults]synchronize];
     }
-    if (uid == nil) {
-        NSString *liquidUUIDKey = @"com.liquid.UUID";
-        NSString *uuid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
-        if(uuid == nil) {
-            uuid = [[NSUUID UUID] UUIDString];
-            [[NSUserDefaults standardUserDefaults]setObject:uuid forKey:liquidUUIDKey];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-        }
-        uid = uuid;
-    }
-    return uid;
+    return uuid;
 }
 
 #pragma mark - Application Info

@@ -310,10 +310,10 @@ static Liquid *sharedInstance = nil;
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
     if(self.currentUser == nil) {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user");
         [self identifyUserSyncedWithIdentifier:nil
                                 withAttributes:nil
                                   withLocation:nil];
+        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
     }
 
     NSDate *now;
@@ -352,10 +352,10 @@ static Liquid *sharedInstance = nil;
 
 -(LQLiquidPackage *)requestNewLiquidPackageSynced {
     if(self.currentUser == nil || self.currentSession == nil) {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user");
         [self identifyUserSyncedWithIdentifier:nil
                                 withAttributes:nil
                                   withLocation:nil];
+        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
     } else {
         NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
         NSData *dataFromServer = [self getDataFromEndpoint:endPoint];

@@ -69,21 +69,15 @@
 +(NSString *)automaticUserIdentifier {
     NSString *automaticUserIdentifier = nil;
 
-    if (NSClassFromString(@"ASIdentifierManager")) {
-        automaticUserIdentifier = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    NSString *liquidUUIDKey = @"com.liquid.UUID";
+    NSString *uuid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
+    if(uuid == nil) {
+        uuid = [[NSUUID UUID] UUIDString];
+        [[NSUserDefaults standardUserDefaults]setObject:uuid forKey:liquidUUIDKey];
+        [[NSUserDefaults standardUserDefaults]synchronize];
     }
+    automaticUserIdentifier = uuid;
 
-    if (automaticUserIdentifier == nil) {
-        LQLog(kLQLogLevelError, @"<Liquid> %@ error getting IFA, trying UUID", self);
-        NSString *liquidUUIDKey = @"com.liquid.UUID";
-        NSString *uuid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
-        if(uuid == nil) {
-            uuid = [[NSUUID UUID] UUIDString];
-            [[NSUserDefaults standardUserDefaults]setObject:uuid forKey:liquidUUIDKey];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-        }
-        automaticUserIdentifier = uuid;
-    }
     if (!automaticUserIdentifier) {
         LQLog(kLQLogLevelError, @"<Liquid> %@ could not get automatic user identifier.", self);
     }
