@@ -52,7 +52,7 @@
 
 #pragma mark - Get dynamic values
 
--(id)valueForVariable:(NSString *)variableName withDefault:(id)defaultValue {
+-(id)valueForKey:(NSString *)variableName withDefault:(id)defaultValue {
     id value = [_dictOfVariablesAndValues objectForKey:variableName];
     if(value == nil)
         return defaultValue;

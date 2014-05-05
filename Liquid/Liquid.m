@@ -458,19 +458,19 @@ static Liquid *sharedInstance = nil;
     return [_bundleDefaultValues objectForKey:variableName];
 }
 
--(NSDate *)dateValueForVariable:(NSString *)variableName withDefault:(NSDate *)defaultValue {
-    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
+-(NSDate *)dateForKey:(NSString *)variableName withDefault:(NSDate *)defaultValue {
+    id value = [_loadedLiquidPackage valueForKey:variableName withDefault:defaultValue];
     if([value isKindOfClass:[NSDate class]])
         return value;
     return nil;
 }
 
--(NSDate *)dateValueForVariable:(NSString *)variableName {
-    return [self dateValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+-(NSDate *)dateForKey:(NSString *)variableName {
+    return [self dateForKey:variableName withDefault:[self bundleValueForVariable:variableName]];
 }
 
--(UIColor *)colorValueForVariable:(NSString *)variableName withDefault:(UIColor *)defaultValue {
-    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
+-(UIColor *)colorForKey:(NSString *)variableName withDefault:(UIColor *)defaultValue {
+    id value = [_loadedLiquidPackage valueForKey:variableName withDefault:defaultValue];
     @try {
         id color = [Liquid colorFromString:value];
         if([color isKindOfClass:[UIColor class]])
@@ -483,73 +483,73 @@ static Liquid *sharedInstance = nil;
     }
 }
 
--(UIColor *)colorValueForVariable:(NSString *)variableName {
-    return [self colorValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+-(UIColor *)colorForKey:(NSString *)variableName {
+    return [self colorForKey:variableName withDefault:[self bundleValueForVariable:variableName]];
 }
 
--(NSString *)stringValueForVariable:(NSString *)variableName withDefault:(NSString *)defaultValue {
-    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
+-(NSString *)stringForKey:(NSString *)variableName withDefault:(NSString *)defaultValue {
+    id value = [_loadedLiquidPackage valueForKey:variableName withDefault:defaultValue];
     if([value isKindOfClass:[NSString class]])
         return [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
     return nil;
 }
 
--(NSString *)stringValueForVariable:(NSString *)variableName {
-    return [self stringValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+-(NSString *)stringForKey:(NSString *)variableName {
+    return [self stringForKey:variableName withDefault:[self bundleValueForVariable:variableName]];
 }
 
--(NSNumber *)numberValueForVariable:(NSString *)variableName withDefault:(NSNumber *)defaultValue {
-    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
+-(NSNumber *)numberForKey:(NSString *)variableName withDefault:(NSNumber *)defaultValue {
+    id value = [_loadedLiquidPackage valueForKey:variableName withDefault:defaultValue];
     if([value isKindOfClass:[NSNumber class]])
         return value;
     return nil;
 }
 
--(NSNumber *)numberValueForVariable:(NSString *)variableName {
-    return [self numberValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+-(NSNumber *)numberForKey:(NSString *)variableName {
+    return [self numberForKey:variableName withDefault:[self bundleValueForVariable:variableName]];
 }
 
--(NSInteger)intValueForVariable:(NSString *)variableName withDefault:(NSInteger)defaultValue {
-    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:nil];
+-(NSInteger)intForKey:(NSString *)variableName withDefault:(NSInteger)defaultValue {
+    id value = [_loadedLiquidPackage valueForKey:variableName withDefault:nil];
     if([value isKindOfClass:[NSNumber class]])
         return [value integerValue];
     return defaultValue;
 }
 
--(NSInteger)intValueForVariable:(NSString *)variableName {
+-(NSInteger)intForKey:(NSString *)variableName {
     id bundleValue = [self bundleValueForVariable:variableName];
     if([bundleValue isKindOfClass:[NSNumber class]]) {
-        return [self intValueForVariable:variableName withDefault:[bundleValue intValue]];
+        return [self intForKey:variableName withDefault:[bundleValue intValue]];
     }
     else return 0;
 }
 
--(CGFloat)floatValueForVariable:(NSString *)variableName withDefault:(CGFloat)defaultValue {
-    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:nil];
+-(CGFloat)floatForKey:(NSString *)variableName withDefault:(CGFloat)defaultValue {
+    id value = [_loadedLiquidPackage valueForKey:variableName withDefault:nil];
     if([value isKindOfClass:[NSNumber class]])
         return [value floatValue];
     return defaultValue;
 }
 
--(CGFloat)floatValueForVariable:(NSString *)variableName {
+-(CGFloat)floatForKey:(NSString *)variableName {
     id bundleValue = [self bundleValueForVariable:variableName];
     if([[bundleValue objectForKey:variableName] isKindOfClass:[NSNumber class]]) {
-        return [self floatValueForVariable:variableName withDefault:[bundleValue floatValue]];
+        return [self floatForKey:variableName withDefault:[bundleValue floatValue]];
     }
     return 0.0f;
 }
 
--(BOOL)boolValueForVariable:(NSString *)variableName withDefault:(BOOL)defaultValue {
-    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:nil];
+-(BOOL)boolForKey:(NSString *)variableName withDefault:(BOOL)defaultValue {
+    id value = [_loadedLiquidPackage valueForKey:variableName withDefault:nil];
     if([value isKindOfClass:[NSNumber class]])
         return [value boolValue];
     return defaultValue;
 }
 
--(BOOL)boolValueForVariable:(NSString *)variableName {
+-(BOOL)boolForKey:(NSString *)variableName {
     id bundleValue = [self bundleValueForVariable:variableName];
     if ([bundleValue isKindOfClass:[NSNumber class]]) {
-        return [self boolValueForVariable:variableName withDefault:[bundleValue boolValue]];
+        return [self boolForKey:variableName withDefault:[bundleValue boolValue]];
     }
     return NO;
 }

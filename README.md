@@ -58,7 +58,7 @@ We recommend you to name your events and attributes using camelCaseConventionNam
 
 You can transform any old-fashioned static variable into a "liquid" dynamic variable just by replacing it with a Liquid method. You can use a dynamic variable like this:
 
-    NSString *text = [[Liquid sharedInstance] stringValueForVariable:@"welcomeText"];
+    NSString *text = [[Liquid sharedInstance] stringForKey:@"welcomeText"];
 
 Default values of your dynamic variables are defined on a Property List file `LiquidVariables.plist` that you should create first (check an example at `Liquid/LiquidVariables_example.plist`).
 These values will be assumed in the first launch of your app (event if no Internet connection is available).

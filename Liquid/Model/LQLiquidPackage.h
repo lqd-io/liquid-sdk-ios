@@ -12,7 +12,7 @@
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values;
--(id)valueForVariable:(NSString *)variableName withDefault:(id)defaultValue;
+-(id)valueForKey:(NSString *)variableName withDefault:(id)defaultValue;
 
 +(LQLiquidPackage *)loadFromDisk;
 -(BOOL)saveToDisk;
