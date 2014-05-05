@@ -24,10 +24,10 @@
 #define kLQLogLevel 2
 
 #define kLQVersion @"0.4.0-beta"
-#define kLQBundle @"com.liquid"
+#define kLQBundle @"io.lqd.ios"
 #define kLQServerUrl @"https://api.lqd.io/collect/"
-#define LQDidReceiveValues @"com.liquid.Notifications:LQDidReceiveValues"
-#define LQDidLoadValues @"com.liquid.Notifications:DidLoadValues"
+#define LQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
+#define LQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
 #define kLQLogLevelPaths       7
 #define kLQLogLevelHttp        6
 #define kLQLogLevelData        5
