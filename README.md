@@ -60,7 +60,8 @@ You can transform any old-fashioned static variable into a "liquid" dynamic vari
 
     NSString *text = [[Liquid sharedInstance] stringValueForVariable:@"welcomeText"];
 
-You need to define your default values in the Property List file `LiquidVariables.plist`. These values will be assumed in the first launch of your app (event if no Internet connection is available).
+Default values of your dynamic variables are defined on a Property List file `LiquidVariables.plist` that you should create first (check an example at `Liquid/LiquidVariables_example.plist`).
+These values will be assumed in the first launch of your app (event if no Internet connection is available).
 
 For the example above, this Property List file could include a single entry with the value `"Welcome to Liquid"` for key `welcomeText`.
 
