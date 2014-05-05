@@ -248,7 +248,7 @@
  @param location          user location
  */
 
--(void)identifyUserWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation*)location;
+-(void)identifyUserWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location;
 /*!
  @method
  
@@ -263,7 +263,7 @@
  @param key               key to identify the attribute
  */
 
--(void)setUserAttribute:(id)attribute forKey:(NSString*)key;
+-(void)setUserAttribute:(id)attribute forKey:(NSString *)key;
 /*!
  @method
  
@@ -278,7 +278,7 @@
  @param location          the user location
  */
 
--(void)setUserLocation:(CLLocation*)location;
+-(void)setUserLocation:(CLLocation *)location;
 
 /*!
  @method
@@ -354,7 +354,8 @@
 
  @param variableName       the key to identify the variable
  */
--(UIColor*)colorValueForVariable:(NSString*)variableName;
+-(UIColor *)colorValueForVariable:(NSString *)variableName;
+-(UIColor *)colorValueForVariable:(NSString *)variableName withDefault:(UIColor *)defaultValue;
 
 /*!
  @method
@@ -369,7 +370,8 @@
  
  @param variableName       the key to identify the variable
  */
--(NSString*)stringValueForVariable:(NSString*)variableName;
+-(NSString *)stringValueForVariable:(NSString *)variableName;
+-(NSString *)stringValueForVariable:(NSString *)variableName withDefault:(NSString *)defaultValue;
 
 /*!
  @method
@@ -385,7 +387,26 @@
  @param variableName       the key to identify the variable
  */
 
--(NSInteger)intValueForVariable:(NSString*)variableName;
+-(NSNumber *)numberValueForVariable:(NSString *)variableName;
+-(NSNumber *)numberValueForVariable:(NSString *)variableName withDefault:(NSNumber *)defaultValue;
+
+/*!
+ @method
+ 
+ @abstract
+ Get a int dynamic variable from a key.
+ 
+ @discussion
+ Will return the int dynamic variable from a provided key.
+ This will depend on the user, device and session at the time of the
+ last call to requestNewValues and loadNewValues.
+ 
+ @param variableName       the key to identify the variable
+ */
+
+-(NSInteger)intValueForVariable:(NSString *)variableName;
+-(NSInteger)intValueForVariable:(NSString *)variableName withDefault:(NSInteger)defaultValue;
+
 /*!
  @method
  
@@ -400,7 +421,9 @@
  @param variableName       the key to identify the variable
  */
 
--(CGFloat)floatValueForVariable:(NSString*)variableName;
+-(CGFloat)floatValueForVariable:(NSString *)variableName;
+-(CGFloat)floatValueForVariable:(NSString *)variableName withDefault:(CGFloat)defaultValue;
+
 /*!
  @method
  
@@ -415,7 +438,9 @@
  @param variableName       the key to identify the variable
  */
 
--(BOOL)boolValueForVariable:(NSString*)variableName;
+-(BOOL)boolValueForVariable:(NSString *)variableName;
+-(BOOL)boolValueForVariable:(NSString *)variableName withDefault:(BOOL)defaultValue;
+
 /*!
  @method
  
@@ -430,7 +455,9 @@
  @param variableName       the key to identify the variable
  */
 
--(NSDate*)dateValueForVariable:(NSString*)variableName;
+-(NSDate *)dateValueForVariable:(NSString *)variableName;
+-(NSDate *)dateValueForVariable:(NSString *)variableName withDefault:(NSDate *)defaultValue;
+
 /*!
  @method
  

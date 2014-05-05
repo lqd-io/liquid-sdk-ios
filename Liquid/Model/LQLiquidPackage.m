@@ -11,6 +11,10 @@
 #import "LQTarget.h"
 #import "LQConstants.h"
 
+@interface LQLiquidPackage ()
+
+@end
+
 @implementation LQLiquidPackage
 
 -(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values {
@@ -18,6 +22,7 @@
     if(self) {
         _targets = targets;
         _values = values;
+        _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
     }
     return self;
 }
@@ -36,8 +41,24 @@
             [values addObject:[[LQValue alloc] initFromDictionary:value]];
         }
         _values = values;
+        _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
     }
     return self;
+}
+
+-(NSString *)description {
+    return [NSString stringWithFormat:@"%@", _dictOfVariablesAndValues];
+}
+
+#pragma mark - Get dynamic values
+
+-(id)valueForVariable:(NSString *)variableName withDefault:(id)defaultValue {
+    id value = [_dictOfVariablesAndValues objectForKey:variableName];
+    if(value == nil)
+        return defaultValue;
+    if([value isKindOfClass:[NSNull class]])
+        return nil;
+    return value;
 }
 
 #pragma mark - NSCoding
@@ -47,6 +68,7 @@
     if(self) {
         _targets = [aDecoder decodeObjectForKey:@"targets"];
         _values = [aDecoder decodeObjectForKey:@"values"];
+        _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
     }
     return self;
 }

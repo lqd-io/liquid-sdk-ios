@@ -35,7 +35,7 @@
 @property(nonatomic, strong) dispatch_queue_t queue;
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
-@property(nonatomic, strong) NSDictionary *loadedValues;
+@property(nonatomic, strong) NSDictionary *bundleDefaultValues;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 
 @end
@@ -97,6 +97,7 @@ static Liquid *sharedInstance = nil;
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         _flushInterval = kLQDefaultFlushInterval.intValue;
         _sessionTimeout = kLQDefaultSessionTimeout.intValue;
+        _bundleDefaultValues = [Liquid loadBundleValues];
         
         // Start auto flush timer
         [self startFlushTimer];
@@ -397,21 +398,19 @@ static Liquid *sharedInstance = nil;
     LQLiquidPackage *liquidPackage = [LQLiquidPackage loadFromDisk];
     if (liquidPackage) {
         _loadedLiquidPackage = liquidPackage;
-        _loadedValues = [LQValue dictionaryFromArrayOfValues:_loadedLiquidPackage.values];
     } else {
         NSArray *emptyArray = [[NSArray alloc] initWithObjects:nil];
         _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithTargets:emptyArray withValues:emptyArray];
-        _loadedValues = [Liquid loadBundleValues];
     }
     
-    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:_loadedValues, @"values", nil];
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[_loadedLiquidPackage dictOfVariablesAndValues], @"values", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:userInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidLoadValues)]) {
         [self.delegate performSelectorOnMainThread:@selector(liquidDidLoadValues)
                                         withObject:nil
                                      waitUntilDone:NO];
     }
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", _loadedValues);
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", [_loadedLiquidPackage dictOfVariablesAndValues]);
 }
 
 -(void)loadLiquidPackage {
@@ -433,7 +432,7 @@ static Liquid *sharedInstance = nil;
             serverVariables = [Liquid fromJSON:dataFromServer];
         
             // Build the list of Variables to create on server (only the Bundle Variables that are not on the server yet)
-            NSMutableDictionary *newVariablesDict = [[NSMutableDictionary alloc] initWithDictionary:[Liquid loadBundleValues]];
+            NSMutableDictionary *newVariablesDict = [[NSMutableDictionary alloc] initWithDictionary:_bundleDefaultValues];
             for(NSDictionary *variableDictionary in serverVariables) {
                 LQVariable *variable = [[LQVariable alloc] initFromDictionary:variableDictionary];
                 [newVariablesDict removeObjectForKey:variable.name];
@@ -455,26 +454,25 @@ static Liquid *sharedInstance = nil;
 
 #pragma mark - Values with Data Types
 
--(id)valueForVariable:(NSString *)variableName {
-    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
-        return nil;
-    else
-        return [_loadedValues objectForKey:variableName];
+-(id)bundleValueForVariable:(NSString *)variableName {
+    return [_bundleDefaultValues objectForKey:variableName];
 }
 
--(NSDate *)dateValueForVariable:(NSString *)variableName {
-    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
-        return nil;
-    else if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSDate class]])
-        return [_loadedValues objectForKey:variableName];
+-(NSDate *)dateValueForVariable:(NSString *)variableName withDefault:(NSDate *)defaultValue {
+    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
+    if([value isKindOfClass:[NSDate class]])
+        return value;
     return nil;
 }
 
--(UIColor *)colorValueForVariable:(NSString *)variableName {
-    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
-        return nil;
+-(NSDate *)dateValueForVariable:(NSString *)variableName {
+    return [self dateValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+}
+
+-(UIColor *)colorValueForVariable:(NSString *)variableName withDefault:(UIColor *)defaultValue {
+    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
     @try {
-        id color = [Liquid colorFromString:[_loadedValues objectForKey:variableName]];
+        id color = [Liquid colorFromString:value];
         if([color isKindOfClass:[UIColor class]])
             return color;
         return nil;
@@ -485,29 +483,74 @@ static Liquid *sharedInstance = nil;
     }
 }
 
--(NSString *)stringValueForVariable:(NSString *)variableName {
-    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNull class]])
-        return nil;
-    else if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSString class]])
-        return [[_loadedValues objectForKey:variableName] stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+-(UIColor *)colorValueForVariable:(NSString *)variableName {
+    return [self colorValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+}
+
+-(NSString *)stringValueForVariable:(NSString *)variableName withDefault:(NSString *)defaultValue {
+    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
+    if([value isKindOfClass:[NSString class]])
+        return [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
     return nil;
 }
 
+-(NSString *)stringValueForVariable:(NSString *)variableName {
+    return [self stringValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+}
+
+-(NSNumber *)numberValueForVariable:(NSString *)variableName withDefault:(NSNumber *)defaultValue {
+    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:defaultValue];
+    if([value isKindOfClass:[NSNumber class]])
+        return value;
+    return nil;
+}
+
+-(NSNumber *)numberValueForVariable:(NSString *)variableName {
+    return [self numberValueForVariable:variableName withDefault:[self bundleValueForVariable:variableName]];
+}
+
+-(NSInteger)intValueForVariable:(NSString *)variableName withDefault:(NSInteger)defaultValue {
+    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:nil];
+    if([value isKindOfClass:[NSNumber class]])
+        return [value integerValue];
+    return defaultValue;
+}
+
 -(NSInteger)intValueForVariable:(NSString *)variableName {
-    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
-        return [[_loadedValues objectForKey:variableName] integerValue];
-    return 0;
+    id bundleValue = [self bundleValueForVariable:variableName];
+    if([bundleValue isKindOfClass:[NSNumber class]]) {
+        return [self intValueForVariable:variableName withDefault:[bundleValue intValue]];
+    }
+    else return 0;
+}
+
+-(CGFloat)floatValueForVariable:(NSString *)variableName withDefault:(CGFloat)defaultValue {
+    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:nil];
+    if([value isKindOfClass:[NSNumber class]])
+        return [value floatValue];
+    return defaultValue;
 }
 
 -(CGFloat)floatValueForVariable:(NSString *)variableName {
-    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
-        return [[_loadedValues objectForKey:variableName] floatValue];
+    id bundleValue = [self bundleValueForVariable:variableName];
+    if([[bundleValue objectForKey:variableName] isKindOfClass:[NSNumber class]]) {
+        return [self floatValueForVariable:variableName withDefault:[bundleValue floatValue]];
+    }
     return 0.0f;
 }
 
+-(BOOL)boolValueForVariable:(NSString *)variableName withDefault:(BOOL)defaultValue {
+    id value = [_loadedLiquidPackage valueForVariable:variableName withDefault:nil];
+    if([value isKindOfClass:[NSNumber class]])
+        return [value boolValue];
+    return defaultValue;
+}
+
 -(BOOL)boolValueForVariable:(NSString *)variableName {
-    if([[_loadedValues objectForKey:variableName] isKindOfClass:[NSNumber class]])
-        return [[_loadedValues objectForKey:variableName] boolValue];
+    id bundleValue = [self bundleValueForVariable:variableName];
+    if ([bundleValue isKindOfClass:[NSNumber class]]) {
+        return [self boolValueForVariable:variableName withDefault:[bundleValue boolValue]];
+    }
     return NO;
 }
 
@@ -605,7 +648,6 @@ static Liquid *sharedInstance = nil;
     self.enterBackgroundTime = nil;
     self.timer = nil;
     self.httpQueue = nil;
-    self.loadedValues = nil;
     self.loadedLiquidPackage = nil;
 }
 

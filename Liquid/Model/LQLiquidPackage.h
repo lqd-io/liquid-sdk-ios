@@ -12,11 +12,14 @@
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values;
+-(id)valueForVariable:(NSString *)variableName withDefault:(id)defaultValue;
 
 +(LQLiquidPackage *)loadFromDisk;
 -(BOOL)saveToDisk;
 
 @property(nonatomic, strong, readonly) NSArray* values;
 @property(nonatomic, strong, readonly) NSArray* targets;
+
+@property(nonatomic, strong, readonly) NSDictionary *dictOfVariablesAndValues;
 
 @end
