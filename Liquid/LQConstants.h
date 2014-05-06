@@ -8,6 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
+#define kLQVersion @"0.4.0-beta"
+#define kLQBundle @"io.lqd.ios"
+#define kLQServerUrl @"https://api.lqd.io/collect/"
+#define LQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
+#define LQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
+
+#define kLQLogLevelPaths       7
+#define kLQLogLevelHttp        6
+#define kLQLogLevelData        5
+#define kLQLogLevelInfoVerbose 4
+#define kLQLogLevelWarning     3
+#define kLQLogLevelError       2
+#define kLQLogLevelInfo        1
+#define kLQLogLevelNone        0
+
+#define kLQLogLevel kLQLogLevelError
 #define kLQDefaultSessionTimeout @30 //seconds
 #define kLQQueueSizeLimit 500 // datapoints
 #ifdef DEBUG
@@ -23,20 +39,6 @@
 #define kLQValuesFileName @"LiquidVariables"
 #define kLQSendBundleVariablesInDevelopmentMode YES
 #define kLQDefaultSessionMaxLimit @7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
-#define kLQLogLevel 2
-
-#define kLQVersion @"0.4.0-beta"
-#define kLQBundle @"io.lqd.ios"
-#define kLQServerUrl @"https://api.lqd.io/collect/"
-#define LQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
-#define LQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
-#define kLQLogLevelPaths       7
-#define kLQLogLevelHttp        6
-#define kLQLogLevelData        5
-#define kLQLogLevelInfoVerbose 4
-#define kLQLogLevelWarning     3
-#define kLQLogLevelError       2
-#define kLQLogLevelInfo        1
 
 #ifdef DEBUG
 #   define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)

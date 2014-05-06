@@ -481,7 +481,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(UIColor *)colorForKey:(NSString *)variableName {
-    return [self colorForKey:variableName withDefault:[self bundleValueForVariable:variableName]];
+    return [self colorForKey:variableName withDefault:[Liquid colorFromString:[self bundleValueForVariable:variableName]]];
 }
 
 -(NSString *)stringForKey:(NSString *)variableName withDefault:(NSString *)defaultValue {
@@ -838,6 +838,21 @@ static Liquid *sharedInstance = nil;
     float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
++ (NSString *)hexStringFromUIColor:(UIColor *)color {
+    if (![color isKindOfClass:[UIColor class]]) {
+        LQLog(kLQLogLevelWarning, @"<Liquid> Warning: cannot get a hex color value from a nil value. Expected an UIColor instead.");
+        return nil;
+    }
+    if (CGColorGetNumberOfComponents(color.CGColor) < 4) {
+        const CGFloat *components = CGColorGetComponents(color.CGColor);
+        color = [UIColor colorWithRed:components[0] green:components[0] blue:components[0] alpha:components[1]];
+    }
+    if (CGColorSpaceGetModel(CGColorGetColorSpace(color.CGColor)) != kCGColorSpaceModelRGB) {
+        return [NSString stringWithFormat:@"#FFFFFF"];
+    }
+    return [NSString stringWithFormat:@"#%02X%02X%02X", (int)((CGColorGetComponents(color.CGColor))[0]*255.0), (int)((CGColorGetComponents(color.CGColor))[1]*255.0), (int)((CGColorGetComponents(color.CGColor))[2]*255.0)];
 }
 
 + (id)fromJSON:(NSData *)data {
