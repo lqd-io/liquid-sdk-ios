@@ -12,11 +12,13 @@
 
 -(id)initWithUrl:(NSString*)url withHttpMethod:(NSString*)httpMethod withJSON:(NSData*)json;
 -(void)incrementNumberOfTries;
+-(void)incrementNextTryDateIn:(NSTimeInterval)seconds;
 
 @property(nonatomic, strong, readonly) NSString* url;
 @property(nonatomic, strong, readonly) NSString* httpMethod;
 @property(nonatomic, strong, readonly) NSData* json;
 @property(nonatomic, strong, readonly) NSNumber* numberOfTries;
+@property(nonatomic, strong, readonly) NSDate* nextTryAfter;
 
 extern NSInteger const LQQueueStatusOk;
 extern NSInteger const LQQueueStatusUnreachable;

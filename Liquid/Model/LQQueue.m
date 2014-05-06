@@ -20,8 +20,9 @@ NSInteger const LQQueueStatusUnreachable = 1;
 NSInteger const LQQueueStatusUnauthorized = 2;
 NSInteger const LQQueueStatusRejected = 3;
 
+@synthesize nextTryAfter = _nextTryAfter;
 
-#pragma mark - Initializer
+#pragma mark - Initializers
 
 -(id)initWithUrl:(NSString *)url withHttpMethod:(NSString *)httpMethod withJSON:(NSData *)json {
     self = [super init];
@@ -32,6 +33,13 @@ NSInteger const LQQueueStatusRejected = 3;
         _numberOfTries = [NSNumber numberWithInt:0];
     }
     return self;
+}
+
+-(NSDate *)nextTryAfter {
+    if (!_nextTryAfter) {
+        _nextTryAfter = [NSDate dateWithTimeIntervalSince1970:0];
+    }
+    return _nextTryAfter;
 }
 
 #pragma mark - NSCoding
@@ -56,7 +64,12 @@ NSInteger const LQQueueStatusRejected = 3;
 #pragma mark - Network Retries
 
 -(void)incrementNumberOfTries {
-    int numberOfTries = _numberOfTries.intValue+1;
+    int numberOfTries = _numberOfTries.intValue + 1;
     _numberOfTries = [NSNumber numberWithInt:numberOfTries];
 }
+
+-(void)incrementNextTryDateIn:(NSTimeInterval)seconds {
+    _nextTryAfter = [[NSDate date] dateByAddingTimeInterval:seconds];
+}
+
 @end

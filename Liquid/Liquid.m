@@ -576,17 +576,29 @@ static Liquid *sharedInstance = nil;
             NSMutableArray *failedQueue = [NSMutableArray new];
             while (self.httpQueue.count > 0) {
                 LQQueue *queuedHttp = [self.httpQueue firstObject];
-                LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Flushing %@", [queuedHttp description]);
-                NSInteger res = [self sendData:queuedHttp.json
-                               toEndpoint:queuedHttp.url
-                              usingMethod:queuedHttp.httpMethod];
-                [self.httpQueue removeObject:queuedHttp];
-                if(res != LQQueueStatusOk) {
-                    if([[queuedHttp numberOfTries] intValue] < kLQMaxNumberOfTries) {
-                        if (res == LQQueueStatusRejected || res == LQQueueStatusUnauthorized)
-                            [queuedHttp incrementNumberOfTries];
-                        [failedQueue addObject:queuedHttp];
+                if ([[NSDate date] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
+                    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Flushing %@", [queuedHttp description]);
+                    NSInteger res = [self sendData:queuedHttp.json
+                                   toEndpoint:queuedHttp.url
+                                  usingMethod:queuedHttp.httpMethod];
+                    [self.httpQueue removeObject:queuedHttp];
+                    if(res != LQQueueStatusOk) {
+                        if([[queuedHttp numberOfTries] intValue] < kLQHttpMaxTries) {
+                            if (res == LQQueueStatusUnauthorized) {
+                                [queuedHttp incrementNumberOfTries];
+                                [queuedHttp incrementNextTryDateIn:kLQHttpUnreachableWait];
+                            }
+                            if (res == LQQueueStatusRejected) {
+                                [queuedHttp incrementNumberOfTries];
+                                [queuedHttp incrementNextTryDateIn:kLQHttpRejectedWait];
+                            }
+                            [failedQueue addObject:queuedHttp];
+                        }
                     }
+                } else {
+                    [self.httpQueue removeObject:queuedHttp];
+                    [failedQueue addObject:queuedHttp];
+                    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Queued failed request is too recent. Waiting for a while to try again (%d/%d)", [[queuedHttp numberOfTries] intValue], kLQHttpMaxTries);
                 }
             }
             [self.httpQueue addObjectsFromArray:failedQueue];

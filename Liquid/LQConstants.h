@@ -15,7 +15,9 @@
 #else
 #    define kLQDefaultFlushInterval @15 //seconds
 #endif
-#define kLQMaxNumberOfTries 60
+#define kLQHttpUnreachableWait 60.0f // seconds
+#define kLQHttpRejectedWait 3600.0f // seconds
+#define kLQHttpMaxTries 40
 #define kLQDefaultFlushOnBackground YES
 #define kLQDirectory kLQBundle
 #define kLQValuesFileName @"LiquidVariables"
