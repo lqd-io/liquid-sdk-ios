@@ -166,19 +166,16 @@ static Liquid *sharedInstance = nil;
     
     [self track:@"_pauseSession"];
 
-    dispatch_async(self.queue, ^() {
-        if (self.flushOnBackground) {
-            [self flush];
-        }
-        dispatch_async(self.queue, ^() {
-            // Store queue to plist
-            [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
-            self.httpQueue = [NSMutableArray new];
-        });
-    });
+    // Store queue to plist
+    [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
+    self.httpQueue = [NSMutableArray new];
+
+    if (self.flushOnBackground) {
+        [self flush];
+    }
 
     // Request variables on app pause
-    [self requestNewLiquidPackage];
+    [self requestNewLiquidPackageSynced];
 }
 
 #pragma mark - User Interaction
