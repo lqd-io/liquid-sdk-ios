@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define kLQVersion @"0.5.0-beta"
+#define kLQVersion @"0.5.1-beta"
 #define kLQBundle @"io.lqd.ios"
 #define kLQServerUrl @"https://api.lqd.io/collect/"
 #define LQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
