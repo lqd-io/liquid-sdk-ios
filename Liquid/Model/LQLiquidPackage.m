@@ -52,10 +52,10 @@
 
 #pragma mark - Get dynamic values
 
--(id)valueForKey:(NSString *)variableName withDefault:(id)defaultValue {
+-(id)valueForKey:(NSString *)variableName fallback:(id)fallbackValue {
     id value = [_dictOfVariablesAndValues objectForKey:variableName];
     if(value == nil)
-        return defaultValue;
+        return fallbackValue;
     if([value isKindOfClass:[NSNull class]])
         return nil;
     return value;

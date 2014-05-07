@@ -355,7 +355,7 @@
  @param variableName       the key to identify the variable
  */
 -(UIColor *)colorForKey:(NSString *)variableName;
--(UIColor *)colorForKey:(NSString *)variableName withDefault:(UIColor *)defaultValue;
+-(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue;
 
 /*!
  @method
@@ -371,7 +371,7 @@
  @param variableName       the key to identify the variable
  */
 -(NSString *)stringForKey:(NSString *)variableName;
--(NSString *)stringForKey:(NSString *)variableName withDefault:(NSString *)defaultValue;
+-(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue;
 
 /*!
  @method
@@ -388,7 +388,7 @@
  */
 
 -(NSNumber *)numberForKey:(NSString *)variableName;
--(NSNumber *)numberForKey:(NSString *)variableName withDefault:(NSNumber *)defaultValue;
+-(NSNumber *)numberForKey:(NSString *)variableName fallback:(NSNumber *)fallbackValue;
 
 /*!
  @method
@@ -405,7 +405,7 @@
  */
 
 -(NSInteger)intForKey:(NSString *)variableName;
--(NSInteger)intForKey:(NSString *)variableName withDefault:(NSInteger)defaultValue;
+-(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue;
 
 /*!
  @method
@@ -422,7 +422,7 @@
  */
 
 -(CGFloat)floatForKey:(NSString *)variableName;
--(CGFloat)floatForKey:(NSString *)variableName withDefault:(CGFloat)defaultValue;
+-(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue;
 
 /*!
  @method
@@ -439,7 +439,7 @@
  */
 
 -(BOOL)boolForKey:(NSString *)variableName;
--(BOOL)boolForKey:(NSString *)variableName withDefault:(BOOL)defaultValue;
+-(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue;
 
 /*!
  @method
@@ -456,7 +456,7 @@
  */
 
 -(NSDate *)dateForKey:(NSString *)variableName;
--(NSDate *)dateForKey:(NSString *)variableName withDefault:(NSDate *)defaultValue;
+-(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue;
 
 /*!
  @method
