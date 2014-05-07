@@ -1,9 +1,9 @@
 # Liquid iOS SDK Change Log
 
-## 0.5.0-beta: Default values inline + Improvements in HTTP queue
+## 0.5.0-beta: Fallback values inline + Improvements in HTTP queue
 
-* [feature] Default values for variables can now be defined inline (in code)
-* [enhancement] Improvements in Property List default values algorithm
+* [feature] Fallback values for variables can now be defined inline (in code)
+* [enhancement] Improvements in Property List fallback values algorithm
 * [enhancement] Improvements in loading of new values when app is paused/resumed.
 * [enhancement] HTTP requests queue improvements
 * [enhancement] Small enhancements in logging messages
