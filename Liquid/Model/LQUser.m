@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
+#import "LQDevice.h"
 #import "LQUser.h"
 #import "LQConstants.h"
-#import <AdSupport/ASIdentifierManager.h>
 
 @implementation LQUser
 
@@ -67,16 +67,7 @@
 }
 
 +(NSString *)automaticUserIdentifier {
-    NSString *automaticUserIdentifier = nil;
-
-    NSString *liquidUUIDKey = @"com.liquid.UUID";
-    NSString *uuid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
-    if(uuid == nil) {
-        uuid = [[NSUUID UUID] UUIDString];
-        [[NSUserDefaults standardUserDefaults]setObject:uuid forKey:liquidUUIDKey];
-        [[NSUserDefaults standardUserDefaults]synchronize];
-    }
-    automaticUserIdentifier = uuid;
+    NSString *automaticUserIdentifier = [LQDevice uid];
 
     if (!automaticUserIdentifier) {
         LQLog(kLQLogLevelError, @"<Liquid> %@ could not get automatic user identifier.", self);

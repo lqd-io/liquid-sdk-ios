@@ -6,15 +6,19 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
+#import "LQConstants.h"
 #import "LQDevice.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #include <sys/sysctl.h>
 
-#import <AdSupport/ASIdentifierManager.h>
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+
+#ifdef LIQUID_USE_IFA
+    #import <AdSupport/ASIdentifierManager.h>
+#endif
 
 #define kLQDeviceVendor @"Apple"
 #define KLQDeviceReachabilityUrl "www.google.com"
@@ -151,15 +155,40 @@
     return [[UIDevice currentDevice]name];
 }
 
-+(NSString*)uid {
-    NSString *liquidUUIDKey = @"com.liquid.UUID";
-    NSString *uuid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
-    if(uuid == nil) {
-        uuid = [[NSUUID UUID] UUIDString];
-        [[NSUserDefaults standardUserDefaults]setObject:uuid forKey:liquidUUIDKey];
-        [[NSUserDefaults standardUserDefaults]synchronize];
++(NSString *)appleIFA {
+    NSString *ifa = nil;
+#ifdef LIQUID_USE_IFA
+    if (NSClassFromString(@"ASIdentifierManager")) {
+        ifa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     }
-    return uuid;
+#endif
+    return ifa;
+}
+
++(NSString *)appleIFV {
+    NSString *ifv = nil;
+    if (NSClassFromString(@"UIDevice")) {
+        ifv = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    }
+    return ifv;
+}
+
++(NSString *)liquidGeneratedIdentifier {
+    return [[NSUUID UUID] UUIDString];
+}
+
++(NSString*)uid {
+    NSString *liquidUUIDKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"UUID"];
+    NSString *uid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
+    if(uid == nil) {
+        NSString *newUid = [LQDevice appleIFA];
+        if (newUid == nil) newUid = [LQDevice appleIFV];
+        if (newUid == nil) newUid = [LQDevice liquidGeneratedIdentifier];
+        [[NSUserDefaults standardUserDefaults]setObject:newUid forKey:liquidUUIDKey];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+        uid = newUid;
+    }
+    return uid;
 }
 
 #pragma mark - Application Info

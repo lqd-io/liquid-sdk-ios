@@ -9,7 +9,6 @@
 #import "Liquid.h"
 
 #import <UIKit/UIApplication.h>
-#import <AdSupport/ASIdentifierManager.h>
 
 #import "LQEvent.h"
 #import "LQSession.h"
