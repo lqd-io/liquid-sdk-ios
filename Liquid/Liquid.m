@@ -34,7 +34,6 @@
 @property(nonatomic, strong) dispatch_queue_t queue;
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
-@property(nonatomic, strong) NSDictionary *bundleFallbackValues;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 
 @end
@@ -96,12 +95,9 @@ static Liquid *sharedInstance = nil;
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         _flushInterval = kLQDefaultFlushInterval.intValue;
         _sessionTimeout = kLQDefaultSessionTimeout.intValue;
-        _bundleFallbackValues = [Liquid loadBundleValues];
         
         // Start auto flush timer
         [self startFlushTimer];
-        if (_developmentMode && kLQSendBundleVariablesInDevelopmentMode)
-            [self sendBundleVariables];
 
         if(!_loadedLiquidPackage) [self loadLiquidPackageSynced];
 
@@ -431,50 +427,13 @@ static Liquid *sharedInstance = nil;
     [self loadLiquidPackage];
 }
 
--(void)sendBundleVariables {
-    dispatch_async(self.queue, ^{
-        // Get list of variables that are already on the server
-        NSData *dataFromServer = [self getDataFromEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL, nil]];
-        NSArray *serverVariables = [[NSArray alloc] initWithObjects:nil];
-        if(dataFromServer != nil) {
-            serverVariables = [Liquid fromJSON:dataFromServer];
-        
-            // Build the list of Variables to create on server (only the Bundle Variables that are not on the server yet)
-            NSMutableDictionary *newVariablesDict = [[NSMutableDictionary alloc] initWithDictionary:_bundleFallbackValues];
-            for(NSDictionary *variableDictionary in serverVariables) {
-                LQVariable *variable = [[LQVariable alloc] initFromDictionary:variableDictionary];
-                [newVariablesDict removeObjectForKey:variable.name];
-            }
-            
-            // Send new Variables to server
-            for (NSString *name in newVariablesDict) {
-                NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name",
-                                          [newVariablesDict objectForKey:name], @"default_value", nil];
-                LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending bundle Variable %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
-                NSInteger res = [self sendData:[Liquid toJSON:variable]
-                               toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
-                              usingMethod:@"POST"];
-                if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
-            }
-        }
-    });
-}
-
 #pragma mark - Values with Data Types
-
--(id)bundleValueForVariable:(NSString *)variableName {
-    return [_bundleFallbackValues objectForKey:variableName];
-}
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
     if([value isKindOfClass:[NSDate class]])
         return value;
-    return nil;
-}
-
--(NSDate *)dateForKey:(NSString *)variableName {
-    return [self dateForKey:variableName fallback:[self bundleValueForVariable:variableName]];
+    return fallbackValue;
 }
 
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
@@ -483,16 +442,12 @@ static Liquid *sharedInstance = nil;
         id color = [Liquid colorFromString:value];
         if([color isKindOfClass:[UIColor class]])
             return color;
-        return nil;
+        return fallbackValue;
     }
     @catch (NSException *exception) {
         LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
-        return nil;
+        return fallbackValue;
     }
-}
-
--(UIColor *)colorForKey:(NSString *)variableName {
-    return [self colorForKey:variableName fallback:[Liquid colorFromString:[self bundleValueForVariable:variableName]]];
 }
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
@@ -502,19 +457,11 @@ static Liquid *sharedInstance = nil;
     return nil;
 }
 
--(NSString *)stringForKey:(NSString *)variableName {
-    return [self stringForKey:variableName fallback:[self bundleValueForVariable:variableName]];
-}
-
 -(NSNumber *)numberForKey:(NSString *)variableName fallback:(NSNumber *)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
     if([value isKindOfClass:[NSNumber class]])
         return value;
-    return nil;
-}
-
--(NSNumber *)numberForKey:(NSString *)variableName {
-    return [self numberForKey:variableName fallback:[self bundleValueForVariable:variableName]];
+    return fallbackValue;
 }
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
@@ -524,14 +471,6 @@ static Liquid *sharedInstance = nil;
     return fallbackValue;
 }
 
--(NSInteger)intForKey:(NSString *)variableName {
-    id bundleValue = [self bundleValueForVariable:variableName];
-    if([bundleValue isKindOfClass:[NSNumber class]]) {
-        return [self intForKey:variableName fallback:[bundleValue intValue]];
-    }
-    else return 0;
-}
-
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:nil];
     if([value isKindOfClass:[NSNumber class]])
@@ -539,27 +478,11 @@ static Liquid *sharedInstance = nil;
     return fallbackValue;
 }
 
--(CGFloat)floatForKey:(NSString *)variableName {
-    id bundleValue = [self bundleValueForVariable:variableName];
-    if([[bundleValue objectForKey:variableName] isKindOfClass:[NSNumber class]]) {
-        return [self floatForKey:variableName fallback:[bundleValue floatValue]];
-    }
-    return 0.0f;
-}
-
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:nil];
     if([value isKindOfClass:[NSNumber class]])
         return [value boolValue];
     return fallbackValue;
-}
-
--(BOOL)boolForKey:(NSString *)variableName {
-    id bundleValue = [self bundleValueForVariable:variableName];
-    if ([bundleValue isKindOfClass:[NSNumber class]]) {
-        return [self boolForKey:variableName fallback:[bundleValue boolValue]];
-    }
-    return NO;
 }
 
 #pragma mark - Queueing
@@ -797,12 +720,6 @@ static Liquid *sharedInstance = nil;
     NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.queue", apiToken]];
     LQLog(kLQLogLevelPaths,@"<Liquid> File location %@", liquidFile);
     return liquidFile;
-}
-
-+(NSDictionary*)loadBundleValues {
-    NSString *variablesPlistPath = [[NSBundle mainBundle] pathForResource:kLQValuesFileName ofType:@"plist"];
-    NSDictionary *values = [[NSDictionary alloc] initWithContentsOfFile:variablesPlistPath];
-    return values;
 }
 
 #pragma mark - Static Helpers
