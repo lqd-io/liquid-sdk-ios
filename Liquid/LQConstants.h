@@ -19,8 +19,8 @@
 #define kLQLogLevelData        5
 #define kLQLogLevelInfoVerbose 4
 #define kLQLogLevelWarning     3
-#define kLQLogLevelError       2
-#define kLQLogLevelInfo        1
+#define kLQLogLevelInfo        2
+#define kLQLogLevelError       1
 #define kLQLogLevelNone        0
 
 #define kLQLogLevel kLQLogLevelError
