@@ -321,12 +321,16 @@ static Liquid *sharedInstance = nil;
         now = [NSDate new];
     }
 
-    LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [[Liquid isoDateFormatter] stringFromDate:now]);
+    if ([eventName hasPrefix:@"_"]) {
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, [[Liquid isoDateFormatter] stringFromDate:now]);
+    } else {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [[Liquid isoDateFormatter] stringFromDate:now]);
+    }
     dispatch_async(self.queue, ^{
         //[Liquid assertEventAttributeTypes:attributes];
         NSString *finalEventName = eventName;
         if (eventName == nil || [eventName length] == 0) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Tracking unnammed event.");
+            LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
             finalEventName = @"unnamedEvent";
         }
         LQEvent *event = [[LQEvent alloc] initWithName:finalEventName withAttributes:attributes withDate:now];
