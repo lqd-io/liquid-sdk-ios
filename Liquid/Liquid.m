@@ -436,12 +436,14 @@ static Liquid *sharedInstance = nil;
         return nil;
     if([value isKindOfClass:[NSString class]]) {
         NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
         NSDate *date = [dateFormatter dateFromString:value];
-        if(date)
+        if (!date) {
+            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+            date = [dateFormatter dateFromString:value];
+        }
+        if(date) {
             return date;
-        else
-            return fallbackValue;
+        }
     }
     return fallbackValue;
 }
