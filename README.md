@@ -52,8 +52,6 @@ You can track any type of event in your app, using one of the following methods:
     [[Liquid sharedInstance] track:@"boughtProduct"
                     withAttributes:@{ @"productId": 123 }]
 
-We recommend you to name your events and attributes using camelCaseConventionNaming.
-
 ### 4. Personalize your app (with dynamic variables)
 
 You can transform any old-fashioned static variable into a "liquid" dynamic variable just by replacing it with a Liquid method. You can use a dynamic variable like this:
@@ -77,5 +75,5 @@ Liquid Data Intelligence, S.A.
 
 # License
 
-Liquid is available under the LGPL license. See the LICENSE file for more info.
+Liquid is available under the Apache license. See the LICENSE file for more info.
 
