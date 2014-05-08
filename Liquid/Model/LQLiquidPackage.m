@@ -54,7 +54,7 @@
 
 -(id)valueForKey:(NSString *)variableName fallback:(id)fallbackValue {
     id value = [_dictOfVariablesAndValues objectForKey:variableName];
-    if(value == nil)
+    if(value == nil) // not found
         return fallbackValue;
     if([value isKindOfClass:[NSNull class]])
         return nil;

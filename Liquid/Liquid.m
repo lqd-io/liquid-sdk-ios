@@ -431,13 +431,26 @@ static Liquid *sharedInstance = nil;
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-    if([value isKindOfClass:[NSDate class]])
-        return value;
+
+    if(value == nil)
+        return nil;
+    if([value isKindOfClass:[NSString class]]) {
+        NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+        NSDate *date = [dateFormatter dateFromString:value];
+        if(date)
+            return date;
+        else
+            return fallbackValue;
+    }
     return fallbackValue;
 }
 
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
+
+    if(value == nil)
+        return nil;
     @try {
         id color = [Liquid colorFromString:value];
         if([color isKindOfClass:[UIColor class]])
@@ -448,40 +461,66 @@ static Liquid *sharedInstance = nil;
         LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
         return fallbackValue;
     }
+    return fallbackValue;
 }
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
+    if(value == nil)
+        return nil;
     if([value isKindOfClass:[NSString class]])
         return [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
-    return nil;
-}
-
--(NSNumber *)numberForKey:(NSString *)variableName fallback:(NSNumber *)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-    if([value isKindOfClass:[NSNumber class]])
-        return value;
-    return fallbackValue;
+    else
+        return [NSString stringWithFormat:@"%@", value];
 }
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:nil];
+    id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
+
     if([value isKindOfClass:[NSNumber class]])
         return [value integerValue];
+    if ([value isKindOfClass:[NSString class]]) {
+        NSScanner *scan = [NSScanner scannerWithString:value];
+        [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
+        NSInteger intValue;
+        if ([scan scanInteger:&intValue]) {
+            return intValue;
+        }
+    }
     return fallbackValue;
 }
 
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:nil];
+    id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
+
     if([value isKindOfClass:[NSNumber class]])
         return [value floatValue];
+    if ([value isKindOfClass:[NSString class]]) {
+        NSScanner *scan = [NSScanner scannerWithString:value];
+        [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
+        double floatValue;
+        if ([scan scanDouble:&floatValue]) {
+            return (CGFloat)floatValue;
+        }
+    }
     return fallbackValue;
 }
 
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:nil];
+    id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
+
     if([value isKindOfClass:[NSNumber class]])
         return [value boolValue];
+    if ([value isKindOfClass:[NSString class]]) {
+        if([[value lowercaseString] isEqualToString:@"true"]) return YES;
+        if([[value lowercaseString] isEqualToString:@"false"]) return NO;
+        NSScanner *scan = [NSScanner scannerWithString:value];
+        [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
+        int intValue;
+        if ([scan scanInteger:&intValue]) {
+            return (intValue ? YES : NO);
+        }
+    }
     return fallbackValue;
 }
 
