@@ -455,8 +455,9 @@ static Liquid *sharedInstance = nil;
         return nil;
     @try {
         id color = [Liquid colorFromString:value];
-        if([color isKindOfClass:[UIColor class]])
+        if([color isKindOfClass:[UIColor class]]) {
             return color;
+        }
         return fallbackValue;
     }
     @catch (NSException *exception) {
@@ -468,19 +469,23 @@ static Liquid *sharedInstance = nil;
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-    if(value == nil)
+    if(value == nil) {
         return nil;
-    if([value isKindOfClass:[NSString class]])
+    }
+    if([value isKindOfClass:[NSString class]]) {
         return [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
-    else
+    }
+    else {
         return [NSString stringWithFormat:@"%@", value];
+    }
 }
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
 
-    if([value isKindOfClass:[NSNumber class]])
+    if([value isKindOfClass:[NSNumber class]]) {
         return [value integerValue];
+    }
     if ([value isKindOfClass:[NSString class]]) {
         NSScanner *scan = [NSScanner scannerWithString:value];
         [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
@@ -495,9 +500,10 @@ static Liquid *sharedInstance = nil;
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
 
-    if([value isKindOfClass:[NSNumber class]])
+    if([value isKindOfClass:[NSNumber class]]) {
         return [value floatValue];
-    if ([value isKindOfClass:[NSString class]]) {
+    }
+    if([value isKindOfClass:[NSString class]]) {
         NSScanner *scan = [NSScanner scannerWithString:value];
         [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
         double floatValue;
@@ -511,9 +517,10 @@ static Liquid *sharedInstance = nil;
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
     id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
 
-    if([value isKindOfClass:[NSNumber class]])
+    if([value isKindOfClass:[NSNumber class]]) {
         return [value boolValue];
-    if ([value isKindOfClass:[NSString class]]) {
+    }
+    if([value isKindOfClass:[NSString class]]) {
         if([[value lowercaseString] isEqualToString:@"true"]) return YES;
         if([[value lowercaseString] isEqualToString:@"false"]) return NO;
         NSScanner *scan = [NSScanner scannerWithString:value];
