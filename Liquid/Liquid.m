@@ -151,7 +151,7 @@ static Liquid *sharedInstance = nil;
     });
 
     if(!sessionTimedOut && self.inBackground) {
-        [self track:@"_resumeSession"];
+        [self track:@"_resumeSession" withAttributes:nil allowLqdEvents:YES];
         _inBackground = NO;
     }
 }
@@ -163,7 +163,7 @@ static Liquid *sharedInstance = nil;
     // Stop flush timer on app pause
     [self stopFlushTimer];
     
-    [self track:@"_pauseSession"];
+    [self track:@"_pauseSession" withAttributes:nil allowLqdEvents:YES];
 
     // Store queue to plist
     [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
@@ -266,7 +266,7 @@ static Liquid *sharedInstance = nil;
 -(void)destroySessionIfExists {
     if(self.currentUser != nil && self.currentSession != nil) {
         [[self currentSession] endSessionOnDate:self.enterBackgroundTime];
-        [self track:@"_endSession"];
+        [self track:@"_endSession" withAttributes:nil allowLqdEvents:YES];
     }
 }
 
@@ -278,7 +278,7 @@ static Liquid *sharedInstance = nil;
             return;
         }
         self.currentSession = [[LQSession alloc] initWithDate:now withTimeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
-        [self track:@"_startSession"];
+        [self track:@"_startSession" withAttributes:nil allowLqdEvents:YES];
     };
     if(inThread)
         newSessionBlock();
@@ -302,10 +302,18 @@ static Liquid *sharedInstance = nil;
 #pragma mark - Event
 
 -(void)track:(NSString *)eventName {
-    [self track:eventName withAttributes:nil];
+    [self track:eventName withAttributes:nil allowLqdEvents:NO];
 }
 
 -(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
+    [self track:eventName withAttributes:nil allowLqdEvents:NO];
+}
+
+-(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
+    if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
+        LQLog(kLQLogLevelError, @"<Liquid> Events cannot start with _");
+        return;
+    }
     if(self.currentUser == nil) {
         [self identifyUserSyncedWithIdentifier:nil
                                 withAttributes:nil
