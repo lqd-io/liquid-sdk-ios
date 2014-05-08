@@ -385,22 +385,6 @@
  @param variableName       the key to identify the variable
  */
 
--(NSNumber *)numberForKey:(NSString *)variableName fallback:(NSNumber *)fallbackValue;
-
-/*!
- @method
- 
- @abstract
- Get a int dynamic variable from a key.
- 
- @discussion
- Will return the int dynamic variable from a provided key.
- This will depend on the user, device and session at the time of the
- last call to requestNewValues and loadNewValues.
- 
- @param variableName       the key to identify the variable
- */
-
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue;
 
 /*!
