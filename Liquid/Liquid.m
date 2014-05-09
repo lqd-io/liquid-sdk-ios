@@ -438,8 +438,8 @@ static Liquid *sharedInstance = nil;
 -(void)sendVariable:(NSString *)variableName withFallback:(id)fallbackValue withLiquidType:(NSString *)typeString {
     dispatch_async(self.queue, ^{
         NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:variableName, @"name",
-                                                                             fallbackValue, @"default_value",
-                                                                                typeString, @"data_type", nil];
+                                  typeString, @"data_type",
+                                  (fallbackValue?fallbackValue:[NSNull null]), @"default_value", nil];
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
         NSInteger res = [self sendData:[Liquid toJSON:variable]
                             toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
