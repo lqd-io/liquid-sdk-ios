@@ -15,6 +15,7 @@
 
 @property(nonatomic, strong, readonly) NSString* identifier;
 @property(nonatomic, strong, readonly) NSString* name;
+@property(nonatomic, strong, readonly) NSString* dataType;
 @property(nonatomic, strong, readonly) id defaultValue;
 
 @end

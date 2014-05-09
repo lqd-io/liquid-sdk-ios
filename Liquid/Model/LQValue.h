@@ -12,6 +12,7 @@
 @interface LQValue : NSObject<NSCoding>
 
 -(id)initFromDictionary:(NSDictionary *)dict;
+-(id)initWithFallbackValue:(id)value;
 -(NSDictionary *)jsonDictionary;
 +(NSDictionary *)dictionaryFromArrayOfValues:(NSArray *)values;
 
@@ -19,5 +20,6 @@
 @property(nonatomic, strong, readonly) id value;
 @property(nonatomic, strong, readonly) LQVariable *variable;
 @property(nonatomic, strong, readonly) NSNumber *isDefault;
+@property(nonatomic, strong, readonly) NSNumber *isFallback;
 
 @end

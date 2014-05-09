@@ -399,6 +399,12 @@ static Liquid *sharedInstance = nil;
 }
 
 -(void)loadLiquidPackageSynced {
+    // Ensure legacy:
+    if (_loadedLiquidPackage && ![_loadedLiquidPackage liquidVersion]) {
+        LQLog(kLQLogLevelError, @"<Liquid> SDK was updated: destroying cached Liquid Package to ensure legacy");
+        [LQLiquidPackage destroyCachedLiquidPackage];
+    }
+
     LQLiquidPackage *liquidPackage = [LQLiquidPackage loadFromDisk];
     if (liquidPackage) {
         _loadedLiquidPackage = liquidPackage;
@@ -430,105 +436,71 @@ static Liquid *sharedInstance = nil;
 #pragma mark - Values with Data Types
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-
-    if(value == nil)
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
+    if(value == nil) {
         return nil;
-    if([value isKindOfClass:[NSString class]]) {
-        NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
-        NSDate *date = [dateFormatter dateFromString:value];
-        if (!date) {
-            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
-            date = [dateFormatter dateFromString:value];
+    }
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"datetime"]) {
+        NSDate *date = [Liquid extractDateFrom:value.value];
+        if(!date) {
+            return fallbackValue;
         }
-        if(date) {
-            return date;
-        }
+        return date;
     }
     return fallbackValue;
 }
 
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
     if(value == nil)
         return nil;
-    @try {
-        id color = [Liquid colorFromString:value];
-        if([color isKindOfClass:[UIColor class]]) {
-            return color;
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"color"]) {
+        @try {
+            id color = [Liquid colorFromString:value.value];
+            if([color isKindOfClass:[UIColor class]]) {
+                return color;
+            }
+            return fallbackValue;
         }
-        return fallbackValue;
-    }
-    @catch (NSException *exception) {
-        LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
-        return fallbackValue;
+        @catch (NSException *exception) {
+            LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
+            return fallbackValue;
+        }
     }
     return fallbackValue;
 }
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
     if(value == nil) {
         return nil;
     }
-    if([value isKindOfClass:[NSString class]]) {
-        return [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"string"]) {
+        return value.value;
     }
-    else {
-        return [NSString stringWithFormat:@"%@", value];
-    }
+    return fallbackValue;
 }
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-
-    if([value isKindOfClass:[NSNumber class]]) {
-        return [value integerValue];
-    }
-    if ([value isKindOfClass:[NSString class]]) {
-        NSScanner *scan = [NSScanner scannerWithString:value];
-        [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
-        NSInteger intValue;
-        if ([scan scanInteger:&intValue]) {
-            return intValue;
-        }
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"integer"]) {
+        return [value.value integerValue];
     }
     return fallbackValue;
 }
 
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-
-    if([value isKindOfClass:[NSNumber class]]) {
-        return [value floatValue];
-    }
-    if([value isKindOfClass:[NSString class]]) {
-        NSScanner *scan = [NSScanner scannerWithString:value];
-        [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
-        double floatValue;
-        if ([scan scanDouble:&floatValue]) {
-            return (CGFloat)floatValue;
-        }
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"float"]) {
+        return [value.value floatValue];
     }
     return fallbackValue;
 }
 
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
-    id value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-
-    if([value isKindOfClass:[NSNumber class]]) {
-        return [value boolValue];
-    }
-    if([value isKindOfClass:[NSString class]]) {
-        if([[value lowercaseString] isEqualToString:@"true"]) return YES;
-        if([[value lowercaseString] isEqualToString:@"false"]) return NO;
-        NSScanner *scan = [NSScanner scannerWithString:value];
-        [scan setCharactersToBeSkipped:[[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] invertedSet]];
-        int intValue;
-        if ([scan scanInteger:&intValue]) {
-            return (intValue ? YES : NO);
-        }
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"boolean"]) {
+        return [value.value boolValue];
     }
     return fallbackValue;
 }
@@ -857,6 +829,8 @@ static Liquid *sharedInstance = nil;
     return result;
 }
 
+#pragma mark - Liquid Helpers
+
 + (NSData *)randomDataOfLength:(size_t)length {
     NSMutableData *data = [NSMutableData dataWithLength:length];
     SecRandomCopyBytes(kSecRandomDefault, length, data.mutableBytes);
@@ -879,6 +853,19 @@ static Liquid *sharedInstance = nil;
     [formatter setCalendar:gregorianCalendar];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     return formatter;
+}
+
++(NSDate *)extractDateFrom:(NSString *)iso8601String {
+    NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
+    NSDate *date = [dateFormatter dateFromString:iso8601String];
+    if (!date) {
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+        date = [dateFormatter dateFromString:iso8601String];
+    }
+    if(date) {
+        return date;
+    }
+    return nil;
 }
 
 @end

@@ -18,6 +18,19 @@
         _value = [dict objectForKey:@"value"];
         _isDefault = [dict objectForKey:@"default"];
         _variable = [[LQVariable alloc] initFromDictionary:[dict objectForKey:@"variable"]];
+        _isFallback = [NSNumber numberWithBool:NO];
+    }
+    return self;
+}
+
+-(id)initWithFallbackValue:(id)value {
+    self = [super init];
+    if(self) {
+        _identifier = nil;
+        _value =
+        _isDefault = nil;
+        _variable = nil;
+        _isFallback = [NSNumber numberWithBool:YES];
     }
     return self;
 }
@@ -55,7 +68,7 @@
     for(LQValue *value in values) {
         if (value.value) { // If nominal value is present,  use it
             if (value.variable.name)
-                [dictOfValues setObject:value.value forKey:value.variable.name];
+                [dictOfValues setObject:value forKey:value.variable.name];
         }
     }
     return dictOfValues;

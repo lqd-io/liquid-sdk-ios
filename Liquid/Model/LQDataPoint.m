@@ -48,7 +48,7 @@
 
     NSMutableArray *valuesArray = [[NSMutableArray alloc] init];
     for (LQValue *value in _values)
-        // Values without id are shipped values (on LiquidVariables.plist).
+        // Values without id are fallback values
         // So, we don't need (and don't want) to send track them on target's results:
         if (value.identifier)
             [valuesArray addObject:[value jsonDictionary]];

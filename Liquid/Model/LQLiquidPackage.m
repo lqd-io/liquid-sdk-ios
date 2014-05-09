@@ -7,8 +7,6 @@
 //
 
 #import "LQLiquidPackage.h"
-#import "LQValue.h"
-#import "LQTarget.h"
 #import "LQConstants.h"
 
 @interface LQLiquidPackage ()
@@ -23,6 +21,7 @@
         _targets = targets;
         _values = values;
         _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
+        _liquidVersion = kLQBundle;
     }
     return self;
 }
@@ -42,6 +41,7 @@
         }
         _values = values;
         _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
+        _liquidVersion = kLQBundle;
     }
     return self;
 }
@@ -52,13 +52,24 @@
 
 #pragma mark - Get dynamic values
 
--(id)valueForKey:(NSString *)variableName fallback:(id)fallbackValue {
-    id value = [_dictOfVariablesAndValues objectForKey:variableName];
+-(LQValue *)valueForKey:(NSString *)variableName fallback:(id)fallbackValue {
+    LQValue *value = [_dictOfVariablesAndValues objectForKey:variableName];
     if(value == nil) // not found
-        return fallbackValue;
+        return [[LQValue alloc] initWithFallbackValue:fallbackValue];
     if([value isKindOfClass:[NSNull class]])
         return nil;
     return value;
+}
+
+-(BOOL)variable:(NSString *)variableName matchesLiquidType:(NSString *)typeString {
+    LQValue *value = [_dictOfVariablesAndValues objectForKey:variableName];
+    if (value == nil) {
+        return NO;
+    }
+    if ([value.variable.dataType isEqualToString:typeString]) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - NSCoding
@@ -68,6 +79,7 @@
     if(self) {
         _targets = [aDecoder decodeObjectForKey:@"targets"];
         _values = [aDecoder decodeObjectForKey:@"values"];
+        _liquidVersion = [aDecoder decodeObjectForKey:@"liquid_version"];
         _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
     }
     return self;
@@ -76,6 +88,7 @@
 -(void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:_targets forKey:@"targets"];
     [aCoder encodeObject:_values forKey:@"values"];
+    [aCoder encodeObject:_liquidVersion forKey:@"liquid_version"];
 }
 
 #pragma mark - Archive to disk
@@ -83,6 +96,12 @@
 +(LQLiquidPackage *)loadFromDisk {
     LQLiquidPackage *liquidPackage = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] liquidPackageFile]];
     return liquidPackage;
+}
+
++(BOOL)destroyCachedLiquidPackage {
+    BOOL status = [[NSFileManager defaultManager] removeItemAtPath:[[self class] liquidPackageFile] error:NULL];
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Liquid Package");
+    return status;
 }
 
 -(BOOL)saveToDisk {

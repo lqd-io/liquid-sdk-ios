@@ -16,6 +16,7 @@
         _identifier = [dict objectForKey:@"id"];
         _name = [dict objectForKey:@"name"];
         _defaultValue = [[dict objectForKey:@"default_value"] objectForKey:@"value"];
+        _dataType = [dict objectForKey:@"data_type"];
     }
     return self;
 }
@@ -27,6 +28,7 @@
         _identifier = [aDecoder decodeObjectForKey:@"id"];
         _name = [aDecoder decodeObjectForKey:@"name"];
         _defaultValue = [aDecoder decodeObjectForKey:@"default_value"];
+        _dataType = [aDecoder decodeObjectForKey:@"data_type"];
     }
     return self;
 }
@@ -35,6 +37,7 @@
     [aCoder encodeObject:_identifier forKey:@"id"];
     [aCoder encodeObject:_name forKey:@"name"];
     [aCoder encodeObject:_defaultValue forKey:@"default_value"];
+    [aCoder encodeObject:_dataType forKey:@"data_type"];
 }
 
 #pragma mark - JSON
@@ -43,6 +46,7 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary setObject:_identifier forKey:@"id"];
     [dictionary setObject:_name forKey:@"name"];
+    [dictionary setObject:_dataType forKey:@"data_type"];
     return dictionary;
 }
 
