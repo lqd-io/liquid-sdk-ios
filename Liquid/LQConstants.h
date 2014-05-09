@@ -36,7 +36,7 @@
 #define kLQHttpMaxTries 40
 #define kLQDefaultFlushOnBackground YES
 #define kLQDirectory kLQBundle
-#define kLQSendBundleVariablesInDevelopmentMode YES
+#define kLQSendFallbackValuesInDevelopmentMode YES
 #define kLQDefaultSessionMaxLimit @7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
 
 #ifdef DEBUG

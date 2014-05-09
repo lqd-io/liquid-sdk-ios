@@ -10,6 +10,13 @@
 
 @interface LQVariable : NSObject<NSCoding>
 
+extern NSString * const kLQDataTypeString;
+extern NSString * const kLQDataTypeColor;
+extern NSString * const kLQDataTypeDateTime;
+extern NSString * const kLQDataTypeBoolean;
+extern NSString * const kLQDataTypeInteger;
+extern NSString * const kLQDataTypeFloat;
+
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(NSDictionary *)jsonDictionary;
 

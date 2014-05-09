@@ -433,14 +433,34 @@ static Liquid *sharedInstance = nil;
     [self loadLiquidPackage];
 }
 
+#pragma mark - Development functionalities
+
+-(void)sendVariable:(NSString *)variableName withFallback:(id)fallbackValue withLiquidType:(NSString *)typeString {
+    dispatch_async(self.queue, ^{
+        NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:variableName, @"name",
+                                                                             fallbackValue, @"default_value",
+                                                                                typeString, @"data_type", nil];
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
+        NSInteger res = [self sendData:[Liquid toJSON:variable]
+                            toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
+                           usingMethod:@"POST"];
+        if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
+    });
+}
+
 #pragma mark - Values with Data Types
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+        NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
+        [self sendVariable:variableName withFallback:[dateFormatter stringFromDate:fallbackValue] withLiquidType:kLQDataTypeDateTime];
+    }
+
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
     if(value == nil) {
         return nil;
     }
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"datetime"]) {
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
         NSDate *date = [Liquid extractDateFrom:value.value];
         if(!date) {
             return fallbackValue;
@@ -451,10 +471,14 @@ static Liquid *sharedInstance = nil;
 }
 
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+        [self sendVariable:variableName withFallback:[Liquid hexStringFromUIColor:fallbackValue] withLiquidType:kLQDataTypeColor];
+    }
+
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
     if(value == nil)
         return nil;
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"color"]) {
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeColor]) {
         @try {
             id color = [Liquid colorFromString:value.value];
             if([color isKindOfClass:[UIColor class]]) {
@@ -471,35 +495,51 @@ static Liquid *sharedInstance = nil;
 }
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+        [self sendVariable:variableName withFallback:fallbackValue withLiquidType:kLQDataTypeString];
+    }
+
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
     if(value == nil) {
         return nil;
     }
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"string"]) {
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeString]) {
         return value.value;
     }
     return fallbackValue;
 }
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+        [self sendVariable:variableName withFallback:[NSNumber numberWithInteger:fallbackValue] withLiquidType:kLQDataTypeInteger];
+    }
+
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"integer"]) {
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeInteger]) {
         return [value.value integerValue];
     }
     return fallbackValue;
 }
 
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+        [self sendVariable:variableName withFallback:[NSNumber numberWithFloat:fallbackValue] withLiquidType:kLQDataTypeFloat];
+    }
+
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"float"]) {
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeFloat]) {
         return [value.value floatValue];
     }
     return fallbackValue;
 }
 
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+        [self sendVariable:variableName withFallback:[NSNumber numberWithBool:fallbackValue] withLiquidType:kLQDataTypeBoolean];
+    }
+
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:@"boolean"]) {
+    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeBoolean]) {
         return [value.value boolValue];
     }
     return fallbackValue;

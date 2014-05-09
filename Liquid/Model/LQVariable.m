@@ -8,6 +8,13 @@
 
 #import "LQVariable.h"
 
+NSString * const kLQDataTypeString = @"string";
+NSString * const kLQDataTypeColor = @"color";
+NSString * const kLQDataTypeDateTime = @"datetime";
+NSString * const kLQDataTypeBoolean = @"boolean";
+NSString * const kLQDataTypeInteger = @"integer";
+NSString * const kLQDataTypeFloat = @"float";
+
 @implementation LQVariable
 
 -(id)initFromDictionary:(NSDictionary *)dict {
