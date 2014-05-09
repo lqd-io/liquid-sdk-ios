@@ -14,7 +14,7 @@
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values;
--(LQValue *)valueForKey:(NSString *)variableName fallback:(id)fallbackValue;
+-(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error;
 -(BOOL)variable:(NSString *)variableName matchesLiquidType:(NSString *)typeString;
 
 +(LQLiquidPackage *)loadFromDisk;

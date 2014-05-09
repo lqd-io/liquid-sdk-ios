@@ -52,10 +52,16 @@
 
 #pragma mark - Get dynamic values
 
--(LQValue *)valueForKey:(NSString *)variableName fallback:(id)fallbackValue {
+-(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error {
     LQValue *value = [_dictOfVariablesAndValues objectForKey:variableName];
-    if(value == nil) // not found
-        return [[LQValue alloc] initWithFallbackValue:fallbackValue];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Value not found on Liquid Package", NSLocalizedDescriptionKey, nil];
+
+    // if not found:
+    if(value == nil) {
+        *error = [NSError errorWithDomain:kLQVersion code:kLQErrorValueNotFound userInfo:userInfo];
+        return nil;
+    }
+    // if found::
     if([value isKindOfClass:[NSNull class]])
         return nil;
     return value;

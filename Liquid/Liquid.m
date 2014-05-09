@@ -456,16 +456,19 @@ static Liquid *sharedInstance = nil;
         [self sendVariable:variableName withFallback:[dateFormatter stringFromDate:fallbackValue] withLiquidType:kLQDataTypeDateTime];
     }
 
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-    if(value == nil) {
-        return nil;
-    }
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
-        NSDate *date = [Liquid extractDateFrom:value.value];
-        if(!date) {
-            return fallbackValue;
+    NSError *error;
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    if(error == nil) {
+        if(value == nil) {
+            return nil;
         }
-        return date;
+        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
+            NSDate *date = [Liquid extractDateFrom:value.value];
+            if(!date) {
+                return fallbackValue;
+            }
+            return date;
+        }
     }
     return fallbackValue;
 }
@@ -474,21 +477,24 @@ static Liquid *sharedInstance = nil;
     if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
         [self sendVariable:variableName withFallback:[Liquid hexStringFromUIColor:fallbackValue] withLiquidType:kLQDataTypeColor];
     }
-
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-    if(value == nil)
-        return nil;
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeColor]) {
-        @try {
-            id color = [Liquid colorFromString:value.value];
-            if([color isKindOfClass:[UIColor class]]) {
-                return color;
+    
+    NSError *error;
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    if(error == nil) {
+        if(value == nil)
+            return nil;
+        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeColor]) {
+            @try {
+                id color = [Liquid colorFromString:value.value];
+                if([color isKindOfClass:[UIColor class]]) {
+                    return color;
+                }
+                return fallbackValue;
             }
-            return fallbackValue;
-        }
-        @catch (NSException *exception) {
-            LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
-            return fallbackValue;
+            @catch (NSException *exception) {
+                LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
+                return fallbackValue;
+            }
         }
     }
     return fallbackValue;
@@ -499,12 +505,15 @@ static Liquid *sharedInstance = nil;
         [self sendVariable:variableName withFallback:fallbackValue withLiquidType:kLQDataTypeString];
     }
 
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:fallbackValue];
-    if(value == nil) {
-        return nil;
-    }
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeString]) {
-        return value.value;
+    NSError *error;
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    if(error == nil) {
+        if(value == nil) {
+            return nil;
+        }
+        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeString]) {
+            return value.value;
+        }
     }
     return fallbackValue;
 }
@@ -514,9 +523,12 @@ static Liquid *sharedInstance = nil;
         [self sendVariable:variableName withFallback:[NSNumber numberWithInteger:fallbackValue] withLiquidType:kLQDataTypeInteger];
     }
 
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeInteger]) {
-        return [value.value integerValue];
+    NSError *error;
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    if(error == nil) {
+        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeInteger]) {
+            return [value.value integerValue];
+        }
     }
     return fallbackValue;
 }
@@ -526,9 +538,12 @@ static Liquid *sharedInstance = nil;
         [self sendVariable:variableName withFallback:[NSNumber numberWithFloat:fallbackValue] withLiquidType:kLQDataTypeFloat];
     }
 
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeFloat]) {
-        return [value.value floatValue];
+    NSError *error;
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    if(error == nil) {
+        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeFloat]) {
+            return [value.value floatValue];
+        }
     }
     return fallbackValue;
 }
@@ -538,9 +553,12 @@ static Liquid *sharedInstance = nil;
         [self sendVariable:variableName withFallback:[NSNumber numberWithBool:fallbackValue] withLiquidType:kLQDataTypeBoolean];
     }
 
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName fallback:[NSNumber numberWithInt:fallbackValue]];
-    if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeBoolean]) {
-        return [value.value boolValue];
+    NSError *error;
+    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    if(error == nil) {
+        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeBoolean]) {
+            return [value.value boolValue];
+        }
     }
     return fallbackValue;
 }
