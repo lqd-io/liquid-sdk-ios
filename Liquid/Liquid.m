@@ -451,7 +451,7 @@ static Liquid *sharedInstance = nil;
 #pragma mark - Values with Data Types
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode && fallbackValue) {
         NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
         [self sendVariable:variableName withFallback:[dateFormatter stringFromDate:fallbackValue] withLiquidType:kLQDataTypeDateTime];
     }
@@ -474,7 +474,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode && fallbackValue) {
         [self sendVariable:variableName withFallback:[Liquid hexStringFromUIColor:fallbackValue] withLiquidType:kLQDataTypeColor];
     }
     
@@ -501,7 +501,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode && fallbackValue) {
         [self sendVariable:variableName withFallback:fallbackValue withLiquidType:kLQDataTypeString];
     }
 
