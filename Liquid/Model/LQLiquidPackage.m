@@ -118,9 +118,7 @@
 
 -(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName {
     NSString *targetId = [self targetIdOfVariable:variableName];
-    NSLog(@"variable: %@ targetId: %@", variableName, targetId);
     if (targetId != nil && ![[NSNull null] isEqual:targetId]) {
-        NSLog(@"shouldn't enter, with variable: %@ targetId: %@", variableName, targetId);
         return [self invalidateTargetWihId:[self targetIdOfVariable:variableName]];
     }
     return 0;
