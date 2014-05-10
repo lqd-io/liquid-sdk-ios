@@ -20,7 +20,7 @@
 @property(nonatomic, strong, readonly) NSString *identifier;
 @property(nonatomic, strong, readonly) id value;
 @property(nonatomic, strong, readonly) LQVariable *variable;
-@property(nonatomic, strong, readonly) NSNumber *targetId;
+@property(nonatomic, strong, readonly) NSString *targetId;
 @property(nonatomic, strong, readonly) NSNumber *isDefault;
 @property(nonatomic, strong, readonly) NSNumber *isFallback;
 
