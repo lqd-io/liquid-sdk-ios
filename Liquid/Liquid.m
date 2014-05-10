@@ -77,6 +77,18 @@ static Liquid *sharedInstance = nil;
     return [self initWithToken:apiToken development:NO];
 }
 
+-(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
+    NSInteger numberOfFallenBackValues = 0;
+    @synchronized(_loadedLiquidPackage) {
+        numberOfFallenBackValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
+    }
+    if (numberOfFallenBackValues > 0) {
+        [_loadedLiquidPackage saveToDisk];
+        [self loadLiquidPackage];
+        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%d) covered by its target were fallen back.", variableName, numberOfFallenBackValues);
+    }
+}
+
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt {
     [self veryFirstMoment];
     _firstEventSent = NO;
@@ -467,11 +479,13 @@ static Liquid *sharedInstance = nil;
         if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
             NSDate *date = [Liquid extractDateFrom:value.value];
             if(!date) {
+                [self invalidateTargetThatIncludesVariable:variableName];
                 return fallbackValue;
             }
             return date;
         }
     }
+    [self invalidateTargetThatIncludesVariable:variableName];
     return fallbackValue;
 }
 
@@ -491,14 +505,17 @@ static Liquid *sharedInstance = nil;
                 if([color isKindOfClass:[UIColor class]]) {
                     return color;
                 }
+                [self invalidateTargetThatIncludesVariable:variableName];
                 return fallbackValue;
             }
             @catch (NSException *exception) {
                 LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
+                [self invalidateTargetThatIncludesVariable:variableName];
                 return fallbackValue;
             }
         }
     }
+    [self invalidateTargetThatIncludesVariable:variableName];
     return fallbackValue;
 }
 
@@ -517,6 +534,7 @@ static Liquid *sharedInstance = nil;
             return value.value;
         }
     }
+    [self invalidateTargetThatIncludesVariable:variableName];
     return fallbackValue;
 }
 
@@ -532,6 +550,7 @@ static Liquid *sharedInstance = nil;
             return [value.value integerValue];
         }
     }
+    [self invalidateTargetThatIncludesVariable:variableName];
     return fallbackValue;
 }
 
@@ -547,6 +566,7 @@ static Liquid *sharedInstance = nil;
             return [value.value floatValue];
         }
     }
+    [self invalidateTargetThatIncludesVariable:variableName];
     return fallbackValue;
 }
 
@@ -562,6 +582,7 @@ static Liquid *sharedInstance = nil;
             return [value.value boolValue];
         }
     }
+    [self invalidateTargetThatIncludesVariable:variableName];
     return fallbackValue;
 }
 

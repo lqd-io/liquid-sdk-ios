@@ -17,7 +17,7 @@
 
 -(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values {
     self = [super init];
-    if(self) {
+    if (self) {
         _targets = targets;
         _values = values;
         _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
@@ -28,7 +28,7 @@
 
 -(id)initFromDictionary:(NSDictionary *)dict {
     self = [super init];
-    if(self) {
+    if (self) {
         NSMutableArray *targets = [[NSMutableArray alloc] initWithObjects:nil];
         for (NSDictionary *target in [dict objectForKey:@"targets"]) {
             [targets addObject:[[LQTarget alloc] initFromDictionary:target]];
@@ -57,12 +57,12 @@
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Value not found on Liquid Package", NSLocalizedDescriptionKey, nil];
 
     // if not found:
-    if(value == nil) {
+    if (value == nil) {
         *error = [NSError errorWithDomain:kLQVersion code:kLQErrorValueNotFound userInfo:userInfo];
         return nil;
     }
     // if found::
-    if([value isKindOfClass:[NSNull class]])
+    if ([value isKindOfClass:[NSNull class]])
         return nil;
     return value;
 }
@@ -78,11 +78,59 @@
     return NO;
 }
 
+#pragma mark - Invalidation of Targets, Values and Variables
+
+-(NSInteger)invalidateTargetWihId:(NSString *)targetId {
+    NSInteger numRemovedValues = 0;
+
+    NSMutableArray *newTargets = [[NSMutableArray alloc] init];
+    for (LQTarget *target in _targets) {
+        if (![target.identifier isEqualToString:targetId]) {
+            [newTargets addObject:newTargets];
+        }
+    }
+
+    NSMutableArray *newValues = [[NSMutableArray alloc] init];
+    for (LQValue *value in _values) {
+        if ([targetId isEqualToString:value.targetId]) {
+            numRemovedValues++;
+        } else {
+            [newValues addObject:value];
+        }
+    }
+
+    _targets = [NSArray arrayWithArray:newTargets];
+    _values = [NSArray arrayWithArray:newValues];
+    _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
+
+    LQLog(kLQLogLevelInfo, @"<Liquid> Removed %d values/variables from Liquid Package related with Target ID #%@", numRemovedValues, targetId);
+    return numRemovedValues;
+}
+
+-(NSString *)targetIdOfVariable:(NSString *)variableName {
+    for (LQValue *value in _values) {
+        if ([value.variable.name isEqualToString:variableName]) {
+            return value.targetId;
+        }
+    }
+    return nil;
+}
+
+-(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName {
+    NSString *targetId = [self targetIdOfVariable:variableName];
+    NSLog(@"variable: %@ targetId: %@", variableName, targetId);
+    if (targetId != nil && ![[NSNull null] isEqual:targetId]) {
+        NSLog(@"shouldn't enter, with variable: %@ targetId: %@", variableName, targetId);
+        return [self invalidateTargetWihId:[self targetIdOfVariable:variableName]];
+    }
+    return 0;
+}
+
 #pragma mark - NSCoding
 
 -(id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
-    if(self) {
+    if (self) {
         _targets = [aDecoder decodeObjectForKey:@"targets"];
         _values = [aDecoder decodeObjectForKey:@"values"];
         _liquidVersion = [aDecoder decodeObjectForKey:@"liquid_version"];

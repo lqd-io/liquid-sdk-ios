@@ -16,6 +16,7 @@
 -(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values;
 -(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error;
 -(BOOL)variable:(NSString *)variableName matchesLiquidType:(NSString *)typeString;
+-(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName;
 
 +(LQLiquidPackage *)loadFromDisk;
 +(BOOL)destroyCachedLiquidPackage;
