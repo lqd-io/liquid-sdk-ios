@@ -83,9 +83,11 @@ static Liquid *sharedInstance = nil;
         numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
     }
     if (numberOfInvalidatedValues > 0) {
-        [_loadedLiquidPackage saveToDisk];
-        [self loadLiquidPackage];
-        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%d) covered by its target were invalidated, so we are using fallback values instead.", variableName, numberOfInvalidatedValues);
+        [self notifyDelegatesAndObserversAboutNewValues];
+        dispatch_async(self.queue, ^() {
+            [_loadedLiquidPackage saveToDisk];
+            LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%d) covered by its target were invalidated, so we are using fallback values instead.", variableName, numberOfInvalidatedValues);
+        });
     }
 }
 
@@ -426,7 +428,10 @@ static Liquid *sharedInstance = nil;
         NSArray *emptyArray = [[NSArray alloc] initWithObjects:nil];
         _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithTargets:emptyArray withValues:emptyArray];
     }
-    
+    [self notifyDelegatesAndObserversAboutNewValues];
+}
+
+-(void)notifyDelegatesAndObserversAboutNewValues {
     NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[_loadedLiquidPackage dictOfVariablesAndValues], @"values", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:userInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidLoadValues)]) {
