@@ -99,7 +99,9 @@ static Liquid *sharedInstance = nil;
         // Start auto flush timer
         [self startFlushTimer];
 
-        if(!_loadedLiquidPackage) [self loadLiquidPackageSynced];
+        if(!_loadedLiquidPackage) {
+            [self loadLiquidPackageSynced];
+        }
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
