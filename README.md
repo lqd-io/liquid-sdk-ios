@@ -10,7 +10,7 @@ To integrate Liquid in your app, just follow 4 simple steps below.
 2. Open your Xcode project folder and create a file called `Podfile` with the following content:
 
     ```
-    pod 'Liquid', git: https://github.com/lqd-io/liquid-sdk-ios.git
+    pod 'Liquid'
     ```
 
 3. Run `pod install` and wait for CocoaPod to install Liquid SDK. From this moment on, instead of using `.xcodeproj` file, you should start using `.xcworkspace`.
