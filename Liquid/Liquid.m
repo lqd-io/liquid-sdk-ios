@@ -683,16 +683,31 @@ static Liquid *sharedInstance = nil;
 
 #pragma mark - Resetting
 
-- (void)reset {
-    self.currentUser = nil;
-    self.device = nil;
-    self.currentSession = nil;
-    self.apiToken = nil;
-    self.enterBackgroundTime = nil;
-    self.enterBackgroundTime = nil;
-    self.timer = nil;
-    self.httpQueue = nil;
-    self.loadedLiquidPackage = nil;
+- (void)softReset {
+    @synchronized(self) {
+        self.currentUser = nil;
+        self.device = nil;
+        self.currentSession = nil;
+        self.enterBackgroundTime = nil;
+        self.timer = nil;
+        self.httpQueue = nil;
+        self.loadedLiquidPackage = nil;
+        [self veryFirstMoment];
+        _firstEventSent = NO;
+    }
+    @synchronized(_loadedLiquidPackage) {
+        [LQLiquidPackage destroyCachedLiquidPackage];
+        [self loadLiquidPackage];
+    }
+    LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
+}
+
+- (void)hardReset {
+    [self softReset];
+    @synchronized(self) {
+        [Liquid deleteFileIfExists:[Liquid liquidQueueFileForToken:self.apiToken] error:nil];
+    }
+    LQLog(kLQLogLevelInfo, @"<Liquid> Hard reset Liquid");
 }
 
 #pragma mark - Networking

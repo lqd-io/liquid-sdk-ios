@@ -447,16 +447,27 @@
  */
 
 -(void)flush;
+
 /*!
  @method
  
  @abstract
- Reset all the instance variables.
+ Soft Reset Liquid SDK.
  
  @discussion
- Will clear the queue of pending requests, current user and current 
- session. Should be followed by an identifyUser method call.
+ Will reset all liquid (dynamic variable) to its fallback values. A new session is created, and user attributes are reset.
  */
--(void)reset;
+-(void)softReset;
+
+/*!
+ @method
+ 
+ @abstract
+ Hard reset Liquid SDK.
+ 
+ @discussion
+ Will reset Liquid as soft reset does, but also remove all queued HTTP requests.
+ */
+-(void)hardReset;
 
 @end
