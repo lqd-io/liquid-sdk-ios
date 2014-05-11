@@ -44,7 +44,10 @@ static Liquid *sharedInstance = nil;
 
 @synthesize flushInterval = _flushInterval;
 @synthesize autoLoadValues = _autoLoadValues;
+@synthesize queueSizeLimit = _queueSizeLimit;
+@synthesize flushOnBackground = _flushOnBackground;
 @synthesize sessionTimeout = _sessionTimeout;
+@synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 
 #pragma mark - Singletons
 
@@ -69,8 +72,6 @@ static Liquid *sharedInstance = nil;
     return sharedInstance;
 }
 
-
-
 #pragma mark - Initialization
 
 - (instancetype)initWithToken:(NSString *)apiToken {
@@ -94,7 +95,11 @@ static Liquid *sharedInstance = nil;
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)development {
     [self veryFirstMoment];
     _firstEventSent = NO;
-    if (development) _developmentMode = YES; else _developmentMode = NO;
+    if (development) {
+        _developmentMode = YES;
+    } else {
+        _developmentMode = NO;
+    }
     if (apiToken == nil) apiToken = @"";
     if ([apiToken length] == 0) LQLog(kLQLogLevelError, @"<Liquid> Error: %@ empty API Token", self);
     if (self = [self init]) {
@@ -103,12 +108,9 @@ static Liquid *sharedInstance = nil;
         // Initialization
         self.apiToken = apiToken;
         self.serverURL = kLQServerUrl;
-        self.flushOnBackground = kLQDefaultFlushOnBackground;
         self.device = [[LQDevice alloc] initWithLiquidVersion:kLQVersion];
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
-        _flushInterval = kLQDefaultFlushInterval.intValue;
-        _sessionTimeout = kLQDefaultSessionTimeout.intValue;
         
         // Start auto flush timer
         [self startFlushTimer];
@@ -143,6 +145,49 @@ static Liquid *sharedInstance = nil;
 - (NSDate *)veryFirstMoment {
     if (!_veryFirstMoment) _veryFirstMoment = [NSDate new];
     return _veryFirstMoment;
+}
+
+- (BOOL)flushOnBackground {
+    if (!_flushOnBackground) _flushOnBackground = kLQDefaultFlushOnBackground;
+    return _flushOnBackground;
+}
+
+- (NSUInteger)queueSizeLimit {
+    if (!_queueSizeLimit) _queueSizeLimit = kLQHttpQueueSizeLimit;
+    return _queueSizeLimit;
+}
+
+- (BOOL)sendFallbackValuesInDevelopmentMode {
+    if (!_sendFallbackValuesInDevelopmentMode) _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
+    return _sendFallbackValuesInDevelopmentMode;
+}
+
+- (NSUInteger)flushInterval {
+    @synchronized(self) {
+        if (!_flushInterval) _flushInterval = kLQDefaultFlushInterval;
+        return _flushInterval;
+    }
+}
+
+- (void)setFlushInterval:(NSUInteger)interval {
+    [self stopFlushTimer];
+    @synchronized(self) {
+        _flushInterval = interval;
+    }
+    [self startFlushTimer];
+}
+
+- (NSInteger)sessionTimeout {
+    @synchronized(self) {
+        if (!_sessionTimeout) _sessionTimeout = kLQDefaultSessionTimeout;
+        return _sessionTimeout;
+    }
+}
+
+- (void)setSessionTimeout:(NSInteger)sessionTimeout {
+    @synchronized(self) {
+        _sessionTimeout = sessionTimeout;
+    }
 }
 
 #pragma mark - UIApplication notifications
@@ -263,18 +308,6 @@ static Liquid *sharedInstance = nil;
 
 #pragma mark - Session
 
-- (NSInteger)sessionTimeout {
-    @synchronized(self) {
-        return _sessionTimeout;
-    }
-}
-
-- (void)setSessionTimeout:(NSInteger)sessionTimeout {
-    @synchronized(self) {
-        _sessionTimeout = sessionTimeout;
-    }
-}
-
 -(void)destroySessionIfExists {
     if(self.currentUser != nil && self.currentSession != nil) {
         [[self currentSession] endSessionOnDate:self.enterBackgroundTime];
@@ -302,7 +335,7 @@ static Liquid *sharedInstance = nil;
     if(self.currentSession != nil) {
         NSDate *now = [NSDate new];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
-        if(interval >= _sessionTimeout || interval > [kLQDefaultSessionMaxLimit intValue]) {
+        if(interval >= _sessionTimeout || interval > kLQDefaultSessionMaxLimit) {
             [self destroySessionIfExists];
             [self newSessionInCurrentThread:NO];
             return YES;
@@ -470,7 +503,7 @@ static Liquid *sharedInstance = nil;
 #pragma mark - Values with Data Types
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode && fallbackValue) {
+    if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
         NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
         [self sendVariable:variableName withFallback:[dateFormatter stringFromDate:fallbackValue] withLiquidType:kLQDataTypeDateTime];
     }
@@ -495,7 +528,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode && fallbackValue) {
+    if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
         [self sendVariable:variableName withFallback:[Liquid hexStringFromUIColor:fallbackValue] withLiquidType:kLQDataTypeColor];
     }
     
@@ -525,7 +558,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode && fallbackValue) {
+    if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
         [self sendVariable:variableName withFallback:fallbackValue withLiquidType:kLQDataTypeString];
     }
 
@@ -544,7 +577,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+    if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
         [self sendVariable:variableName withFallback:[NSNumber numberWithInteger:fallbackValue] withLiquidType:kLQDataTypeInteger];
     }
 
@@ -560,7 +593,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+    if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
         [self sendVariable:variableName withFallback:[NSNumber numberWithFloat:fallbackValue] withLiquidType:kLQDataTypeFloat];
     }
 
@@ -576,7 +609,7 @@ static Liquid *sharedInstance = nil;
 }
 
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
-    if(_developmentMode && kLQSendFallbackValuesInDevelopmentMode) {
+    if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
         [self sendVariable:variableName withFallback:[NSNumber numberWithBool:fallbackValue] withLiquidType:kLQDataTypeBoolean];
     }
 
@@ -599,12 +632,12 @@ static Liquid *sharedInstance = nil;
                                          withHttpMethod:httpMethod
                                                withJSON:json];
 
-    if (self.httpQueue.count < kLQQueueSizeLimit) {
+    if (self.httpQueue.count < self.queueSizeLimit) {
         [self.httpQueue addObject:queuedEvent];
         [Liquid archiveQueue:self.httpQueue
                     forToken:self.apiToken];
     } else {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Queue excdeeded its limit size (%d).", kLQQueueSizeLimit);
+        LQLog(kLQLogLevelWarning, @"<Liquid> Queue excdeeded its limit size (%d).", self.queueSizeLimit);
     }
 }
 
@@ -645,20 +678,6 @@ static Liquid *sharedInstance = nil;
             [Liquid archiveQueue:self.httpQueue forToken:_apiToken];
         }
     });
-}
-
-- (NSUInteger)flushInterval {
-    @synchronized(self) {
-        return _flushInterval;
-    }
-}
-
-- (void)setFlushInterval:(NSUInteger)interval {
-    [self stopFlushTimer];
-    @synchronized(self) {
-        _flushInterval = interval;
-    }
-    [self startFlushTimer];
 }
 
 - (void)startFlushTimer {

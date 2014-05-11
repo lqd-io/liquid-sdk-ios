@@ -1,5 +1,5 @@
 //
-//  LQConstants.h
+//  LQDefaults.h
 //  LiquidApp
 //
 //  Created by Liquid Data Intelligence, S.A. (lqd.io) on 3/28/14.
@@ -24,12 +24,12 @@
 #define kLQLogLevelNone        0
 
 #define kLQLogLevel kLQLogLevelError
-#define kLQDefaultSessionTimeout @30 //seconds
-#define kLQQueueSizeLimit 500 // datapoints
+#define kLQDefaultSessionTimeout 30 //seconds
+#define kLQHttpQueueSizeLimit 500 // datapoints
 #ifdef DEBUG
-#    define kLQDefaultFlushInterval @5 //seconds
+#    define kLQDefaultFlushInterval 5 //seconds
 #else
-#    define kLQDefaultFlushInterval @15 //seconds
+#    define kLQDefaultFlushInterval 15 //seconds
 #endif
 #define kLQHttpUnreachableWait 60.0f // seconds
 #define kLQHttpRejectedWait 3600.0f // seconds
@@ -37,7 +37,7 @@
 #define kLQDefaultFlushOnBackground YES
 #define kLQDirectory kLQBundle
 #define kLQSendFallbackValuesInDevelopmentMode YES
-#define kLQDefaultSessionMaxLimit @7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
+#define kLQDefaultSessionMaxLimit 7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
 
 #define kLQErrorValueNotFound 1
 

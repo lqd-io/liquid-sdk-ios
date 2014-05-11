@@ -7,7 +7,7 @@
 //
 
 #import "LQLiquidPackage.h"
-#import "LQConstants.h"
+#import "LQDefaults.h"
 
 @interface LQLiquidPackage ()
 

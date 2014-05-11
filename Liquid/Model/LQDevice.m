@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "LQConstants.h"
+#import "LQDefaults.h"
 #import "LQDevice.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>

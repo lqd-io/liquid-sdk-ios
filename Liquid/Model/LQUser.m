@@ -8,7 +8,7 @@
 
 #import "LQDevice.h"
 #import "LQUser.h"
-#import "LQConstants.h"
+#import "LQDefaults.h"
 
 @implementation LQUser
 

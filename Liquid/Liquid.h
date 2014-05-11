@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIColor.h>
-#import "LQConstants.h"
+#import "LQDefaults.h"
 
 @protocol LiquidDelegate <NSObject>
 @optional
@@ -86,7 +86,7 @@
  @discussion
  Setting a flush interval of 0 will disable the flush timer.
  */
-@property (atomic) NSUInteger flushInterval;
+@property (nonatomic) NSUInteger flushInterval;
 
 /*!
  @property
@@ -98,8 +98,32 @@
  @discussion
  Defaults to YES.
  */
-@property (atomic) BOOL flushOnBackground;
+@property (nonatomic, assign) BOOL flushOnBackground;
 
+/*!
+ @property
+ 
+ @abstract
+ Control whether variable fallback values should be send to Liquid dashboard
+ in development mode, thus assumed as default values. This is not mandatory
+ for Liquid to work. It just eases and speeds up development process.
+ 
+ @discussion
+ Defaults to YES.
+ */
+@property (nonatomic, assign) BOOL sendFallbackValuesInDevelopmentMode;
+
+/*!
+ @property
+ 
+ @abstract
+ Max size of HTTP requests queue.
+ 
+ @discussion
+ HTTP requests are stored in a queue before being sent to server.
+ If server is not reachable, queue is persisted until a connection is available.
+ */
+@property (nonatomic, assign) NSUInteger queueSizeLimit;
 
 /*!
  @property
@@ -123,7 +147,7 @@
  Lets the developer control the session timeout for the Liquid API.
  Defaults to 30 seconds.
  */
-@property (atomic) NSInteger sessionTimeout;
+@property (nonatomic, assign) NSInteger sessionTimeout;
 
 /*!
  @method
