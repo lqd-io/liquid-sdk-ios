@@ -79,11 +79,11 @@ static Liquid *sharedInstance = nil;
 
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
     NSInteger numberOfInvalidatedValues = 0;
-    @synchronized(_loadedLiquidPackage) {
-        numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-    }
+    numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
     if (numberOfInvalidatedValues > 0) {
-        [self notifyDelegatesAndObserversAboutNewValues];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self notifyDelegatesAndObserversAboutNewValues];
+        });
         dispatch_async(self.queue, ^() {
             [_loadedLiquidPackage saveToDisk];
             LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%d) covered by its target were invalidated, so we are using fallback values instead.", variableName, numberOfInvalidatedValues);
