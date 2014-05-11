@@ -518,7 +518,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             return nil;
         }
         if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
-            NSDate *date = [Liquid extractDateFrom:value.value];
+            NSDate *date = [Liquid gettDateFromISO8601String:value.value];
             if(!date) {
                 [self invalidateTargetThatIncludesVariable:variableName];
                 return fallbackValue;
@@ -966,13 +966,13 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 +(NSDateFormatter *)isoDateFormatter {
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+    [formatter setDateFormat:kLQISO8601DateFormat];
     [formatter setCalendar:gregorianCalendar];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     return formatter;
 }
 
-+(NSDate *)extractDateFrom:(NSString *)iso8601String {
++(NSDate *)gettDateFromISO8601String:(NSString *)iso8601String {
     NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
     NSDate *date = [dateFormatter dateFromString:iso8601String];
     if (!date) {

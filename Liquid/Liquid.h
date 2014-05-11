@@ -497,4 +497,10 @@ extern NSString * const LQDidLoadValues;
  */
 -(void)hardReset;
 
+
++ (UIColor *)colorFromString:(NSString *)hexString;
++ (NSString *)hexStringFromUIColor:(UIColor *)color;
++ (NSDateFormatter *)isoDateFormatter;
++ (NSDate *)gettDateFromISO8601String:(NSString *)iso8601String;
+
 @end

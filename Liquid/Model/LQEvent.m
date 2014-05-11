@@ -7,6 +7,7 @@
 //
 
 #import "LQEvent.h"
+#import "LQDefaults.h"
 
 @implementation LQEvent
 
@@ -51,7 +52,7 @@
 +(NSDateFormatter *)isoDateFormatter {
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"];
+    [formatter setDateFormat:kLQISO8601DateFormat];
     [formatter setCalendar:gregorianCalendar];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     return formatter;
