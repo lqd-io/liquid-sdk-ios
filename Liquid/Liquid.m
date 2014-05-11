@@ -230,7 +230,7 @@ static Liquid *sharedInstance = nil;
     // Request variables from API
     [self requestNewLiquidPackage];
 
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> From now on, we're identifying the User by identifier '%@'", self.currentUser.identifier);
+    LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", self.currentUser.identifier);
 }
 
 -(NSString *)userIdentifier {
