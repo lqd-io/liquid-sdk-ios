@@ -52,6 +52,9 @@
  */
 @interface Liquid : NSObject
 
+extern NSString * const LQDidReceiveValues;
+extern NSString * const LQDidLoadValues;
+
 /*!
  @property
  

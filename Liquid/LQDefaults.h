@@ -11,8 +11,8 @@
 #define kLQVersion @"0.5.1-beta"
 #define kLQBundle @"io.lqd.ios"
 #define kLQServerUrl @"https://api.lqd.io/collect/"
-#define LQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
-#define LQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
+#define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
+#define kLQNotificationLQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
 
 #define kLQLogLevelPaths       7
 #define kLQLogLevelHttp        6

@@ -49,6 +49,9 @@ static Liquid *sharedInstance = nil;
 @synthesize sessionTimeout = _sessionTimeout;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 
+NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
+NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
+
 #pragma mark - Singletons
 
 + (Liquid *)sharedInstanceWithToken:(NSString *)apiToken {
