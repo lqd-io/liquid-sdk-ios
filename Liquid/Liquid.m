@@ -91,10 +91,10 @@ static Liquid *sharedInstance = nil;
     }
 }
 
-- (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt {
+- (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)development {
     [self veryFirstMoment];
     _firstEventSent = NO;
-    if (developemnt) _developmentMode = YES; else _developmentMode = NO;
+    if (development) _developmentMode = YES; else _developmentMode = NO;
     if (apiToken == nil) apiToken = @"";
     if ([apiToken length] == 0) LQLog(kLQLogLevelError, @"<Liquid> Error: %@ empty API Token", self);
     if (self = [self init]) {
