@@ -90,7 +90,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         });
         dispatch_async(self.queue, ^() {
             [_loadedLiquidPackage saveToDisk];
-            LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%d) covered by its target were invalidated, so we are using fallback values instead.", variableName, numberOfInvalidatedValues);
+            LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%ld) covered by its target were invalidated, so we are using fallback values instead.", variableName, (long)numberOfInvalidatedValues);
         });
     }
 }
@@ -640,7 +640,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         [Liquid archiveQueue:self.httpQueue
                     forToken:self.apiToken];
     } else {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Queue excdeeded its limit size (%d).", self.queueSizeLimit);
+        LQLog(kLQLogLevelWarning, @"<Liquid> Queue excdeeded its limit size (%ld).", (long)self.queueSizeLimit);
     }
 }
 
@@ -756,13 +756,13 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while sending data to server: Server is unreachable", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
             return LQQueueStatusUnreachable;
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while sending data to server: Unauthorized (check App Token)", error.code);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
             return LQQueueStatusUnauthorized;
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while sending data to server: Server error", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
             return LQQueueStatusRejected;
         }
     } else {
@@ -770,7 +770,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return LQQueueStatusOk;
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while sending data to server: Server error", httpResponse.statusCode);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)httpResponse.statusCode);
             return LQQueueStatusRejected;
         }
     }
@@ -797,11 +797,11 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while getting data from server: Server is unreachable", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", (long)error.code);
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%d) while getting data from server: Unauthorized (check App Token)", error.code);
+            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Unauthorized (check App Token)", (long)error.code);
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while getting data from server: Server error", error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server error", (long)error.code);
         }
         return nil;
     } else {
@@ -809,7 +809,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return responseData;
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%d) while getting data from server: Server error", httpResponse.statusCode);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server error", (long)httpResponse.statusCode);
             return nil;
         }
     }

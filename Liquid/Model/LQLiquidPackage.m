@@ -103,7 +103,7 @@
     _values = [NSArray arrayWithArray:newValues];
     _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
 
-    LQLog(kLQLogLevelInfo, @"<Liquid> Removed %d values/variables from Liquid Package related with Target ID #%@", numRemovedValues, targetId);
+    LQLog(kLQLogLevelInfo, @"<Liquid> Removed %ld values/variables from Liquid Package related with Target ID #%@", (long)numRemovedValues, targetId);
     return numRemovedValues;
 }
 
