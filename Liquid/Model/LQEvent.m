@@ -12,7 +12,7 @@
 
 #pragma mark - Initializer
 
--(id)initWithName:(NSString *)name withAttributes:(NSDictionary *)attributes withDate:(NSDate *)date {
+-(id)initWithName:(NSString *)name attributes:(NSDictionary *)attributes date:(NSDate *)date {
     self = [super init];
     if(self) {
         _name = name;
@@ -28,10 +28,10 @@
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {
-    return [self jsonDictionaryWithUser:nil withDevice:nil withSession:nil];
+    return [self jsonDictionaryWithUser:nil device:nil session:nil];
 }
 
--(NSDictionary *)jsonDictionaryWithUser:(LQUser*)user withDevice:(LQDevice*)device withSession:(LQSession *)session {
+-(NSDictionary *)jsonDictionaryWithUser:(LQUser*)user device:(LQDevice*)device session:(LQSession *)session {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_name forKey:@"name"];

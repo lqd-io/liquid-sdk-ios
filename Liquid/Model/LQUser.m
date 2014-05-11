@@ -14,7 +14,7 @@
 
 #pragma mark - Initializer
 
--(id)initWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location {
+-(id)initWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
     self = [super init];
     if(self) {
         _identifier = identifier;

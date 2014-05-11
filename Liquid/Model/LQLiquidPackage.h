@@ -13,7 +13,7 @@
 @interface LQLiquidPackage : NSObject<NSCoding>
 
 -(id)initFromDictionary:(NSDictionary *)dict;
--(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values;
+-(id)initWithTargets:(NSArray *)targets values:(NSArray *)values;
 -(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error;
 -(BOOL)variable:(NSString *)variableName matchesLiquidType:(NSString *)typeString;
 -(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName;

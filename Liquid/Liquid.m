@@ -211,7 +211,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     });
 
     if(!sessionTimedOut && self.inBackground) {
-        [self track:@"_resumeSession" withAttributes:nil allowLqdEvents:YES];
+        [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES];
         _inBackground = NO;
     }
 }
@@ -223,7 +223,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     // Stop flush timer on app pause
     [self stopFlushTimer];
     
-    [self track:@"_pauseSession" withAttributes:nil allowLqdEvents:YES];
+    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES];
 
     // Store queue to plist
     [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
@@ -245,32 +245,32 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier {
     [self identifyUserWithIdentifier:identifier
-                      withAttributes:nil];
+                          attributes:nil];
 }
 
--(void)identifyUserWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes {
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
     [self identifyUserWithIdentifier:identifier
-                      withAttributes:attributes
-                        withLocation:nil];
+                          attributes:attributes
+                            location:nil];
 }
 
--(void)identifyUserWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location {
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
     }
     dispatch_async(self.queue, ^() {
-        [self identifyUserSyncedWithIdentifier:identifier withAttributes:attributes withLocation:location];
+        [self identifyUserSyncedWithIdentifier:identifier attributes:attributes location:location];
     });
 }
 
--(void)identifyUserSyncedWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location {
+-(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
     [self destroySessionIfExists];
 
     // Create user from identifier, attributes and location
     self.currentUser = [[LQUser alloc] initWithIdentifier:identifier
-                                           withAttributes:attributes
-                                             withLocation:location];
+                                               attributes:attributes
+                                                 location:location];
 
     // Create session for identified user
     [self newSessionInCurrentThread:YES];
@@ -314,7 +314,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 -(void)destroySessionIfExists {
     if(self.currentUser != nil && self.currentSession != nil) {
         [[self currentSession] endSessionOnDate:self.enterBackgroundTime];
-        [self track:@"_endSession" withAttributes:nil allowLqdEvents:YES];
+        [self track:@"_endSession" attributes:nil allowLqdEvents:YES];
     }
 }
 
@@ -325,8 +325,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
         }
-        self.currentSession = [[LQSession alloc] initWithDate:now withTimeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
-        [self track:@"_startSession" withAttributes:nil allowLqdEvents:YES];
+        self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
+        [self track:@"_startSession" attributes:nil allowLqdEvents:YES];
     };
     if(inThread)
         newSessionBlock();
@@ -350,22 +350,22 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 #pragma mark - Event
 
 -(void)track:(NSString *)eventName {
-    [self track:eventName withAttributes:nil allowLqdEvents:NO];
+    [self track:eventName attributes:nil allowLqdEvents:NO];
 }
 
--(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes {
-    [self track:eventName withAttributes:nil allowLqdEvents:NO];
+-(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
+    [self track:eventName attributes:nil allowLqdEvents:NO];
 }
 
--(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
+-(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
         LQLog(kLQLogLevelError, @"<Liquid> Events cannot start with _");
         return;
     }
     if(self.currentUser == nil) {
         [self identifyUserSyncedWithIdentifier:nil
-                                withAttributes:nil
-                                  withLocation:nil];
+                                    attributes:nil
+                                      location:nil];
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
     }
 
@@ -389,14 +389,14 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
             finalEventName = @"unnamedEvent";
         }
-        LQEvent *event = [[LQEvent alloc] initWithName:finalEventName withAttributes:attributes withDate:now];
+        LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:attributes date:now];
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
-                                                          withUser:self.currentUser
-                                                        withDevice:self.device
-                                                       withSession:self.currentSession
-                                                         withEvent:event
-                                                       withTargets:_loadedLiquidPackage.targets
-                                                        withValues:_loadedLiquidPackage.values];
+                                                              user:self.currentUser
+                                                            device:self.device
+                                                           session:self.currentSession
+                                                             event:event
+                                                           targets:_loadedLiquidPackage.targets
+                                                            values:_loadedLiquidPackage.values];
     
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
         [self addToHttpQueue:[dataPoint jsonDictionary]
@@ -410,8 +410,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 -(LQLiquidPackage *)requestNewLiquidPackageSynced {
     if(self.currentUser == nil || self.currentSession == nil) {
         [self identifyUserSyncedWithIdentifier:nil
-                                withAttributes:nil
-                                  withLocation:nil];
+                                    attributes:nil
+                                      location:nil];
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
     } else {
         NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
@@ -462,7 +462,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         _loadedLiquidPackage = liquidPackage;
     } else {
         NSArray *emptyArray = [[NSArray alloc] initWithObjects:nil];
-        _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithTargets:emptyArray withValues:emptyArray];
+        _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithTargets:emptyArray values:emptyArray];
     }
     [self notifyDelegatesAndObserversAboutNewValues];
 }

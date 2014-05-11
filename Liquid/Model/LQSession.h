@@ -12,14 +12,14 @@
 
 @interface LQSession : NSObject
 
--(id)initWithDate:(NSDate *)date withTimeout:(NSNumber*)timeout;
+-(id)initWithDate:(NSDate *)date timeout:(NSNumber*)timeout;
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key;
 -(id)attributeForKey:(NSString *)key;
 -(void)endSessionOnDate:(NSDate *)endDate;
 
 -(NSDictionary*)jsonDictionary;
--(NSDictionary*)jsonDictionaryWithUser:(LQUser*)user withDevice:(LQDevice*)device;
+-(NSDictionary*)jsonDictionaryWithUser:(LQUser*)user device:(LQDevice*)device;
 
 @property(nonatomic, strong, readonly) NSString* identifier;
 @property(nonatomic, strong, readonly) NSDate* start;

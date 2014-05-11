@@ -11,7 +11,7 @@
 
 @interface LQUser : NSObject
 
-- (id)initWithIdentifier:(NSString*)identifier withAttributes:(NSDictionary*)attributes withLocation:(CLLocation*)location;
+- (id)initWithIdentifier:(NSString*)identifier attributes:(NSDictionary*)attributes location:(CLLocation*)location;
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString*)key;
 -(id)attributeForKey:(NSString*)key;

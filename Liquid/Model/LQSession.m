@@ -12,7 +12,7 @@
 
 #pragma mark - Initializer
 
--(id)initWithDate:(NSDate *)date withTimeout:(NSNumber*)timeout {
+-(id)initWithDate:(NSDate *)date timeout:(NSNumber*)timeout {
     self = [super init];
     if(self) {
         _identifier = [LQSession newSessionIdentifier];
@@ -42,10 +42,10 @@
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary{
-    return [self jsonDictionaryWithUser:nil withDevice:nil];
+    return [self jsonDictionaryWithUser:nil device:nil];
 }
 
--(NSDictionary *)jsonDictionaryWithUser:(LQUser *)user withDevice:(LQDevice *)device {
+-(NSDictionary *)jsonDictionaryWithUser:(LQUser *)user device:(LQDevice *)device {
     NSDateFormatter *dateFormatter = [[self class] isoDateFormatter];
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];

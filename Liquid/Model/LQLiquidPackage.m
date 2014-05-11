@@ -15,7 +15,7 @@
 
 @implementation LQLiquidPackage
 
--(id)initWithTargets:(NSArray *)targets withValues:(NSArray *)values {
+-(id)initWithTargets:(NSArray *)targets values:(NSArray *)values {
     self = [super init];
     if (self) {
         _targets = targets;

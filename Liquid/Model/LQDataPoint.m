@@ -10,7 +10,7 @@
 
 @implementation LQDataPoint
 
--(id)initWithDate:(NSDate *)date withUser:(LQUser *)user withDevice:(LQDevice *)device withSession:(LQSession *)session withEvent:(LQEvent *)event withTargets:(NSArray *)targets withValues:(NSArray *)values{
+-(id)initWithDate:(NSDate *)date user:(LQUser *)user device:(LQDevice *)device session:(LQSession *)session event:(LQEvent *)event targets:(NSArray *)targets values:(NSArray *)values{
     self = [super init];
     if(self) {
         _user = user;

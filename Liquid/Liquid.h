@@ -33,13 +33,13 @@
  Liquid* liquid = [Liquid sharedInstanceWithToken:@"YOUR_API_TOKEN"];
  
  // Identify the user
- [liquid identifyUserWithIdentifier:@"username@lqd.io" withAttributes:[NSDictionary dictionaryWithObjects:@[@"23",@"male"] forKeys:@[@"age",@"sex"]]];
+ [liquid identifyUserWithIdentifier:@"username@lqd.io" attributes:[NSDictionary dictionaryWithObjects:@[@"23",@"male"] forKeys:@[@"age",@"sex"]]];
  
  // Set user attribute
  [liquid setUserAttribute:@"irish" forKey:@"nationality"];
  
  // Track an event
- [liquid track:@"purchase_click" withAttributes:[NSDictionary dictionaryWithObjects:@[@"33.89",@"USD"] forKeys:@[@"price",@"currency"]];
+ [liquid track:@"purchase_click" attributes:[NSDictionary dictionaryWithObjects:@[@"33.89",@"USD"] forKeys:@[@"price",@"currency"]];
  
  // Get variables defined on Liquid
  UIColor* backgroundColor = [liquid colorForVariable:@"tableViewBackgroundColor"];
@@ -255,7 +255,7 @@ extern NSString * const LQDidLoadValues;
  @param attributes        dictionary of user attributes
  */
 
--(void)identifyUserWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes;
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes;
 /*!
  @method
  
@@ -275,7 +275,7 @@ extern NSString * const LQDidLoadValues;
  @param location          user location
  */
 
--(void)identifyUserWithIdentifier:(NSString *)identifier withAttributes:(NSDictionary *)attributes withLocation:(CLLocation *)location;
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location;
 /*!
  @method
  
@@ -338,7 +338,7 @@ extern NSString * const LQDidLoadValues;
  @param attributes        dictionary of attributes
  */
 
--(void)track:(NSString *)eventName withAttributes:(NSDictionary *)attributes;
+-(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes;
 
 /*!
  @method
