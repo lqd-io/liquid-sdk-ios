@@ -1,6 +1,14 @@
 # Liquid iOS SDK Change Log
 
-## 0.5.1-beta: Device identifier (IFA > IFV > auto generated UID)
+## 0.6.0-beta: Inline fallback values
+
+* [feature] Fallback values are now defined inline, and not on a Property List file.
+* [feature] Added support for resetting SDK. This allows developers to recover from unexpected apllication states. All default values are reset to fallback
+* [enhancement] Logging messages improvements
+* [enhancement] Bug fixes
+
+
+## 0.5.1-beta: Device identifier (IFA/IFV/auto)
 
 * [enhancement] IFA is only used if explicitly enabled. Fallback to IFV or an auto generated UID
 
