@@ -420,8 +420,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
         [self addToHttpQueue:[dataPoint jsonDictionary]
-                withEndPoint:endPoint
-              withHttpMethod:@"POST"];
+                endPoint:endPoint
+              httpMethod:@"POST"];
     });
 }
 
@@ -510,7 +510,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 #pragma mark - Development functionalities
 
--(void)sendVariable:(NSString *)variableName withFallback:(id)fallbackValue withLiquidType:(NSString *)typeString {
+-(void)sendVariable:(NSString *)variableName fallback:(id)fallbackValue liquidType:(NSString *)typeString {
     dispatch_async(self.queue, ^{
         NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:variableName, @"name",
                                   typeString, @"data_type",
@@ -527,8 +527,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
-        NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
-        [self sendVariable:variableName withFallback:[dateFormatter stringFromDate:fallbackValue] withLiquidType:kLQDataTypeDateTime];
+        [self sendVariable:variableName fallback:fallbackValue liquidType:kLQDataTypeDateTime];
     }
 
     NSError *error;
@@ -552,7 +551,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
-        [self sendVariable:variableName withFallback:[Liquid hexStringFromUIColor:fallbackValue] withLiquidType:kLQDataTypeColor];
+        [self sendVariable:variableName fallback:fallbackValue liquidType:kLQDataTypeColor];
     }
     
     NSError *error;
@@ -582,7 +581,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
-        [self sendVariable:variableName withFallback:fallbackValue withLiquidType:kLQDataTypeString];
+        [self sendVariable:variableName fallback:fallbackValue liquidType:kLQDataTypeString];
     }
 
     NSError *error;
@@ -601,7 +600,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
-        [self sendVariable:variableName withFallback:[NSNumber numberWithInteger:fallbackValue] withLiquidType:kLQDataTypeInteger];
+        [self sendVariable:variableName fallback:[NSNumber numberWithInteger:fallbackValue] liquidType:kLQDataTypeInteger];
     }
 
     NSError *error;
@@ -617,7 +616,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
-        [self sendVariable:variableName withFallback:[NSNumber numberWithFloat:fallbackValue] withLiquidType:kLQDataTypeFloat];
+        [self sendVariable:variableName fallback:[NSNumber numberWithFloat:fallbackValue] liquidType:kLQDataTypeFloat];
     }
 
     NSError *error;
@@ -633,7 +632,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
-        [self sendVariable:variableName withFallback:[NSNumber numberWithBool:fallbackValue] withLiquidType:kLQDataTypeBoolean];
+        [self sendVariable:variableName fallback:[NSNumber numberWithBool:fallbackValue] liquidType:kLQDataTypeBoolean];
     }
 
     NSError *error;
@@ -649,7 +648,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 #pragma mark - Queueing
 
--(void)addToHttpQueue:(NSDictionary*)dictionary withEndPoint:(NSString*)endPoint withHttpMethod:(NSString*)httpMethod {
+-(void)addToHttpQueue:(NSDictionary*)dictionary endPoint:(NSString*)endPoint httpMethod:(NSString*)httpMethod {
     NSData *json = [Liquid toJSON:dictionary];
     LQQueue *queuedEvent = [[LQQueue alloc] initWithUrl:endPoint
                                          withHttpMethod:httpMethod
