@@ -673,7 +673,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             while (self.httpQueue.count > 0) {
                 LQQueue *queuedHttp = [self.httpQueue firstObject];
                 if ([[NSDate date] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
-                    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Flushing %@", [queuedHttp description]);
+                    LQLog(kLQLogLevelHttp, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
                     NSInteger res = [self sendData:queuedHttp.json
                                    toEndpoint:queuedHttp.url
                                   usingMethod:queuedHttp.httpMethod];
