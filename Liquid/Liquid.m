@@ -322,8 +322,9 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 
 + (void)assertUserAttributesTypes:(NSDictionary *)attributes {
-    for (id attribute in attributes) {
-        [Liquid assertUserAttributeType:[attributes objectForKey:attribute]];
+    for (id k in attributes) {
+        NSAssert([k isKindOfClass: [NSString class]], @"%@ attribute keys must be NSString. Got: %@ %@", self, [k class], k);
+        [Liquid assertUserAttributeType:[attributes objectForKey:k]];
     }
 }
 
@@ -882,7 +883,9 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 + (void)assertEventAttributesTypes:(NSDictionary *)attributes {
     for (id k in attributes) {
+        NSAssert([k isKindOfClass: [NSString class]], @"%@ attribute keys must be NSString. Got: %@ %@", self, [k class], k);
         NSAssert([[attributes objectForKey:k] isKindOfClass:[NSString class]] ||
+                 [[attributes objectForKey:k] isKindOfClass:[UIColor class]] ||
                  [[attributes objectForKey:k] isKindOfClass:[NSNumber class]] ||
                  [[attributes objectForKey:k] isKindOfClass:[NSNull class]] ||
                  [[attributes objectForKey:k] isKindOfClass:[NSDate class]],
