@@ -515,11 +515,12 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:variableName, @"name",
                                   typeString, @"data_type",
                                   (fallbackValue?fallbackValue:[NSNull null]), @"default_value", nil];
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
-        NSInteger res = [self sendData:[Liquid toJSON:variable]
+        NSData *json = [Liquid toJSON:variable];
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+        NSInteger res = [self sendData:json
                             toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
                            usingMethod:@"POST"];
-        if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:[Liquid toJSON:variable] encoding:NSUTF8StringEncoding]);
+        if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
     });
 }
 
