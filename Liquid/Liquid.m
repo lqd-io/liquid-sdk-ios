@@ -465,7 +465,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     });
 }
 
--(void)requestNewValues {
+-(void)requestValues {
     [self requestNewLiquidPackage];
 }
 
@@ -503,7 +503,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     });
 }
 
--(void)loadNewValues {
+-(void)loadValues {
     [self loadLiquidPackage];
 }
 

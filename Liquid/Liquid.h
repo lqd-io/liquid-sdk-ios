@@ -136,7 +136,7 @@ extern NSString * const LQDidLoadValues;
  are received from the server.
  
  @discussion
- This avoids the manual load of variables by calling the loadNewValues method.
+ This avoids the manual load of variables by calling the loadValues method.
  */
 @property (atomic) BOOL autoLoadValues;
 
@@ -353,12 +353,12 @@ extern NSString * const LQDidLoadValues;
 
  */
 
--(void)requestNewValues;
+-(void)requestValues;
 /*!
  @method
  
  @abstract
- Trigger the load of the variables received in requestNewValues.
+ Trigger the load of the variables received in requestValues.
  
  @discussion
  Will load the variables received from the Liquid API on to memory, 
@@ -366,7 +366,7 @@ extern NSString * const LQDidLoadValues;
  UIColor, NSDate, NSString or NSNumber.
  */
 
--(void)loadNewValues;
+-(void)loadValues;
 
 /*!
  @method
@@ -377,7 +377,7 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will return the color dynamic variable from a provided key.
  This will depend on the user, device and session at the time of the
- last call to requestNewValues and loadNewValues.
+ last call to requestValues and loadValues.
 
  @param variableName       the key to identify the variable
  */
@@ -392,7 +392,7 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will return the string dynamic variable from a provided key.
  This will depend on the user, device and session at the time of the
- last call to requestNewValues and loadNewValues.
+ last call to requestValues and loadValues.
  
  @param variableName       the key to identify the variable
  */
@@ -407,7 +407,7 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will return the int dynamic variable from a provided key.
  This will depend on the user, device and session at the time of the
- last call to requestNewValues and loadNewValues.
+ last call to requestValues and loadValues.
  
  @param variableName       the key to identify the variable
  */
@@ -423,7 +423,7 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will return the float dynamic variable from a provided key.
  This will depend on the user, device and session at the time of the
- last call to requestNewValues and loadNewValues.
+ last call to requestValues and loadValues.
  
  @param variableName       the key to identify the variable
  */
@@ -439,7 +439,7 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will return the boolean dynamic variable from a provided key.
  This will depend on the user, device and session at the time of the
- last call to requestNewValues and loadNewValues.
+ last call to requestValues and loadValues.
  
  @param variableName       the key to identify the variable
  */
@@ -455,7 +455,7 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will return the date dynamic variable from a provided key.
  This will depend on the user, device and session at the time of the
- last call to requestNewValues and loadNewValues.
+ last call to requestValues and loadValues.
  
  @param variableName       the key to identify the variable
  */
