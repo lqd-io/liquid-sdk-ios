@@ -266,6 +266,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
     [self destroySessionIfExists];
+    
+    [Liquid assertUserAttributesTypes:attributes];
 
     // Create user from identifier, attributes and location
     self.currentUser = [[LQUser alloc] initWithIdentifier:identifier
@@ -290,6 +292,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key {
     dispatch_async(self.queue, ^() {
+        [Liquid assertUserAttributeType:attribute];
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
@@ -307,6 +310,21 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         }
         [self.currentUser setLocation:location];
     });
+}
+
++ (void)assertUserAttributeType:(id)attribute {
+    NSAssert([attribute isKindOfClass:[NSString class]] ||
+             [attribute isKindOfClass:[NSNumber class]] ||
+             [attribute isKindOfClass:[NSNull class]] ||
+             [attribute isKindOfClass:[NSDate class]],
+             @"%@ User attribute must be NSString, NSNumber or NSDate. Got: %@ %@", self, [attribute class], attribute);
+}
+
+
++ (void)assertUserAttributesTypes:(NSDictionary *)attributes {
+    for (id attribute in attributes) {
+        [Liquid assertUserAttributeType:[attributes objectForKey:attribute]];
+    }
 }
 
 #pragma mark - Session
@@ -358,6 +376,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
+    [Liquid assertEventAttributesTypes:attributes];
+
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
         LQLog(kLQLogLevelError, @"<Liquid> Events cannot start with _");
         return;
@@ -383,7 +403,6 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [[Liquid isoDateFormatter] stringFromDate:now]);
     }
     dispatch_async(self.queue, ^{
-        //[Liquid assertEventAttributeTypes:attributes];
         NSString *finalEventName = eventName;
         if (eventName == nil || [eventName length] == 0) {
             LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
@@ -861,18 +880,13 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 #pragma mark - Static Helpers
 
-+ (void)assertEventAttributeTypes:(NSDictionary *)properties {
-    for (id k in properties) {
-        NSAssert([k isKindOfClass: [NSString class]], @"%@ property keys must be NSString. got: %@ %@", self, [k class], k);
-        // would be convenient to do: id v = [properties objectForKey:k]; but
-        // when the NSAssert's are stripped out in release, it becomes an
-        // unused variable error. also, note that @YES and @NO pass as
-        // instances of NSNumber class.
-        NSAssert([[properties objectForKey:k] isKindOfClass:[NSString class]] ||
-                 [[properties objectForKey:k] isKindOfClass:[NSNumber class]] ||
-                 [[properties objectForKey:k] isKindOfClass:[NSNull class]] ||
-                 [[properties objectForKey:k] isKindOfClass:[NSDate class]],
-                 @"%@ property values must be NSString, NSNumber or NSDate. got: %@ %@", self, [[properties objectForKey:k] class], [properties objectForKey:k]);
++ (void)assertEventAttributesTypes:(NSDictionary *)attributes {
+    for (id k in attributes) {
+        NSAssert([[attributes objectForKey:k] isKindOfClass:[NSString class]] ||
+                 [[attributes objectForKey:k] isKindOfClass:[NSNumber class]] ||
+                 [[attributes objectForKey:k] isKindOfClass:[NSNull class]] ||
+                 [[attributes objectForKey:k] isKindOfClass:[NSDate class]],
+                 @"%@ User attributes must be NSString, NSNumber or NSDate. Got: %@ %@", self, [[attributes objectForKey:k] class], [attributes objectForKey:k]);
     }
 }
 
