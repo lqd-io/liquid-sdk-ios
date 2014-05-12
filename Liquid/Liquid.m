@@ -315,6 +315,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 + (void)assertUserAttributeType:(id)attribute {
     NSAssert([attribute isKindOfClass:[NSString class]] ||
              [attribute isKindOfClass:[NSNumber class]] ||
+             [attribute isKindOfClass:[UIColor class]] ||
              [attribute isKindOfClass:[NSNull class]] ||
              [attribute isKindOfClass:[NSDate class]],
              @"%@ User attribute must be NSString, NSNumber or NSDate. Got: %@ %@", self, [attribute class], attribute);
@@ -950,9 +951,9 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     return result;
 }
 
-+ (NSData*)toJSON:(id)object {
++ (NSData*)toJSON:(NSDictionary *)object {
     __autoreleasing NSError *error = nil;
-    NSData *data = object;
+    NSData *data = (id) [Liquid normalizeDataTypes:object];
     id result = [NSJSONSerialization dataWithJSONObject:data
                                                 options:NSJSONWritingPrettyPrinted
                                                   error:&error];
@@ -961,6 +962,23 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         return nil;
     }
     return result;
+}
+
++ (NSDictionary *)normalizeDataTypes:(NSDictionary *)dictionary {
+    NSMutableDictionary *newDictionary = [NSMutableDictionary new];
+    for (id key in dictionary) {
+        id element = [dictionary objectForKey:key];
+        if ([element isKindOfClass:[NSDate class]]) {
+            [newDictionary setObject:[[Liquid isoDateFormatter] stringFromDate:element] forKey:key];
+        } else if ([element isKindOfClass:[UIColor class]]) {
+            [newDictionary setObject:[Liquid hexStringFromUIColor:element] forKey:key];
+        } else if ([element isKindOfClass:[NSDictionary class]]) {
+            [newDictionary setObject:[Liquid normalizeDataTypes:element] forKey:key];
+        } else {
+            [newDictionary setObject:element forKey:key];
+        }
+    }
+    return newDictionary;
 }
 
 #pragma mark - Liquid Helpers
