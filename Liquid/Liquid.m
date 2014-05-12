@@ -372,7 +372,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
-    [self track:eventName attributes:nil allowLqdEvents:NO];
+    [self track:eventName attributes:attributes allowLqdEvents:NO];
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
