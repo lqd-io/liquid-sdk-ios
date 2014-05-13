@@ -117,11 +117,11 @@
 -(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName {
     NSString *targetId = [self targetIdOfVariable:variableName];
     if (targetId == nil || [[NSNull null] isEqual:targetId]) {
-        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, we are using fallback value instead.", variableName);
+        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (Is it present on Liquid dashboard? Data types mismatch?). For safety reasons, we are using fallback value instead.", variableName);
         return [self invalidateVariable:variableName];
     } else {
         NSInteger numberOfInvalidatedValues = [self invalidateTargetWihId:[self targetIdOfVariable:variableName]];
-        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%ld) covered by its target were invalidated, so we are using fallback values instead.", variableName, (long)numberOfInvalidatedValues);
+        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (Is it present on Liquid dashbaoard? Data types mismatch?). For safety reasons, all variable values (%ld) covered by its target were invalidated, so we are using fallback values instead.", variableName, (long)numberOfInvalidatedValues);
         return numberOfInvalidatedValues;
     }
     return 0;
