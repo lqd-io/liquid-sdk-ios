@@ -548,7 +548,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             return nil;
         }
         if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
-            NSDate *date = [Liquid gettDateFromISO8601String:value.value];
+            NSDate *date = [Liquid getDateFromISO8601String:value.value];
             if(!date) {
                 [self invalidateTargetThatIncludesVariable:variableName];
                 return fallbackValue;
@@ -1016,11 +1016,11 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     return formatter;
 }
 
-+(NSDate *)gettDateFromISO8601String:(NSString *)iso8601String {
++(NSDate *)getDateFromISO8601String:(NSString *)iso8601String {
     NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
     NSDate *date = [dateFormatter dateFromString:iso8601String];
     if (!date) {
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+        [dateFormatter setDateFormat:kLQISO8601DateFormatWithoutMilliseconds];
         date = [dateFormatter dateFromString:iso8601String];
     }
     if(date) {

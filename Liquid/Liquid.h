@@ -501,6 +501,6 @@ extern NSString * const LQDidLoadValues;
 + (UIColor *)colorFromString:(NSString *)hexString;
 + (NSString *)hexStringFromUIColor:(UIColor *)color;
 + (NSDateFormatter *)isoDateFormatter;
-+ (NSDate *)gettDateFromISO8601String:(NSString *)iso8601String;
++ (NSDate *)getDateFromISO8601String:(NSString *)iso8601String;
 
 @end
