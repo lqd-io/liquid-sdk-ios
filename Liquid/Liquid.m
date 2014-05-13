@@ -780,7 +780,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
             return LQQueueStatusUnreachable;
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
+            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
             return LQQueueStatusUnauthorized;
         } else {
             LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
