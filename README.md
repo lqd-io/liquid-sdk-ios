@@ -39,8 +39,8 @@ Typically this is done at the same time your user logs in your app (or you perfo
 
 
     [[Liquid sharedInstance] identifyUserWithIdentifier:@"UNIQUE-ID-FOR-USER"
-                                         withAttributes:@{@"gender": @"female"},
-                                                             "name": @"Anna Lynch"];
+                                             attributes:@{ @"gender": @"female",
+                                                             @"name": @"Anna Lynch" }];
 
 The **username** or **email** are some of the typical user identifiers used by apps.
 
@@ -48,9 +48,9 @@ The **username** or **email** are some of the typical user identifiers used by a
 
 You can track any type of event in your app, using one of the following methods:
 
-    [[Liquid sharedInstance] track:@"clickedProfilePage"]
+    [[Liquid sharedInstance] track:@"clickedProfilePage"];
     [[Liquid sharedInstance] track:@"boughtProduct"
-                    withAttributes:@{ @"productId": 123 }]
+                        attributes:@{ @"productId": 123 }];
 
 ### 4. Personalize your app (with dynamic variables)
 
