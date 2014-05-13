@@ -1,5 +1,13 @@
 # Liquid iOS SDK Change Log
 
+## 0.6.1-beta: Stability improvements
+
+* [feature] NSAsserts on Event and User attributes guarantee that only supported data types are allowed
+* [enhancement] Some refactoring to respect modern code style guidelines
+* [enhancement] Code optimization and stability
+* [enhancement] Bug fixes
+
+
 ## 0.6.0-beta: Inline fallback values
 
 * [feature] Fallback values are now defined inline, and not on a Property List file.
