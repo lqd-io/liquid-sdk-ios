@@ -84,13 +84,14 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
     NSInteger numberOfInvalidatedValues = 0;
     numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-    if (numberOfInvalidatedValues > 0) {
+    if (numberOfInvalidatedValues > 1) { // if included on a target
         dispatch_async(dispatch_get_main_queue(), ^{
             [self notifyDelegatesAndObserversAboutNewValues];
         });
+    }
+    if (numberOfInvalidatedValues > 0) {
         dispatch_async(self.queue, ^() {
             [_loadedLiquidPackage saveToDisk];
-            LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%ld) covered by its target were invalidated, so we are using fallback values instead.", variableName, (long)numberOfInvalidatedValues);
         });
     }
 }
@@ -416,9 +417,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
                                                             device:self.device
                                                            session:self.currentSession
                                                              event:event
-                                                           targets:_loadedLiquidPackage.targets
                                                             values:_loadedLiquidPackage.values];
-    
+
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
         [self addToHttpQueue:[dataPoint jsonDictionary]
                 endPoint:endPoint
@@ -445,7 +445,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             }
             liquidPacakge = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
             [liquidPacakge saveToDisk];
-            
+
             [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
             if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
                 [self.delegate performSelectorOnMainThread:@selector(liquidDidReceiveValues)
@@ -483,7 +483,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         _loadedLiquidPackage = liquidPackage;
     } else {
         NSArray *emptyArray = [[NSArray alloc] initWithObjects:nil];
-        _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithTargets:emptyArray values:emptyArray];
+        _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithValues:emptyArray];
     }
     [self notifyDelegatesAndObserversAboutNewValues];
 }
@@ -733,7 +733,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 - (void)softReset {
     self.currentUser = nil;
-    self.device = nil;
+    self.device = self.device = [[LQDevice alloc] initWithLiquidVersion:kLQVersion];
     self.currentSession = nil;
     self.enterBackgroundTime = nil;
     self.timer = nil;

@@ -13,7 +13,7 @@
 @interface LQLiquidPackage : NSObject<NSCoding>
 
 -(id)initFromDictionary:(NSDictionary *)dict;
--(id)initWithTargets:(NSArray *)targets values:(NSArray *)values;
+-(id)initWithValues:(NSArray *)values;
 -(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error;
 -(BOOL)variable:(NSString *)variableName matchesLiquidType:(NSString *)typeString;
 -(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName;
@@ -23,7 +23,6 @@
 -(BOOL)saveToDisk;
 
 @property(nonatomic, strong, readonly) NSArray *values;
-@property(nonatomic, strong, readonly) NSArray *targets;
 @property(nonatomic, strong, readonly) NSString *liquidVersion;
 
 @property(nonatomic, strong, readonly) NSDictionary *dictOfVariablesAndValues;

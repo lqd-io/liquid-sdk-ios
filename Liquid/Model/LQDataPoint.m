@@ -11,7 +11,7 @@
 
 @implementation LQDataPoint
 
--(id)initWithDate:(NSDate *)date user:(LQUser *)user device:(LQDevice *)device session:(LQSession *)session event:(LQEvent *)event targets:(NSArray *)targets values:(NSArray *)values{
+-(id)initWithDate:(NSDate *)date user:(LQUser *)user device:(LQDevice *)device session:(LQSession *)session event:(LQEvent *)event values:(NSArray *)values{
     self = [super init];
     if(self) {
         _user = user;
@@ -19,7 +19,6 @@
         _session = session;
         _event = event;
         _values = values;
-        _targets = targets;
         _timestamp = event.date;
     }
     return self;
@@ -41,11 +40,6 @@
         [dictionary setObject:sessionDict forKey:@"session"];
     if (eventDict)
         [dictionary setObject:eventDict forKey:@"event"];
-    
-    NSMutableArray *targetsArray = [[NSMutableArray alloc] init];
-    for (LQTarget *target in _targets)
-        [targetsArray addObject:[target jsonDictionary]];
-    [dictionary setObject:targetsArray forKey:@"targets"];
 
     NSMutableArray *valuesArray = [[NSMutableArray alloc] init];
     for (LQValue *value in _values)

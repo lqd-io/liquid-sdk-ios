@@ -15,10 +15,9 @@
 
 @implementation LQLiquidPackage
 
--(id)initWithTargets:(NSArray *)targets values:(NSArray *)values {
+-(id)initWithValues:(NSArray *)values {
     self = [super init];
     if (self) {
-        _targets = targets;
         _values = values;
         _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
         _liquidVersion = kLQBundle;
@@ -29,12 +28,6 @@
 -(id)initFromDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        NSMutableArray *targets = [[NSMutableArray alloc] initWithObjects:nil];
-        for (NSDictionary *target in [dict objectForKey:@"targets"]) {
-            [targets addObject:[[LQTarget alloc] initFromDictionary:target]];
-        }
-        _targets = targets;
-
         NSMutableArray *values = [[NSMutableArray alloc] initWithObjects:nil];
         for (NSDictionary *value in [dict objectForKey:@"values"]) {
             [values addObject:[[LQValue alloc] initFromDictionary:value]];
@@ -78,34 +71,7 @@
     return NO;
 }
 
-#pragma mark - Invalidation of Targets, Values and Variables
-
--(NSInteger)invalidateTargetWihId:(NSString *)targetId {
-    NSInteger numRemovedValues = 0;
-
-    NSMutableArray *newTargets = [[NSMutableArray alloc] init];
-    for (LQTarget *target in _targets) {
-        if (![target.identifier isEqualToString:targetId]) {
-            [newTargets addObject:newTargets];
-        }
-    }
-
-    NSMutableArray *newValues = [[NSMutableArray alloc] init];
-    for (LQValue *value in _values) {
-        if ([targetId isEqualToString:value.targetId]) {
-            numRemovedValues++;
-        } else {
-            [newValues addObject:value];
-        }
-    }
-
-    _targets = [NSArray arrayWithArray:newTargets];
-    _values = [NSArray arrayWithArray:newValues];
-    _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
-
-    LQLog(kLQLogLevelInfo, @"<Liquid> Removed %ld values/variables from Liquid Package related with Target ID #%@", (long)numRemovedValues, targetId);
-    return numRemovedValues;
-}
+#pragma mark - Invalidation of Values and Variables
 
 -(NSString *)targetIdOfVariable:(NSString *)variableName {
     for (LQValue *value in _values) {
@@ -116,10 +82,47 @@
     return nil;
 }
 
+-(NSInteger)invalidateTargetWihId:(NSString *)targetId {
+    NSInteger numRemovedValues = 0;
+
+    NSMutableArray *newValues = [[NSMutableArray alloc] init];
+    for (LQValue *value in _values) {
+        if ([targetId isEqualToString:value.targetId]) {
+            numRemovedValues++;
+        } else {
+            [newValues addObject:value];
+        }
+    }
+    _values = [NSArray arrayWithArray:newValues];
+    _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
+
+    LQLog(kLQLogLevelInfo, @"<Liquid> Removed %ld values/variables from Liquid Package related with Target ID #%@", (long)numRemovedValues, targetId);
+    return numRemovedValues;
+}
+
+-(NSInteger)invalidateVariable:(NSString *)variableName {
+    NSMutableArray *newValues = [[NSMutableArray alloc] init];
+    for (LQValue *value in _values) {
+        if (![variableName isEqualToString:value.variable.name]) {
+            [newValues addObject:value];
+        }
+    }
+    _values = [NSArray arrayWithArray:newValues];
+    _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
+
+    LQLog(kLQLogLevelInfo, @"<Liquid> Removed value/variable '%@' from Liquid Package", variableName);
+    return 1;
+}
+
 -(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName {
     NSString *targetId = [self targetIdOfVariable:variableName];
-    if (targetId != nil && ![[NSNull null] isEqual:targetId]) {
-        return [self invalidateTargetWihId:[self targetIdOfVariable:variableName]];
+    if (targetId == nil || [[NSNull null] isEqual:targetId]) {
+        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, we are using fallback value instead.", variableName);
+        return [self invalidateVariable:variableName];
+    } else {
+        NSInteger numberOfInvalidatedValues = [self invalidateTargetWihId:[self targetIdOfVariable:variableName]];
+        LQLog(kLQLogLevelError, @"<Liquid> Something wrong happened with dynamic variable '%@' (data types mismatch?). For safety reasons, all variable values (%ld) covered by its target were invalidated, so we are using fallback values instead.", variableName, (long)numberOfInvalidatedValues);
+        return numberOfInvalidatedValues;
     }
     return 0;
 }
@@ -129,7 +132,6 @@
 -(id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if (self) {
-        _targets = [aDecoder decodeObjectForKey:@"targets"];
         _values = [aDecoder decodeObjectForKey:@"values"];
         _liquidVersion = [aDecoder decodeObjectForKey:@"liquid_version"];
         _dictOfVariablesAndValues = [LQValue dictionaryFromArrayOfValues:_values];
@@ -138,7 +140,6 @@
 }
 
 -(void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:_targets forKey:@"targets"];
     [aCoder encodeObject:_values forKey:@"values"];
     [aCoder encodeObject:_liquidVersion forKey:@"liquid_version"];
 }
