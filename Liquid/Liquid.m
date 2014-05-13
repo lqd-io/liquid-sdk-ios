@@ -35,6 +35,7 @@
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
+@property(nonatomic, strong, readonly) NSString *liquidUserAgent;
 
 @end
 
@@ -48,6 +49,7 @@ static Liquid *sharedInstance = nil;
 @synthesize flushOnBackground = _flushOnBackground;
 @synthesize sessionTimeout = _sessionTimeout;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
+@synthesize liquidUserAgent = _liquidUserAgent;
 
 NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
 NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
@@ -192,6 +194,13 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     @synchronized(self) {
         _sessionTimeout = sessionTimeout;
     }
+}
+
+- (NSString *)liquidUserAgent {
+    if(!_liquidUserAgent) {
+        _liquidUserAgent = [NSString stringWithFormat:@"Liquid/%@ (%@ ; %@)", kLQVersion, kLQDevicePlatform, [LQDevice deviceModel]];
+    }
+    return _liquidUserAgent;
 }
 
 #pragma mark - UIApplication notifications
@@ -759,7 +768,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:method];
     [request setValue:[NSString stringWithFormat:@"Token %@", self.apiToken] forHTTPHeaderField:@"Authorization"];
-    [request setValue:[NSString stringWithFormat:@"Liquid/%@", kLQVersion] forHTTPHeaderField:@"User-Agent"];
+    [request setValue:self.liquidUserAgent forHTTPHeaderField:@"User-Agent"];
     [request setValue:@"application/vnd.lqd.v1+json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
@@ -802,7 +811,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     [request setValue:[NSString stringWithFormat:@"Token %@", self.apiToken] forHTTPHeaderField:@"Authorization"];
-    [request setValue:[NSString stringWithFormat:@"Liquid/%@", kLQVersion] forHTTPHeaderField:@"User-Agent"];
+    [request setValue:self.liquidUserAgent forHTTPHeaderField:@"User-Agent"];
     [request setValue:@"application/vnd.lqd.v1+json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];

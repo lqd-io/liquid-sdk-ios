@@ -11,6 +11,7 @@
 #define kLQVersion @"0.6.1-beta"
 #define kLQBundle @"io.lqd.ios"
 #define kLQServerUrl @"https://api.lqd.io/collect/"
+#define kLQDevicePlatform @"iOS"
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
 #define kLQNotificationLQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
 #define kLQISO8601DateFormat @"yyyy-MM-dd'T'HH:mm:ss.SSSZZ"

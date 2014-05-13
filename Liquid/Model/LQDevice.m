@@ -110,7 +110,7 @@
     [dictionary setObject:_releaseVersion forKey:@"_releaseVersion"];
     [dictionary setObject:_liquidVersion forKey:@"_liquidVersion"];
     [dictionary setObject:self.uid forKey:@"unique_id"];
-    [dictionary setObject:@"iOS" forKey:@"platform"];
+    [dictionary setObject:kLQDevicePlatform forKey:@"platform"];
     
     if(user != nil)
         [dictionary setObject:[user jsonDictionary] forKey:@"user"];
