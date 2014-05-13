@@ -84,18 +84,20 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    NSInteger numberOfInvalidatedValues = 0;
-    numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-    if (numberOfInvalidatedValues > 1) { // if included on a target
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self notifyDelegatesAndObserversAboutNewValues];
-        });
-    }
-    if (numberOfInvalidatedValues > 0) {
-        dispatch_async(self.queue, ^() {
-            [_loadedLiquidPackage saveToDisk];
-        });
-    }
+    dispatch_async(self.queue, ^() {
+        NSInteger numberOfInvalidatedValues = 0;
+        numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
+        if (numberOfInvalidatedValues > 1) { // if included on a target
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self notifyDelegatesAndObserversAboutNewValues];
+            });
+        }
+        if (numberOfInvalidatedValues > 0) {
+            //dispatch_async(self.queue, ^() {
+                [_loadedLiquidPackage saveToDisk];
+            //});
+        }
+    });
 }
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)development {
@@ -211,7 +213,12 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     
     // Restart flush timer
     [self startFlushTimer];
-    
+
+    if(!sessionTimedOut && self.inBackground) {
+        [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES];
+        _inBackground = NO;
+    }
+
     // Request variables on app resume
     [self loadLiquidPackageSynced];
     dispatch_async(self.queue, ^() {
@@ -219,11 +226,6 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         // Restore queue from plist
         self.httpQueue = [Liquid unarchiveQueueForToken:self.apiToken];
     });
-
-    if(!sessionTimedOut && self.inBackground) {
-        [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES];
-        _inBackground = NO;
-    }
 }
 
 - (void)applicationWillResignActive:(NSNotificationCenter *)notification {
