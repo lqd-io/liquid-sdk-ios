@@ -9,7 +9,7 @@ To integrate Liquid in your app, just follow the 4 simple steps below.
 1. Install [CocoaPods](http://cocoapods.org/) in your system
 2. Open your Xcode project folder and create a file called `Podfile` with the following content:
 
-    ```
+    ```ruby
     pod 'Liquid'
     ```
 
@@ -21,26 +21,28 @@ To integrate Liquid in your app, just follow the 4 simple steps below.
 
 In your **AppDelegate.m** file initialize Liquid in `application:willFinishLaunchingWithOptions:` method:
 
-    #import <Liquid/Liquid.h>
+```objective-c
+#import <Liquid/Liquid.h>
 
-    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    # ifdef DEBUG
-        [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
-    # else
-        [Liquid sharedInstanceWithToken:@"YOUR-PRODUCTION-APP-TOKEN"];
-    # endif
-        // The rest of your code goes here...
-    }
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+# ifdef DEBUG
+    [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
+# else
+    [Liquid sharedInstanceWithToken:@"YOUR-PRODUCTION-APP-TOKEN"];
+# endif
+    // The rest of your code goes here...
+}
+```
 
 ### 2. Identify a user (optional)
 
 If all your users are anonymous, you can skip this step. If not, you need to identify them and define their profile.
 Typically this is done at the same time your user logs in your app (or you perform an auto login), as seen in the example below:
 
-
-    [[Liquid sharedInstance] identifyUserWithIdentifier:@"UNIQUE-ID-FOR-USER"
-                                             attributes:@{ @"gender": @"female",
-                                                             @"name": @"Anna Lynch" }];
+```objective-c
+[[Liquid sharedInstance] identifyUserWithIdentifier:@"UNIQUE-ID-FOR-USER"
+                                         attributes:@{ @"gender": @"female",@"name":@"Anna Lynch" }];
+```
 
 The **username** or **email** are some of the typical user identifiers used by apps.
 
@@ -48,15 +50,24 @@ The **username** or **email** are some of the typical user identifiers used by a
 
 You can track any type of event in your app, using one of the following methods:
 
-    [[Liquid sharedInstance] track:@"clickedProfilePage"];
-    [[Liquid sharedInstance] track:@"boughtProduct"
-                        attributes:@{ @"productId": 123 }];
+```objective-c
+[[Liquid sharedInstance] track:@"clickedProfilePage"];
+```
+Or:
+
+```objective-c
+[[Liquid sharedInstance] track:@"boughtProduct" 
+                    attributes:@{ @"productId": 123 }];
+```
 
 ### 4. Personalize your app (with dynamic variables)
 
 You can transform any old-fashioned static variable into a "Liquid" dynamic variable just by replacing it with a Liquid method. You can use a dynamic variable like this:
 
-    NSString *text = [[Liquid sharedInstance] stringForKey:@"welcomeText" fallback:@"Welcome to our App"];
+```objective-c
+NSString *text = [[Liquid sharedInstance] stringForKey:@"welcomeText" 
+                                              fallback:@"Welcome to our App"];
+```
 
 Default values of your dynamic variables are defined on a Property List file `LiquidVariables.plist` that you should create first (check an example at `Liquid/LiquidVariables_example.plist`).
 These values will be assumed in the first launch of your app (event if no internet connection is available).
