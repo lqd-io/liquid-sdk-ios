@@ -2,7 +2,7 @@
 
 This document is just a quick start introduction to Liquid SDK for iOS. You can read the full documentation at [http://lqd.io/documentation/](http://lqd.io/documentation/).
 
-To integrate Liquid in your app, just follow 4 simple steps below.
+To integrate Liquid in your app, just follow the 4 simple steps below.
 
 ## Install Liquid in your project
 
@@ -54,19 +54,19 @@ You can track any type of event in your app, using one of the following methods:
 
 ### 4. Personalize your app (with dynamic variables)
 
-You can transform any old-fashioned static variable into a "liquid" dynamic variable just by replacing it with a Liquid method. You can use a dynamic variable like this:
+You can transform any old-fashioned static variable into a "Liquid" dynamic variable just by replacing it with a Liquid method. You can use a dynamic variable like this:
 
     NSString *text = [[Liquid sharedInstance] stringForKey:@"welcomeText" fallback:@"Welcome to our App"];
 
 Default values of your dynamic variables are defined on a Property List file `LiquidVariables.plist` that you should create first (check an example at `Liquid/LiquidVariables_example.plist`).
-These values will be assumed in the first launch of your app (event if no Internet connection is available).
+These values will be assumed in the first launch of your app (event if no internet connection is available).
 
 For the example above, this Property List file could include a single entry with the value `"Welcome to Liquid"` for key `welcomeText`.
 
 
 ### Full documentation
 
-We recommend you to read the full documentation at [http://lqd.io/documentation/](http://lqd.io/documentation/).
+We recommend you to read the full documentation at [http://lqd.io/documentation](http://lqd.io/documentation).
 
 
 # Author
