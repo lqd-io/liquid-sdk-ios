@@ -19,6 +19,7 @@
 #import "LQTarget.h"
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
+#import "UIColor+Hexadecimal.h"
 
 @interface Liquid ()
 
@@ -574,7 +575,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             return nil;
         if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeColor]) {
             @try {
-                id color = [Liquid colorFromString:value.value];
+                id color = [UIColor colorFromHexadecimalString:value.value];
                 if([color isKindOfClass:[UIColor class]]) {
                     return color;
                 }
@@ -905,50 +906,6 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     }
 }
 
-+ (UIColor *)colorFromString:(NSString *)hexString {
-    if (![hexString isKindOfClass:[NSString class]]) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Warning: cannot get a color from a nil value. Expected an NSString instead.");
-        return nil;
-    }
-    if([hexString rangeOfString:@"#"].location != 0)
-        return nil;
-    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    if([cleanString length] == 3) {
-        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
-                       [cleanString substringWithRange:NSMakeRange(0, 1)], [cleanString substringWithRange:NSMakeRange(0, 1)],
-                       [cleanString substringWithRange:NSMakeRange(1, 1)], [cleanString substringWithRange:NSMakeRange(1, 1)],
-                       [cleanString substringWithRange:NSMakeRange(2, 1)], [cleanString substringWithRange:NSMakeRange(2, 1)]];
-    }
-    if([cleanString length] == 6) {
-        cleanString = [cleanString stringByAppendingString:@"ff"];
-    }
-    
-    unsigned int baseValue;
-    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
-    
-    float red = ((baseValue >> 24) & 0xFF)/255.0f;
-    float green = ((baseValue >> 16) & 0xFF)/255.0f;
-    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
-    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
-    
-    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-}
-
-+ (NSString *)hexStringFromUIColor:(UIColor *)color {
-    if (![color isKindOfClass:[UIColor class]]) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Warning: cannot get a hex color value from a nil value. Expected an UIColor instead.");
-        return nil;
-    }
-    if (CGColorGetNumberOfComponents(color.CGColor) < 4) {
-        const CGFloat *components = CGColorGetComponents(color.CGColor);
-        color = [UIColor colorWithRed:components[0] green:components[0] blue:components[0] alpha:components[1]];
-    }
-    if (CGColorSpaceGetModel(CGColorGetColorSpace(color.CGColor)) != kCGColorSpaceModelRGB) {
-        return [NSString stringWithFormat:@"#FFFFFF"];
-    }
-    return [NSString stringWithFormat:@"#%02X%02X%02X", (int)((CGColorGetComponents(color.CGColor))[0]*255.0), (int)((CGColorGetComponents(color.CGColor))[1]*255.0), (int)((CGColorGetComponents(color.CGColor))[2]*255.0)];
-}
-
 + (id)fromJSON:(NSData *)data {
     if (!data) return nil;
     __autoreleasing NSError *error = nil;
@@ -982,7 +939,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         if ([element isKindOfClass:[NSDate class]]) {
             [newDictionary setObject:[[Liquid isoDateFormatter] stringFromDate:element] forKey:key];
         } else if ([element isKindOfClass:[UIColor class]]) {
-            [newDictionary setObject:[Liquid hexStringFromUIColor:element] forKey:key];
+            [newDictionary setObject:[UIColor hexadecimalStringFromUIColor:element] forKey:key];
         } else if ([element isKindOfClass:[NSDictionary class]]) {
             [newDictionary setObject:[Liquid normalizeDataTypes:element] forKey:key];
         } else {

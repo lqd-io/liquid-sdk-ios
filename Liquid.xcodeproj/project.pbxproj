@@ -19,6 +19,7 @@
 		A99EB501192447FA0060E484 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F5192447FA0060E484 /* LQValue.m */; };
 		A99EB502192447FA0060E484 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
 		C73E4AE31923C61D001EF2E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
+		C7DB3A7D1924C5C600CC5D64 /* UIColor+Hexadecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +61,8 @@
 		A99EB4F7192447FA0060E484 /* LQVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQVariable.m; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C7DB3A7B1924C5C600CC5D64 /* UIColor+Hexadecimal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hexadecimal.h"; sourceTree = "<group>"; };
+		C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hexadecimal.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,9 +136,19 @@
 				A99EB4E1192447FA0060E484 /* Liquid.m */,
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
+				C7DB3A7A1924C56E00CC5D64 /* Utility Categories */,
 				A99EB4E3192447FA0060E484 /* Model */,
 			);
 			path = Liquid;
+			sourceTree = "<group>";
+		};
+		C7DB3A7A1924C56E00CC5D64 /* Utility Categories */ = {
+			isa = PBXGroup;
+			children = (
+				C7DB3A7B1924C5C600CC5D64 /* UIColor+Hexadecimal.h */,
+				C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */,
+			);
+			path = "Utility Categories";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */,
+				C7DB3A7D1924C5C600CC5D64 /* UIColor+Hexadecimal.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
