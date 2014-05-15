@@ -18,9 +18,9 @@
 		A99EB500192447FA0060E484 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F3192447FA0060E484 /* LQUser.m */; };
 		A99EB501192447FA0060E484 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F5192447FA0060E484 /* LQValue.m */; };
 		A99EB502192447FA0060E484 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
+		A99EB5541924DB730060E484 /* NSDateFormatter+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */; };
+		A99EB5551924DB730060E484 /* UIColor+Hexadecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */; };
 		C73E4AE31923C61D001EF2E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
-		C7DB3A7D1924C5C600CC5D64 /* UIColor+Hexadecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */; };
-		C7DB3A801924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A7F1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,12 +60,12 @@
 		A99EB4F5192447FA0060E484 /* LQValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQValue.m; sourceTree = "<group>"; };
 		A99EB4F6192447FA0060E484 /* LQVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQVariable.h; sourceTree = "<group>"; };
 		A99EB4F7192447FA0060E484 /* LQVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQVariable.m; sourceTree = "<group>"; };
+		A99EB5501924DB730060E484 /* NSDateFormatter+ISO8601.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+ISO8601.h"; sourceTree = "<group>"; };
+		A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+ISO8601.m"; sourceTree = "<group>"; };
+		A99EB5521924DB730060E484 /* UIColor+Hexadecimal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hexadecimal.h"; sourceTree = "<group>"; };
+		A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hexadecimal.m"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C7DB3A7B1924C5C600CC5D64 /* UIColor+Hexadecimal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hexadecimal.h"; sourceTree = "<group>"; };
-		C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hexadecimal.m"; sourceTree = "<group>"; };
-		C7DB3A7E1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+ISO8601.h"; sourceTree = "<group>"; };
-		C7DB3A7F1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+ISO8601.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +107,18 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		A99EB54F1924DB730060E484 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A99EB5501924DB730060E484 /* NSDateFormatter+ISO8601.h */,
+				A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */,
+				A99EB5521924DB730060E484 /* UIColor+Hexadecimal.h */,
+				A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */,
+			);
+			name = Categories;
+			path = Liquid/Categories;
+			sourceTree = SOURCE_ROOT;
+		};
 		C73E4AD61923C61D001EF2E6 = {
 			isa = PBXGroup;
 			children = (
@@ -139,21 +151,10 @@
 				A99EB4E1192447FA0060E484 /* Liquid.m */,
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
-				C7DB3A7A1924C56E00CC5D64 /* Utility Categories */,
+				A99EB54F1924DB730060E484 /* Categories */,
 				A99EB4E3192447FA0060E484 /* Model */,
 			);
 			path = Liquid;
-			sourceTree = "<group>";
-		};
-		C7DB3A7A1924C56E00CC5D64 /* Utility Categories */ = {
-			isa = PBXGroup;
-			children = (
-				C7DB3A7B1924C5C600CC5D64 /* UIColor+Hexadecimal.h */,
-				C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */,
-				C7DB3A7E1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.h */,
-				C7DB3A7F1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m */,
-			);
-			path = "Utility Categories";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,15 +208,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A99EB5551924DB730060E484 /* UIColor+Hexadecimal.m in Sources */,
+				A99EB5541924DB730060E484 /* NSDateFormatter+ISO8601.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */,
-				C7DB3A7D1924C5C600CC5D64 /* UIColor+Hexadecimal.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
-				C7DB3A801924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A99EB500192447FA0060E484 /* LQUser.m in Sources */,
