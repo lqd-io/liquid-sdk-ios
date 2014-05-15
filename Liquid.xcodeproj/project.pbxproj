@@ -20,6 +20,7 @@
 		A99EB502192447FA0060E484 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
 		C73E4AE31923C61D001EF2E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		C7DB3A7D1924C5C600CC5D64 /* UIColor+Hexadecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */; };
+		C7DB3A801924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A7F1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,6 +64,8 @@
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C7DB3A7B1924C5C600CC5D64 /* UIColor+Hexadecimal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hexadecimal.h"; sourceTree = "<group>"; };
 		C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hexadecimal.m"; sourceTree = "<group>"; };
+		C7DB3A7E1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+ISO8601.h"; sourceTree = "<group>"; };
+		C7DB3A7F1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+ISO8601.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +150,8 @@
 			children = (
 				C7DB3A7B1924C5C600CC5D64 /* UIColor+Hexadecimal.h */,
 				C7DB3A7C1924C5C600CC5D64 /* UIColor+Hexadecimal.m */,
+				C7DB3A7E1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.h */,
+				C7DB3A7F1924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m */,
 			);
 			path = "Utility Categories";
 			sourceTree = "<group>";
@@ -210,6 +215,7 @@
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
+				C7DB3A801924CA5B00CC5D64 /* NSDateFormatter+ISO8601.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A99EB500192447FA0060E484 /* LQUser.m in Sources */,

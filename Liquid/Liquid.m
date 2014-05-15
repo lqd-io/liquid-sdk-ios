@@ -19,7 +19,9 @@
 #import "LQTarget.h"
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
+
 #import "UIColor+Hexadecimal.h"
+#import "NSDateFormatter+ISO8601.h"
 
 @interface Liquid ()
 
@@ -412,11 +414,14 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         now = [NSDate new];
     }
 
+    NSString *dateFromNowWithISO8601Formatter = [[NSDateFormatter ISO8601DateFormatter] stringFromDate:now];
+    
     if ([eventName hasPrefix:@"_"]) {
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, [[Liquid isoDateFormatter] stringFromDate:now]);
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, dateFromNowWithISO8601Formatter);
     } else {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [[Liquid isoDateFormatter] stringFromDate:now]);
+        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, dateFromNowWithISO8601Formatter);
     }
+    
     dispatch_async(self.queue, ^{
         NSString *finalEventName = eventName;
         if (eventName == nil || [eventName length] == 0) {
@@ -551,7 +556,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
             return nil;
         }
         if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
-            NSDate *date = [Liquid getDateFromISO8601String:value.value];
+            NSDate *date = [NSDateFormatter dateFromISO8601String:value.value];
             if(!date) {
                 [self invalidateTargetThatIncludesVariable:variableName];
                 return fallbackValue;
@@ -937,7 +942,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     for (id key in dictionary) {
         id element = [dictionary objectForKey:key];
         if ([element isKindOfClass:[NSDate class]]) {
-            [newDictionary setObject:[[Liquid isoDateFormatter] stringFromDate:element] forKey:key];
+            [newDictionary setObject:[[NSDateFormatter ISO8601DateFormatter] stringFromDate:element] forKey:key];
         } else if ([element isKindOfClass:[UIColor class]]) {
             [newDictionary setObject:[UIColor hexadecimalStringFromUIColor:element] forKey:key];
         } else if ([element isKindOfClass:[NSDictionary class]]) {
@@ -965,27 +970,4 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
                                                                           withString:@""];
     return dataStr;
 }
-
-+(NSDateFormatter *)isoDateFormatter {
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:kLQISO8601DateFormat];
-    [formatter setCalendar:gregorianCalendar];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    return formatter;
-}
-
-+(NSDate *)getDateFromISO8601String:(NSString *)iso8601String {
-    NSDateFormatter *dateFormatter = [Liquid isoDateFormatter];
-    NSDate *date = [dateFormatter dateFromString:iso8601String];
-    if (!date) {
-        [dateFormatter setDateFormat:kLQISO8601DateFormatWithoutMilliseconds];
-        date = [dateFormatter dateFromString:iso8601String];
-    }
-    if(date) {
-        return date;
-    }
-    return nil;
-}
-
 @end

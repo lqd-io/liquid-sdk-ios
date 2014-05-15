@@ -498,8 +498,4 @@ extern NSString * const LQDidLoadValues;
 -(void)hardReset;
 
 
-
-+ (NSDateFormatter *)isoDateFormatter;
-+ (NSDate *)getDateFromISO8601String:(NSString *)iso8601String;
-
 @end
