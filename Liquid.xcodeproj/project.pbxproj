@@ -7,45 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A99EB4F8192447FA0060E484 /* Liquid.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E1192447FA0060E484 /* Liquid.m */; };
+		A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E5192447FA0060E484 /* LQDataPoint.m */; };
+		A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E7192447FA0060E484 /* LQDevice.m */; };
+		A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E9192447FA0060E484 /* LQEvent.m */; };
+		A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */; };
+		A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4ED192447FA0060E484 /* LQQueue.m */; };
+		A99EB4FE192447FA0060E484 /* LQSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EF192447FA0060E484 /* LQSession.m */; };
+		A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F1192447FA0060E484 /* LQTarget.m */; };
+		A99EB500192447FA0060E484 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F3192447FA0060E484 /* LQUser.m */; };
+		A99EB501192447FA0060E484 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F5192447FA0060E484 /* LQValue.m */; };
+		A99EB502192447FA0060E484 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
 		C73E4AE31923C61D001EF2E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
-		C73E4AF11923C61D001EF2E6 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AF01923C61D001EF2E6 /* XCTest.framework */; };
-		C73E4AF21923C61D001EF2E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
-		C73E4AF41923C61D001EF2E6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AF31923C61D001EF2E6 /* UIKit.framework */; };
-		C73E4AF71923C61D001EF2E6 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
-		C7DB3A511923C6E100CC5D64 /* Liquid.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A3A1923C6E000CC5D64 /* Liquid.m */; };
-		C7DB3A521923C6E100CC5D64 /* Liquid.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A3A1923C6E000CC5D64 /* Liquid.m */; };
-		C7DB3A531923C6E100CC5D64 /* LQDataPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A3E1923C6E000CC5D64 /* LQDataPoint.m */; };
-		C7DB3A541923C6E100CC5D64 /* LQDataPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A3E1923C6E000CC5D64 /* LQDataPoint.m */; };
-		C7DB3A551923C6E100CC5D64 /* LQDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A401923C6E000CC5D64 /* LQDevice.m */; };
-		C7DB3A561923C6E100CC5D64 /* LQDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A401923C6E000CC5D64 /* LQDevice.m */; };
-		C7DB3A571923C6E100CC5D64 /* LQEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A421923C6E000CC5D64 /* LQEvent.m */; };
-		C7DB3A581923C6E100CC5D64 /* LQEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A421923C6E000CC5D64 /* LQEvent.m */; };
-		C7DB3A591923C6E100CC5D64 /* LQLiquidPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A441923C6E000CC5D64 /* LQLiquidPackage.m */; };
-		C7DB3A5A1923C6E100CC5D64 /* LQLiquidPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A441923C6E000CC5D64 /* LQLiquidPackage.m */; };
-		C7DB3A5B1923C6E100CC5D64 /* LQQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A461923C6E000CC5D64 /* LQQueue.m */; };
-		C7DB3A5C1923C6E100CC5D64 /* LQQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A461923C6E000CC5D64 /* LQQueue.m */; };
-		C7DB3A5D1923C6E100CC5D64 /* LQSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A481923C6E000CC5D64 /* LQSession.m */; };
-		C7DB3A5E1923C6E100CC5D64 /* LQSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A481923C6E000CC5D64 /* LQSession.m */; };
-		C7DB3A5F1923C6E100CC5D64 /* LQTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A4A1923C6E000CC5D64 /* LQTarget.m */; };
-		C7DB3A601923C6E100CC5D64 /* LQTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A4A1923C6E000CC5D64 /* LQTarget.m */; };
-		C7DB3A611923C6E100CC5D64 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A4C1923C6E000CC5D64 /* LQUser.m */; };
-		C7DB3A621923C6E100CC5D64 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A4C1923C6E000CC5D64 /* LQUser.m */; };
-		C7DB3A631923C6E100CC5D64 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A4E1923C6E000CC5D64 /* LQValue.m */; };
-		C7DB3A641923C6E100CC5D64 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A4E1923C6E000CC5D64 /* LQValue.m */; };
-		C7DB3A651923C6E100CC5D64 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A501923C6E100CC5D64 /* LQVariable.m */; };
-		C7DB3A661923C6E100CC5D64 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A501923C6E100CC5D64 /* LQVariable.m */; };
-		C7DB3A691923C71800CC5D64 /* LiquidTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7DB3A681923C71800CC5D64 /* LiquidTests-Info.plist */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		C73E4AF51923C61D001EF2E6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C73E4ADE1923C61D001EF2E6;
-			remoteInfo = Liquid;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C73E4ADD1923C61D001EF2E6 /* CopyFiles */ = {
@@ -60,36 +34,32 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid-Prefix.pch"; sourceTree = "<group>"; };
+		A99EB4E0192447FA0060E484 /* Liquid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Liquid.h; sourceTree = "<group>"; };
+		A99EB4E1192447FA0060E484 /* Liquid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Liquid.m; sourceTree = "<group>"; };
+		A99EB4E2192447FA0060E484 /* LQDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDefaults.h; sourceTree = "<group>"; };
+		A99EB4E4192447FA0060E484 /* LQDataPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDataPoint.h; sourceTree = "<group>"; };
+		A99EB4E5192447FA0060E484 /* LQDataPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQDataPoint.m; sourceTree = "<group>"; };
+		A99EB4E6192447FA0060E484 /* LQDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDevice.h; sourceTree = "<group>"; };
+		A99EB4E7192447FA0060E484 /* LQDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQDevice.m; sourceTree = "<group>"; };
+		A99EB4E8192447FA0060E484 /* LQEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEvent.h; sourceTree = "<group>"; };
+		A99EB4E9192447FA0060E484 /* LQEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEvent.m; sourceTree = "<group>"; };
+		A99EB4EA192447FA0060E484 /* LQLiquidPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQLiquidPackage.h; sourceTree = "<group>"; };
+		A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQLiquidPackage.m; sourceTree = "<group>"; };
+		A99EB4EC192447FA0060E484 /* LQQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQQueue.h; sourceTree = "<group>"; };
+		A99EB4ED192447FA0060E484 /* LQQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQQueue.m; sourceTree = "<group>"; };
+		A99EB4EE192447FA0060E484 /* LQSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSession.h; sourceTree = "<group>"; };
+		A99EB4EF192447FA0060E484 /* LQSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSession.m; sourceTree = "<group>"; };
+		A99EB4F0192447FA0060E484 /* LQTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQTarget.h; sourceTree = "<group>"; };
+		A99EB4F1192447FA0060E484 /* LQTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQTarget.m; sourceTree = "<group>"; };
+		A99EB4F2192447FA0060E484 /* LQUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUser.h; sourceTree = "<group>"; };
+		A99EB4F3192447FA0060E484 /* LQUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUser.m; sourceTree = "<group>"; };
+		A99EB4F4192447FA0060E484 /* LQValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQValue.h; sourceTree = "<group>"; };
+		A99EB4F5192447FA0060E484 /* LQValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQValue.m; sourceTree = "<group>"; };
+		A99EB4F6192447FA0060E484 /* LQVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQVariable.h; sourceTree = "<group>"; };
+		A99EB4F7192447FA0060E484 /* LQVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQVariable.m; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C73E4AEF1923C61D001EF2E6 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C73E4AF01923C61D001EF2E6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		C73E4AF31923C61D001EF2E6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		C7DB3A211923C6B600CC5D64 /* Liquid-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid-Prefix.pch"; sourceTree = "<group>"; };
-		C7DB3A391923C6E000CC5D64 /* Liquid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Liquid.h; sourceTree = "<group>"; };
-		C7DB3A3A1923C6E000CC5D64 /* Liquid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Liquid.m; sourceTree = "<group>"; };
-		C7DB3A3B1923C6E000CC5D64 /* LQDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDefaults.h; sourceTree = "<group>"; };
-		C7DB3A3D1923C6E000CC5D64 /* LQDataPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDataPoint.h; sourceTree = "<group>"; };
-		C7DB3A3E1923C6E000CC5D64 /* LQDataPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQDataPoint.m; sourceTree = "<group>"; };
-		C7DB3A3F1923C6E000CC5D64 /* LQDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDevice.h; sourceTree = "<group>"; };
-		C7DB3A401923C6E000CC5D64 /* LQDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQDevice.m; sourceTree = "<group>"; };
-		C7DB3A411923C6E000CC5D64 /* LQEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEvent.h; sourceTree = "<group>"; };
-		C7DB3A421923C6E000CC5D64 /* LQEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEvent.m; sourceTree = "<group>"; };
-		C7DB3A431923C6E000CC5D64 /* LQLiquidPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQLiquidPackage.h; sourceTree = "<group>"; };
-		C7DB3A441923C6E000CC5D64 /* LQLiquidPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQLiquidPackage.m; sourceTree = "<group>"; };
-		C7DB3A451923C6E000CC5D64 /* LQQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQQueue.h; sourceTree = "<group>"; };
-		C7DB3A461923C6E000CC5D64 /* LQQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQQueue.m; sourceTree = "<group>"; };
-		C7DB3A471923C6E000CC5D64 /* LQSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSession.h; sourceTree = "<group>"; };
-		C7DB3A481923C6E000CC5D64 /* LQSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSession.m; sourceTree = "<group>"; };
-		C7DB3A491923C6E000CC5D64 /* LQTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQTarget.h; sourceTree = "<group>"; };
-		C7DB3A4A1923C6E000CC5D64 /* LQTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQTarget.m; sourceTree = "<group>"; };
-		C7DB3A4B1923C6E000CC5D64 /* LQUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUser.h; sourceTree = "<group>"; };
-		C7DB3A4C1923C6E000CC5D64 /* LQUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUser.m; sourceTree = "<group>"; };
-		C7DB3A4D1923C6E000CC5D64 /* LQValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQValue.h; sourceTree = "<group>"; };
-		C7DB3A4E1923C6E000CC5D64 /* LQValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQValue.m; sourceTree = "<group>"; };
-		C7DB3A4F1923C6E000CC5D64 /* LQVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQVariable.h; sourceTree = "<group>"; };
-		C7DB3A501923C6E100CC5D64 /* LQVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQVariable.m; sourceTree = "<group>"; };
-		C7DB3A681923C71800CC5D64 /* LiquidTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LiquidTests-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,25 +71,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C73E4AEC1923C61D001EF2E6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C73E4AF11923C61D001EF2E6 /* XCTest.framework in Frameworks */,
-				C73E4AF71923C61D001EF2E6 /* libLiquid.a in Frameworks */,
-				C73E4AF41923C61D001EF2E6 /* UIKit.framework in Frameworks */,
-				C73E4AF21923C61D001EF2E6 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A99EB4E3192447FA0060E484 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A99EB4E4192447FA0060E484 /* LQDataPoint.h */,
+				A99EB4E5192447FA0060E484 /* LQDataPoint.m */,
+				A99EB4E6192447FA0060E484 /* LQDevice.h */,
+				A99EB4E7192447FA0060E484 /* LQDevice.m */,
+				A99EB4E8192447FA0060E484 /* LQEvent.h */,
+				A99EB4E9192447FA0060E484 /* LQEvent.m */,
+				A99EB4EA192447FA0060E484 /* LQLiquidPackage.h */,
+				A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */,
+				A99EB4EC192447FA0060E484 /* LQQueue.h */,
+				A99EB4ED192447FA0060E484 /* LQQueue.m */,
+				A99EB4EE192447FA0060E484 /* LQSession.h */,
+				A99EB4EF192447FA0060E484 /* LQSession.m */,
+				A99EB4F0192447FA0060E484 /* LQTarget.h */,
+				A99EB4F1192447FA0060E484 /* LQTarget.m */,
+				A99EB4F2192447FA0060E484 /* LQUser.h */,
+				A99EB4F3192447FA0060E484 /* LQUser.m */,
+				A99EB4F4192447FA0060E484 /* LQValue.h */,
+				A99EB4F5192447FA0060E484 /* LQValue.m */,
+				A99EB4F6192447FA0060E484 /* LQVariable.h */,
+				A99EB4F7192447FA0060E484 /* LQVariable.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		C73E4AD61923C61D001EF2E6 = {
 			isa = PBXGroup;
 			children = (
 				C73E4AE41923C61D001EF2E6 /* Liquid */,
-				C73E4AF81923C61D001EF2E6 /* LiquidTests */,
 				C73E4AE11923C61D001EF2E6 /* Frameworks */,
 				C73E4AE01923C61D001EF2E6 /* Products */,
 			);
@@ -129,7 +114,6 @@
 			isa = PBXGroup;
 			children = (
 				C73E4ADF1923C61D001EF2E6 /* libLiquid.a */,
-				C73E4AEF1923C61D001EF2E6 /* LiquidTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,8 +122,6 @@
 			isa = PBXGroup;
 			children = (
 				C73E4AE21923C61D001EF2E6 /* Foundation.framework */,
-				C73E4AF01923C61D001EF2E6 /* XCTest.framework */,
-				C73E4AF31923C61D001EF2E6 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -147,72 +129,13 @@
 		C73E4AE41923C61D001EF2E6 /* Liquid */ = {
 			isa = PBXGroup;
 			children = (
-				C7DB3A381923C6E000CC5D64 /* Liquid sdk */,
-				C7DB3A201923C6B600CC5D64 /* Supporting Files */,
+				A99EB4E0192447FA0060E484 /* Liquid.h */,
+				A99EB4E1192447FA0060E484 /* Liquid.m */,
+				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
+				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
+				A99EB4E3192447FA0060E484 /* Model */,
 			);
 			path = Liquid;
-			sourceTree = "<group>";
-		};
-		C73E4AF81923C61D001EF2E6 /* LiquidTests */ = {
-			isa = PBXGroup;
-			children = (
-				C7DB3A671923C71800CC5D64 /* Supporting Files */,
-			);
-			path = LiquidTests;
-			sourceTree = "<group>";
-		};
-		C7DB3A201923C6B600CC5D64 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C7DB3A211923C6B600CC5D64 /* Liquid-Prefix.pch */,
-			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C7DB3A381923C6E000CC5D64 /* Liquid sdk */ = {
-			isa = PBXGroup;
-			children = (
-				C7DB3A391923C6E000CC5D64 /* Liquid.h */,
-				C7DB3A3A1923C6E000CC5D64 /* Liquid.m */,
-				C7DB3A3B1923C6E000CC5D64 /* LQDefaults.h */,
-				C7DB3A3C1923C6E000CC5D64 /* Model */,
-			);
-			path = "Liquid sdk";
-			sourceTree = "<group>";
-		};
-		C7DB3A3C1923C6E000CC5D64 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				C7DB3A3D1923C6E000CC5D64 /* LQDataPoint.h */,
-				C7DB3A3E1923C6E000CC5D64 /* LQDataPoint.m */,
-				C7DB3A3F1923C6E000CC5D64 /* LQDevice.h */,
-				C7DB3A401923C6E000CC5D64 /* LQDevice.m */,
-				C7DB3A411923C6E000CC5D64 /* LQEvent.h */,
-				C7DB3A421923C6E000CC5D64 /* LQEvent.m */,
-				C7DB3A431923C6E000CC5D64 /* LQLiquidPackage.h */,
-				C7DB3A441923C6E000CC5D64 /* LQLiquidPackage.m */,
-				C7DB3A451923C6E000CC5D64 /* LQQueue.h */,
-				C7DB3A461923C6E000CC5D64 /* LQQueue.m */,
-				C7DB3A471923C6E000CC5D64 /* LQSession.h */,
-				C7DB3A481923C6E000CC5D64 /* LQSession.m */,
-				C7DB3A491923C6E000CC5D64 /* LQTarget.h */,
-				C7DB3A4A1923C6E000CC5D64 /* LQTarget.m */,
-				C7DB3A4B1923C6E000CC5D64 /* LQUser.h */,
-				C7DB3A4C1923C6E000CC5D64 /* LQUser.m */,
-				C7DB3A4D1923C6E000CC5D64 /* LQValue.h */,
-				C7DB3A4E1923C6E000CC5D64 /* LQValue.m */,
-				C7DB3A4F1923C6E000CC5D64 /* LQVariable.h */,
-				C7DB3A501923C6E100CC5D64 /* LQVariable.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		C7DB3A671923C71800CC5D64 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C7DB3A681923C71800CC5D64 /* LiquidTests-Info.plist */,
-			);
-			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,24 +157,6 @@
 			productName = Liquid;
 			productReference = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */;
 			productType = "com.apple.product-type.library.static";
-		};
-		C73E4AEE1923C61D001EF2E6 /* LiquidTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C73E4B051923C61D001EF2E6 /* Build configuration list for PBXNativeTarget "LiquidTests" */;
-			buildPhases = (
-				C73E4AEB1923C61D001EF2E6 /* Sources */,
-				C73E4AEC1923C61D001EF2E6 /* Frameworks */,
-				C73E4AED1923C61D001EF2E6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C73E4AF61923C61D001EF2E6 /* PBXTargetDependency */,
-			);
-			name = LiquidTests;
-			productName = LiquidTests;
-			productReference = C73E4AEF1923C61D001EF2E6 /* LiquidTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -275,68 +180,30 @@
 			projectRoot = "";
 			targets = (
 				C73E4ADE1923C61D001EF2E6 /* Liquid */,
-				C73E4AEE1923C61D001EF2E6 /* LiquidTests */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		C73E4AED1923C61D001EF2E6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C7DB3A691923C71800CC5D64 /* LiquidTests-Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C73E4ADB1923C61D001EF2E6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7DB3A5B1923C6E100CC5D64 /* LQQueue.m in Sources */,
-				C7DB3A5F1923C6E100CC5D64 /* LQTarget.m in Sources */,
-				C7DB3A511923C6E100CC5D64 /* Liquid.m in Sources */,
-				C7DB3A551923C6E100CC5D64 /* LQDevice.m in Sources */,
-				C7DB3A631923C6E100CC5D64 /* LQValue.m in Sources */,
-				C7DB3A651923C6E100CC5D64 /* LQVariable.m in Sources */,
-				C7DB3A5D1923C6E100CC5D64 /* LQSession.m in Sources */,
-				C7DB3A591923C6E100CC5D64 /* LQLiquidPackage.m in Sources */,
-				C7DB3A531923C6E100CC5D64 /* LQDataPoint.m in Sources */,
-				C7DB3A611923C6E100CC5D64 /* LQUser.m in Sources */,
-				C7DB3A571923C6E100CC5D64 /* LQEvent.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C73E4AEB1923C61D001EF2E6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C7DB3A581923C6E100CC5D64 /* LQEvent.m in Sources */,
-				C7DB3A541923C6E100CC5D64 /* LQDataPoint.m in Sources */,
-				C7DB3A661923C6E100CC5D64 /* LQVariable.m in Sources */,
-				C7DB3A641923C6E100CC5D64 /* LQValue.m in Sources */,
-				C7DB3A561923C6E100CC5D64 /* LQDevice.m in Sources */,
-				C7DB3A521923C6E100CC5D64 /* Liquid.m in Sources */,
-				C7DB3A5C1923C6E100CC5D64 /* LQQueue.m in Sources */,
-				C7DB3A601923C6E100CC5D64 /* LQTarget.m in Sources */,
-				C7DB3A5A1923C6E100CC5D64 /* LQLiquidPackage.m in Sources */,
-				C7DB3A5E1923C6E100CC5D64 /* LQSession.m in Sources */,
-				C7DB3A621923C6E100CC5D64 /* LQUser.m in Sources */,
+				A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */,
+				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
+				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
+				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
+				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
+				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
+				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
+				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
+				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
+				A99EB500192447FA0060E484 /* LQUser.m in Sources */,
+				A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C73E4AF61923C61D001EF2E6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C73E4ADE1923C61D001EF2E6 /* Liquid */;
-			targetProxy = C73E4AF51923C61D001EF2E6 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C73E4B001923C61D001EF2E6 /* Debug */ = {
@@ -359,6 +226,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -395,6 +263,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -431,42 +300,6 @@
 			};
 			name = Release;
 		};
-		C73E4B061923C61D001EF2E6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "LiquidTests/LiquidTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		C73E4B071923C61D001EF2E6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
-				INFOPLIST_FILE = "LiquidTests/LiquidTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -484,15 +317,6 @@
 			buildConfigurations = (
 				C73E4B031923C61D001EF2E6 /* Debug */,
 				C73E4B041923C61D001EF2E6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C73E4B051923C61D001EF2E6 /* Build configuration list for PBXNativeTarget "LiquidTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C73E4B061923C61D001EF2E6 /* Debug */,
-				C73E4B071923C61D001EF2E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

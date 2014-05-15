@@ -15,5 +15,4 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Liquid'
   s.source_files  = 'Liquid/**/*.{m,h}'
-  s.public_header_files = 'Liquid/**/*.h'
 end
