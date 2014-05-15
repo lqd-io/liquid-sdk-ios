@@ -1,6 +1,6 @@
 # Quick Start to Liquid SDK for iOS
 
-This document is just a quick start introduction to Liquid SDK for iOS. You can read the full documentation at [http://lqd.io/documentation/](http://lqd.io/documentation/).
+This document is just a quick start introduction to Liquid SDK for iOS. You can read the full documentation at [https://www.lqd.io/documentation/ios/](https://www.lqd.io/documentation/ios/).
 
 To integrate Liquid in your app, just follow the 4 simple steps below.
 
@@ -77,7 +77,7 @@ For the example above, this Property List file could include a single entry with
 
 ### Full documentation
 
-We recommend you to read the full documentation at [http://lqd.io/documentation](http://lqd.io/documentation).
+We recommend you to read the full documentation at [https://www.lqd.io/documentation/ios/](https://www.lqd.io/documentation/ios/).
 
 
 # Author
