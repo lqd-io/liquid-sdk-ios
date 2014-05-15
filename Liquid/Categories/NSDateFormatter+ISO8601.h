@@ -2,8 +2,8 @@
 //  NSDateFormatter+ISO8601.h
 //  Liquid
 //
-//  Created by Liquid Data Intelligence, S.A. (lqd.io) on 09/01/14.
-//  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
+//  Created by Liquid Data Intelligence, S.A. (lqd.io) on 15/05/14.
+//  Copyright (c) Liquid Data Intelligence, S.A. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
