@@ -21,6 +21,8 @@
 		A99EB5541924DB730060E484 /* NSDateFormatter+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */; };
 		A99EB5551924DB730060E484 /* UIColor+Hexadecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */; };
 		C73E4AE31923C61D001EF2E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
+		C7DB3A831924FE4200CC5D64 /* NSData+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A821924FE4200CC5D64 /* NSData+Random.m */; };
+		C7DB3A861924FF0B00CC5D64 /* NSString+RandomGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A851924FF0B00CC5D64 /* NSString+RandomGenerator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +68,10 @@
 		A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hexadecimal.m"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C7DB3A811924FE4200CC5D64 /* NSData+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Random.h"; sourceTree = "<group>"; };
+		C7DB3A821924FE4200CC5D64 /* NSData+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Random.m"; sourceTree = "<group>"; };
+		C7DB3A841924FF0B00CC5D64 /* NSString+RandomGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+RandomGenerator.h"; sourceTree = "<group>"; };
+		C7DB3A851924FF0B00CC5D64 /* NSString+RandomGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+RandomGenerator.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,10 @@
 				A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */,
 				A99EB5521924DB730060E484 /* UIColor+Hexadecimal.h */,
 				A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */,
+				C7DB3A811924FE4200CC5D64 /* NSData+Random.h */,
+				C7DB3A821924FE4200CC5D64 /* NSData+Random.m */,
+				C7DB3A841924FF0B00CC5D64 /* NSString+RandomGenerator.h */,
+				C7DB3A851924FF0B00CC5D64 /* NSString+RandomGenerator.m */,
 			);
 			name = Categories;
 			path = Liquid/Categories;
@@ -211,6 +221,8 @@
 				A99EB5551924DB730060E484 /* UIColor+Hexadecimal.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+ISO8601.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */,
+				C7DB3A861924FF0B00CC5D64 /* NSString+RandomGenerator.m in Sources */,
+				C7DB3A831924FE4200CC5D64 /* NSData+Random.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,

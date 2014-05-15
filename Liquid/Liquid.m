@@ -954,20 +954,4 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     return newDictionary;
 }
 
-#pragma mark - Liquid Helpers
-
-+ (NSData *)randomDataOfLength:(size_t)length {
-    NSMutableData *data = [NSMutableData dataWithLength:length];
-    SecRandomCopyBytes(kSecRandomDefault, length, data.mutableBytes);
-    return data;
-}
-
-+ (NSString *)generateRandomUniqueId {
-    NSData *data = [Liquid randomDataOfLength:16];
-    NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data]
-                                        stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" "
-                                                                          withString:@""];
-    return dataStr;
-}
 @end

@@ -9,6 +9,8 @@
 #import "LQSession.h"
 #import "LQDefaults.h"
 #import "NSDateFormatter+ISO8601.h"
+#import "NSData+Random.h"
+#import "NSString+RandomGenerator.h"
 
 @implementation LQSession
 
@@ -17,7 +19,7 @@
 -(id)initWithDate:(NSDate *)date timeout:(NSNumber*)timeout {
     self = [super init];
     if(self) {
-        _identifier = [LQSession newSessionIdentifier];
+        _identifier = [NSString generateRandomSessionIdentifier];
         _start = [NSDate date];
         _timeout = timeout;
         _attributes = [NSDictionary new];
@@ -61,21 +63,6 @@
     if(device != nil)
         [dictionary setObject:[device jsonDictionary] forKey:@"device"];
     return dictionary;
-}
-
-#pragma mark - Session Identifier Generator
-
-+(NSString*)newSessionIdentifier {
-    NSData *data = [LQSession randomDataOfLength:16];
-    NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" " withString:@""];
-    return [[NSString alloc] initWithFormat:@"%@%ld", dataStr, (long)[[NSDate date] timeIntervalSince1970]];
-}
-
-+ (NSData *)randomDataOfLength:(size_t)length {
-    NSMutableData *data = [NSMutableData dataWithLength:length];
-    SecRandomCopyBytes(kSecRandomDefault, length, data.mutableBytes);
-    return data;
 }
 
 @end
