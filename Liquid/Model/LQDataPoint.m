@@ -8,6 +8,7 @@
 
 #import "LQDataPoint.h"
 #import "LQDefaults.h"
+#import "NSDateFormatter+ISO8601.h"
 
 @implementation LQDataPoint
 
@@ -49,18 +50,9 @@
             [valuesArray addObject:[value jsonDictionary]];
     [dictionary setObject:valuesArray forKey:@"values"];
 
-    NSDateFormatter *dateFormatter = [[self class] isoDateFormatter];
+    NSDateFormatter *dateFormatter = [NSDateFormatter ISO8601DateFormatter];
     [dictionary setObject:[dateFormatter stringFromDate:_timestamp] forKey:@"timestamp"];
     return dictionary;
-}
-
-+(NSDateFormatter *)isoDateFormatter {
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:kLQISO8601DateFormat];
-    [formatter setCalendar:gregorianCalendar];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    return formatter;
 }
 
 @end

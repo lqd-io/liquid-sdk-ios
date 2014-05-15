@@ -8,6 +8,7 @@
 
 #import "LQEvent.h"
 #import "LQDefaults.h"
+#import "NSDateFormatter+ISO8601.h"
 
 @implementation LQEvent
 
@@ -37,7 +38,7 @@
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_name forKey:@"name"];
     
-    NSDateFormatter *dateFormatter = [[self class] isoDateFormatter];
+    NSDateFormatter *dateFormatter = [NSDateFormatter ISO8601DateFormatter];
     [dictionary setObject:[dateFormatter stringFromDate:_date] forKey:@"date"];
     
     if(user != nil)
@@ -47,15 +48,6 @@
     if(session != nil)
         [dictionary setObject:[session jsonDictionary] forKey:@"session"];
     return dictionary;
-}
-
-+(NSDateFormatter *)isoDateFormatter {
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:kLQISO8601DateFormat];
-    [formatter setCalendar:gregorianCalendar];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    return formatter;
 }
 
 @end
