@@ -13,19 +13,14 @@
 
 + (NSString *)generateRandomUniqueId {
     NSData *data = [NSData randomDataOfLength:16];
-    NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data]
-                                        stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" "
                                                                           withString:@""];
     return dataStr;
 }
 
 + (NSString *)generateRandomSessionIdentifier {
-    NSData *data = [NSData randomDataOfLength:16];
-    NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" " withString:@""];
-    return [[NSString alloc] initWithFormat:@"%@%ld", dataStr, (long)[[NSDate date] timeIntervalSince1970]];
+    return [[NSString alloc] initWithFormat:@"%@%ld", [self generateRandomUniqueId], (long)[[NSDate date] timeIntervalSince1970]];
 }
-
 
 @end
