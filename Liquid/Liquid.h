@@ -30,25 +30,23 @@
  
  <pre>
  // Initialize the Liquid API
- Liquid* liquid = [Liquid sharedInstanceWithToken:@"YOUR_API_TOKEN"];
+ Liquid *liquid = [Liquid sharedInstanceWithToken:@"YOUR_API_TOKEN"];
  
  // Identify the user
- [liquid identifyUserWithIdentifier:@"username@lqd.io" attributes:[NSDictionary dictionaryWithObjects:@[@"23",@"male"] forKeys:@[@"age",@"sex"]]];
+ [liquid identifyUserWithIdentifier:@"username@lqd.io" attributes:[NSDictionary dictionaryWithObjects:@[@"23", @"male"] forKeys:@[@"age", @"sex"]]];
  
  // Set user attribute
  [liquid setUserAttribute:@"irish" forKey:@"nationality"];
  
  // Track an event
- [liquid track:@"purchase_click" attributes:[NSDictionary dictionaryWithObjects:@[@"33.89",@"USD"] forKeys:@[@"price",@"currency"]];
+ [liquid track:@"purchase_click" attributes:[NSDictionary dictionaryWithObjects:@[@"33.89", @"USD"] forKeys:@[@"price", @"currency"]];
  
  // Get variables defined on Liquid
- UIColor* backgroundColor = [liquid colorForVariable:@"tableViewBackgroundColor"];
+ UIColor *backgroundColor = [liquid colorForVariable:@"tableViewBackgroundColor" fallback:[UIColor black]];
  [tableView setBackgroundColor:backgroundColor];
  </pre>
  
- For more advanced usage, please see the <a
- href="https://lqd.io/">Liquid iOS
- Library Guide</a>.
+ For more advanced usage, please see the <a href="https://lqd.io/">Liquid iOS Library Guide</a>.
  */
 @interface Liquid : NSObject
 
@@ -66,7 +64,9 @@ extern NSString * const LQDidLoadValues;
  Using a delegate is optional. See the documentation for LiquidDelegate
  for more information.
  */
+
 @property (atomic, retain) NSObject<LiquidDelegate> *delegate;
+
 
 /*!
  @property
@@ -78,7 +78,9 @@ extern NSString * const LQDidLoadValues;
  Useful if you need to proxy Liquid http requests. Defaults to
  http://api.lqd.io/collect/
  */
+
 @property (atomic, copy) NSString *serverURL;
+
 
 /*!
  @property
@@ -89,7 +91,9 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Setting a flush interval of 0 will disable the flush timer.
  */
+
 @property (nonatomic) NSUInteger flushInterval;
+
 
 /*!
  @property
@@ -101,7 +105,9 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Defaults to YES.
  */
+
 @property (nonatomic, assign) BOOL flushOnBackground;
+
 
 /*!
  @property
@@ -114,7 +120,9 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Defaults to YES.
  */
+
 @property (nonatomic, assign) BOOL sendFallbackValuesInDevelopmentMode;
+
 
 /*!
  @property
@@ -126,7 +134,9 @@ extern NSString * const LQDidLoadValues;
  HTTP requests are stored in a queue before being sent to server.
  If server is not reachable, queue is persisted until a connection is available.
  */
+
 @property (nonatomic, assign) NSUInteger queueSizeLimit;
+
 
 /*!
  @property
@@ -138,7 +148,9 @@ extern NSString * const LQDidLoadValues;
  @discussion
  This avoids the manual load of variables by calling the loadValues method.
  */
+
 @property (atomic) BOOL autoLoadValues;
+
 
 /*!
  @property
@@ -150,7 +162,9 @@ extern NSString * const LQDidLoadValues;
  Lets the developer control the session timeout for the Liquid API.
  Defaults to 30 seconds.
  */
+
 @property (nonatomic, assign) NSInteger sessionTimeout;
+
 
 /*!
  @method
@@ -174,20 +188,24 @@ extern NSString * const LQDidLoadValues;
  @param apiToken        your api token
  @param development     set to YES if you're compiling your app in a development environment
  */
+
 + (Liquid *)sharedInstanceWithToken:(NSString *)apiToken;
 + (Liquid *)sharedInstanceWithToken:(NSString *)apiToken development:(BOOL)development;
+
 
 /*!
  @method
  
  @abstract
- Returns the previously instantiated singleton instance of the API.
+ Returns a previously instantiated singleton instance of the API.
  
  @discussion
  TODO
  */
 
 + (Liquid *)sharedInstance;
+
+
 /*!
  @method
  
@@ -200,8 +218,10 @@ extern NSString * const LQDidLoadValues;
  @param apiToken        your api token
  @param development     set to YES if you're compiling your app in a development environment
  */
+
 -(instancetype)initWithToken:(NSString *)apiToken development:(BOOL)developemnt;
 -(instancetype)initWithToken:(NSString *)apiToken;
+
 
 /*!
  @method
@@ -215,6 +235,8 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(NSString*)userIdentifier;
+
+
 /*!
  @method
  
@@ -227,6 +249,8 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(void)identifyUser;
+
+
 /*!
  @method
  
@@ -240,6 +264,46 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier;
+
+
+/*!
+ @method
+ 
+ @abstract
+ Identifies the user on to the Liquid API with an auto identified user and some
+ attributes.
+ 
+ @discussion
+ This will identify the user with the given identifier string and a
+ dictionary of attributes to better classify the user.
+ 
+ @param attributes        dictionary of user attributes
+ */
+
+-(void)identifyUserWithAttributes:(NSDictionary *)attributes;
+
+
+/*!
+ @method
+ 
+ @abstract
+ Identifies the user on to the Liquid API with an auto identified, some
+ attributes and a user location.
+ 
+ @discussion
+ This will identify the user with an automatic user identifier, a
+ dictionary of attributes to better classify the user and a CLLocation
+ to better pin point where the user is using the application. This is never
+ calculated automatically and must be explicity provided by the developer
+ through other methods of obtaining the user location.
+ 
+ @param attributes        dictionary of user attributes
+ @param location          user location
+ */
+
+-(void)identifyUserWithAttributes:(NSDictionary *)attributes location:(CLLocation *)location;
+
+
 /*!
  @method
  
@@ -256,6 +320,8 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes;
+
+
 /*!
  @method
  
@@ -276,6 +342,8 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location;
+
+
 /*!
  @method
  
@@ -291,6 +359,8 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key;
+
+
 /*!
  @method
  
@@ -307,6 +377,7 @@ extern NSString * const LQDidLoadValues;
 
 -(void)setUserLocation:(CLLocation *)location;
 
+
 /*!
  @method
  
@@ -322,6 +393,8 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(void)track:(NSString *)eventName;
+
+
 /*!
  @method
  
@@ -340,6 +413,7 @@ extern NSString * const LQDidLoadValues;
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes;
 
+
 /*!
  @method
  
@@ -354,6 +428,8 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(void)requestValues;
+
+
 /*!
  @method
  
@@ -368,6 +444,7 @@ extern NSString * const LQDidLoadValues;
 
 -(void)loadValues;
 
+
 /*!
  @method
  
@@ -381,7 +458,9 @@ extern NSString * const LQDidLoadValues;
 
  @param variableName       the key to identify the variable
  */
+
 -(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue;
+
 
 /*!
  @method
@@ -396,7 +475,9 @@ extern NSString * const LQDidLoadValues;
  
  @param variableName       the key to identify the variable
  */
+
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue;
+
 
 /*!
  @method
@@ -414,6 +495,7 @@ extern NSString * const LQDidLoadValues;
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue;
 
+
 /*!
  @method
  
@@ -429,6 +511,7 @@ extern NSString * const LQDidLoadValues;
  */
 
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue;
+
 
 /*!
  @method
@@ -446,6 +529,7 @@ extern NSString * const LQDidLoadValues;
 
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue;
 
+
 /*!
  @method
  
@@ -462,6 +546,7 @@ extern NSString * const LQDidLoadValues;
 
 -(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue;
 
+
 /*!
  @method
  
@@ -475,6 +560,7 @@ extern NSString * const LQDidLoadValues;
 
 -(void)flush;
 
+
 /*!
  @method
  
@@ -484,7 +570,9 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will reset all liquid (dynamic variable) to its fallback values. A new session is created, and user attributes are reset.
  */
+
 -(void)softReset;
+
 
 /*!
  @method
@@ -495,7 +583,7 @@ extern NSString * const LQDidLoadValues;
  @discussion
  Will reset Liquid as soft reset does, but also remove all queued HTTP requests.
  */
--(void)hardReset;
 
+-(void)hardReset;
 
 @end

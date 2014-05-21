@@ -255,12 +255,27 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 #pragma mark - User Interaction
 
 -(void)identifyUser {
-    [self identifyUserWithIdentifier:nil];
+    [self identifyUserWithIdentifier:nil
+                          attributes:nil
+                            location:nil];
+}
+
+-(void)identifyUserWithAttributes:(NSDictionary *)attributes {
+    [self identifyUserWithIdentifier:nil
+                          attributes:attributes
+                            location:nil];
+}
+
+-(void)identifyUserWithAttributes:(NSDictionary *)attributes location:(CLLocation *)location {
+    [self identifyUserWithIdentifier:nil
+                          attributes:attributes
+                            location:location];
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier {
     [self identifyUserWithIdentifier:identifier
-                          attributes:nil];
+                          attributes:nil
+                            location:nil];
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
