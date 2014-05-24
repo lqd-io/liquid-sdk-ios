@@ -724,7 +724,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
                                 [queuedHttp incrementNextTryDateIn:kLQHttpUnreachableWait];
                             }
                             if (res == LQQueueStatusRejected) {
-                                [queuedHttp incrementNumberOfTries];
+                                [queuedHttp incrementNumberOfTriesBy:2];
                                 [queuedHttp incrementNextTryDateIn:kLQHttpRejectedWait];
                             }
                             [failedQueue addObject:queuedHttp];
