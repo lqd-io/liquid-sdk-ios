@@ -180,6 +180,12 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     }
 }
 
+- (void)setQueueSizeLimit:(NSUInteger)queueSizeLimit {
+    @synchronized(self) {
+        _queueSizeLimit = queueSizeLimit;
+    }
+}
+
 - (void)setFlushInterval:(NSUInteger)interval {
     [self stopFlushTimer];
     @synchronized(self) {
