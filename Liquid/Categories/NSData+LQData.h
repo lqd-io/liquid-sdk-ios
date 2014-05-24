@@ -1,5 +1,5 @@
 //
-//  NSString+RandomUserID.h
+//  NSData+Random.h
 //  Liquid
 //
 //  Created by Liquid Data Intelligence, S.A. (lqd.io) on 15/05/14.
@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (RandomGenerator)
+@interface NSData (LQData)
 
-+ (NSString *)generateRandomUniqueId;
-+ (NSString *)generateRandomSessionIdentifier;
++ (NSData *)randomDataOfLength:(size_t)length;
 
 @end

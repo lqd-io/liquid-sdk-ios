@@ -6,10 +6,10 @@
 //  Copyright (c) Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "NSDateFormatter+ISO8601.h"
+#import "NSDateFormatter+LQDateFormatter.h"
 #import "LQDefaults.h"
 
-@implementation NSDateFormatter (ISO8601)
+@implementation NSDateFormatter (LQDateFormatter)
 
 + (NSDateFormatter *)ISO8601DateFormatter {
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

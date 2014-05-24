@@ -6,9 +6,9 @@
 //  Copyright (c) Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "NSData+Random.h"
+#import "NSData+LQData.h"
 
-@implementation NSData (Random)
+@implementation NSData (LQData)
 
 + (NSData *)randomDataOfLength:(size_t)length {
     NSMutableData *data = [NSMutableData dataWithLength:length];

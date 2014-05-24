@@ -18,11 +18,11 @@
 		A99EB500192447FA0060E484 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F3192447FA0060E484 /* LQUser.m */; };
 		A99EB501192447FA0060E484 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F5192447FA0060E484 /* LQValue.m */; };
 		A99EB502192447FA0060E484 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
-		A99EB5541924DB730060E484 /* NSDateFormatter+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */; };
-		A99EB5551924DB730060E484 /* UIColor+Hexadecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */; };
+		A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */; };
+		A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+LQColor.m */; };
 		C73E4AE31923C61D001EF2E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
-		C7DB3A831924FE4200CC5D64 /* NSData+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A821924FE4200CC5D64 /* NSData+Random.m */; };
-		C7DB3A861924FF0B00CC5D64 /* NSString+RandomGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A851924FF0B00CC5D64 /* NSString+RandomGenerator.m */; };
+		C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A821924FE4200CC5D64 /* NSData+LQData.m */; };
+		C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,16 +62,16 @@
 		A99EB4F5192447FA0060E484 /* LQValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQValue.m; sourceTree = "<group>"; };
 		A99EB4F6192447FA0060E484 /* LQVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQVariable.h; sourceTree = "<group>"; };
 		A99EB4F7192447FA0060E484 /* LQVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQVariable.m; sourceTree = "<group>"; };
-		A99EB5501924DB730060E484 /* NSDateFormatter+ISO8601.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+ISO8601.h"; sourceTree = "<group>"; };
-		A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+ISO8601.m"; sourceTree = "<group>"; };
-		A99EB5521924DB730060E484 /* UIColor+Hexadecimal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hexadecimal.h"; sourceTree = "<group>"; };
-		A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hexadecimal.m"; sourceTree = "<group>"; };
+		A99EB5501924DB730060E484 /* NSDateFormatter+LQDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LQDateFormatter.h"; sourceTree = "<group>"; };
+		A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LQDateFormatter.m"; sourceTree = "<group>"; };
+		A99EB5521924DB730060E484 /* UIColor+LQColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+LQColor.h"; sourceTree = "<group>"; };
+		A99EB5531924DB730060E484 /* UIColor+LQColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+LQColor.m"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C7DB3A811924FE4200CC5D64 /* NSData+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Random.h"; sourceTree = "<group>"; };
-		C7DB3A821924FE4200CC5D64 /* NSData+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Random.m"; sourceTree = "<group>"; };
-		C7DB3A841924FF0B00CC5D64 /* NSString+RandomGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+RandomGenerator.h"; sourceTree = "<group>"; };
-		C7DB3A851924FF0B00CC5D64 /* NSString+RandomGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+RandomGenerator.m"; sourceTree = "<group>"; };
+		C7DB3A811924FE4200CC5D64 /* NSData+LQData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+LQData.h"; sourceTree = "<group>"; };
+		C7DB3A821924FE4200CC5D64 /* NSData+LQData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+LQData.m"; sourceTree = "<group>"; };
+		C7DB3A841924FF0B00CC5D64 /* NSString+LQString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+LQString.h"; sourceTree = "<group>"; };
+		C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+LQString.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,14 +116,14 @@
 		A99EB54F1924DB730060E484 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				A99EB5501924DB730060E484 /* NSDateFormatter+ISO8601.h */,
-				A99EB5511924DB730060E484 /* NSDateFormatter+ISO8601.m */,
-				A99EB5521924DB730060E484 /* UIColor+Hexadecimal.h */,
-				A99EB5531924DB730060E484 /* UIColor+Hexadecimal.m */,
-				C7DB3A811924FE4200CC5D64 /* NSData+Random.h */,
-				C7DB3A821924FE4200CC5D64 /* NSData+Random.m */,
-				C7DB3A841924FF0B00CC5D64 /* NSString+RandomGenerator.h */,
-				C7DB3A851924FF0B00CC5D64 /* NSString+RandomGenerator.m */,
+				A99EB5501924DB730060E484 /* NSDateFormatter+LQDateFormatter.h */,
+				A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */,
+				A99EB5521924DB730060E484 /* UIColor+LQColor.h */,
+				A99EB5531924DB730060E484 /* UIColor+LQColor.m */,
+				C7DB3A811924FE4200CC5D64 /* NSData+LQData.h */,
+				C7DB3A821924FE4200CC5D64 /* NSData+LQData.m */,
+				C7DB3A841924FF0B00CC5D64 /* NSString+LQString.h */,
+				C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */,
 			);
 			name = Categories;
 			path = Liquid/Categories;
@@ -218,11 +218,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A99EB5551924DB730060E484 /* UIColor+Hexadecimal.m in Sources */,
-				A99EB5541924DB730060E484 /* NSDateFormatter+ISO8601.m in Sources */,
+				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
+				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */,
-				C7DB3A861924FF0B00CC5D64 /* NSString+RandomGenerator.m in Sources */,
-				C7DB3A831924FE4200CC5D64 /* NSData+Random.m in Sources */,
+				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
+				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,

@@ -6,10 +6,10 @@
 //  Copyright (c) Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "NSString+RandomGenerator.h"
-#import "NSData+Random.h"
+#import "NSString+LQString.h"
+#import "NSData+LQData.h"
 
-@implementation NSString (RandomGenerator)
+@implementation NSString (LQString)
 
 + (NSString *)generateRandomUniqueId {
     NSData *data = [NSData randomDataOfLength:16];

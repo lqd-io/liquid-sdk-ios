@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIColor (Hexadecimal)
+@interface UIColor (LQColor)
 
 + (UIColor *)colorFromHexadecimalString:(NSString *)hexadecimalString;
 + (NSString *)hexadecimalStringFromUIColor:(UIColor *)color;

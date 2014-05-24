@@ -8,7 +8,7 @@
 
 #import "LQDataPoint.h"
 #import "LQDefaults.h"
-#import "NSDateFormatter+ISO8601.h"
+#import "NSDateFormatter+LQDateFormatter.h"
 
 @implementation LQDataPoint
 

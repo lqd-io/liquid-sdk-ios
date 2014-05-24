@@ -8,9 +8,9 @@
 
 #import "LQSession.h"
 #import "LQDefaults.h"
-#import "NSDateFormatter+ISO8601.h"
-#import "NSData+Random.h"
-#import "NSString+RandomGenerator.h"
+#import "NSDateFormatter+LQDateFormatter.h"
+#import "NSData+LQData.h"
+#import "NSString+LQString.h"
 
 @implementation LQSession
 

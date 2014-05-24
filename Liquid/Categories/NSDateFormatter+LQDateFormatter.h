@@ -1,5 +1,5 @@
 //
-//  NSData+Random.h
+//  NSDateFormatter+ISO8601.h
 //  Liquid
 //
 //  Created by Liquid Data Intelligence, S.A. (lqd.io) on 15/05/14.
@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSData (Random)
+@interface NSDateFormatter (LQDateFormatter)
 
-+ (NSData *)randomDataOfLength:(size_t)length;
++ (NSDateFormatter *)ISO8601DateFormatter;
++ (NSDate *)dateFromISO8601String:(NSString *)ISO8601String;
 
 @end

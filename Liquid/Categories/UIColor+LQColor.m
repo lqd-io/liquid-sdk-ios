@@ -6,10 +6,10 @@
 //  Copyright (c) Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "UIColor+Hexadecimal.h"
+#import "UIColor+LQColor.h"
 #import "LQDefaults.h"
 
-@implementation UIColor (Hexadecimal)
+@implementation UIColor (LQColor)
 
 + (UIColor *)colorFromHexadecimalString:(NSString *)hexadecimalString {
     if (![hexadecimalString isKindOfClass:[NSString class]]) {

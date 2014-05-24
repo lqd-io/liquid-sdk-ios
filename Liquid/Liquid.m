@@ -20,8 +20,8 @@
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
 
-#import "UIColor+Hexadecimal.h"
-#import "NSDateFormatter+ISO8601.h"
+#import "UIColor+LQColor.h"
+#import "NSDateFormatter+LQDateFormatter.h"
 
 @interface Liquid ()
 
