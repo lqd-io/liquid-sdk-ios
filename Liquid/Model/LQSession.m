@@ -30,6 +30,9 @@
 #pragma mark - Attributes
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key {
+    [LQSession assertAttributeType:attribute];
+    [LQSession assertAttributeKey:key];
+
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
     [mutableAttributes setObject:attribute forKey:key];
     _attributes = mutableAttributes;

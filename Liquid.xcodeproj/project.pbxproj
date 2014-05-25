@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
 		A99EB4F8192447FA0060E484 /* Liquid.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E1192447FA0060E484 /* Liquid.m */; };
 		A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E5192447FA0060E484 /* LQDataPoint.m */; };
 		A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E7192447FA0060E484 /* LQDevice.m */; };
@@ -38,6 +39,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A93AF9CE19316FCA0035E811 /* LQEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEntity.h; sourceTree = "<group>"; };
+		A93AF9CF19316FCA0035E811 /* LQEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEntity.m; sourceTree = "<group>"; };
 		A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid-Prefix.pch"; sourceTree = "<group>"; };
 		A99EB4E0192447FA0060E484 /* Liquid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Liquid.h; sourceTree = "<group>"; };
 		A99EB4E1192447FA0060E484 /* Liquid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Liquid.m; sourceTree = "<group>"; };
@@ -89,22 +92,24 @@
 		A99EB4E3192447FA0060E484 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A99EB4EC192447FA0060E484 /* LQQueue.h */,
+				A99EB4ED192447FA0060E484 /* LQQueue.m */,
 				A99EB4E4192447FA0060E484 /* LQDataPoint.h */,
 				A99EB4E5192447FA0060E484 /* LQDataPoint.m */,
+				A93AF9CE19316FCA0035E811 /* LQEntity.h */,
+				A93AF9CF19316FCA0035E811 /* LQEntity.m */,
+				A99EB4F2192447FA0060E484 /* LQUser.h */,
+				A99EB4F3192447FA0060E484 /* LQUser.m */,
 				A99EB4E6192447FA0060E484 /* LQDevice.h */,
 				A99EB4E7192447FA0060E484 /* LQDevice.m */,
+				A99EB4EE192447FA0060E484 /* LQSession.h */,
+				A99EB4EF192447FA0060E484 /* LQSession.m */,
 				A99EB4E8192447FA0060E484 /* LQEvent.h */,
 				A99EB4E9192447FA0060E484 /* LQEvent.m */,
 				A99EB4EA192447FA0060E484 /* LQLiquidPackage.h */,
 				A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */,
-				A99EB4EC192447FA0060E484 /* LQQueue.h */,
-				A99EB4ED192447FA0060E484 /* LQQueue.m */,
-				A99EB4EE192447FA0060E484 /* LQSession.h */,
-				A99EB4EF192447FA0060E484 /* LQSession.m */,
 				A99EB4F0192447FA0060E484 /* LQTarget.h */,
 				A99EB4F1192447FA0060E484 /* LQTarget.m */,
-				A99EB4F2192447FA0060E484 /* LQUser.h */,
-				A99EB4F3192447FA0060E484 /* LQUser.m */,
 				A99EB4F4192447FA0060E484 /* LQValue.h */,
 				A99EB4F5192447FA0060E484 /* LQValue.m */,
 				A99EB4F6192447FA0060E484 /* LQVariable.h */,
@@ -233,6 +238,7 @@
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A99EB500192447FA0060E484 /* LQUser.m in Sources */,
 				A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */,
+				A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

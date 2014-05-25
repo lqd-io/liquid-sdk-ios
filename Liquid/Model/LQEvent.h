@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LQEntity.h"
 #import "LQSession.h"
 
-@interface LQEvent : NSObject
+@interface LQEvent : LQEntity
 
 -(id)initWithName:(NSString*)name attributes:(NSDictionary*)attributes date:(NSDate *)date;
 -(NSDictionary *)jsonDictionary;

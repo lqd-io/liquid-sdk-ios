@@ -260,6 +260,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes {
+    [LQUser assertAttributesKeysAndTypes:attributes];
+
     [self identifyUserWithIdentifier:nil
                           attributes:attributes];
 }
@@ -270,6 +272,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
+    [LQUser assertAttributesKeysAndTypes:attributes];
+
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
@@ -280,6 +284,8 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
+    [LQUser assertAttributesKeysAndTypes:attributes];
+
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
@@ -291,8 +297,6 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
-    [Liquid assertUserAttributesTypes:attributes];
-
     [self destroySessionIfExists];
     self.currentUser = [[LQUser alloc] initWithIdentifier:identifier attributes:attributes];
     [self newSessionInCurrentThread:YES];
@@ -309,8 +313,10 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key {
+    [LQUser assertAttributeType:attribute];
+    [LQUser assertAttributeKey:key];
+
     dispatch_async(self.queue, ^() {
-        [Liquid assertUserAttributeType:attribute];
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
@@ -332,23 +338,6 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         }
         [self.device setLocation:location];
     });
-}
-
-+ (void)assertUserAttributeType:(id)attribute {
-    NSAssert([attribute isKindOfClass:[NSString class]] ||
-             [attribute isKindOfClass:[NSNumber class]] ||
-             [attribute isKindOfClass:[UIColor class]] ||
-             [attribute isKindOfClass:[NSNull class]] ||
-             [attribute isKindOfClass:[NSDate class]],
-             @"%@ User attribute must be NSString, NSNumber or NSDate. Got: %@ %@", self, [attribute class], attribute);
-}
-
-
-+ (void)assertUserAttributesTypes:(NSDictionary *)attributes {
-    for (id k in attributes) {
-        NSAssert([k isKindOfClass: [NSString class]], @"%@ attribute keys must be NSString. Got: %@ %@", self, [k class], k);
-        [Liquid assertUserAttributeType:[attributes objectForKey:k]];
-    }
 }
 
 #pragma mark - Session
@@ -396,16 +385,19 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
+    [LQEvent assertAttributesKeysAndTypes:attributes];
+
     [self track:eventName attributes:attributes allowLqdEvents:NO];
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
-    [Liquid assertEventAttributesTypes:attributes];
+    [LQEvent assertAttributesKeysAndTypes:attributes];
 
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
-        LQLog(kLQLogLevelError, @"<Liquid> Events cannot start with _");
+        LQLog(kLQLogLevelError, @"<Liquid> Event names cannot start with _");
         return;
     }
+
     if(self.currentUser == nil) {
         [self identifyUserSyncedWithIdentifier:nil
                                     attributes:nil];
@@ -428,13 +420,13 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, dateFromNowWithISO8601Formatter);
     }
     
+    NSString *finalEventName = eventName;
+    if (eventName == nil || [eventName length] == 0) {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
+        finalEventName = @"unnamedEvent";
+    }
+    LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:attributes date:now];
     dispatch_async(self.queue, ^{
-        NSString *finalEventName = eventName;
-        if (eventName == nil || [eventName length] == 0) {
-            LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
-            finalEventName = @"unnamedEvent";
-        }
-        LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:attributes date:now];
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
                                                               user:self.currentUser
                                                             device:self.device
@@ -903,18 +895,6 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 #pragma mark - Static Helpers
-
-+ (void)assertEventAttributesTypes:(NSDictionary *)attributes {
-    for (id k in attributes) {
-        NSAssert([k isKindOfClass: [NSString class]], @"%@ attribute keys must be NSString. Got: %@ %@", self, [k class], k);
-        NSAssert([[attributes objectForKey:k] isKindOfClass:[NSString class]] ||
-                 [[attributes objectForKey:k] isKindOfClass:[UIColor class]] ||
-                 [[attributes objectForKey:k] isKindOfClass:[NSNumber class]] ||
-                 [[attributes objectForKey:k] isKindOfClass:[NSNull class]] ||
-                 [[attributes objectForKey:k] isKindOfClass:[NSDate class]],
-                 @"%@ User attributes must be NSString, NSNumber or NSDate. Got: %@ %@", self, [[attributes objectForKey:k] class], [attributes objectForKey:k]);
-    }
-}
 
 + (id)fromJSON:(NSData *)data {
     if (!data) return nil;

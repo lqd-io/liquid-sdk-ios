@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LQEntity.h"
 #import "LQUser.h"
 #import "LQDevice.h"
 
-@interface LQSession : NSObject
+@interface LQSession : LQEntity
 
 -(id)initWithDate:(NSDate *)date timeout:(NSNumber*)timeout;
 

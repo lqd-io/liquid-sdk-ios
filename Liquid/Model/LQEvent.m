@@ -17,6 +17,8 @@
 -(id)initWithName:(NSString *)name attributes:(NSDictionary *)attributes date:(NSDate *)date {
     self = [super init];
     if(self) {
+        [LQEvent assertAttributesKeysAndTypes:attributes];
+
         _name = name;
         if(attributes == nil)
             _attributes = [NSDictionary new];
