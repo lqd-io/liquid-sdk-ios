@@ -176,13 +176,21 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 - (NSUInteger)flushInterval {
     @synchronized(self) {
         if (!_flushInterval) _flushInterval = kLQDefaultFlushInterval;
+        if (_flushInterval < kLQMinFlushInterval) return kLQMinFlushInterval;
         return _flushInterval;
+    }
+}
+
+- (void)setQueueSizeLimit:(NSUInteger)queueSizeLimit {
+    @synchronized(self) {
+        _queueSizeLimit = queueSizeLimit;
     }
 }
 
 - (void)setFlushInterval:(NSUInteger)interval {
     [self stopFlushTimer];
     @synchronized(self) {
+        if (_flushInterval < kLQMinFlushInterval) _flushInterval = kLQMinFlushInterval;
         _flushInterval = interval;
     }
     [self startFlushTimer];
@@ -700,7 +708,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
                                 [queuedHttp incrementNextTryDateIn:kLQHttpUnreachableWait];
                             }
                             if (res == LQQueueStatusRejected) {
-                                [queuedHttp incrementNumberOfTries];
+                                [queuedHttp incrementNumberOfTriesBy:2];
                                 [queuedHttp incrementNextTryDateIn:kLQHttpRejectedWait];
                             }
                             [failedQueue addObject:queuedHttp];
