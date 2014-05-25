@@ -19,7 +19,6 @@
 -(void)endSessionOnDate:(NSDate *)endDate;
 
 -(NSDictionary*)jsonDictionary;
--(NSDictionary*)jsonDictionaryWithUser:(LQUser*)user device:(LQDevice*)device;
 
 @property(nonatomic, strong, readonly) NSString* identifier;
 @property(nonatomic, strong, readonly) NSDate* start;

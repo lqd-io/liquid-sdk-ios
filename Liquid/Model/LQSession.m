@@ -45,23 +45,16 @@
 
 #pragma mark - JSON
 
--(NSDictionary *)jsonDictionary{
-    return [self jsonDictionaryWithUser:nil device:nil];
-}
-
--(NSDictionary *)jsonDictionaryWithUser:(LQUser *)user device:(LQDevice *)device {
+-(NSDictionary *)jsonDictionary {
     NSDateFormatter *dateFormatter = [NSDateFormatter ISO8601DateFormatter];
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_identifier forKey:@"unique_id"];
     [dictionary setObject:[dateFormatter stringFromDate:_start] forKey:@"started_at"];
     [dictionary setObject:_timeout forKey:@"timeout"];
-    if(_end != nil)
+    if(_end != nil) {
         [dictionary setObject:[dateFormatter stringFromDate:_end] forKey:@"ended_at"];
-    if(user != nil)
-        [dictionary setObject:[user jsonDictionary] forKey:@"user"];
-    if(device != nil)
-        [dictionary setObject:[device jsonDictionary] forKey:@"device"];
+    }
     return dictionary;
 }
 

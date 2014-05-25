@@ -30,23 +30,13 @@
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {
-    return [self jsonDictionaryWithUser:nil device:nil session:nil];
-}
-
--(NSDictionary *)jsonDictionaryWithUser:(LQUser*)user device:(LQDevice*)device session:(LQSession *)session {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_name forKey:@"name"];
-    
+
     NSDateFormatter *dateFormatter = [NSDateFormatter ISO8601DateFormatter];
     [dictionary setObject:[dateFormatter stringFromDate:_date] forKey:@"date"];
-    
-    if(user != nil)
-        [dictionary setObject:[user jsonDictionary] forKey:@"user"];
-    if(device != nil)
-        [dictionary setObject:[device jsonDictionary] forKey:@"device"];
-    if(session != nil)
-        [dictionary setObject:[session jsonDictionary] forKey:@"session"];
+
     return dictionary;
 }
 
