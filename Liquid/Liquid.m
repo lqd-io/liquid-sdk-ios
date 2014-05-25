@@ -164,7 +164,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 - (NSUInteger)queueSizeLimit {
-    if (!_queueSizeLimit) _queueSizeLimit = kLQHttpQueueSizeLimit;
+    if (!_queueSizeLimit) _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
     return _queueSizeLimit;
 }
 

@@ -28,7 +28,7 @@
 
 #define kLQLogLevel kLQLogLevelError
 #define kLQDefaultSessionTimeout 30 //seconds
-#define kLQHttpQueueSizeLimit 500 // datapoints
+#define kLQDefaultHttpQueueSizeLimit 500 // datapoints
 #ifdef DEBUG
 #    define kLQDefaultFlushInterval 5 //seconds
 #else
