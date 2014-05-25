@@ -11,11 +11,10 @@
 
 @interface LQUser : NSObject
 
-- (id)initWithIdentifier:(NSString*)identifier attributes:(NSDictionary*)attributes location:(CLLocation*)location;
+- (id)initWithIdentifier:(NSString*)identifier attributes:(NSDictionary*)attributes;
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString*)key;
 -(id)attributeForKey:(NSString*)key;
--(void)setLocation:(CLLocation*)location;
 -(NSDictionary*)jsonDictionary;
 +(NSString *)automaticUserIdentifier;
 

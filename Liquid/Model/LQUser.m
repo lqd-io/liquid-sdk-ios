@@ -14,7 +14,7 @@
 
 #pragma mark - Initializer
 
--(id)initWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
+-(id)initWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
     self = [super init];
     if(self) {
         _identifier = identifier;
@@ -28,7 +28,6 @@
         }
         if(_attributes == nil)
             _attributes = [NSDictionary new];
-        [self setLocation:location];
     }
     return self;
 }
@@ -53,17 +52,6 @@
 
 -(id)attributeForKey:(NSString *)key {
     return [_attributes objectForKey:key];
-}
-
--(void)setLocation:(CLLocation *)location {
-    if(location == nil) {
-        NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
-        [mutableAttributes removeObjectForKey:@"_latitude"];
-        [mutableAttributes removeObjectForKey:@"_longitude"];
-    } else {
-        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:@"_latitude"];
-        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:@"_longitude"];
-    }
 }
 
 +(NSString *)automaticUserIdentifier {

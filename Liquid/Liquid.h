@@ -287,27 +287,6 @@ extern NSString * const LQDidLoadValues;
  @method
  
  @abstract
- Identifies the user on to the Liquid API with an auto identified, some
- attributes and a user location.
- 
- @discussion
- This will identify the user with an automatic user identifier, a
- dictionary of attributes to better classify the user and a CLLocation
- to better pin point where the user is using the application. This is never
- calculated automatically and must be explicity provided by the developer
- through other methods of obtaining the user location.
- 
- @param attributes        dictionary of user attributes
- @param location          user location
- */
-
--(void)identifyUserWithAttributes:(NSDictionary *)attributes location:(CLLocation *)location;
-
-
-/*!
- @method
- 
- @abstract
  Identifies the user on to the Liquid API with a given identifier and some
  attributes.
  
@@ -341,7 +320,8 @@ extern NSString * const LQDidLoadValues;
  @param location          user location
  */
 
--(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location;
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location
+  __deprecated_msg("Use identifyUserWithIdentifier:attributes: instead, and setCurrentLocation: in separate methods.");
 
 
 /*!
@@ -375,7 +355,25 @@ extern NSString * const LQDidLoadValues;
  @param location          the user location
  */
 
--(void)setUserLocation:(CLLocation *)location;
+-(void)setUserLocation:(CLLocation *)location
+  __deprecated_msg("Use setCurrentLocation: instead");
+
+
+/*!
+ @method
+ 
+ @abstract
+ Set the current device location
+ 
+ @discussion
+ This will associate GPS coordinates to the device. This is never
+ set automatically and must be explicity provided by the developer
+ through other methods of obtaining the user location.
+ 
+ @param location          the device location
+ */
+
+-(void)setCurrentLocation:(CLLocation *)location;
 
 
 /*!

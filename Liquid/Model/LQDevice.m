@@ -77,6 +77,17 @@
     return [_attributes objectForKey:key];
 }
 
+-(void)setLocation:(CLLocation *)location {
+    if(location == nil) {
+        NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
+        [mutableAttributes removeObjectForKey:@"_latitude"];
+        [mutableAttributes removeObjectForKey:@"_longitude"];
+    } else {
+        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:@"_latitude"];
+        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:@"_longitude"];
+    }
+}
+
 #pragma mark - Deallocation
 
 -(void)dealloc{

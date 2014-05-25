@@ -15,6 +15,7 @@
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key;
 -(id)attributeForKey:(NSString *)key;
+-(void)setLocation:(CLLocation *)location;
 
 -(NSDictionary*)jsonDictionary;
 -(NSDictionary*)jsonDictionaryWithUser:(LQUser*)user;

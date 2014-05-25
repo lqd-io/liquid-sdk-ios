@@ -256,32 +256,27 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 -(void)identifyUser {
     [self identifyUserWithIdentifier:nil
-                          attributes:nil
-                            location:nil];
+                          attributes:nil];
 }
 
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes {
     [self identifyUserWithIdentifier:nil
-                          attributes:attributes
-                            location:nil];
-}
-
--(void)identifyUserWithAttributes:(NSDictionary *)attributes location:(CLLocation *)location {
-    [self identifyUserWithIdentifier:nil
-                          attributes:attributes
-                            location:location];
+                          attributes:attributes];
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier {
     [self identifyUserWithIdentifier:identifier
-                          attributes:nil
-                            location:nil];
+                          attributes:nil];
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
-    [self identifyUserWithIdentifier:identifier
-                          attributes:attributes
-                            location:nil];
+    if (identifier && identifier.length == 0) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
+        return;
+    }
+    dispatch_async(self.queue, ^() {
+        [self identifyUserSyncedWithIdentifier:identifier attributes:attributes];
+    });
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
@@ -290,24 +285,17 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         return;
     }
     dispatch_async(self.queue, ^() {
-        [self identifyUserSyncedWithIdentifier:identifier attributes:attributes location:location];
+        [self identifyUserSyncedWithIdentifier:identifier attributes:attributes];
+        [self setCurrentLocation:location];
     });
 }
 
--(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
-    [self destroySessionIfExists];
-    
+-(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
     [Liquid assertUserAttributesTypes:attributes];
 
-    // Create user from identifier, attributes and location
-    self.currentUser = [[LQUser alloc] initWithIdentifier:identifier
-                                               attributes:attributes
-                                                 location:location];
-
-    // Create session for identified user
+    [self destroySessionIfExists];
+    self.currentUser = [[LQUser alloc] initWithIdentifier:identifier attributes:attributes];
     [self newSessionInCurrentThread:YES];
-
-    // Request variables from API
     [self requestNewLiquidPackage];
 
     LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", self.currentUser.identifier);
@@ -333,12 +321,16 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)setUserLocation:(CLLocation *)location {
+    [self setCurrentLocation:location];
+}
+
+-(void)setCurrentLocation:(CLLocation *)location {
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
             return;
         }
-        [self.currentUser setLocation:location];
+        [self.device setLocation:location];
     });
 }
 
@@ -416,8 +408,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     }
     if(self.currentUser == nil) {
         [self identifyUserSyncedWithIdentifier:nil
-                                    attributes:nil
-                                      location:nil];
+                                    attributes:nil];
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
     }
 
@@ -463,8 +454,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 -(LQLiquidPackage *)requestNewLiquidPackageSynced {
     if(self.currentUser == nil || self.currentSession == nil) {
         [self identifyUserSyncedWithIdentifier:nil
-                                    attributes:nil
-                                      location:nil];
+                                    attributes:nil];
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
     } else {
         NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
