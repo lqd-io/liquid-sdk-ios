@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "LQEntity.h"
 
-@interface LQUser : NSObject
+@interface LQUser : LQEntity
 
 - (id)initWithIdentifier:(NSString*)identifier attributes:(NSDictionary*)attributes location:(CLLocation*)location;
 

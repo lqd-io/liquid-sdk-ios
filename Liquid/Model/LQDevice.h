@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LQEntity.h"
 #import "LQUser.h"
 
-@interface LQDevice : NSObject
+@interface LQDevice : LQEntity
 
 -(id)initWithLiquidVersion:(NSString*)liquidVersion;
 

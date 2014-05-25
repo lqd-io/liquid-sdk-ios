@@ -17,6 +17,8 @@
 -(id)initWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
     self = [super init];
     if(self) {
+        [LQUser assertAttributesKeysAndTypes:attributes];
+
         _identifier = identifier;
         _attributes = attributes;
         if (identifier == nil) {
@@ -46,6 +48,9 @@
 #pragma mark - Attributes
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key {
+    [LQUser assertAttributeKey:key];
+    [LQUser assertAttributeType:attribute];
+
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
     [mutableAttributes setObject:attribute forKey:key];
     _attributes = mutableAttributes;

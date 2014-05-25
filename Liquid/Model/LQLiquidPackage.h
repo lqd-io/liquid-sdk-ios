@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LQEntity.h"
 #import "LQValue.h"
 #import "LQTarget.h"
 
-@interface LQLiquidPackage : NSObject<NSCoding>
+@interface LQLiquidPackage : LQEntity<NSCoding>
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(id)initWithValues:(NSArray *)values;
