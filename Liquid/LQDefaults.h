@@ -34,6 +34,7 @@
 #else
 #    define kLQDefaultFlushInterval 15 //seconds
 #endif
+#define kLQMinFlushInterval 5 // seconds
 #define kLQHttpUnreachableWait 60.0f // seconds
 #define kLQHttpRejectedWait 3600.0f // seconds
 #define kLQHttpMaxTries 40

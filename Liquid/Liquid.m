@@ -176,6 +176,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 - (NSUInteger)flushInterval {
     @synchronized(self) {
         if (!_flushInterval) _flushInterval = kLQDefaultFlushInterval;
+        if (_flushInterval < kLQMinFlushInterval) return kLQMinFlushInterval;
         return _flushInterval;
     }
 }
@@ -189,6 +190,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 - (void)setFlushInterval:(NSUInteger)interval {
     [self stopFlushTimer];
     @synchronized(self) {
+        if (_flushInterval < kLQMinFlushInterval) _flushInterval = kLQMinFlushInterval;
         _flushInterval = interval;
     }
     [self startFlushTimer];
