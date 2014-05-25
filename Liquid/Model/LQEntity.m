@@ -21,7 +21,7 @@
 }
 
 + (void)assertAttributeKey:(NSString *)key {
-    NSCharacterSet *notAllowedCharacters = [NSCharacterSet characterSetWithCharactersInString:@".$\0"];
+    NSCharacterSet __unused *notAllowedCharacters = [NSCharacterSet characterSetWithCharactersInString:@".$\0"];
     NSAssert([key rangeOfCharacterFromSet:notAllowedCharacters].location == NSNotFound,
              @"%@ attribute keys cannot include dollar ($), dot (.) or null (\\0) characters. Got %@", [self class], key);
 }

@@ -420,7 +420,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         now = [NSDate new];
     }
 
-    NSString *dateFromNowWithISO8601Formatter = [[NSDateFormatter ISO8601DateFormatter] stringFromDate:now];
+    NSString __unused *dateFromNowWithISO8601Formatter = [[NSDateFormatter ISO8601DateFormatter] stringFromDate:now];
     
     if ([eventName hasPrefix:@"_"]) {
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, dateFromNowWithISO8601Formatter);
@@ -792,7 +792,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request
                                                  returningResponse:&response
                                                              error:&error];
-    NSString *responseString = [[NSString alloc] initWithData:responseData
+    NSString __unused *responseString = [[NSString alloc] initWithData:responseData
                                                      encoding:NSUTF8StringEncoding];
 
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
@@ -833,7 +833,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request
                                                  returningResponse:&response
                                                              error:&error];
-    NSString *responseString = [[NSString alloc] initWithData:responseData
+    NSString __unused *responseString = [[NSString alloc] initWithData:responseData
                                                      encoding:NSUTF8StringEncoding];
 
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;

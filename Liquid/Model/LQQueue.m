@@ -64,7 +64,7 @@ NSInteger const LQQueueStatusRejected = 3;
 #pragma mark - Network Retries
 
 -(void)incrementNumberOfTriesBy:(NSUInteger)increment {
-    int numberOfTries = _numberOfTries.intValue + increment;
+    int numberOfTries = _numberOfTries.intValue + (int) increment;
     _numberOfTries = [NSNumber numberWithInt:numberOfTries];
 }
 
