@@ -678,13 +678,12 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
                                          withHttpMethod:httpMethod
                                                withJSON:json];
 
-    if (self.httpQueue.count < self.queueSizeLimit) {
-        [self.httpQueue addObject:queuedEvent];
-        [Liquid archiveQueue:self.httpQueue
-                    forToken:self.apiToken];
-    } else {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Queue excdeeded its limit size (%ld).", (long)self.queueSizeLimit);
+    if (self.httpQueue.count >= self.queueSizeLimit) {
+        LQLog(kLQLogLevelWarning, @"<Liquid> Queue exceeded its limit size (%ld). Removing oldest event from queue.", (long) self.queueSizeLimit);
+        [self.httpQueue removeObjectAtIndex:0];
     }
+    [self.httpQueue addObject:queuedEvent];
+    [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
 }
 
 -(void)flush {
