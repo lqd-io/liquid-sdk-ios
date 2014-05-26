@@ -14,8 +14,6 @@
 #define kLQDevicePlatform @"iOS"
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
 #define kLQNotificationLQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
-#define kLQISO8601DateFormat @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-#define kLQISO8601DateFormatWithoutMilliseconds @"yyyy-MM-dd'T'HH:mm:ssZZZZZ"
 
 #define kLQLogLevelPaths       7
 #define kLQLogLevelHttp        6

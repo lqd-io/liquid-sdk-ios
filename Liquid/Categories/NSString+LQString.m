@@ -16,7 +16,11 @@
     NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" "
                                                                           withString:@""];
-    return dataStr;
+    if (appendTimestemp) {
+        return [[NSString alloc] initWithFormat:@"%@%ld", dataStr, (long) [[NSDate date] timeIntervalSince1970]];
+    } else {
+        return dataStr;
+    }
 }
 
 + (NSString *)generateRandomUniqueId {

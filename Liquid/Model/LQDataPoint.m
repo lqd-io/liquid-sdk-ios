@@ -50,8 +50,7 @@
             [valuesArray addObject:[value jsonDictionary]];
     [dictionary setObject:valuesArray forKey:@"values"];
 
-    NSDateFormatter *dateFormatter = [NSDateFormatter ISO8601DateFormatter];
-    [dictionary setObject:[dateFormatter stringFromDate:_timestamp] forKey:@"timestamp"];
+    [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_timestamp] forKey:@"timestamp"];
     return dictionary;
 }
 

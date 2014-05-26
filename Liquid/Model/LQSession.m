@@ -49,14 +49,13 @@
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {
-    NSDateFormatter *dateFormatter = [NSDateFormatter ISO8601DateFormatter];
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_identifier forKey:@"unique_id"];
-    [dictionary setObject:[dateFormatter stringFromDate:_start] forKey:@"started_at"];
+    [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_start] forKey:@"started_at"];
     [dictionary setObject:_timeout forKey:@"timeout"];
     if(_end != nil) {
-        [dictionary setObject:[dateFormatter stringFromDate:_end] forKey:@"ended_at"];
+        [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_end] forKey:@"ended_at"];
     }
     return dictionary;
 }
