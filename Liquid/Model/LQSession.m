@@ -61,7 +61,7 @@
 }
 
 + (NSString *)generateRandomSessionIdentifier {
-    return [NSString generateRandomUniqueIdAppendingTimestamp:YES];
+    return [NSString generateRandomUUIDAppendingTimestamp:YES];
 }
 
 @end

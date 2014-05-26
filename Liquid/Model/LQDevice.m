@@ -8,6 +8,7 @@
 
 #import "LQDefaults.h"
 #import "LQDevice.h"
+#import "NSString+LQString.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #include <sys/sysctl.h>
@@ -191,15 +192,8 @@
     return ifv;
 }
 
-+(NSString *)liquidGeneratedIdentifier {
-    NSString *uniqueId;
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        uniqueId = [[NSUUID UUID] UUIDString];
-    } else {
-        CFUUIDRef cfuuid = CFUUIDCreate(kCFAllocatorDefault);
-        uniqueId = (NSString *) CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, cfuuid));
-    }
-    return [[NSString alloc] initWithFormat:@"%@-%ld", uniqueId, (long) [[NSDate date] timeIntervalSince1970]];
++ (NSString *)generateRandomDeviceIdentifier {
+    return [NSString generateRandomUUID];
 }
 
 +(NSString*)uid {
@@ -208,7 +202,7 @@
     if(uid == nil) {
         NSString *newUid = [LQDevice appleIFA];
         if (newUid == nil) newUid = [LQDevice appleIFV];
-        if (newUid == nil) newUid = [LQDevice liquidGeneratedIdentifier];
+        if (newUid == nil) newUid = [LQDevice generateRandomDeviceIdentifier];
         [[NSUserDefaults standardUserDefaults]setObject:newUid forKey:liquidUUIDKey];
         [[NSUserDefaults standardUserDefaults]synchronize];
         uid = newUid;
