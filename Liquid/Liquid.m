@@ -34,7 +34,11 @@
 @property(nonatomic, strong) NSDate *veryFirstMoment;
 @property(nonatomic, assign) BOOL firstEventSent;
 @property(nonatomic, assign) BOOL inBackground;
+#if OS_OBJECT_USE_OBJC
 @property(nonatomic, strong) dispatch_queue_t queue;
+#else
+@property(nonatomic, assign) dispatch_queue_t queue;
+#endif
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
