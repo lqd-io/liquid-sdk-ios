@@ -863,7 +863,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     return plistArray;
 }
 
-+(BOOL)archiveQueue:(NSMutableArray*)queue forToken:(NSString*)apiToken {
++(BOOL)archiveQueue:(NSArray *)queue forToken:(NSString*)apiToken {
     if (queue.count > 0) {
         LQLog(kLQLogLevelData, @"<Liquid> Saving queue with %ld items to disk", (unsigned long)queue.count);
         return [NSKeyedArchiver archiveRootObject:queue
