@@ -412,7 +412,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
     }
 
-    NSDate *now;
+    __block NSDate *now;
     if (!_firstEventSent) {
         now = [self veryFirstMoment];
         _firstEventSent = YES;
@@ -428,12 +428,12 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, dateFromNowWithISO8601Formatter);
     }
     
-    NSString *finalEventName = eventName;
+    __block NSString *finalEventName = eventName;
     if (eventName == nil || [eventName length] == 0) {
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
         finalEventName = @"unnamedEvent";
     }
-    LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:attributes date:now];
+    __block LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:attributes date:now];
     dispatch_async(self.queue, ^{
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
                                                               user:self.currentUser
