@@ -700,11 +700,11 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
                         if([[queuedHttp numberOfTries] intValue] < kLQHttpMaxTries) {
                             if (res == LQQueueStatusUnauthorized) {
                                 [queuedHttp incrementNumberOfTries];
-                                [queuedHttp incrementNextTryDateIn:kLQHttpUnreachableWait];
+                                [queuedHttp incrementNextTryDateIn:(kLQHttpUnreachableWait + [Liquid randomInt:kLQHttpUnreachableWait/2])];
                             }
                             if (res == LQQueueStatusRejected) {
                                 [queuedHttp incrementNumberOfTries];
-                                [queuedHttp incrementNextTryDateIn:kLQHttpRejectedWait];
+                                [queuedHttp incrementNextTryDateIn:(kLQHttpRejectedWait + [Liquid randomInt:kLQHttpRejectedWait/2])];
                             }
                             [failedQueue addObject:queuedHttp];
                         }
@@ -940,6 +940,16 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         }
     }
     return newDictionary;
+}
+
++ (NSInteger)randomInt:(NSUInteger)max {
+    int r = 0;
+    if (arc4random_uniform != NULL) {
+        r = arc4random_uniform (max);
+    } else {
+        r = (arc4random() % max);
+    }
+    return r;
 }
 
 @end
