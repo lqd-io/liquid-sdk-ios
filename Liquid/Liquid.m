@@ -248,10 +248,6 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     
     [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES];
 
-    // Store queue to plist
-    [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
-    self.httpQueue = [NSMutableArray new];
-
     if (self.flushOnBackground) {
         [self flush];
     }
