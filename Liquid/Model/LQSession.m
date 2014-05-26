@@ -19,7 +19,7 @@
 -(id)initWithDate:(NSDate *)date timeout:(NSNumber*)timeout {
     self = [super init];
     if(self) {
-        _identifier = [NSString generateRandomSessionIdentifier];
+        _identifier = [LQSession generateRandomSessionIdentifier];
         _start = [NSDate date];
         _timeout = timeout;
         _attributes = [NSDictionary new];
@@ -59,6 +59,10 @@
         [dictionary setObject:[dateFormatter stringFromDate:_end] forKey:@"ended_at"];
     }
     return dictionary;
+}
+
++ (NSString *)generateRandomSessionIdentifier {
+    return [NSString generateRandomUniqueIdAppendingTimestamp:YES];
 }
 
 @end

@@ -171,9 +171,11 @@
 
 +(NSString *)appleIFA {
     NSString *ifa = nil;
-#ifdef LIQUID_USE_IFA
-    if (NSClassFromString(@"ASIdentifierManager")) {
-        ifa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+#if defined(LIQUID_USE_IFA)
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        if (NSClassFromString(@"ASIdentifierManager")) {
+            ifa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+        }
     }
 #endif
     return ifa;
@@ -181,14 +183,23 @@
 
 +(NSString *)appleIFV {
     NSString *ifv = nil;
-    if (NSClassFromString(@"UIDevice")) {
-        ifv = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        if (NSClassFromString(@"UIDevice")) {
+            ifv = [[UIDevice currentDevice].identifierForVendor UUIDString];
+        }
     }
     return ifv;
 }
 
 +(NSString *)liquidGeneratedIdentifier {
-    return [[NSUUID UUID] UUIDString];
+    NSString *uniqueId;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        uniqueId = [[NSUUID UUID] UUIDString];
+    } else {
+        CFUUIDRef cfuuid = CFUUIDCreate(kCFAllocatorDefault);
+        uniqueId = (NSString *) CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, cfuuid));
+    }
+    return [[NSString alloc] initWithFormat:@"%@-%ld", uniqueId, (long) [[NSDate date] timeIntervalSince1970]];
 }
 
 +(NSString*)uid {

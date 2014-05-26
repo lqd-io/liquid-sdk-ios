@@ -11,7 +11,7 @@
 
 @implementation NSString (LQString)
 
-+ (NSString *)generateRandomUniqueId {
++ (NSString *)generateRandomUniqueIdAppendingTimestamp:(BOOL)appendTimestemp {
     NSData *data = [NSData randomDataOfLength:16];
     NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" "
@@ -19,8 +19,8 @@
     return dataStr;
 }
 
-+ (NSString *)generateRandomSessionIdentifier {
-    return [[NSString alloc] initWithFormat:@"%@%ld", [self generateRandomUniqueId], (long)[[NSDate date] timeIntervalSince1970]];
++ (NSString *)generateRandomUniqueId {
+    return [self generateRandomUniqueIdAppendingTimestamp:NO];
 }
 
 @end
