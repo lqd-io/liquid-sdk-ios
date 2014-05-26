@@ -11,6 +11,8 @@
 
 @implementation LQEntity
 
+#pragma mark - Private methods
+
 + (void)assertAttributeType:(id)attribute {
     NSAssert([attribute isKindOfClass:[NSString class]] ||
              [attribute isKindOfClass:[NSNumber class]] ||
@@ -26,11 +28,17 @@
              @"%@ attribute keys cannot include dollar ($), dot (.) or null (\\0) characters. Got %@", [self class], key);
 }
 
-+ (void)assertAttributesKeysAndTypes:(NSDictionary *)attributes {
+#pragma mark - Public methods
+
++ (void)assertAttributeType:(id)attribute andKey:(NSString *)key {
+    [[self class] assertAttributeKey:key];
+    [[self class] assertAttributeType:attribute];
+}
+
++ (void)assertAttributesTypesAndKeys:(NSDictionary *)attributes {
     for (id k in attributes) {
         NSAssert([k isKindOfClass: [NSString class]], @"%@ attribute keys must be an NSString. Got: %@ %@", self, [k class], k);
-        [[self class] assertAttributeKey:k];
-        [[self class] assertAttributeType:[attributes objectForKey:k]];
+        [[self class] assertAttributeType:[attributes objectForKey:k] andKey:k];
     }
 }
 

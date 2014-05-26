@@ -10,8 +10,7 @@
 
 @interface LQEntity : NSObject
 
-+ (void)assertAttributeType:(id)attribute;
-+ (void)assertAttributeKey:(NSString *)key;
-+ (void)assertAttributesKeysAndTypes:(NSDictionary *)attributes;
++ (void)assertAttributeType:(id)attribute andKey:(NSString *)key;
++ (void)assertAttributesTypesAndKeys:(NSDictionary *)attributes;
 
 @end

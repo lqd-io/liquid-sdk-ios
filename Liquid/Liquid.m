@@ -264,7 +264,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes {
-    [LQUser assertAttributesKeysAndTypes:attributes];
+    [LQUser assertAttributesTypesAndKeys:attributes];
 
     [self identifyUserWithIdentifier:nil
                           attributes:attributes];
@@ -276,7 +276,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
-    [LQUser assertAttributesKeysAndTypes:attributes];
+    [LQUser assertAttributesTypesAndKeys:attributes];
 
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
@@ -288,7 +288,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
-    [LQUser assertAttributesKeysAndTypes:attributes];
+    [LQUser assertAttributesTypesAndKeys:attributes];
 
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
@@ -317,8 +317,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key {
-    [LQUser assertAttributeType:attribute];
-    [LQUser assertAttributeKey:key];
+    [LQUser assertAttributeType:attribute andKey:key];
 
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
@@ -389,13 +388,13 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
-    [LQEvent assertAttributesKeysAndTypes:attributes];
+    [LQEvent assertAttributesTypesAndKeys:attributes];
 
     [self track:eventName attributes:attributes allowLqdEvents:NO];
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
-    [LQEvent assertAttributesKeysAndTypes:attributes];
+    [LQEvent assertAttributesTypesAndKeys:attributes];
 
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
         LQLog(kLQLogLevelError, @"<Liquid> Event names cannot start with _");
