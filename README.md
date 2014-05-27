@@ -69,12 +69,6 @@ NSString *text = [[Liquid sharedInstance] stringForKey:@"welcomeText"
                                               fallback:@"Welcome to our App"];
 ```
 
-Default values of your dynamic variables are defined on a Property List file `LiquidVariables.plist` that you should create first (check an example at `Liquid/LiquidVariables_example.plist`).
-These values will be assumed in the first launch of your app (event if no internet connection is available).
-
-For the example above, this Property List file could include a single entry with the value `"Welcome to Liquid"` for key `welcomeText`.
-
-
 ### Full documentation
 
 We recommend you to read the full documentation at [https://www.lqd.io/documentation/ios/](https://www.lqd.io/documentation/ios/).
