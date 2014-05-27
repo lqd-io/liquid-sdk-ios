@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 0.7.2-beta: CocoaPod configuration
+
+* [fix] Add Framework dependencies to CocoaPod Podspec settings and fix on `public_header_files` configuration to include all Liquid files.
+
 ## 0.7.1-beta: Small change in Xcode Project settings
 
 * [enhancement] Change Xcode Project to compile Liquid as a Dynamic Library, to avoid the need to include `-all_load` linker flag.
