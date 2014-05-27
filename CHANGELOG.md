@@ -1,5 +1,17 @@
 # Liquid iOS SDK Change Log
 
+## 0.7.0-beta: iOS 5 Support +
+
+* [feature] iOS 5 is now supported
+* [feature] Added a new method for SDK integration: Liquid Xcode Project
+* [feature] Invalid characters on attributes and invalid event names now raise a NSAssert message
+* [enhancement] Many performance improvements on HTTP requests queue
+* [enhancement] `CLLocation` information is now sent to Device entity, and not User entity
+* [deprecate] `identifyUserWithIdentifier:attributes:location:` -> Use `identifyUserWithIdentifier:attributes:` instead, and `setCurrentLocation:` in separate methods.
+* [deprecate] `setUserLocation:` -> Use `setCurrentLocation:` instead
+* [fix] Fixes a bug that could crash the app when the app is open and closed very fast
+* [fix] HTTP queue is now a circular queue (FIFO), privileging most recent events
+
 ## 0.6.1-beta: Stability improvements
 
 * [feature] NSAsserts on Event and User attributes guarantee that only supported data types are allowed

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define kLQVersion @"0.6.1-beta"
+#define kLQVersion @"0.7.0-beta"
 #define kLQBundle @"io.lqd.ios"
 #define kLQServerUrl @"https://api.lqd.io/collect/"
 #define kLQDevicePlatform @"iOS"
