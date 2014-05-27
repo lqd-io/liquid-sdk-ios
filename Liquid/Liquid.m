@@ -19,7 +19,7 @@
 #import "LQTarget.h"
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
-
+#import "LQDefaults.h"
 #import "UIColor+LQColor.h"
 #import "NSDateFormatter+LQDateFormatter.h"
 
