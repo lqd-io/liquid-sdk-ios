@@ -264,10 +264,10 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes {
-    [LQUser assertAttributesTypesAndKeys:attributes];
+    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
 
     [self identifyUserWithIdentifier:nil
-                          attributes:attributes];
+                          attributes:validAttributes];
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier {
@@ -276,26 +276,26 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
-    [LQUser assertAttributesTypesAndKeys:attributes];
+    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
 
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
     }
     dispatch_async(self.queue, ^() {
-        [self identifyUserSyncedWithIdentifier:identifier attributes:attributes];
+        [self identifyUserSyncedWithIdentifier:identifier attributes:validAttributes];
     });
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
-    [LQUser assertAttributesTypesAndKeys:attributes];
+    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
 
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
     }
     dispatch_async(self.queue, ^() {
-        [self identifyUserSyncedWithIdentifier:identifier attributes:attributes];
+        [self identifyUserSyncedWithIdentifier:identifier attributes:validAttributes];
         [self setCurrentLocation:location];
     });
 }
@@ -317,7 +317,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key {
-    [LQUser assertAttributeType:attribute andKey:key];
+    if (![LQUser assertAttributeType:attribute andKey:key]) return;
 
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
@@ -388,16 +388,17 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
-    [LQEvent assertAttributesTypesAndKeys:attributes];
+    NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
 
-    [self track:eventName attributes:attributes allowLqdEvents:NO];
+    [self track:eventName attributes:validAttributes allowLqdEvents:NO];
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
-    [LQEvent assertAttributesTypesAndKeys:attributes];
+    __block NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
 
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
-        LQLog(kLQLogLevelError, @"<Liquid> Event names cannot start with _");
+        NSAssert(false, @"<Liquid> Event names cannot start with _");
+        LQLog(kLQLogLevelAssert, @"<Liquid> Event names cannot start with _");
         return;
     }
 
@@ -428,7 +429,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
         finalEventName = @"unnamedEvent";
     }
-    __block LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:attributes date:now];
+    __block LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
     dispatch_async(self.queue, ^{
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
                                                               user:self.currentUser
@@ -491,7 +492,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 -(void)loadLiquidPackageSynced {
     // Ensure legacy:
     if (_loadedLiquidPackage && ![_loadedLiquidPackage liquidVersion]) {
-        LQLog(kLQLogLevelError, @"<Liquid> SDK was updated: destroying cached Liquid Package to ensure legacy");
+        LQLog(kLQLogLevelNone, @"<Liquid> SDK was updated: destroying cached Liquid Package to ensure legacy");
         [LQLiquidPackage destroyCachedLiquidPackage];
     }
 
