@@ -1,9 +1,13 @@
 # Liquid iOS SDK Change Log
 
-## 0.7.0-beta: iOS 5 Support + Many minor issues
+## 0.7.1-beta: Xcode Project settings
+
+* [enhancement] Liquid Project setting now compile Liquid as a static library, to avoid the need to include `-all_load` linker flag.
+
+## 0.7.0-beta: iOS 5 Support + Minor issues
 
 * [feature] iOS 5 is now supported.
-* [feature] Added a new method for SDK integration: Liquid Xcode Project. Don't forget to add `-all_load` and `-ObjC` to "Other Linker Flags" at **Build Settings** in your project.
+* [feature] Added a new method for SDK integration: Liquid Xcode Project.
 * [feature] Invalid characters on attributes and invalid event names now raise a NSAssert message
 * [enhancement] Many performance improvements on HTTP requests queue
 * [enhancement] `CLLocation` information is now sent to Device entity, and not User entity
