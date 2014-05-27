@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '5.0'
   s.requires_arc = true
   s.preserve_paths = ["Liquid.xcodeproj"]
+  s.xcconfig = {'OTHER_LDFLAGS' => '-ObjC -all_load'}
 
   s.source_files = 'Liquid/**/*.{m,h}'
   s.public_header_files = 'Liquid/Liquid.h'
