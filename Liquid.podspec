@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.preserve_paths = [ 'Liquid.xcodeproj' ]
 
-  s.frameworks = %w(Foundation SystemConfiguration CoreTelephony CoreLocation UIKit)
+  s.frameworks = %w(Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
 
   s.xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load',
