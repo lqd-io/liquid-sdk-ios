@@ -17,16 +17,22 @@
 #define kLQISO8601DateFormat @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 #define kLQISO8601DateFormatWithoutMilliseconds @"yyyy-MM-dd'T'HH:mm:ssZZZZZ"
 
-#define kLQLogLevelPaths       7
-#define kLQLogLevelHttp        6
-#define kLQLogLevelData        5
-#define kLQLogLevelInfoVerbose 4
-#define kLQLogLevelWarning     3
-#define kLQLogLevelInfo        2
-#define kLQLogLevelError       1
+#define kLQLogLevelPaths       8
+#define kLQLogLevelHttp        7
+#define kLQLogLevelData        6
+#define kLQLogLevelInfoVerbose 5
+#define kLQLogLevelWarning     4
+#define kLQLogLevelInfo        3
+#define kLQLogLevelError       2
+#define kLQLogLevelAssert      1
 #define kLQLogLevelNone        0
 
-#define kLQLogLevel kLQLogLevelError
+#ifdef DEBUG
+#    define kLQLogLevel kLQLogLevelError
+#else
+#    define kLQLogLevel kLQLogLevelAssert
+#endif
+
 #define kLQDefaultSessionTimeout 30 //seconds
 #define kLQDefaultHttpQueueSizeLimit 500 // datapoints
 #ifdef DEBUG
@@ -45,8 +51,4 @@
 
 #define kLQErrorValueNotFound 1
 
-#ifdef DEBUG
-#   define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)
-#else
-#   define LQLog(...)
-#endif
+#define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)
