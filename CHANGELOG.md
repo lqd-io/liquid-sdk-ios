@@ -1,8 +1,8 @@
 # Liquid iOS SDK Change Log
 
-## 0.7.1-beta: Xcode Project settings
+## 0.7.1-beta: Small change in Xcode Project settings
 
-* [enhancement] Liquid Project setting now compile Liquid as a static library, to avoid the need to include `-all_load` linker flag.
+* [enhancement] Change Xcode Project to compile Liquid as a Dynamic Library, to avoid the need to include `-all_load` linker flag.
 
 ## 0.7.0-beta: iOS 5 Support + Minor issues
 
