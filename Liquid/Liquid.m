@@ -34,7 +34,11 @@
 @property(nonatomic, strong) NSDate *veryFirstMoment;
 @property(nonatomic, assign) BOOL firstEventSent;
 @property(nonatomic, assign) BOOL inBackground;
+#if OS_OBJECT_USE_OBJC
 @property(nonatomic, strong) dispatch_queue_t queue;
+#else
+@property(nonatomic, assign) dispatch_queue_t queue;
+#endif
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
@@ -415,13 +419,11 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     } else {
         now = [NSDate new];
     }
-
-    NSString __unused *dateFromNowWithISO8601Formatter = [[NSDateFormatter ISO8601DateFormatter] stringFromDate:now];
     
     if ([eventName hasPrefix:@"_"]) {
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, dateFromNowWithISO8601Formatter);
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, [NSDateFormatter iso8601StringFromDate:now]);
     } else {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, dateFromNowWithISO8601Formatter);
+        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [NSDateFormatter iso8601StringFromDate:now]);
     }
     
     __block NSString *finalEventName = eventName;
@@ -930,7 +932,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     for (id key in dictionary) {
         id element = [dictionary objectForKey:key];
         if ([element isKindOfClass:[NSDate class]]) {
-            [newDictionary setObject:[[NSDateFormatter ISO8601DateFormatter] stringFromDate:element] forKey:key];
+            [newDictionary setObject:[NSDateFormatter iso8601StringFromDate:element] forKey:key];
         } else if ([element isKindOfClass:[UIColor class]]) {
             [newDictionary setObject:[UIColor hexadecimalStringFromUIColor:element] forKey:key];
         } else if ([element isKindOfClass:[NSDictionary class]]) {

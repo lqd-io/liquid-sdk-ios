@@ -8,6 +8,7 @@
 
 #import "LQDefaults.h"
 #import "LQDevice.h"
+#import "NSString+LQString.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #include <sys/sysctl.h>
@@ -170,9 +171,11 @@
 
 +(NSString *)appleIFA {
     NSString *ifa = nil;
-#ifdef LIQUID_USE_IFA
-    if (NSClassFromString(@"ASIdentifierManager")) {
-        ifa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+#if defined(LIQUID_USE_IFA)
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        if (NSClassFromString(@"ASIdentifierManager")) {
+            ifa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+        }
     }
 #endif
     return ifa;
@@ -180,14 +183,16 @@
 
 +(NSString *)appleIFV {
     NSString *ifv = nil;
-    if (NSClassFromString(@"UIDevice")) {
-        ifv = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        if (NSClassFromString(@"UIDevice")) {
+            ifv = [[UIDevice currentDevice].identifierForVendor UUIDString];
+        }
     }
     return ifv;
 }
 
-+(NSString *)liquidGeneratedIdentifier {
-    return [[NSUUID UUID] UUIDString];
++ (NSString *)generateRandomDeviceIdentifier {
+    return [NSString generateRandomUUID];
 }
 
 +(NSString*)uid {
@@ -196,7 +201,7 @@
     if(uid == nil) {
         NSString *newUid = [LQDevice appleIFA];
         if (newUid == nil) newUid = [LQDevice appleIFV];
-        if (newUid == nil) newUid = [LQDevice liquidGeneratedIdentifier];
+        if (newUid == nil) newUid = [LQDevice generateRandomDeviceIdentifier];
         [[NSUserDefaults standardUserDefaults]setObject:newUid forKey:liquidUUIDKey];
         [[NSUserDefaults standardUserDefaults]synchronize];
         uid = newUid;

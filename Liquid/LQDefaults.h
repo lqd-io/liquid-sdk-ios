@@ -14,8 +14,6 @@
 #define kLQDevicePlatform @"iOS"
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
 #define kLQNotificationLQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
-#define kLQISO8601DateFormat @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-#define kLQISO8601DateFormatWithoutMilliseconds @"yyyy-MM-dd'T'HH:mm:ssZZZZZ"
 
 #define kLQLogLevelPaths       8
 #define kLQLogLevelHttp        7
@@ -52,3 +50,12 @@
 #define kLQErrorValueNotFound 1
 
 #define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)
+
+#define INTERFACE_IS_PAD     (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define INTERFACE_IS_PHONE   (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+

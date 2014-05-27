@@ -10,7 +10,7 @@
 
 @interface NSString (LQString)
 
-+ (NSString *)generateRandomUniqueId;
-+ (NSString *)generateRandomSessionIdentifier;
++ (NSString *)generateRandomUUIDAppendingTimestamp:(BOOL)appendTimestamp;
++ (NSString *)generateRandomUUID;
 
 @end

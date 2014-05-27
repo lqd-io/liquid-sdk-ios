@@ -34,8 +34,7 @@
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_name forKey:@"name"];
 
-    NSDateFormatter *dateFormatter = [NSDateFormatter ISO8601DateFormatter];
-    [dictionary setObject:[dateFormatter stringFromDate:_date] forKey:@"date"];
+    [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_date] forKey:@"date"];
 
     return dictionary;
 }

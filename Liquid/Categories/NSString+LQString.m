@@ -8,19 +8,29 @@
 
 #import "NSString+LQString.h"
 #import "NSData+LQData.h"
+#import "LQDefaults.h"
+#import <UIKit/UIDevice.h>
 
 @implementation NSString (LQString)
 
-+ (NSString *)generateRandomUniqueId {
-    NSData *data = [NSData randomDataOfLength:16];
-    NSString *dataStrWithoutBrackets = [[NSString stringWithFormat:@"%@", data] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    NSString *dataStr = [dataStrWithoutBrackets stringByReplacingOccurrencesOfString:@" "
-                                                                          withString:@""];
-    return dataStr;
++ (NSString *)generateRandomUUIDAppendingTimestamp:(BOOL)appendTimestamp {
+    NSString *uuid;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        uuid = [[NSUUID UUID] UUIDString];
+    } else {
+        CFUUIDRef cfuuid = CFUUIDCreate(kCFAllocatorDefault);
+        uuid = (NSString *) CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, cfuuid));
+    }
+
+    if (appendTimestamp) {
+        return [[NSString alloc] initWithFormat:@"%@-%ld", uuid, (long) [[NSDate date] timeIntervalSince1970]];
+    } else {
+        return uuid;
+    }
 }
 
-+ (NSString *)generateRandomSessionIdentifier {
-    return [[NSString alloc] initWithFormat:@"%@%ld", [self generateRandomUniqueId], (long)[[NSDate date] timeIntervalSince1970]];
++ (NSString *)generateRandomUUID {
+    return [self generateRandomUUIDAppendingTimestamp:NO];
 }
 
 @end

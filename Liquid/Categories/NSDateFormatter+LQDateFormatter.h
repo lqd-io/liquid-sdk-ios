@@ -10,7 +10,7 @@
 
 @interface NSDateFormatter (LQDateFormatter)
 
-+ (NSDateFormatter *)ISO8601DateFormatter;
++ (NSString *)iso8601StringFromDate:(NSDate *)date;
 + (NSDate *)dateFromISO8601String:(NSString *)ISO8601String;
 
 @end
