@@ -944,14 +944,14 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     return newDictionary;
 }
 
-+ (NSInteger)randomInt:(NSUInteger)max {
++ (NSUInteger)randomInt:(NSUInteger)max {
     int r = 0;
     if (arc4random_uniform != NULL) {
-        r = arc4random_uniform (max);
+        r = arc4random_uniform ((int) max);
     } else {
         r = (arc4random() % max);
     }
-    return r;
+    return (int) r;
 }
 
 @end
