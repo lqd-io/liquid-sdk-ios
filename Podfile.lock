@@ -1,0 +1,24 @@
+PODS:
+  - Kiwi/ARC (2.2.4)
+  - Kiwi/NonARC (2.2.4)
+  - Kiwi/XCTest (2.2.4):
+    - Kiwi/ARC
+    - Kiwi/NonARC
+  - Liquid (0.7.2-beta)
+  - OCMock (2.2.4)
+
+DEPENDENCIES:
+  - Kiwi/XCTest (~> 2.2.4)
+  - Liquid (from `.`)
+  - OCMock (~> 2.2.4)
+
+EXTERNAL SOURCES:
+  Liquid:
+    :path: .
+
+SPEC CHECKSUMS:
+  Kiwi: c73667f2b84cbf36f1a3830267c5a4ae8dcbd8ba
+  Liquid: 2f05fd9cced565e952f91d870f966d83fa81b3f4
+  OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
+
+COCOAPODS: 0.33.1
