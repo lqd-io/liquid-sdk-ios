@@ -60,17 +60,6 @@
     return value;
 }
 
--(BOOL)variable:(NSString *)variableName matchesLiquidType:(NSString *)typeString {
-    LQValue *value = [_dictOfVariablesAndValues objectForKey:variableName];
-    if (value == nil) {
-        return NO;
-    }
-    if ([value.variable.dataType isEqualToString:typeString]) {
-        return YES;
-    }
-    return NO;
-}
-
 #pragma mark - Invalidation of Values and Variables
 
 -(NSString *)targetIdOfVariable:(NSString *)variableName {

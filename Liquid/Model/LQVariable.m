@@ -28,7 +28,15 @@ NSString * const kLQDataTypeFloat = @"float";
     return self;
 }
 
+- (BOOL)matchesLiquidType:(NSString *)typeString {
+    if ([self.dataType isEqualToString:typeString]) {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - NSCoding
+
 -(id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if(self) {

@@ -558,7 +558,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         if(value == nil) {
             return nil;
         }
-        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeDateTime]) {
+        if([value.variable matchesLiquidType:kLQDataTypeDateTime]) {
             NSDate *date = [NSDateFormatter dateFromISO8601String:value.value];
             if(!date) {
                 [self invalidateTargetThatIncludesVariable:variableName];
@@ -581,7 +581,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     if(error == nil) {
         if(value == nil)
             return nil;
-        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeColor]) {
+        if([value.variable matchesLiquidType:kLQDataTypeColor]) {
             @try {
                 id color = [UIColor colorFromHexadecimalString:value.value];
                 if([color isKindOfClass:[UIColor class]]) {
@@ -612,7 +612,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         if(value == nil) {
             return nil;
         }
-        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeString]) {
+        if([value.variable matchesLiquidType:kLQDataTypeString]) {
             return value.value;
         }
     }
@@ -628,7 +628,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSError *error;
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
     if(error == nil) {
-        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeInteger]) {
+        if([value.variable matchesLiquidType:kLQDataTypeInteger]) {
             return [value.value integerValue];
         }
     }
@@ -644,7 +644,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSError *error;
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
     if(error == nil) {
-        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeFloat]) {
+        if([value.variable matchesLiquidType:kLQDataTypeFloat]) {
             return [value.value floatValue];
         }
     }
@@ -660,7 +660,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     NSError *error;
     LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
     if(error == nil) {
-        if([_loadedLiquidPackage variable:variableName matchesLiquidType:kLQDataTypeBoolean]) {
+        if([value.variable matchesLiquidType:kLQDataTypeBoolean]) {
             return [value.value boolValue];
         }
     }

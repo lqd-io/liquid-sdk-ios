@@ -14,6 +14,7 @@
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(id)initWithFallbackValue:(id)value;
+-(BOOL)variableMatchesLiquidType:(NSString *)typeString;
 -(NSDictionary *)jsonDictionary;
 +(NSDictionary *)dictionaryFromArrayOfValues:(NSArray *)values;
 

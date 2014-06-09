@@ -36,6 +36,15 @@
     return self;
 }
 
+#pragma mark - Data Type
+
+- (BOOL)variableMatchesLiquidType:(NSString *)typeString {
+    if ([self.variable matchesLiquidType:typeString]) {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - NSCoding
 
 -(id)initWithCoder:(NSCoder *)aDecoder {

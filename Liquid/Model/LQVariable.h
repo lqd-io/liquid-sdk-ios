@@ -20,6 +20,8 @@ extern NSString * const kLQDataTypeFloat;
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(NSDictionary *)jsonDictionary;
 
+- (BOOL)matchesLiquidType:(NSString *)typeString;
+
 @property(nonatomic, strong, readonly) NSString* identifier;
 @property(nonatomic, strong, readonly) NSString* name;
 @property(nonatomic, strong, readonly) NSString* dataType;
