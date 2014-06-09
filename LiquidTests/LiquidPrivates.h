@@ -161,4 +161,8 @@ extern NSString * const LQDidLoadValues;
 + (NSData *)randomDataOfLength:(size_t)length;
 + (NSString *)generateRandomUniqueId;
 
++ (void)destroySingleton;
++ (void)softReset;
++ (void)hardResetForApiToken:(NSString *)token;
+
 @end

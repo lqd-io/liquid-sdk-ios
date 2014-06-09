@@ -1,0 +1,41 @@
+{
+  "targets": [],
+  "values": [
+    {
+      "id": "5371978369702d37ca180000",
+      "target_id": null,
+      "value": "Be very welcome",
+      "variable": {
+        "data_type": "string",
+        "default_value": {
+          "defined": true,
+          "id": "5371978369702d37ca180000",
+          "target_id": null,
+          "value": "This is the default value from this string.",
+          "variable_id": "5371978369702d37ca170000"
+        },
+        "id": "5371978369702d37ca170000",
+        "name": "welcomeMessage"
+      },
+      "variable_id": "5371978369702d37ca170000"
+    },
+    {
+      "id": "538317ab69702d088d1e0600",
+      "target_id": null,
+      "value": 0.25,
+      "variable": {
+        "data_type": "float",
+        "default_value": {
+          "defined": true,
+          "id": "538317ab69702d088d1e0600",
+          "target_id": null,
+          "value": 0.25,
+          "variable_id": "538317ab69702d088d1d0600"
+        },
+        "id": "538317ab69702d088d1d0600",
+        "name": "discount"
+      },
+      "variable_id": "538317ab69702d088d1d0600"
+    }
+  ]
+}

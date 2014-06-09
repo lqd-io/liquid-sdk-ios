@@ -1,0 +1,113 @@
+{
+  "targets": [],
+  "values": [
+    {
+      "id": "5371978369702d37ca180000",
+      "target_id": "9702d388538a062ca6900000",
+      "value": "Default value of this variable",
+      "variable": {
+        "data_type": "string",
+        "default_value": {
+          "defined": true,
+          "id": "5371978369702d37ca180000",
+          "target_id": null,
+          "value": "Default value of this variable",
+          "variable_id": "5371978369702d37ca170000"
+        },
+        "id": "5371978369702d37ca170000",
+        "name": "title"
+      },
+      "variable_id": "5371978369702d37ca170000"
+    },
+    {
+      "id": "53835dc469702d088d8b0600",
+      "target_id": null,
+      "value": "2014-05-26T09:28:56.000Z",
+      "variable": {
+        "data_type": "datetime",
+        "default_value": {
+          "defined": true,
+          "id": "53835dc469702d088d8b0600",
+          "target_id": null,
+          "value": "2014-05-26T09:28:56.000Z",
+          "variable_id": "53835dc469702d088d8a0600"
+        },
+        "id": "53835dc469702d088d8a0600",
+        "name": "showDate"
+      },
+      "variable_id": "53835dc469702d088d8a0600"
+    },
+    {
+      "id": "538382c969702d0890040600",
+      "target_id": null,
+      "value": "#FF0000",
+      "variable": {
+        "data_type": "color",
+        "default_value": {
+          "defined": true,
+          "id": "538382c969702d0890040600",
+          "target_id": null,
+          "value": "#330000",
+          "variable_id": "538382c969702d0890030600"
+        },
+        "id": "538382c969702d0890030600",
+        "name": "backgroundColor"
+      },
+      "variable_id": "538382c969702d0890030600"
+    },
+    {
+      "id": "538382ca69702d088d050700",
+      "target_id": null,
+      "value": true,
+      "variable": {
+        "data_type": "boolean",
+        "default_value": {
+          "defined": true,
+          "id": "538382ca69702d088d050700",
+          "target_id": null,
+          "value": true,
+          "variable_id": "538382ca69702d088d040700"
+        },
+        "id": "538382ca69702d088d040700",
+        "name": "showAds"
+      },
+      "variable_id": "538382ca69702d088d040700"
+    },
+    {
+      "id": "538382ca69702d08900a0600",
+      "target_id": "d8b035d088469702d6c53800",
+      "value": 0.25,
+      "variable": {
+        "data_type": "float",
+        "default_value": {
+          "defined": true,
+          "id": "538382ca69702d08900a0600",
+          "target_id": null,
+          "value": 0.25,
+          "variable_id": "538382ca69702d0890090600"
+        },
+        "id": "538382ca69702d0890090600",
+        "name": "discount"
+      },
+      "variable_id": "538382ca69702d0890090600"
+    },
+    {
+      "id": "538382ca69702d08900c0600",
+      "target_id": "d8b035d088469702d6c53800",
+      "value": 7,
+      "variable": {
+        "data_type": "string",
+        "default_value": {
+          "defined": true,
+          "id": "538382ca69702d08900c0600",
+          "target_id": null,
+          "value": 7,
+          "variable_id": "538382ca69702d08900b0600"
+        },
+        "id": "538382ca69702d08900b0600",
+        "name": "freeCoins"
+      },
+      "variable_id": "538382ca69702d08900b0600"
+    }
+  ]
+}

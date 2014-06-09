@@ -1,0 +1,67 @@
+{
+  "device" : {
+    "_carrier" : "No Carrier",
+    "_systemVersion" : "7.1",
+    "_vendor" : "Apple",
+    "_deviceModel" : "x86_64",
+    "_uid" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
+    "_screenSize" : "640x1136",
+    "_deviceName" : "iPhone Simulator",
+    "platform" : "iOS",
+    "unique_id" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
+    "_liquidVersion" : "0.7.2-beta",
+    "_internetConnectivity" : "WiFi"
+  },
+  "user" : {
+    "unique_id" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
+    "auto_identified" : true
+  },
+  "session" : {
+    "unique_id" : "C96BB192-9F7E-4009-AAA6-ECB1D2FF806D-1401979297",
+    "started_at" : "2014-06-05T14:41:37.609Z",
+    "timeout" : 0
+  },
+  "event" : {
+    "name" : "_startSession",
+    "date" : "2014-06-05T14:41:37.609Z"
+  },
+  "timestamp" : "2014-06-05T14:41:37.609Z",
+  "values" : [
+    {
+      "id" : "5371978369702d37ca180000",
+      "target_id" : null
+    },
+    {
+      "id" : "538317ab69702d088d1e0600",
+      "target_id" : null
+    },
+    {
+      "id" : "53835dc469702d088d8b0600",
+      "target_id" : null
+    },
+    {
+      "id" : "538382c969702d0890040600",
+      "target_id" : null
+    },
+    {
+      "id" : "538382c969702d0890060600",
+      "target_id" : null
+    },
+    {
+      "id" : "538382ca69702d088d050700",
+      "target_id" : null
+    },
+    {
+      "id" : "538382ca69702d0890080600",
+      "target_id" : null
+    },
+    {
+      "id" : "538382ca69702d08900a0600",
+      "target_id" : null
+    },
+    {
+      "id" : "538382ca69702d08900c0600",
+      "target_id" : null
+    }
+  ]
+}
