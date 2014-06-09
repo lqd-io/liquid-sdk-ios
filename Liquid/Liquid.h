@@ -584,4 +584,8 @@ extern NSString * const LQDidLoadValues;
 
 -(void)hardReset;
 
++ (void)destroySingleton;
++ (void)softReset;
++ (void)hardResetForApiToken:(NSString *)token;
+
 @end

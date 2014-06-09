@@ -750,25 +750,29 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 
 #pragma mark - Resetting
 
-- (void)softReset {
-    self.currentUser = nil;
-    self.device = self.device = [[LQDevice alloc] initWithLiquidVersion:kLQVersion];
-    self.currentSession = nil;
-    self.enterBackgroundTime = nil;
-    self.timer = nil;
-    self.httpQueue = nil;
-    self.loadedLiquidPackage = nil;
-    [self veryFirstMoment];
-    _firstEventSent = NO;
++ (void)destroySingleton {
+    sharedInstance = nil;
+}
+
++ (void)softReset {
     [LQLiquidPackage destroyCachedLiquidPackage];
-    [self loadLiquidPackage];
+    [Liquid destroySingleton];
+    [NSThread sleepForTimeInterval:1.0f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
 }
 
-- (void)hardReset {
++ (void)hardResetForApiToken:(NSString *)token {
     [self softReset];
-    [Liquid deleteFileIfExists:[Liquid liquidQueueFileForToken:self.apiToken] error:nil];
+    [Liquid deleteFileIfExists:[Liquid liquidQueueFileForToken:token] error:nil];
     LQLog(kLQLogLevelInfo, @"<Liquid> Hard reset Liquid");
+}
+
+- (void)softReset {
+    [Liquid softReset];
+}
+
+- (void)hardReset {
+    [Liquid hardResetForApiToken:self.apiToken];
 }
 
 #pragma mark - Networking
