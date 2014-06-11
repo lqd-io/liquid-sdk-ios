@@ -76,7 +76,10 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 }
 
 + (Liquid *)sharedInstance {
-    if (sharedInstance == nil) LQLog(kLQLogLevelError, @"<Liquid> Error: %@ sharedInstance called before sharedInstanceWithToken:", self);
+    if (sharedInstance == nil) {
+        NSAssert(false, @"<Liquid> Error: %@ sharedInstance called before sharedInstanceWithToken:", self);
+        LQLog(kLQLogLevelError, @"<Liquid> Error: %@ sharedInstance called before sharedInstanceWithToken:", self);
+    }
     return sharedInstance;
 }
 
