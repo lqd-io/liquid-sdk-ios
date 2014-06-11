@@ -133,37 +133,55 @@
     [aCoder encodeObject:_liquidVersion forKey:@"liquid_version"];
 }
 
-#pragma mark - Archive to disk
+#pragma mark - Archive to/from disk
 
-+(LQLiquidPackage *)loadFromDisk {
-    LQLiquidPackage *liquidPackage = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] liquidPackageFile]];
++ (LQLiquidPackage *)loadFromDiskForToken:(NSString *)apiToken {
+    LQLiquidPackage *liquidPackage = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] liquidPackageFileForToken:apiToken]];
     return liquidPackage;
 }
 
-+(BOOL)destroyCachedLiquidPackage {
-    BOOL status = [[NSFileManager defaultManager] removeItemAtPath:[[self class] liquidPackageFile] error:NULL];
++ (BOOL)destroyCachedLiquidPackageForToken:(NSString *)apiToken {
+    BOOL status = [[NSFileManager defaultManager] removeItemAtPath:[[self class] liquidPackageFileForToken:apiToken] error:NULL];
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Liquid Package for token %@", apiToken);
+    return status;
+}
+
++ (NSArray *)filesInDirectory:(NSString *)directoryPath {
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSArray *files = [fileManager contentsOfDirectoryAtPath:directoryPath error:nil];
+    return files;
+}
+
++ (BOOL)destroyCachedLiquidPackageForAllTokens {
+    BOOL status = false;
+    for (NSString *path in [LQLiquidPackage filesInDirectory:[[self class] liquidPackagesDirectory]]) {
+        status &= [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+    }
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Liquid Package");
     return status;
 }
 
--(BOOL)saveToDisk {
+- (BOOL)saveToDiskForToken:(NSString *)apiToken {
     LQLog(kLQLogLevelData, @"<Liquid> Saving Liquid Package to disk");
     return [NSKeyedArchiver archiveRootObject:self
-                                       toFile:[[self class] liquidPackageFile]];
+                                       toFile:[[self class] liquidPackageFileForToken:apiToken]];
 }
 
-+(NSString*)liquidPackageFile {
++ (NSString *)liquidPackagesDirectory {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *liquidDirectory = [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
+    return [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
+}
+
++ (NSString*)liquidPackageFileForToken:(NSString *)apiToken {
+    NSString *liquidDirectory = [LQLiquidPackage liquidPackagesDirectory];
     NSError *error;
     if (![[NSFileManager defaultManager] fileExistsAtPath:liquidDirectory])
         [[NSFileManager defaultManager] createDirectoryAtPath:liquidDirectory
                                   withIntermediateDirectories:NO
                                                    attributes:nil
                                                         error:&error];
-    
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:@"last.liquid_package"];
+    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.last_liquid_package", apiToken]];
     LQLog(kLQLogLevelPaths,@"<Liquid> File location %@",liquidFile);
     return liquidFile;
 }

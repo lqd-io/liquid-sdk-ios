@@ -97,7 +97,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
         }
         if (numberOfInvalidatedValues > 0) {
             //dispatch_async(self.queue, ^() {
-                [_loadedLiquidPackage saveToDisk];
+            [_loadedLiquidPackage saveToDiskForToken:_apiToken];
             //});
         }
     });
@@ -460,7 +460,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
                 return nil;
             }
             liquidPacakge = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
-            [liquidPacakge saveToDisk];
+            [liquidPacakge saveToDiskForToken:_apiToken];
 
             [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
             if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
@@ -491,10 +491,10 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     // Ensure legacy:
     if (_loadedLiquidPackage && ![_loadedLiquidPackage liquidVersion]) {
         LQLog(kLQLogLevelNone, @"<Liquid> SDK was updated: destroying cached Liquid Package to ensure legacy");
-        [LQLiquidPackage destroyCachedLiquidPackage];
+        [LQLiquidPackage destroyCachedLiquidPackageForToken:_apiToken];
     }
 
-    LQLiquidPackage *liquidPackage = [LQLiquidPackage loadFromDisk];
+    LQLiquidPackage *liquidPackage = [LQLiquidPackage loadFromDiskForToken:_apiToken];
     if (liquidPackage) {
         _loadedLiquidPackage = liquidPackage;
     } else {
@@ -747,12 +747,19 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 #pragma mark - Resetting
 
 + (void)destroySingleton {
-    sharedInstance = nil;
+    sharedInstance.currentUser = nil;
+    sharedInstance.currentSession = nil;
+    sharedInstance.enterBackgroundTime = nil;
+    sharedInstance.timer = nil;
+    sharedInstance.httpQueue = nil;
+    sharedInstance.loadedLiquidPackage = nil;
+    sharedInstance.firstEventSent = NO;
+    [sharedInstance veryFirstMoment];
 }
 
 + (void)softReset {
-    [LQLiquidPackage destroyCachedLiquidPackage];
-    [Liquid destroySingleton];
+    [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
+    //[Liquid destroySingleton];
     [NSThread sleepForTimeInterval:1.0f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
 }

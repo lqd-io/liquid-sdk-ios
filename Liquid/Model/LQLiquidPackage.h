@@ -18,9 +18,10 @@
 -(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error;
 -(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName;
 
-+(LQLiquidPackage *)loadFromDisk;
-+(BOOL)destroyCachedLiquidPackage;
--(BOOL)saveToDisk;
++(LQLiquidPackage *)loadFromDiskForToken:(NSString *)apiToken;
++(BOOL)destroyCachedLiquidPackageForToken:(NSString *)apiToken;
++(BOOL)destroyCachedLiquidPackageForAllTokens;
+-(BOOL)saveToDiskForToken:(NSString *)apiToken;
 
 @property(nonatomic, strong, readonly) NSArray *values;
 @property(nonatomic, strong, readonly) NSString *liquidVersion;
