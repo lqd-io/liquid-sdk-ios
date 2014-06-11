@@ -64,11 +64,7 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
 #pragma mark - Singletons
 
 + (Liquid *)sharedInstanceWithToken:(NSString *)apiToken {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[super alloc] initWithToken:apiToken];
-    });
-    return sharedInstance;
+    return [Liquid sharedInstanceWithToken:apiToken development:NO];
 }
 
 + (Liquid *)sharedInstanceWithToken:(NSString *)apiToken development:(BOOL)development {
