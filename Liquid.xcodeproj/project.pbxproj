@@ -16,6 +16,19 @@
 		A95E659C194543180075161E /* liquid_package_correct_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */; };
 		A95E659E194566600075161E /* LiquidTargetsInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */; };
 		A95E65A0194566D90075161E /* LiquidValuesInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */; };
+		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
+		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
+		A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
+		A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98CF0081949C7A3003DF949 /* InfoPlist.strings */; };
+		A98CF00C1949C7A3003DF949 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF00B1949C7A3003DF949 /* main.m */; };
+		A98CF0101949C7A3003DF949 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF00F1949C7A3003DF949 /* AppDelegate.m */; };
+		A98CF0131949C7A3003DF949 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A98CF0111949C7A3003DF949 /* Main.storyboard */; };
+		A98CF0161949C7A3003DF949 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF0151949C7A3003DF949 /* ViewController.m */; };
+		A98CF0181949C7A3003DF949 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98CF0171949C7A3003DF949 /* Images.xcassets */; };
+		A98CF0321949F61E003DF949 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */; };
+		A98CF0331949F627003DF949 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F121935077600D0E0A1 /* CoreTelephony.framework */; };
+		A98CF0341949F62C003DF949 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */; };
+		A98CF0371949F795003DF949 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
 		A99B835A1940B9E1005AB709 /* data_point1.json in Resources */ = {isa = PBXBuildFile; fileRef = A99B83591940B9E1005AB709 /* data_point1.json */; };
 		A99EB4F8192447FA0060E484 /* Liquid.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E1192447FA0060E484 /* Liquid.m */; };
 		A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E5192447FA0060E484 /* LQDataPoint.m */; };
@@ -46,6 +59,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A98CF0351949F64C003DF949 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C73E4ADE1923C61D001EF2E6;
+			remoteInfo = Liquid;
+		};
 		A9E9805E193E257C0055D1E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
@@ -78,6 +98,17 @@
 		A93AF9CF19316FCA0035E811 /* LQEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEntity.m; sourceTree = "<group>"; };
 		A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidTargetsInvalidationSpec.m; sourceTree = "<group>"; };
 		A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidValuesInvalidationSpec.m; sourceTree = "<group>"; };
+		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A98CF0071949C7A3003DF949 /* LiquidDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidDemo-Info.plist"; sourceTree = "<group>"; };
+		A98CF0091949C7A3003DF949 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A98CF00B1949C7A3003DF949 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A98CF00D1949C7A3003DF949 /* LiquidDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LiquidDemo-Prefix.pch"; sourceTree = "<group>"; };
+		A98CF00E1949C7A3003DF949 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A98CF00F1949C7A3003DF949 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A98CF0121949C7A3003DF949 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A98CF0141949C7A3003DF949 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		A98CF0151949C7A3003DF949 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A98CF0171949C7A3003DF949 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A99B83591940B9E1005AB709 /* data_point1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data_point1.json; path = HTTPStubs/data_point1.json; sourceTree = "<group>"; };
 		A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_correct_data_types.json; path = HTTPStubs/liquid_package_correct_data_types.json; sourceTree = "<group>"; };
 		A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid-Prefix.pch"; sourceTree = "<group>"; };
@@ -129,6 +160,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A98CEFFE1949C7A3003DF949 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A98CF0371949F795003DF949 /* libLiquid.a in Frameworks */,
+				A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */,
+				A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */,
+				A98CF0341949F62C003DF949 /* CoreLocation.framework in Frameworks */,
+				A98CF0331949F627003DF949 /* CoreTelephony.framework in Frameworks */,
+				A98CF0321949F61E003DF949 /* SystemConfiguration.framework in Frameworks */,
+				A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A9E9804D193E257B0055D1E7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -191,6 +236,31 @@
 			children = (
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		A98CF0051949C7A3003DF949 /* LiquidDemo */ = {
+			isa = PBXGroup;
+			children = (
+				A98CF00E1949C7A3003DF949 /* AppDelegate.h */,
+				A98CF00F1949C7A3003DF949 /* AppDelegate.m */,
+				A98CF0111949C7A3003DF949 /* Main.storyboard */,
+				A98CF0141949C7A3003DF949 /* ViewController.h */,
+				A98CF0151949C7A3003DF949 /* ViewController.m */,
+				A98CF0171949C7A3003DF949 /* Images.xcassets */,
+				A98CF0061949C7A3003DF949 /* Supporting Files */,
+			);
+			path = LiquidDemo;
+			sourceTree = "<group>";
+		};
+		A98CF0061949C7A3003DF949 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A98CF0071949C7A3003DF949 /* LiquidDemo-Info.plist */,
+				A98CF0081949C7A3003DF949 /* InfoPlist.strings */,
+				A98CF00B1949C7A3003DF949 /* main.m */,
+				A98CF00D1949C7A3003DF949 /* LiquidDemo-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		A99EB4E3192447FA0060E484 /* Model */ = {
@@ -266,6 +336,7 @@
 			children = (
 				C73E4AE41923C61D001EF2E6 /* Liquid */,
 				A9E98055193E257C0055D1E7 /* LiquidTests */,
+				A98CF0051949C7A3003DF949 /* LiquidDemo */,
 				C73E4AE11923C61D001EF2E6 /* Frameworks */,
 				C73E4AE01923C61D001EF2E6 /* Products */,
 				BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */,
@@ -277,6 +348,7 @@
 			children = (
 				C73E4ADF1923C61D001EF2E6 /* libLiquid.a */,
 				A9E98050193E257C0055D1E7 /* LiquidTests.xctest */,
+				A98CF0011949C7A3003DF949 /* LiquidDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -312,6 +384,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A98CF0001949C7A3003DF949 /* LiquidDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A98CF02F1949C7A4003DF949 /* Build configuration list for PBXNativeTarget "LiquidDemo" */;
+			buildPhases = (
+				A98CEFFD1949C7A3003DF949 /* Sources */,
+				A98CEFFE1949C7A3003DF949 /* Frameworks */,
+				A98CEFFF1949C7A3003DF949 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A98CF0361949F64C003DF949 /* PBXTargetDependency */,
+			);
+			name = LiquidDemo;
+			productName = LiquidDemo;
+			productReference = A98CF0011949C7A3003DF949 /* LiquidDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A9E9804F193E257B0055D1E7 /* LiquidTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A9E98060193E257C0055D1E7 /* Build configuration list for PBXNativeTarget "LiquidTests" */;
@@ -359,7 +449,7 @@
 				ORGANIZATIONNAME = Liquid;
 				TargetAttributes = {
 					A9E9804F193E257B0055D1E7 = {
-						TestTargetID = C73E4ADE1923C61D001EF2E6;
+						TestTargetID = A98CF0001949C7A3003DF949;
 					};
 				};
 			};
@@ -369,6 +459,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C73E4AD61923C61D001EF2E6;
 			productRefGroup = C73E4AE01923C61D001EF2E6 /* Products */;
@@ -377,11 +468,22 @@
 			targets = (
 				C73E4ADE1923C61D001EF2E6 /* Liquid */,
 				A9E9804F193E257B0055D1E7 /* LiquidTests */,
+				A98CF0001949C7A3003DF949 /* LiquidDemo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A98CEFFF1949C7A3003DF949 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A98CF0181949C7A3003DF949 /* Images.xcassets in Resources */,
+				A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */,
+				A98CF0131949C7A3003DF949 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A9E9804E193E257B0055D1E7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -431,6 +533,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A98CEFFD1949C7A3003DF949 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A98CF0161949C7A3003DF949 /* ViewController.m in Sources */,
+				A98CF0101949C7A3003DF949 /* AppDelegate.m in Sources */,
+				A98CF00C1949C7A3003DF949 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A9E9804C193E257B0055D1E7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -468,6 +580,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A98CF0361949F64C003DF949 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C73E4ADE1923C61D001EF2E6 /* Liquid */;
+			targetProxy = A98CF0351949F64C003DF949 /* PBXContainerItemProxy */;
+		};
 		A9E9805F193E257C0055D1E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C73E4ADE1923C61D001EF2E6 /* Liquid */;
@@ -476,6 +593,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A98CF0081949C7A3003DF949 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A98CF0091949C7A3003DF949 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A98CF0111949C7A3003DF949 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A98CF0121949C7A3003DF949 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		A9E98058193E257C0055D1E7 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -487,10 +620,47 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A98CF02B1949C7A4003DF949 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LiquidDemo/LiquidDemo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/liquid-sdk-ios/Liquid/**";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A98CF02C1949C7A4003DF949 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LiquidDemo/LiquidDemo-Prefix.pch";
+				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/liquid-sdk-ios/Liquid/**";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		A9E98061193E257C0055D1E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LiquidDemo.app/LiquidDemo";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -505,6 +675,7 @@
 				INFOPLIST_FILE = "LiquidTests/LiquidTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -513,6 +684,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LiquidDemo.app/LiquidDemo";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -523,6 +695,7 @@
 				INFOPLIST_FILE = "LiquidTests/LiquidTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
@@ -630,6 +803,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A98CF02F1949C7A4003DF949 /* Build configuration list for PBXNativeTarget "LiquidDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A98CF02B1949C7A4003DF949 /* Debug */,
+				A98CF02C1949C7A4003DF949 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		A9E98060193E257C0055D1E7 /* Build configuration list for PBXNativeTarget "LiquidTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
