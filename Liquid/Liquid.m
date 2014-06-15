@@ -792,7 +792,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 + (void)softReset {
     [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
     //[Liquid destroySingleton];
-    [NSThread sleepForTimeInterval:1.0f];
+    [NSThread sleepForTimeInterval:0.2f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
 }
 
