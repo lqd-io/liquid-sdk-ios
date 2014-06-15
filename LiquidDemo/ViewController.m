@@ -122,6 +122,18 @@ BOOL const defaultShowAds = YES;
     NSLog(@"Track '%@' event", self.customEventNameTextField.text);
 }
 
+- (IBAction)autoLoadValuesSwitchValueChanged:(id)sender {
+    if (self.autoLoadValuesSwitch.isOn) {
+        [Liquid sharedInstance].autoLoadValues = YES;
+        self.loadValuesButton.enabled = NO;
+        NSLog(@"Auto load values (when new values are received from Liquid server) is now ON");
+    } else {
+        [Liquid sharedInstance].autoLoadValues = NO;
+        self.loadValuesButton.enabled = YES;
+        NSLog(@"Auto load values (when new values are received from Liquid server) is now OFF");
+    }
+}
+
 - (IBAction)requestValuesButtonPressed:(id)sender {
     [[Liquid sharedInstance] requestValues];
 }
@@ -165,9 +177,6 @@ BOOL const defaultShowAds = YES;
 #pragma mark - Liquid Delegate methods
 
 - (void)liquidDidReceiveValues {
-    if (self.autoLoadValuesSwitch.on) {
-        [[Liquid sharedInstance] loadValues];
-    }
     NSLog(@"Received new values from Liquid Server. They were stored in cache, waiting to be loaded.");
 }
 

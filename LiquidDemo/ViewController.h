@@ -17,6 +17,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *showAdsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UISwitch *autoLoadValuesSwitch;
+@property (strong, nonatomic) IBOutlet UIButton *loadValuesButton;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *userSelectorSegmentedControl;
 @property (strong, nonatomic) IBOutlet UITableView *userAttributesTableView;
 
