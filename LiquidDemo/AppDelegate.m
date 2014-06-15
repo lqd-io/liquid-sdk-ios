@@ -13,6 +13,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
+    // if the application goes into background for more than 30 seconds, a new session is considered:. default is 30
+    [[Liquid sharedInstance] setSessionTimeout:30];
     return YES;
 }
 							
