@@ -60,6 +60,7 @@ static Liquid *sharedInstance = nil;
 
 NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
 NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
+NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - Singletons
 
@@ -308,6 +309,14 @@ NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
     self.currentUser = [[LQUser alloc] initWithIdentifier:identifier attributes:attributes];
     [self newSessionInCurrentThread:YES];
     [self requestNewLiquidPackage];
+
+    NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.currentUser.identifier, @"identifier", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LQDidIdentifyUser object:nil userInfo:notificationUserInfo];
+    if([self.delegate respondsToSelector:@selector(liquidDidIdentifyUserWithIdentifier:)]) {
+        [self.delegate performSelectorOnMainThread:@selector(liquidDidIdentifyUserWithIdentifier:)
+                                        withObject:self.currentUser.identifier
+                                     waitUntilDone:NO];
+    }
 
     LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", self.currentUser.identifier);
 }

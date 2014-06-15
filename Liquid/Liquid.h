@@ -15,6 +15,7 @@
 @optional
 - (void)liquidDidReceiveValues;
 - (void)liquidDidLoadValues;
+- (void)liquidDidIdentifyUserWithIdentifier:(NSString *)identifier;
 @end
 
 /*!
@@ -52,6 +53,7 @@
 
 extern NSString * const LQDidReceiveValues;
 extern NSString * const LQDidLoadValues;
+extern NSString * const LQDidIdentifyUser;
 
 /*!
  @property

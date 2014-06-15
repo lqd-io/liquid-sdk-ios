@@ -14,6 +14,7 @@
 #define kLQDevicePlatform @"iOS"
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
 #define kLQNotificationLQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
+#define kLQNotificationLQDidIdentifyUser @"io.lqd.ios.Notifications:DidIdentifyUser"
 
 #define kLQLogLevelPaths       8
 #define kLQLogLevelHttp        7
