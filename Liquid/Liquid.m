@@ -305,7 +305,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
-    [self destroySessionIfExists];
+    if ([self.currentSession inProgress]) {
+        [self endSessionNow];
+    }
     self.currentUser = [[LQUser alloc] initWithIdentifier:identifier attributes:attributes];
     [self newSessionInCurrentThread:YES];
     [self requestNewLiquidPackage];
@@ -361,14 +363,18 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - Session
 
--(void)destroySessionIfExists {
-    if(self.currentUser != nil && self.currentSession != nil) {
-        [[self currentSession] endSessionOnDate:self.enterBackgroundTime];
+- (void)endSessionAt:(NSDate *)endAt {
+    if (self.currentUser != nil && self.currentSession != nil && self.currentSession.inProgress) {
+        [[self currentSession] endSessionOnDate:endAt];
         [self track:@"_endSession" attributes:nil allowLqdEvents:YES];
     }
 }
 
--(void)newSessionInCurrentThread:(BOOL)inThread {
+- (void)endSessionNow {
+    [self endSessionAt:[NSDate date]];
+}
+
+- (void)newSessionInCurrentThread:(BOOL)inThread {
     NSDate *now = [NSDate new];
     __block void (^newSessionBlock)() = ^() {
         if(self.currentUser == nil) {
@@ -384,12 +390,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         dispatch_async(self.queue, newSessionBlock);
 }
 
--(BOOL)checkSessionTimeout {
+- (BOOL)checkSessionTimeout {
     if(self.currentSession != nil) {
         NSDate *now = [NSDate new];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
         if(interval >= _sessionTimeout || interval > kLQDefaultSessionMaxLimit) {
-            [self destroySessionIfExists];
+            if ([self.currentSession inProgress]) {
+                [self endSessionAt:self.enterBackgroundTime];
+            }
             [self newSessionInCurrentThread:NO];
             return YES;
         }

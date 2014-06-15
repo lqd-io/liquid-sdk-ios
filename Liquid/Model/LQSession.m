@@ -45,6 +45,12 @@
     _end = endDate;
 }
 
+#pragma mark - Helpers
+
+- (BOOL)inProgress {
+    return (_end ? NO : YES);
+}
+
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {

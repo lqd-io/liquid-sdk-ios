@@ -18,6 +18,7 @@
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key;
 -(id)attributeForKey:(NSString *)key;
 -(void)endSessionOnDate:(NSDate *)endDate;
+-(BOOL)inProgress;
 
 -(NSDictionary*)jsonDictionary;
 
