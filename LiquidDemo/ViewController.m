@@ -54,9 +54,10 @@ BOOL const defaultShowAds = YES;
     [self setCurrentUserWithIdentifier:self.selectedUserProfile];
 
     // Being notified about Liquid events (alternative 1):
-    //[[Liquid sharedInstance] setDelegate:self];
+    [[Liquid sharedInstance] setDelegate:self];
 
     // Being notified about Liquid events (alternative 2):
+    /*
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(receivedValues:)
@@ -70,6 +71,7 @@ BOOL const defaultShowAds = YES;
                            selector:@selector(identifiedUser:)
                                name:LQDidIdentifyUser
                              object:nil];
+     */
 }
 
 - (void)didReceiveMemoryWarning {
