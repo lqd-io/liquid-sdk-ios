@@ -47,12 +47,29 @@ BOOL const defaultShowAds = YES;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)]];
-    [[Liquid sharedInstance] setDelegate:self];
 
     // Pre-select User with identifier "100":
     self.selectedUserProfile = @"100";
     [self.userSelectorSegmentedControl setSelectedSegmentIndex:0];
     [self setCurrentUserWithIdentifier:self.selectedUserProfile];
+
+    // Being notified about Liquid events (alternative 1):
+    //[[Liquid sharedInstance] setDelegate:self];
+
+    // Being notified about Liquid events (alternative 2):
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(receivedValues:)
+                               name:LQDidReceiveValues
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(loadedValues:)
+                               name:LQDidLoadValues
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(identifiedUser:)
+                               name:LQDidIdentifyUser
+                             object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,7 +81,7 @@ BOOL const defaultShowAds = YES;
 }
 
 
-#pragma mark - UI Elements Actions
+#pragma mark - UI Elements Actions for Demo App
 
 - (IBAction)resetSDKButtonPressed:(id)sender {
     [[Liquid sharedInstance] softReset];
@@ -106,9 +123,6 @@ BOOL const defaultShowAds = YES;
 - (IBAction)loadValuesButtonPressed:(id)sender {
     [[Liquid sharedInstance] loadValues];
 }
-
-
-#pragma mark - Demo App methods
 
 - (void)refrehInformation {
     NSString *title = [[Liquid sharedInstance] stringForKey:@"title" fallback:defaultTitle];
@@ -153,18 +167,43 @@ BOOL const defaultShowAds = YES;
 
 - (void)liquidDidLoadValues {
     [self refrehInformation];
-    NSLog(@"Cached alues were lodade into memory.");
+    NSLog(@"Cached values were loaded into memory.");
+}
+
+- (void)liquidDidIdentifyUserWithIdentifier:(NSString *)identifier {
+    NSDictionary *userAttributes = [self.userProfiles objectForKey:identifier];
+    NSLog(@"Current user is now '%@', with attributes: %@", identifier, userAttributes);
 }
 
 
-#pragma mark - Delegate methods: UITableViewDelegate, UITableViewDataSource
+#pragma mark - Liquid NSNotification callback methods
+
+- (void)receivedValues:(NSNotification *)notification {
+    NSLog(@"Received new values from Liquid Server. They were stored in cache, waiting to be loaded.");
+}
+
+- (void)loadedValues:(NSNotification *)notification {
+    [self refrehInformation];
+
+    NSLog(@"Cached values were loaded into memory.");
+}
+
+- (void)identifiedUser:(NSNotification *)notification {
+    [self refrehInformation];
+    
+    NSString *userIdentifier = [[notification userInfo] objectForKey:@"identifier"];
+    NSDictionary *userAttributes = [self.userProfiles objectForKey:userIdentifier];
+    NSLog(@"Current user is now '%@', with attributes: %@", userIdentifier, userAttributes);
+}
+
+
+#pragma mark - UITableViewDelegate, UITableViewDataSource methods
 
 - (IBAction)profileSelectorPressed:(UISegmentedControl *)sender {
     [self setCurrentUserWithIdentifier:[NSString stringWithFormat:@"%d", (int) (100 + sender.selectedSegmentIndex)]];
     [self.userAttributesTableView reloadData];
 }
 
- 
 - (NSInteger)numberOfSectionsInTableView: (UITableView *)tableView {
     return 1;
 }
