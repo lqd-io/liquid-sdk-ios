@@ -456,13 +456,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         finalEventName = @"unnamedEvent";
     }
     __block LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
+    __block LQUser *user = self.currentUser;
+    __block LQDevice *device = self.device;
+    __block LQSession *session = self.currentSession;
+    __block NSArray *loadedValues = _loadedLiquidPackage.values;
     dispatch_async(self.queue, ^{
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
-                                                              user:self.currentUser
-                                                            device:self.device
-                                                           session:self.currentSession
+                                                              user:user
+                                                            device:device
+                                                           session:session
                                                              event:event
-                                                            values:_loadedLiquidPackage.values];
+                                                            values:loadedValues];
 
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
         [self addToHttpQueue:[dataPoint jsonDictionary]
