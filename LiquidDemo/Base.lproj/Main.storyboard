@@ -96,9 +96,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="100"/>
+                                    <segment title="101"/>
                                     <segment title="102"/>
-                                    <segment title="103"/>
-                                    <segment title="104"/>
+                                    <segment title="Anonymous"/>
                                 </segments>
                                 <connections>
                                     <action selector="profileSelectorPressed:" destination="vXZ-lx-hvc" eventType="valueChanged" id="JQm-w7-XWm"/>

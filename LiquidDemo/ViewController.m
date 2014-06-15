@@ -36,9 +36,8 @@ BOOL const defaultShowAds = YES;
         NSDictionary *user1Attributes = @{ @"name":@"Anna Anna", @"age":@"25", @"gender":@"female" };
         NSDictionary *user2Attributes = @{ @"name":@"John John", @"age":@"37", @"gender":@"male" };
         NSDictionary *user3Attributes = @{ @"name":@"Barry Barry", @"age":@"16", @"gender":@"male" };
-        NSDictionary *user4Attributes = @{ @"name":@"Chris Chris", @"age":@"54", @"gender":@"female" };
         _userProfiles = [NSDictionary dictionaryWithObjectsAndKeys:user1Attributes, @"100",
-                         user2Attributes, @"101", user3Attributes, @"102", user4Attributes, @"103", nil];
+                         user2Attributes, @"101", user3Attributes, @"102", nil];
     }
     return _userProfiles;
 }
@@ -133,12 +132,15 @@ BOOL const defaultShowAds = YES;
 }
 
 - (void)setCurrentUserWithIdentifier:(NSString *)userIdentifier {
-    NSDictionary *userAttributes = [self.userProfiles objectForKey:userIdentifier];
-    [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
     self.selectedUserProfile = userIdentifier;
-    NSLog(@"Current user is now '%@', with attributes: %@", userIdentifier, userAttributes);
-}
+    NSDictionary *userAttributes = [self.userProfiles objectForKey:userIdentifier];
 
+    if ([userIdentifier isEqualToString:@"103"]) {
+        [[Liquid sharedInstance] identifyUser];
+    } else {
+        [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
+    }
+}
 
 #pragma mark - Liquid Delegate methods
 
