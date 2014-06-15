@@ -328,6 +328,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return self.currentUser.identifier;
 }
 
+- (NSString *)deviceIdentifier {
+    return [self.device uid];
+}
+
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key {
     if (![LQUser assertAttributeType:attribute andKey:key]) return;
 
@@ -391,6 +395,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
     }
     return NO;
+}
+
+- (NSString *)sessionIdentifier {
+    return self.currentSession.identifier;
 }
 
 #pragma mark - Event

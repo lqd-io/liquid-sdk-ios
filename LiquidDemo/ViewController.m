@@ -91,6 +91,12 @@ BOOL const defaultShowAds = YES;
     [[Liquid sharedInstance] flush];
 }
 
+- (IBAction)printIdentifierButtonPressed:(id)sender {
+    NSLog(@"User unique_id: %@", [[Liquid sharedInstance] userIdentifier]);
+    NSLog(@"Device unique_id: %@", [[Liquid sharedInstance] deviceIdentifier]);
+    NSLog(@"Session unique_id: %@", [[Liquid sharedInstance] sessionIdentifier]);
+}
+
 - (IBAction)trackEvent1:(id)sender {
     [[Liquid sharedInstance] track:@"Buy Product" attributes:@{
                                                                @"productId": @40,
