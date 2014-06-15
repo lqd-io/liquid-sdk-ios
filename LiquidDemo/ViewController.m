@@ -147,15 +147,15 @@ BOOL const defaultShowAds = YES;
 - (void)refrehInformation {
     NSString *title = [[Liquid sharedInstance] stringForKey:@"title" fallback:defaultTitle];
     NSDate *promoDay = [[Liquid sharedInstance] dateForKey:@"promoDay" fallback:[NSDateFormatter dateFromISO8601String:defaultPromoDay]];
-    UIColor *bgColor = [[Liquid sharedInstance] colorForKey:@"textcolor" fallback:[UIColor colorFromHexadecimalString:defaultBgColor]];
+    UIColor *bgColor = [[Liquid sharedInstance] colorForKey:@"bgColor" fallback:[UIColor colorFromHexadecimalString:defaultBgColor]];
     NSInteger loginVersion = [[Liquid sharedInstance] intForKey:@"login" fallback:defaultloginVersion];
     CGFloat discount = [[Liquid sharedInstance] floatForKey:@"discount" fallback:defaultDiscount];
     BOOL showAds = [[Liquid sharedInstance] boolForKey:@"showAds" fallback:defaultShowAds];
     
-    self.bgColorLabel.text = [UIColor hexadecimalStringFromUIColor:bgColor];
-    self.bgColorSquare.backgroundColor = bgColor;
-    self.showAdsLabel.text = (showAds ? @"yes" : @"no");
-    self.titleLabel.text = title;
+    [self.bgColorLabel setText:[UIColor hexadecimalStringFromUIColor:bgColor]];
+    [self.bgColorSquare setBackgroundColor:bgColor];
+    [self.showAdsLabel setText:(showAds ? @"yes" : @"no")];
+    [self.titleLabel setText:title];
     
     NSLog(@"title: %@", title);
     NSLog(@"promoDay: %@", promoDay);
