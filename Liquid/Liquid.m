@@ -42,6 +42,7 @@
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
+@property(nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property(nonatomic, strong, readonly) NSString *liquidUserAgent;
 
 @end
@@ -57,6 +58,7 @@ static Liquid *sharedInstance = nil;
 @synthesize sessionTimeout = _sessionTimeout;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 @synthesize liquidUserAgent = _liquidUserAgent;
+@synthesize valuesSentToServer = _valuesSentToServer;
 
 NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
 NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
@@ -218,6 +220,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _liquidUserAgent = [NSString stringWithFormat:@"Liquid/%@ (%@ ; %@)", kLQVersion, kLQDevicePlatform, [LQDevice deviceModel]];
     }
     return _liquidUserAgent;
+}
+
+- (NSArray *)valuesSentToServer {
+    if (!_valuesSentToServer) {
+        _valuesSentToServer = [[NSMutableArray alloc] init];
+    }
+    return _valuesSentToServer;
 }
 
 #pragma mark - UIApplication notifications
@@ -561,15 +570,18 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(void)sendVariable:(NSString *)variableName fallback:(id)fallbackValue liquidType:(NSString *)typeString {
     dispatch_async(self.queue, ^{
-        NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:variableName, @"name",
-                                  typeString, @"data_type",
-                                  (fallbackValue?fallbackValue:[NSNull null]), @"default_value", nil];
-        NSData *json = [Liquid toJSON:variable];
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
-        NSInteger res = [self sendData:json
-                            toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
-                           usingMethod:@"POST"];
-        if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+        if ([self.valuesSentToServer indexOfObject:variableName] == NSNotFound) {
+            [self.valuesSentToServer addObject:variableName];
+            NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:variableName, @"name",
+                                      typeString, @"data_type",
+                                      (fallbackValue?fallbackValue:[NSNull null]), @"default_value", nil];
+            NSData *json = [Liquid toJSON:variable];
+            LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+            NSInteger res = [self sendData:json
+                                toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
+                               usingMethod:@"POST"];
+            if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+        }
     });
 }
 
