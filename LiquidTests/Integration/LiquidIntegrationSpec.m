@@ -19,8 +19,6 @@ describe(@"Liquid", ^{
     let(userId, ^id{
         return @"111";
     });
-
-    let(jsonDict, nil);
     
     beforeAll(^{
         [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];

@@ -85,6 +85,8 @@ extern NSString * const LQDidLoadValues;
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location;
 - (void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location;
 - (NSString *)userIdentifier;
+- (NSString *)deviceIdentifier;
+- (NSString *)sessionIdentifier;
 - (void)setUserAttribute:(id)attribute forKey:(NSString *)key;
 - (void)setUserLocation:(CLLocation *)location;
 + (void)assertUserAttributeType:(id)attribute;

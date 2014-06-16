@@ -20,8 +20,6 @@ describe(@"Liquid", ^{
         return @"333";
     });
     
-    let(jsonDict, nil);
-    
     beforeAll(^{
         [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];

@@ -48,7 +48,7 @@ describe(@"Liquid", ^{
                 NSString *fixture = OHPathForFileInBundle(@"liquid_package_targets.json", nil);
                 return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
             }];
-            
+
             [Liquid softReset];
             [Liquid sharedInstanceWithToken:apiToken];
             [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
