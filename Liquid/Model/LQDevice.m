@@ -280,4 +280,63 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     }
 }
 
+#pragma mark - NSCoding & NSCopying
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _vendor = [aDecoder decodeObjectForKey:@"vendor"];
+        _deviceModel = [aDecoder decodeObjectForKey:@"deviceModel"];
+        _systemVersion = [aDecoder decodeObjectForKey:@"systemVersion"];
+        _deviceName = [aDecoder decodeObjectForKey:@"deviceName"];
+        _carrier = [aDecoder decodeObjectForKey:@"carrier"];
+        _screenSize = [aDecoder decodeObjectForKey:@"screenSize"];
+        _uid = [aDecoder decodeObjectForKey:@"uid"];
+        _appBundle = [aDecoder decodeObjectForKey:@"appBundle"];
+        _appName = [aDecoder decodeObjectForKey:@"appName"];
+        _appVersion = [aDecoder decodeObjectForKey:@"appVersion"];
+        _releaseVersion = [aDecoder decodeObjectForKey:@"releaseVersion"];
+        _liquidVersion = [aDecoder decodeObjectForKey:@"liquidVersion"];
+        _internetConnectivity = [aDecoder decodeObjectForKey:@"internetConnectivity"];
+        _attributes = [aDecoder decodeObjectForKey:@"attributes"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_vendor forKey:@"vendor"];
+    [aCoder encodeObject:_deviceModel forKey:@"deviceModel"];
+    [aCoder encodeObject:_systemVersion forKey:@"systemVersion"];
+    [aCoder encodeObject:_deviceName forKey:@"deviceName"];
+    [aCoder encodeObject:_carrier forKey:@"carrier"];
+    [aCoder encodeObject:_screenSize forKey:@"screenSize"];
+    [aCoder encodeObject:_uid forKey:@"uid"];
+    [aCoder encodeObject:_appBundle forKey:@"appBundle"];
+    [aCoder encodeObject:_appName forKey:@"appName"];
+    [aCoder encodeObject:_appVersion forKey:@"appVersion"];
+    [aCoder encodeObject:_releaseVersion forKey:@"releaseVersion"];
+    [aCoder encodeObject:_liquidVersion forKey:@"liquidVersion"];
+    [aCoder encodeObject:_internetConnectivity forKey:@"internetConnectivity"];
+    [aCoder encodeObject:_attributes forKey:@"attributes"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQDevice *device = [[[self class] allocWithZone:zone] init];
+    device->_vendor = [_vendor copyWithZone:zone];
+    device->_deviceModel = [_deviceModel copyWithZone:zone];
+    device->_systemVersion = [_systemVersion copyWithZone:zone];
+    device->_deviceName = [_deviceName copyWithZone:zone];
+    device->_carrier = [_carrier copyWithZone:zone];
+    device->_screenSize = [_screenSize copyWithZone:zone];
+    device->_uid = [_uid copyWithZone:zone];
+    device->_appBundle = [_appBundle copyWithZone:zone];
+    device->_appName = [_appName copyWithZone:zone];
+    device->_appVersion = [_appVersion copyWithZone:zone];
+    device->_releaseVersion = [_releaseVersion copyWithZone:zone];
+    device->_liquidVersion = [_liquidVersion copyWithZone:zone];
+    device->_internetConnectivity = [_internetConnectivity copyWithZone:zone];
+    device->_attributes = [_attributes copyWithZone:zone];
+    return device;
+}
+
 @end

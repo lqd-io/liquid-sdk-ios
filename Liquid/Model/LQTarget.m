@@ -28,9 +28,9 @@
     return self;
 }
 
-#pragma mark - NSCoding
+#pragma mark - NSCoding & NSCopying
 
--(id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if(self) {
         _identifier = [aDecoder decodeObjectForKey:@"id"];
@@ -38,8 +38,14 @@
     return self;
 }
 
--(void)encodeWithCoder:(NSCoder *)aCoder {
+- (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:_identifier forKey:@"id"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQTarget *target = [[[self class] allocWithZone:zone] init];
+    target->_identifier = [_identifier copyWithZone:zone];
+    return target;
 }
 
 #pragma mark - JSON

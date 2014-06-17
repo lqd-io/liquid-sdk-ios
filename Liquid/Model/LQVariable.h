@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LQVariable : NSObject<NSCoding>
+@interface LQVariable : NSObject <NSCoding, NSCopying>
 
 extern NSString * const kLQDataTypeString;
 extern NSString * const kLQDataTypeColor;
@@ -19,7 +19,6 @@ extern NSString * const kLQDataTypeFloat;
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(NSDictionary *)jsonDictionary;
-
 - (BOOL)matchesLiquidType:(NSString *)typeString;
 
 @property(nonatomic, strong, readonly) NSString* identifier;

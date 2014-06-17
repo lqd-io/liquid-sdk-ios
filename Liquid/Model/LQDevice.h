@@ -10,7 +10,7 @@
 #import "LQEntity.h"
 #import "LQUser.h"
 
-@interface LQDevice : LQEntity
+@interface LQDevice : LQEntity <NSCoding, NSCopying>
 
 -(id)initWithLiquidVersion:(NSString*)liquidVersion;
 

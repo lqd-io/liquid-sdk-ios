@@ -10,7 +10,7 @@
 #import "LQEntity.h"
 #import "LQSession.h"
 
-@interface LQEvent : LQEntity
+@interface LQEvent : LQEntity <NSCoding, NSCopying>
 
 -(id)initWithName:(NSString*)name attributes:(NSDictionary*)attributes date:(NSDate *)date;
 -(NSDictionary *)jsonDictionary;

@@ -11,7 +11,7 @@
 #import "LQValue.h"
 #import "LQTarget.h"
 
-@interface LQLiquidPackage : LQEntity<NSCoding>
+@interface LQLiquidPackage : LQEntity <NSCoding, NSCopying>
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(id)initWithValues:(NSArray *)values;
@@ -25,7 +25,6 @@
 
 @property(nonatomic, strong, readonly) NSArray *values;
 @property(nonatomic, strong, readonly) NSString *liquidVersion;
-
 @property(nonatomic, strong, readonly) NSDictionary *dictOfVariablesAndValues;
 
 @end

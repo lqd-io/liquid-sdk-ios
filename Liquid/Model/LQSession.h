@@ -11,7 +11,7 @@
 #import "LQUser.h"
 #import "LQDevice.h"
 
-@interface LQSession : LQEntity
+@interface LQSession : LQEntity <NSCoding, NSCopying>
 
 -(id)initWithDate:(NSDate *)date timeout:(NSNumber*)timeout;
 

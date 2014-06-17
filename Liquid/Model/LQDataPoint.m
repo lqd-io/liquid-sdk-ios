@@ -25,6 +25,44 @@
     return self;
 }
 
+#pragma mark - NSCoding & NSCopying
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _user = [aDecoder decodeObjectForKey:@"user"];
+        _device = [aDecoder decodeObjectForKey:@"device"];
+        _session = [aDecoder decodeObjectForKey:@"session"];
+        _event = [aDecoder decodeObjectForKey:@"event"];
+        _targets = [aDecoder decodeObjectForKey:@"targets"];
+        _values = [aDecoder decodeObjectForKey:@"values"];
+        _timestamp = [aDecoder decodeObjectForKey:@"timestamp"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_user forKey:@"user"];
+    [aCoder encodeObject:_device forKey:@"device"];
+    [aCoder encodeObject:_session forKey:@"session"];
+    [aCoder encodeObject:_event forKey:@"event"];
+    [aCoder encodeObject:_targets forKey:@"targets"];
+    [aCoder encodeObject:_values forKey:@"values"];
+    [aCoder encodeObject:_timestamp forKey:@"timestamp"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQDataPoint *dataPoint = [[[self class] allocWithZone:zone] init];
+    dataPoint->_user = _user;
+    dataPoint->_device = [_device copyWithZone:zone];
+    dataPoint->_session = [_session copyWithZone:zone];
+    dataPoint->_event = [_event copyWithZone:zone];
+    dataPoint->_targets = [_targets copyWithZone:zone];
+    dataPoint->_values = [_values copyWithZone:zone];
+    dataPoint->_timestamp = [_timestamp copyWithZone:zone];
+    return dataPoint;
+}
+
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {

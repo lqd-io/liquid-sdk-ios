@@ -109,9 +109,9 @@ extern NSString * const LQDidLoadValues;
 - (LQLiquidPackage *)requestNewLiquidPackageSynced;
 - (void)requestNewLiquidPackage;
 - (void)requestValues;
-- (void)loadLiquidPackageSynced;
 - (void)notifyDelegatesAndObserversAboutNewValues;
-- (void)loadLiquidPackage;
+- (LQLiquidPackage *)loadLiquidPackageFromDisk;
+- (void)loadLiquidPackageSynced:(BOOL)synced;
 - (void)loadValues;
 
 #pragma mark - Development functionalities

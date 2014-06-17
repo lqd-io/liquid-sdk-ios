@@ -116,9 +116,9 @@
     return 0;
 }
 
-#pragma mark - NSCoding
+#pragma mark - NSCoding & NSCopying
 
--(id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if (self) {
         _values = [aDecoder decodeObjectForKey:@"values"];
@@ -128,9 +128,17 @@
     return self;
 }
 
--(void)encodeWithCoder:(NSCoder *)aCoder {
+- (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:_values forKey:@"values"];
     [aCoder encodeObject:_liquidVersion forKey:@"liquid_version"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQLiquidPackage *liquidPackage = [[[self class] allocWithZone:zone] init];
+    liquidPackage->_values = [_values copyWithZone:zone];
+    liquidPackage->_liquidVersion = [_liquidVersion copyWithZone:zone];
+    liquidPackage->_dictOfVariablesAndValues = [_dictOfVariablesAndValues copyWithZone:zone];
+    return liquidPackage;
 }
 
 #pragma mark - Archive to/from disk

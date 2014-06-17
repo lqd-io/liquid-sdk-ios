@@ -10,7 +10,7 @@
 #import "LQVariable.h"
 #import "LQTarget.h"
 
-@interface LQValue : NSObject<NSCoding>
+@interface LQValue : NSObject <NSCoding, NSCopying>
 
 -(id)initFromDictionary:(NSDictionary *)dict;
 -(id)initWithFallbackValue:(id)value;

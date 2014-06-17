@@ -14,7 +14,7 @@
 #import "LQTarget.h"
 #import "LQValue.h"
 
-@interface LQDataPoint : NSObject
+@interface LQDataPoint : NSObject <NSCoding, NSCopying>
 
 -(id)initWithDate:(NSDate *)date user:(LQUser *)user device:(LQDevice *)device session:(LQSession *)session event:(LQEvent *)event values:(NSArray *)values;
 -(NSDictionary *)jsonDictionary;

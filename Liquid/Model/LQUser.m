@@ -65,4 +65,30 @@
     return automaticUserIdentifier;
 }
 
+#pragma mark - NSCoding & NSCopying
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _identifier = [aDecoder decodeObjectForKey:@"identifier"];
+        _attributes = [aDecoder decodeObjectForKey:@"attributes"];
+        _autoIdentified = [aDecoder decodeObjectForKey:@"autoIdentified"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_identifier forKey:@"identifier"];
+    [aCoder encodeObject:_attributes forKey:@"attributes"];
+    [aCoder encodeObject:_autoIdentified forKey:@"autoIdentified"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQUser *user = [[[self class] allocWithZone:zone] init];
+    user->_identifier = [_identifier copyWithZone:zone];
+    user->_attributes = [_attributes copyWithZone:zone];
+    user->_autoIdentified = [_autoIdentified copyWithZone:zone];
+    return user;
+}
+
 @end

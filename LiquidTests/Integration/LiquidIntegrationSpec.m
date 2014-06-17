@@ -44,10 +44,6 @@ describe(@"Liquid", ^{
                 [Liquid softReset];
                 [Liquid sharedInstanceWithToken:apiToken];
                 [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
-
-                // Simulate an app going in background and foreground again:
-                [NSThread sleepForTimeInterval:0.5f];
-                [[Liquid sharedInstance] loadLiquidPackageSynced];
             });
 
             context(@"given the very first launch of the app", ^{
@@ -57,6 +53,14 @@ describe(@"Liquid", ^{
             });
             
             context(@"given the second launch of the app (with 2 variables loaded in memory)", ^{
+                beforeAll(^{
+                    // Simulate an app going in background and foreground again:
+                    [NSThread sleepForTimeInterval:0.1f];
+                    [[Liquid sharedInstance] applicationWillResignActive:nil];
+                    [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+                    [NSThread sleepForTimeInterval:0.1f];
+                });
+
                 it(@"should use a variable from the Liquid Package if it matches name and type", ^{
                     NSString *fallbackValue = @"A fallback value";
                     NSString *serverValue = @"Be very welcome";

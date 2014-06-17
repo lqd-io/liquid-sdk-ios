@@ -44,8 +44,10 @@ describe(@"Liquid", ^{
                 [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
 
                 // Simulate an app going in background and foreground again:
-                [NSThread sleepForTimeInterval:0.5f];
-                [[Liquid sharedInstance] loadLiquidPackageSynced];
+                [NSThread sleepForTimeInterval:0.1f];
+                [[Liquid sharedInstance] applicationWillResignActive:nil];
+                [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+                [NSThread sleepForTimeInterval:0.1f];
             });
 
             it(@"should have loaded 6 values/variables", ^{
@@ -108,8 +110,10 @@ describe(@"Liquid", ^{
                 [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
 
                 // Simulate an app going in background and foreground again:
-                [NSThread sleepForTimeInterval:0.5f];
-                [[Liquid sharedInstance] loadLiquidPackageSynced];
+                [NSThread sleepForTimeInterval:0.1f];
+                [[Liquid sharedInstance] applicationWillResignActive:nil];
+                [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+                [NSThread sleepForTimeInterval:0.1f];
             });
 
             it(@"should invalidate (thus fallback) 'title' variable", ^{

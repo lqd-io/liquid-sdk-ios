@@ -33,10 +33,34 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_name forKey:@"name"];
-
     [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_date] forKey:@"date"];
-
     return dictionary;
+}
+
+#pragma mark - NSCoding & NSCopying
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _name = [aDecoder decodeObjectForKey:@"name"];
+        _attributes = [aDecoder decodeObjectForKey:@"attributes"];
+        _date = [aDecoder decodeObjectForKey:@"date"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_name forKey:@"name"];
+    [aCoder encodeObject:_attributes forKey:@"attributes"];
+    [aCoder encodeObject:_date forKey:@"date"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQEvent *event = [[[self class] allocWithZone:zone] init];
+    event->_name = [_name copyWithZone:zone];
+    event->_attributes = [_attributes copyWithZone:zone];
+    event->_date = [_date copyWithZone:zone];
+    return event;
 }
 
 @end

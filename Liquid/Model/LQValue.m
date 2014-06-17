@@ -45,9 +45,9 @@
     return NO;
 }
 
-#pragma mark - NSCoding
+#pragma mark - NSCoding & NSCopying
 
--(id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if(self) {
         _identifier = [aDecoder decodeObjectForKey:@"id"];
@@ -59,12 +59,23 @@
     return self;
 }
 
--(void)encodeWithCoder:(NSCoder *)aCoder{
+- (void)encodeWithCoder:(NSCoder *)aCoder{
     [aCoder encodeObject:_identifier forKey:@"id"];
     [aCoder encodeObject:_value forKey:@"value"];
     [aCoder encodeObject:_variable forKey:@"variable"];
     [aCoder encodeObject:_targetId forKey:@"target_id"];
     [aCoder encodeObject:_isDefault forKey:@"default"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQValue *value = [[[self class] allocWithZone:zone] init];
+    value->_identifier = [_identifier copyWithZone:zone];
+    value->_value = [_value copyWithZone:zone];
+    value->_variable = [_variable copyWithZone:zone];
+    value->_targetId = [_targetId copyWithZone:zone];
+    value->_isDefault = [_isDefault copyWithZone:zone];
+    value->_isFallback = [_isFallback copyWithZone:zone];
+    return value;
 }
 
 #pragma mark - JSON

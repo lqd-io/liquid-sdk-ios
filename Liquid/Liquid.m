@@ -93,20 +93,21 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    dispatch_async(self.queue, ^() {
-        NSInteger numberOfInvalidatedValues = 0;
-        numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-        if (numberOfInvalidatedValues > 1) { // if included on a target
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self notifyDelegatesAndObserversAboutNewValues];
-            });
-        }
-        if (numberOfInvalidatedValues > 0) {
-            //dispatch_async(self.queue, ^() {
-            [_loadedLiquidPackage saveToDiskForToken:_apiToken];
-            //});
-        }
-    });
+    NSInteger numberOfInvalidatedValues = 0;
+    numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
+
+    if (numberOfInvalidatedValues > 0) {
+        LQLiquidPackage *loadedLiquidPackage = [_loadedLiquidPackage copy];
+        dispatch_async(self.queue, ^() {
+            [loadedLiquidPackage saveToDiskForToken:_apiToken];
+        });
+    }
+
+    if (numberOfInvalidatedValues > 1) { // if included on a target
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self notifyDelegatesAndObserversAboutNewValues];
+        });
+    }
 }
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)development {
@@ -133,7 +134,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [self startFlushTimer];
 
         if(!_loadedLiquidPackage) {
-            [self loadLiquidPackageSynced];
+            [self loadLiquidPackageSynced:YES];
         }
 
         // Bind notifications:
@@ -244,7 +245,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 
     // Request variables on app resume
-    [self loadLiquidPackageSynced];
+    [self loadLiquidPackageSynced:YES];
     dispatch_async(self.queue, ^() {
         self.enterBackgroundTime = nil;
         // Restore queue from plist
@@ -465,10 +466,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         finalEventName = @"unnamedEvent";
     }
     __block LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
-    __block LQUser *user = self.currentUser;
-    __block LQDevice *device = self.device;
-    __block LQSession *session = self.currentSession;
-    __block NSArray *loadedValues = _loadedLiquidPackage.values;
+    __block LQUser *user = [self.currentUser copy];
+    __block LQDevice *device = [self.device copy];
+    __block LQSession *session = [self.currentSession copy];
+    __block NSArray *loadedValues = [_loadedLiquidPackage.values copy];
     dispatch_async(self.queue, ^{
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
                                                               user:user
@@ -476,7 +477,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                                            session:session
                                                              event:event
                                                             values:loadedValues];
-
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
         [self addToHttpQueue:[dataPoint jsonDictionary]
                 endPoint:endPoint
@@ -510,7 +510,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                              waitUntilDone:NO];
             }
             if(_autoLoadValues) {
-                [self loadLiquidPackage];
+                [self loadLiquidPackageSynced:NO];
             }
         }
         return liquidPacakge;
@@ -528,21 +528,37 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self requestNewLiquidPackage];
 }
 
--(void)loadLiquidPackageSynced {
+-(LQLiquidPackage *)loadLiquidPackageFromDisk {
     // Ensure legacy:
     if (_loadedLiquidPackage && ![_loadedLiquidPackage liquidVersion]) {
         LQLog(kLQLogLevelNone, @"<Liquid> SDK was updated: destroying cached Liquid Package to ensure legacy");
         [LQLiquidPackage destroyCachedLiquidPackageForToken:_apiToken];
     }
 
-    LQLiquidPackage *liquidPackage = [LQLiquidPackage loadFromDiskForToken:_apiToken];
-    if (liquidPackage) {
-        _loadedLiquidPackage = liquidPackage;
-    } else {
-        NSArray *emptyArray = [[NSArray alloc] initWithObjects:nil];
-        _loadedLiquidPackage = [[LQLiquidPackage alloc] initWithValues:emptyArray];
+    LQLiquidPackage *cachedLiquidPackage = [LQLiquidPackage loadFromDiskForToken:_apiToken];
+    if (cachedLiquidPackage) {
+        return cachedLiquidPackage;
     }
-    [self notifyDelegatesAndObserversAboutNewValues];
+    return [[LQLiquidPackage alloc] initWithValues:[[NSArray alloc] initWithObjects:nil]];
+}
+
+-(void)loadLiquidPackageSynced:(BOOL)synced {
+    if (synced) {
+        _loadedLiquidPackage = [self loadLiquidPackageFromDisk];
+    } else {
+        __block LQLiquidPackage *cachedLiquidPackage;
+        dispatch_async(self.queue, ^{
+            cachedLiquidPackage = [self loadLiquidPackageFromDisk];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _loadedLiquidPackage = cachedLiquidPackage;
+                [self notifyDelegatesAndObserversAboutNewValues];
+            });
+        });
+    }
+}
+
+-(void)loadValues {
+    [self loadLiquidPackageSynced:NO];
 }
 
 -(void)notifyDelegatesAndObserversAboutNewValues {
@@ -554,16 +570,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                      waitUntilDone:NO];
     }
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", [_loadedLiquidPackage dictOfVariablesAndValues]);
-}
-
--(void)loadLiquidPackage {
-    dispatch_async(self.queue, ^{
-        [self loadLiquidPackageSynced];
-    });
-}
-
--(void)loadValues {
-    [self loadLiquidPackage];
 }
 
 #pragma mark - Development functionalities

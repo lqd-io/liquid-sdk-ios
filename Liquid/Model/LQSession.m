@@ -69,4 +69,36 @@
     return [NSString generateRandomUUIDAppendingTimestamp:YES];
 }
 
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _identifier = [aDecoder decodeObjectForKey:@"identifier"];
+        _start = [aDecoder decodeObjectForKey:@"start"];
+        _end = [aDecoder decodeObjectForKey:@"end"];
+        _timeout = [aDecoder decodeObjectForKey:@"timeout"];
+        _attributes = [aDecoder decodeObjectForKey:@"attributes"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_identifier forKey:@"identifier"];
+    [aCoder encodeObject:_start forKey:@"start"];
+    [aCoder encodeObject:_end forKey:@"end"];
+    [aCoder encodeObject:_timeout forKey:@"timeout"];
+    [aCoder encodeObject:_attributes forKey:@"attributes"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQSession *session = [[[self class] allocWithZone:zone] init];
+    session->_identifier = [_identifier copyWithZone:zone];
+    session->_start = [_start copyWithZone:zone];
+    session->_end = [_end copyWithZone:zone];
+    session->_timeout = [_timeout copyWithZone:zone];
+    session->_attributes = [_attributes copyWithZone:zone];
+    return session;
+}
+
 @end

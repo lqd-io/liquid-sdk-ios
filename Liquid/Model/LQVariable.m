@@ -35,9 +35,9 @@ NSString * const kLQDataTypeFloat = @"float";
     return NO;
 }
 
-#pragma mark - NSCoding
+#pragma mark - NSCoding & NSCopying
 
--(id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if(self) {
         _identifier = [aDecoder decodeObjectForKey:@"id"];
@@ -48,11 +48,20 @@ NSString * const kLQDataTypeFloat = @"float";
     return self;
 }
 
--(void)encodeWithCoder:(NSCoder *)aCoder {
+- (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:_identifier forKey:@"id"];
     [aCoder encodeObject:_name forKey:@"name"];
     [aCoder encodeObject:_defaultValue forKey:@"default_value"];
     [aCoder encodeObject:_dataType forKey:@"data_type"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    LQVariable *variable = [[[self class] allocWithZone:zone] init];
+    variable->_identifier = [_identifier copyWithZone:zone];
+    variable->_name = [_name copyWithZone:zone];
+    variable->_dataType = [_dataType copyWithZone:zone];
+    variable->_defaultValue = [_defaultValue copyWithZone:zone];
+    return variable;
 }
 
 #pragma mark - JSON

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LQTarget : NSObject<NSCoding>
+@interface LQTarget : NSObject <NSCoding, NSCopying>
 
 -(instancetype)initFromDictionary:(NSDictionary *)dict;
 -(NSDictionary *)jsonDictionary;

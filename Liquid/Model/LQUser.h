@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "LQEntity.h"
 
-@interface LQUser : LQEntity
+@interface LQUser : LQEntity <NSCoding, NSCopying>
 
 - (id)initWithIdentifier:(NSString*)identifier attributes:(NSDictionary*)attributes;
 

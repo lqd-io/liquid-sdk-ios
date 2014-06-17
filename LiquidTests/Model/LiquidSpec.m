@@ -42,9 +42,12 @@ describe(@"Liquid", ^{
             beforeEach(^{
                 previousUserId = [[Liquid sharedInstance] userIdentifier];
                 previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
+
+                [NSThread sleepForTimeInterval:0.1f];
                 [[Liquid sharedInstance] applicationWillResignActive:nil];
                 [NSThread sleepForTimeInterval:0.25f];
                 [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+                [NSThread sleepForTimeInterval:0.1f];
             });
 
             it(@"should keep the previous Session ID", ^{
@@ -56,14 +59,17 @@ describe(@"Liquid", ^{
             beforeEach(^{
                 previousUserId = [[Liquid sharedInstance] userIdentifier];
                 previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
+
+                [NSThread sleepForTimeInterval:0.1f];
                 [[Liquid sharedInstance] applicationWillResignActive:nil];
                 [NSThread sleepForTimeInterval:2.0f];
                 [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+                [NSThread sleepForTimeInterval:0.1f];
             });
             
-//            it(@"should keep the previous Session ID", ^{
-//                [[[[Liquid sharedInstance] sessionIdentifier] shouldNot] equal:(NSString *)previousSessionId];
-//            });
+            it(@"should keep the previous Session ID", ^{
+                [[[[Liquid sharedInstance] sessionIdentifier] shouldNot] equal:(NSString *)previousSessionId];
+            });
         });
     });
 });

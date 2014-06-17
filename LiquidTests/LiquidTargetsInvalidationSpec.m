@@ -54,8 +54,10 @@ describe(@"Liquid", ^{
             [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
 
             // Simulate an app going in background and foreground again:
-            [NSThread sleepForTimeInterval:0.5f];
-            [[Liquid sharedInstance] loadLiquidPackageSynced];
+            [NSThread sleepForTimeInterval:0.1f];
+            [[Liquid sharedInstance] applicationWillResignActive:nil];
+            [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+            [NSThread sleepForTimeInterval:0.1f];
         });
 
         it(@"should invalidate (thus fallback) 'freeCoins' variable", ^{
@@ -67,8 +69,6 @@ describe(@"Liquid", ^{
         context(@"given 'freeCoins' been used (an invalidated)", ^{
             beforeEach(^{
                 [[Liquid sharedInstance] intForKey:@"freeCoins" fallback:1];
-                // wait 0.5 seconds to allow HTTP request to be queued:
-                [NSThread sleepForTimeInterval:0.5f];
             });
             
             it(@"should invalidate (thus fallback) 'discount' variable after 'freeCoins' being used", ^{
@@ -107,6 +107,7 @@ describe(@"Liquid", ^{
             context(@"given an event that is tracked", ^{
                 beforeEach(^{
                     [[Liquid sharedInstance] track:@"Click Button"];
+                    [NSThread sleepForTimeInterval:0.3f]; // wait for data point to be processed from the queued
                     LQQueue *queuedRequest = [[[Liquid sharedInstance] httpQueue] lastObject];
                     NSData *jsonData = queuedRequest.json;
                     jsonDict = [Liquid fromJSON:jsonData];
