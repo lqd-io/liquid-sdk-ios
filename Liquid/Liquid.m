@@ -119,7 +119,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _developmentMode = NO;
     }
     if (apiToken == nil) apiToken = @"";
-    if ([apiToken length] == 0) LQLog(kLQLogLevelError, @"<Liquid> Error: %@ empty API Token", self);
+    if ([apiToken length] == 0) {
+        NSAssert(false, @"<Liquid> Error: %@ empty API Token", self);
+        LQLog(kLQLogLevelError, @"<Liquid> Error: %@ empty API Token", self);
+    }
     if (self = [self init]) {
         self.httpQueue = [Liquid unarchiveQueueForToken:apiToken];
         
