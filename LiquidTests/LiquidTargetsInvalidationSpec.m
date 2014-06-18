@@ -16,10 +16,6 @@ describe(@"Liquid", ^{
         return [LQDevice uid];
     });
     
-    let(userId, ^id{
-        return @"222";
-    });
-    
     let(jsonDict, nil);
     
     beforeAll(^{
@@ -43,7 +39,7 @@ describe(@"Liquid", ^{
             // * all the other variables should NOT be invalidated
             //
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return [request.URL.path isEqualToString:[NSString stringWithFormat:@"/collect/users/%@/devices/%@/liquid_package", userId, deviceId]];
+                return [request.URL.path isEqualToString:[NSString stringWithFormat:@"/collect/users/%@/devices/%@/liquid_package", deviceId, deviceId]];
             } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
                 NSString *fixture = OHPathForFileInBundle(@"liquid_package_targets.json", nil);
                 return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
@@ -51,7 +47,7 @@ describe(@"Liquid", ^{
 
             [Liquid softReset];
             [Liquid sharedInstanceWithToken:apiToken];
-            [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
+            [[Liquid sharedInstance] identifyUser];
 
             // Simulate an app going in background and foreground again:
             [NSThread sleepForTimeInterval:0.1f];

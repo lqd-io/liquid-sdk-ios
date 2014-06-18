@@ -25,9 +25,23 @@
 @optional
 - (void)liquidDidReceiveValues;
 - (void)liquidDidLoadValues;
+- (void)liquidDidIdentifyUserWithIdentifier:(NSString *)identifier;
 @end
 
 @interface Liquid : NSObject
+
+extern NSString * const LQDidReceiveValues;
+extern NSString * const LQDidLoadValues;
+extern NSString * const LQDidIdentifyUser;
+
+@property (atomic, retain) NSObject<LiquidDelegate> *delegate;
+@property (atomic, copy) NSString *serverURL;
+@property (nonatomic) NSUInteger flushInterval;
+@property (nonatomic, assign) BOOL flushOnBackground;
+@property (nonatomic, assign) BOOL sendFallbackValuesInDevelopmentMode;
+@property (nonatomic, assign) NSUInteger queueSizeLimit;
+@property (atomic) BOOL autoLoadValues;
+@property (nonatomic, assign) NSInteger sessionTimeout;
 
 @property(nonatomic, strong) NSString *apiToken;
 @property(nonatomic, assign) BOOL developmentMode;
@@ -43,9 +57,6 @@
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property(nonatomic, strong, readonly) NSString *liquidUserAgent;
-
-extern NSString * const LQDidReceiveValues;
-extern NSString * const LQDidLoadValues;
 
 #pragma mark - Singletons
 

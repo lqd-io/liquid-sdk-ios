@@ -93,11 +93,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    NSInteger numberOfInvalidatedValues = 0;
-    numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
+    __block __strong LQLiquidPackage *loadedLiquidPackage = [_loadedLiquidPackage copy];
+    NSInteger numberOfInvalidatedValues = [loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
+    _loadedLiquidPackage = loadedLiquidPackage;
 
     if (numberOfInvalidatedValues > 0) {
-        LQLiquidPackage *loadedLiquidPackage = [_loadedLiquidPackage copy];
         dispatch_async(self.queue, ^() {
             [loadedLiquidPackage saveToDiskForToken:_apiToken];
         });
@@ -468,11 +468,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
         finalEventName = @"unnamedEvent";
     }
-    __block LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
-    __block LQUser *user = [self.currentUser copy];
-    __block LQDevice *device = [self.device copy];
-    __block LQSession *session = [self.currentSession copy];
-    __block NSArray *loadedValues = [_loadedLiquidPackage.values copy];
+    __block __strong LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
+    __block __strong LQUser *user = [self.currentUser copy];
+    __block __strong LQDevice *device = [self.device copy];
+    __block __strong LQSession *session = [self.currentSession copy];
+    __block __strong NSArray *loadedValues = [_loadedLiquidPackage.values copy];
     dispatch_async(self.queue, ^{
         LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
                                                               user:user
@@ -549,11 +549,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (synced) {
         _loadedLiquidPackage = [self loadLiquidPackageFromDisk];
     } else {
-        __block LQLiquidPackage *cachedLiquidPackage;
         dispatch_async(self.queue, ^{
-            cachedLiquidPackage = [self loadLiquidPackageFromDisk];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _loadedLiquidPackage = cachedLiquidPackage;
+            _loadedLiquidPackage = [self loadLiquidPackageFromDisk];
+            dispatch_sync(dispatch_get_main_queue(), ^{
                 [self notifyDelegatesAndObserversAboutNewValues];
             });
         });

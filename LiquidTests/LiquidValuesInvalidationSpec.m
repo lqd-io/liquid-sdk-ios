@@ -116,6 +116,12 @@ describe(@"Liquid", ^{
                 [NSThread sleepForTimeInterval:0.1f];
             });
 
+            it(@"should invalidate (thus fallback) a variable that is not in Liquid server", ^{
+                NSString *fallbackString = @"Fallback value";
+                NSString *title = [[Liquid sharedInstance] stringForKey:@"unknownVariable" fallback:fallbackString];
+                [[title should] equal:fallbackString];
+            });
+
             it(@"should invalidate (thus fallback) 'title' variable", ^{
                 NSString *fallbackString = @"Fallback value";
                 NSString *title = [[Liquid sharedInstance] stringForKey:@"title" fallback:fallbackString];
