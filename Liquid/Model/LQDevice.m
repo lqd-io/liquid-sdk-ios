@@ -118,10 +118,18 @@
     [dictionary setObject:_carrier forKey:@"_carrier"];
     [dictionary setObject:_internetConnectivity forKey:@"_internetConnectivity"];
     [dictionary setObject:_uid forKey:@"_uid"];
-    [dictionary setObject:_appBundle forKey:@"_appBundle"];
-    [dictionary setObject:_appName forKey:@"_appName"];
-    [dictionary setObject:_appVersion forKey:@"_appVersion"];
-    [dictionary setObject:_releaseVersion forKey:@"_releaseVersion"];
+    if (_appBundle) {
+        [dictionary setObject:_appBundle forKey:@"_appBundle"];
+    }
+    if (_appName) {
+        [dictionary setObject:_appName forKey:@"_appName"];
+    }
+    if (_appVersion) {
+        [dictionary setObject:_appVersion forKey:@"_appVersion"];
+    }
+    if (_releaseVersion) {
+        [dictionary setObject:_releaseVersion forKey:@"_releaseVersion"];
+    }
     [dictionary setObject:_liquidVersion forKey:@"_liquidVersion"];
     [dictionary setObject:self.uid forKey:@"unique_id"];
     [dictionary setObject:kLQDevicePlatform forKey:@"platform"];
