@@ -72,8 +72,62 @@ describe(@"Liquid", ^{
                 });
             });
         });
-    });
 
+        context(@"given a Liquid singleton with an identified user", ^{
+            __block __strong Liquid *liquidInstance;
+
+            beforeAll(^{
+                liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+                [liquidInstance identifyUser];
+
+                // Simulate an app going in background and foreground again:
+                [NSThread sleepForTimeInterval:0.1f];
+                [liquidInstance applicationWillResignActive:nil];
+                [liquidInstance applicationDidBecomeActive:nil];
+                [NSThread sleepForTimeInterval:0.1f];
+            });
+
+            it(@"should be possible to perform multiple operations simultaneously, without race conditions", ^{
+                dispatch_queue_t queue = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                for(NSInteger i = 0; i < 200; i++) {
+                    dispatch_async(queue, ^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [liquidInstance applicationWillResignActive:nil];
+                        });
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [liquidInstance applicationDidBecomeActive:nil];
+                        });
+                    });
+                }
+                for(NSInteger i = 0; i < 200; i++) {
+                    dispatch_async(queue, ^{
+                        [liquidInstance identifyUser];
+                    });
+                }
+                for(NSInteger i = 0; i < 200; i++) {
+                    dispatch_async(queue, ^{
+                        [liquidInstance requestValues];
+                    });
+                }
+                for(NSInteger i = 0; i < 200; i++) {
+                    dispatch_async(queue, ^{
+                        [liquidInstance loadValues];
+                    });
+                }
+                for(NSInteger i = 0; i < 200; i++) {
+                    dispatch_async(queue, ^{
+                        [liquidInstance stringForKey:@"welcomeText" fallback:@"A fallback value"];
+                    });
+                }
+                for(NSInteger i = 0; i < 200; i++) {
+                    dispatch_async(queue, ^{
+                        [liquidInstance stringForKey:@"unknownVariable" fallback:@"A fallback value"];
+                    });
+                }
+                [NSThread sleepForTimeInterval:4.0f];
+            });
+        });
+    });
 });
 
 SPEC_END
