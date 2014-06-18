@@ -72,6 +72,8 @@ BOOL const defaultShowAds = YES;
                                name:LQDidIdentifyUser
                              object:nil];
      */
+
+    [self refrehInformation];
 }
 
 - (void)didReceiveMemoryWarning {
