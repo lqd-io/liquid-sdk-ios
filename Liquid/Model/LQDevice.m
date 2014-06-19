@@ -179,11 +179,14 @@
 
 +(NSString *)appleIFA {
     NSString *ifa = nil;
-#if defined(LIQUID_USE_IFA)
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        if (NSClassFromString(@"ASIdentifierManager")) {
-            ifa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-        }
+#ifndef LIQUID_NO_IFA
+    Class ASIdentifierManagerClass = NSClassFromString(@"ASIdentifierManager");
+    if (ASIdentifierManagerClass) {
+        SEL sharedManagerSelector = NSSelectorFromString(@"sharedManager");
+        id sharedManager = ((id (*)(id, SEL))[ASIdentifierManagerClass methodForSelector:sharedManagerSelector])(ASIdentifierManagerClass, sharedManagerSelector);
+        SEL advertisingIdentifierSelector = NSSelectorFromString(@"advertisingIdentifier");
+        NSUUID *advertisingIdentifier = ((NSUUID* (*)(id, SEL))[sharedManager methodForSelector:advertisingIdentifierSelector])(sharedManager, advertisingIdentifierSelector);
+        ifa = [advertisingIdentifier UUIDString];
     }
 #endif
     return ifa;
