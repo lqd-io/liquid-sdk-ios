@@ -44,13 +44,13 @@
 		A99EB502192447FA0060E484 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
 		A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */; };
 		A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+LQColor.m */; };
-		A9D6901B1941E5D1003ADE65 /* liquid_package_targets.json in Resources */ = {isa = PBXBuildFile; fileRef = A9D6901A1941E5D1003ADE65 /* liquid_package_targets.json */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A9E98054193E257C0055D1E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
 		A9E9805A193E257C0055D1E7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9E98058193E257C0055D1E7 /* InfoPlist.strings */; };
 		A9EB204419352FBA00191F7E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */; };
 		A9EB204619353CD200191F7E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
+		A9F3264419527046005731BD /* liquid_package_targets.json in Resources */ = {isa = PBXBuildFile; fileRef = A9F3264319527046005731BD /* liquid_package_targets.json */; };
 		A9FF7A9319350C7F00DB73C7 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F121935077600D0E0A1 /* CoreTelephony.framework */; };
 		A9FF7A9419350C8400DB73C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
 		A9FF7A9519350C8800DB73C7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */; };
@@ -144,13 +144,13 @@
 		A9D12F0E1935076A00D0E0A1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A9D12F121935077600D0E0A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		A9D6901A1941E5D1003ADE65 /* liquid_package_targets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = liquid_package_targets.json; sourceTree = "<group>"; };
 		A9E98050193E257C0055D1E7 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E98051193E257C0055D1E7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidTests-Info.plist"; sourceTree = "<group>"; };
 		A9E98059193E257C0055D1E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A9E9805D193E257C0055D1E7 /* LiquidTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LiquidTests-Prefix.pch"; sourceTree = "<group>"; };
 		A9EB204519353CD200191F7E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A9F3264319527046005731BD /* liquid_package_targets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_targets.json; path = HTTPStubs/liquid_package_targets.json; sourceTree = "<group>"; };
 		A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.xcconfig"; path = "Pods/Pods-LiquidTests.xcconfig"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -209,7 +209,7 @@
 				A9035320193FA0C8005110DF /* liquid_package1.json */,
 				A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */,
 				A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */,
-				A9D6901A1941E5D1003ADE65 /* liquid_package_targets.json */,
+				A9F3264319527046005731BD /* liquid_package_targets.json */,
 				A99B83591940B9E1005AB709 /* data_point1.json */,
 			);
 			name = HTTPStubs;
@@ -489,9 +489,9 @@
 				A95E659C194543180075161E /* liquid_package_correct_data_types.json in Resources */,
 				A95E659B194543140075161E /* liquid_package_incorrect_data_types.json in Resources */,
 				A9035321193FA0C8005110DF /* liquid_package1.json in Resources */,
+				A9F3264419527046005731BD /* liquid_package_targets.json in Resources */,
 				A9E9805A193E257C0055D1E7 /* InfoPlist.strings in Resources */,
 				A99B835A1940B9E1005AB709 /* data_point1.json in Resources */,
-				A9D6901B1941E5D1003ADE65 /* liquid_package_targets.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
