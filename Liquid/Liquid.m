@@ -493,14 +493,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     } else {
         NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
         NSData *dataFromServer = [self getDataFromEndpoint:endPoint];
-        LQLiquidPackage *liquidPacakge = nil;
+        LQLiquidPackage *liquidPackage = nil;
         if(dataFromServer != nil) {
             NSDictionary *liquidPackageDictionary = [Liquid fromJSON:dataFromServer];
             if(liquidPackageDictionary == nil) {
                 return nil;
             }
-            liquidPacakge = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
-            [liquidPacakge saveToDiskForToken:_apiToken];
+            liquidPackage = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
+            [liquidPackage saveToDiskForToken:_apiToken];
 
             [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
             if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
@@ -512,7 +512,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                 [self loadLiquidPackageSynced:NO];
             }
         }
-        return liquidPacakge;
+        return liquidPackage;
     }
     return nil;
 }
