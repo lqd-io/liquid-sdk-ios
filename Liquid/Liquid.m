@@ -130,6 +130,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.apiToken = apiToken;
         self.serverURL = kLQServerUrl;
         self.device = [[LQDevice alloc] initWithLiquidVersion:kLQVersion];
+        _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         
@@ -176,11 +177,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (NSUInteger)queueSizeLimit {
     if (!_queueSizeLimit) _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
     return _queueSizeLimit;
-}
-
-- (BOOL)sendFallbackValuesInDevelopmentMode {
-    if (!_sendFallbackValuesInDevelopmentMode) _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
-    return _sendFallbackValuesInDevelopmentMode;
 }
 
 - (NSUInteger)flushInterval {
