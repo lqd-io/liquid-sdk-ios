@@ -59,9 +59,9 @@
         } else {
             _internetConnectivity = kLQDeviceNoConnectivity;
         }
-        if(_attributes == nil)
+        if(_attributes == nil) {
             _attributes = [NSDictionary new];
-        
+        }
     }
     return self;
 }
@@ -104,10 +104,6 @@
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {
-    return [self jsonDictionaryWithUser:nil];
-}
-
--(NSDictionary *)jsonDictionaryWithUser:(LQUser *)user {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_vendor forKey:@"_vendor"];

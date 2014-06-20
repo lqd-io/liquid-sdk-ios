@@ -383,8 +383,7 @@ extern NSString * const LQDidIdentifyUser;
  @param location          the user location
  */
 
--(void)setUserLocation:(CLLocation *)location
-  __deprecated_msg("Use setCurrentLocation: instead");
+-(void)setUserLocation:(CLLocation *)location __deprecated_msg("Use setCurrentLocation: instead");
 
 
 /*!

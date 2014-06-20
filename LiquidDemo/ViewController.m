@@ -194,7 +194,6 @@ BOOL const defaultShowAds = YES;
     NSLog(@"Current user is now '%@', with attributes: %@", identifier, userAttributes);
 }
 
-
 #pragma mark - Liquid NSNotification callback methods
 
 - (void)receivedValues:(NSNotification *)notification {
@@ -209,7 +208,7 @@ BOOL const defaultShowAds = YES;
 
 - (void)identifiedUser:(NSNotification *)notification {
     [self refrehInformation];
-    
+
     NSString *userIdentifier = [[notification userInfo] objectForKey:@"identifier"];
     NSDictionary *userAttributes = [self.userProfiles objectForKey:userIdentifier];
     NSLog(@"Current user is now '%@', with attributes: %@", userIdentifier, userAttributes);

@@ -19,7 +19,6 @@
 -(void)setLocation:(CLLocation *)location;
 
 -(NSDictionary*)jsonDictionary;
--(NSDictionary*)jsonDictionaryWithUser:(LQUser*)user;
 -(BOOL)reachesInternet;
 
 +(NSString*)deviceModel;
