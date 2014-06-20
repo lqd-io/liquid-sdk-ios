@@ -4,23 +4,16 @@ PODS:
   - Kiwi/XCTest (2.2.4):
     - Kiwi/ARC
     - Kiwi/NonARC
-  - Liquid (0.7.2-beta)
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.2)
 
 DEPENDENCIES:
   - Kiwi/XCTest (~> 2.2.4)
-  - Liquid (from `.`)
   - OCMock (~> 2.2.4)
-  - OHHTTPStubs
-
-EXTERNAL SOURCES:
-  Liquid:
-    :path: .
+  - OHHTTPStubs (~> 3.1.2)
 
 SPEC CHECKSUMS:
   Kiwi: c73667f2b84cbf36f1a3830267c5a4ae8dcbd8ba
-  Liquid: 2f05fd9cced565e952f91d870f966d83fa81b3f4
   OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
   OHHTTPStubs: c1c2007839687eaf9b80f061ce84440515080ebb
 

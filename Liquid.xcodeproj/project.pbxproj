@@ -771,9 +771,13 @@
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
+				GENERATE_MASTER_OBJECT_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				MACH_O_TYPE = mh_dylib;
-				OTHER_LDFLAGS = "-ObjC";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos7.1;
 				SKIP_INSTALL = YES;
@@ -786,9 +790,13 @@
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
+				GENERATE_MASTER_OBJECT_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				MACH_O_TYPE = mh_dylib;
-				OTHER_LDFLAGS = "-ObjC";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos7.1;
 				SKIP_INSTALL = YES;
