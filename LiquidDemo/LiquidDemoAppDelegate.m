@@ -13,8 +13,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
-    // if the application goes into background for more than 30 seconds, a new session is considered:. default is 30
+
+    // if the application goes into background for more than 30 seconds, a new session is considered:. default is 30:
     [[Liquid sharedInstance] setSessionTimeout:30];
+
+#if TARGET_IPHONE_SIMULATOR
+    NSLog(@"Push Notifications only work on real devices, not on iPhone Simulator.");
+#else
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
+                                                                           UIRemoteNotificationTypeBadge |
+                                                                           UIRemoteNotificationTypeSound)];
+#endif
     return YES;
 }
 							
@@ -34,8 +43,19 @@
     [[Liquid sharedInstance] setCurrentLocation:newLocation];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    
+#pragma mark - Push Notifications
+
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [[Liquid sharedInstance] setApplePushNotificationToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    // Notify LiquidDemoViewController about a new Push Notification:
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Push Notification Received" object:userInfo];
+}
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSLog(@"%@", [NSString stringWithFormat: @"Error obtaining push notification token: %@", err]);
 }
 
 @end

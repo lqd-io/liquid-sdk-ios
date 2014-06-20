@@ -37,6 +37,7 @@
 @property(nonatomic, strong, readonly) NSString* appVersion;
 @property(nonatomic, strong, readonly) NSString* releaseVersion;
 @property(nonatomic, strong, readonly) NSString* liquidVersion;
+@property(nonatomic, strong) NSString* apnsToken;
 @property(nonatomic, strong, readonly) NSDictionary* attributes;
 
 @end

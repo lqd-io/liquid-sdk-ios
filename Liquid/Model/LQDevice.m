@@ -35,6 +35,8 @@
 
 @implementation LQDevice
 
+@synthesize apnsToken = _apnsToken;
+
 #pragma mark - Initializer
 
 -(id)initWithLiquidVersion:(NSString *)liquidVersion {
@@ -52,6 +54,7 @@
         _appVersion = [LQDevice appVersion];
         _releaseVersion = [LQDevice releaseVersion];
         _liquidVersion = liquidVersion;
+        _apnsToken = nil;
         [self initReachabilityCallback];
         SCNetworkReachabilityFlags flags;
         if (SCNetworkReachabilityGetFlags(self.networkReachability, &flags)) {
@@ -124,6 +127,9 @@
     }
     if (_releaseVersion) {
         [dictionary setObject:_releaseVersion forKey:@"_releaseVersion"];
+    }
+    if (_apnsToken) {
+        [dictionary setObject:_apnsToken forKey:@"pushToken"];
     }
     [dictionary setObject:_liquidVersion forKey:@"_liquidVersion"];
     [dictionary setObject:self.uid forKey:@"unique_id"];
@@ -302,6 +308,7 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
         _releaseVersion = [aDecoder decodeObjectForKey:@"releaseVersion"];
         _liquidVersion = [aDecoder decodeObjectForKey:@"liquidVersion"];
         _internetConnectivity = [aDecoder decodeObjectForKey:@"internetConnectivity"];
+        _apnsToken = [aDecoder decodeObjectForKey:@"apnsToken"];
         _attributes = [aDecoder decodeObjectForKey:@"attributes"];
     }
     return self;
@@ -321,6 +328,7 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     [aCoder encodeObject:_releaseVersion forKey:@"releaseVersion"];
     [aCoder encodeObject:_liquidVersion forKey:@"liquidVersion"];
     [aCoder encodeObject:_internetConnectivity forKey:@"internetConnectivity"];
+    [aCoder encodeObject:_apnsToken forKey:@"apnsToken"];
     [aCoder encodeObject:_attributes forKey:@"attributes"];
 }
 
@@ -339,6 +347,7 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     device->_releaseVersion = [_releaseVersion copyWithZone:zone];
     device->_liquidVersion = [_liquidVersion copyWithZone:zone];
     device->_internetConnectivity = [_internetConnectivity copyWithZone:zone];
+    device->_apnsToken = [_apnsToken copyWithZone:zone];
     device->_attributes = [_attributes copyWithZone:zone];
     return device;
 }

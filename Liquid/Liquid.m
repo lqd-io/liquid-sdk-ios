@@ -23,6 +23,7 @@
 #import "UIColor+LQColor.h"
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "NSString+LQString.h"
+#import "NSData+LQData.h"
 
 @interface Liquid ()
 
@@ -471,6 +472,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 #pragma mark - Sessions
+
+- (void)setApplePushNotificationToken:(NSData *)deviceToken {
+    NSString *hexToken = [deviceToken hexadecimalString];
+    if (hexToken) {
+        self.device.apnsToken = hexToken;
+    }
+}
 
 - (void)endSessionAt:(NSDate *)endAt {
     // adding a millisecond, just to ensure that session is ended after all anything else

@@ -11,5 +11,6 @@
 @interface NSData (LQData)
 
 + (NSData *)randomDataOfLength:(size_t)length;
+- (NSString *)hexadecimalString;
 
 @end

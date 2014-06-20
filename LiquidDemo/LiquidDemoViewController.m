@@ -81,6 +81,11 @@ BOOL const defaultShowAds = YES;
                                name:LQDidIdentifyUser
                              object:nil];
      */
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDelegateNotification:)
+                                                 name:@"Push Notification Received"
+                                               object:nil];
 
     [self refrehInformation];
 }
@@ -225,6 +230,17 @@ BOOL const defaultShowAds = YES;
     NSLog(@"Current user is now '%@', with attributes: %@", userIdentifier, userAttributes);
 }
 
+- (void)applicationDelegateNotification:(NSNotification *)notification {
+    if ([[notification name] isEqualToString:@"Push Notification Received"]) {
+        NSLog(@"Push Notification received");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push notification received"
+                                                            message:@"Do whatever you want with this notification."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Close"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
+}
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource methods
 

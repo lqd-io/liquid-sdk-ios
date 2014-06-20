@@ -16,4 +16,17 @@
     return data;
 }
 
+- (NSString *)hexadecimalString {
+    NSMutableString *hexToken;
+    const unsigned char *iterator = (const unsigned char *) [self bytes];
+    if (iterator) {
+        hexToken = [[NSMutableString alloc] init];
+        for (NSInteger i = 0; i < self.length; i++) {
+            [hexToken appendString:[NSString stringWithFormat:@"%02lx", (unsigned long) iterator[i]]];
+        }
+        return hexToken;
+    }
+    return nil;
+}
+
 @end

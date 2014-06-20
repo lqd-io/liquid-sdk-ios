@@ -476,6 +476,22 @@ extern NSString * const LQDidIdentifyUser;
  @method
  
  @abstract
+ Set the push notification APNS device token
+ 
+ @discussion
+ This will register device APNS token on Liquid current device,
+ which will allow push notifications to be sent from Liquid dashboard.
+ 
+ @param deviceToken          the APNS Devie Token
+ */
+
+- (void)setApplePushNotificationToken:(NSData *)deviceToken;
+
+
+/*!
+ @method
+ 
+ @abstract
  Tracks an event on the application.
  
  @discussion
