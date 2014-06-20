@@ -129,9 +129,7 @@
     [dictionary setObject:_liquidVersion forKey:@"_liquidVersion"];
     [dictionary setObject:self.uid forKey:@"unique_id"];
     [dictionary setObject:kLQDevicePlatform forKey:@"platform"];
-    
-    if(user != nil)
-        [dictionary setObject:[user jsonDictionary] forKey:@"user"];
+
     return dictionary;
 }
 
