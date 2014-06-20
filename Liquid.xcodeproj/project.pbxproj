@@ -12,6 +12,7 @@
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
+		A94B6A9D1954BC1D00AB4B04 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
 		A9509877194F104E0048106A /* LiquidSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9509876194F104E0048106A /* LiquidSpec.m */; };
 		A95E659B194543140075161E /* liquid_package_incorrect_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */; };
 		A95E659C194543180075161E /* liquid_package_correct_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */; };
@@ -180,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A94B6A9D1954BC1D00AB4B04 /* libLiquid.a in Frameworks */,
 				A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */,
 				A9E98054193E257C0055D1E7 /* UIKit.framework in Frameworks */,
 				A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */,
