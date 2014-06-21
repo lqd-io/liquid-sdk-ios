@@ -321,6 +321,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self newSessionInCurrentThread:YES];
     [self requestNewLiquidPackage];
 
+    // Notifiy the outside world:
     NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.currentUser.identifier, @"identifier", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidIdentifyUser object:nil userInfo:notificationUserInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidIdentifyUserWithIdentifier:)]) {
@@ -393,10 +394,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
         [self track:@"_startSession" attributes:nil allowLqdEvents:YES];
     };
-    if(inThread)
+    if(inThread) {
         newSessionBlock();
-    else
+    } else {
         dispatch_async(self.queue, newSessionBlock);
+    }
 }
 
 - (BOOL)checkSessionTimeout {
