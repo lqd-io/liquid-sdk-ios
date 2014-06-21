@@ -31,8 +31,6 @@
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    //NSLog(@"New Location: %@", [newLocation description]);
-    //NSLog(@"Stored Location: %@", [[_locationManager location] description]);
     [[Liquid sharedInstance] setCurrentLocation:newLocation];
 }
 
