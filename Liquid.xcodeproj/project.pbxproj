@@ -23,9 +23,9 @@
 		A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
 		A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98CF0081949C7A3003DF949 /* InfoPlist.strings */; };
 		A98CF00C1949C7A3003DF949 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF00B1949C7A3003DF949 /* main.m */; };
-		A98CF0101949C7A3003DF949 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF00F1949C7A3003DF949 /* AppDelegate.m */; };
-		A98CF0131949C7A3003DF949 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A98CF0111949C7A3003DF949 /* Main.storyboard */; };
-		A98CF0161949C7A3003DF949 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF0151949C7A3003DF949 /* ViewController.m */; };
+		A98CF0101949C7A3003DF949 /* LiquidDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF00F1949C7A3003DF949 /* LiquidDemoAppDelegate.m */; };
+		A98CF0131949C7A3003DF949 /* LiquidDemo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A98CF0111949C7A3003DF949 /* LiquidDemo.storyboard */; };
+		A98CF0161949C7A3003DF949 /* LiquidDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98CF0151949C7A3003DF949 /* LiquidDemoViewController.m */; };
 		A98CF0181949C7A3003DF949 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98CF0171949C7A3003DF949 /* Images.xcassets */; };
 		A98CF0321949F61E003DF949 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */; };
 		A98CF0331949F627003DF949 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F121935077600D0E0A1 /* CoreTelephony.framework */; };
@@ -106,11 +106,11 @@
 		A98CF0091949C7A3003DF949 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A98CF00B1949C7A3003DF949 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A98CF00D1949C7A3003DF949 /* LiquidDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LiquidDemo-Prefix.pch"; sourceTree = "<group>"; };
-		A98CF00E1949C7A3003DF949 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		A98CF00F1949C7A3003DF949 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A98CF0121949C7A3003DF949 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A98CF0141949C7A3003DF949 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A98CF0151949C7A3003DF949 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A98CF00E1949C7A3003DF949 /* LiquidDemoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidDemoAppDelegate.h; sourceTree = "<group>"; };
+		A98CF00F1949C7A3003DF949 /* LiquidDemoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiquidDemoAppDelegate.m; sourceTree = "<group>"; };
+		A98CF0121949C7A3003DF949 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LiquidDemo.storyboard; sourceTree = "<group>"; };
+		A98CF0141949C7A3003DF949 /* LiquidDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidDemoViewController.h; sourceTree = "<group>"; };
+		A98CF0151949C7A3003DF949 /* LiquidDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiquidDemoViewController.m; sourceTree = "<group>"; };
 		A98CF0171949C7A3003DF949 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A99B83591940B9E1005AB709 /* data_point1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data_point1.json; path = HTTPStubs/data_point1.json; sourceTree = "<group>"; };
 		A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_correct_data_types.json; path = HTTPStubs/liquid_package_correct_data_types.json; sourceTree = "<group>"; };
@@ -246,11 +246,11 @@
 		A98CF0051949C7A3003DF949 /* LiquidDemo */ = {
 			isa = PBXGroup;
 			children = (
-				A98CF00E1949C7A3003DF949 /* AppDelegate.h */,
-				A98CF00F1949C7A3003DF949 /* AppDelegate.m */,
-				A98CF0111949C7A3003DF949 /* Main.storyboard */,
-				A98CF0141949C7A3003DF949 /* ViewController.h */,
-				A98CF0151949C7A3003DF949 /* ViewController.m */,
+				A98CF00E1949C7A3003DF949 /* LiquidDemoAppDelegate.h */,
+				A98CF00F1949C7A3003DF949 /* LiquidDemoAppDelegate.m */,
+				A98CF0111949C7A3003DF949 /* LiquidDemo.storyboard */,
+				A98CF0141949C7A3003DF949 /* LiquidDemoViewController.h */,
+				A98CF0151949C7A3003DF949 /* LiquidDemoViewController.m */,
 				A98CF0171949C7A3003DF949 /* Images.xcassets */,
 				A98CF0061949C7A3003DF949 /* Supporting Files */,
 			);
@@ -480,7 +480,7 @@
 			files = (
 				A98CF0181949C7A3003DF949 /* Images.xcassets in Resources */,
 				A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */,
-				A98CF0131949C7A3003DF949 /* Main.storyboard in Resources */,
+				A98CF0131949C7A3003DF949 /* LiquidDemo.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,8 +537,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A98CF0161949C7A3003DF949 /* ViewController.m in Sources */,
-				A98CF0101949C7A3003DF949 /* AppDelegate.m in Sources */,
+				A98CF0161949C7A3003DF949 /* LiquidDemoViewController.m in Sources */,
+				A98CF0101949C7A3003DF949 /* LiquidDemoAppDelegate.m in Sources */,
 				A98CF00C1949C7A3003DF949 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -602,12 +602,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		A98CF0111949C7A3003DF949 /* Main.storyboard */ = {
+		A98CF0111949C7A3003DF949 /* LiquidDemo.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A98CF0121949C7A3003DF949 /* Base */,
 			);
-			name = Main.storyboard;
+			name = LiquidDemo.storyboard;
 			sourceTree = "<group>";
 		};
 		A9E98058193E257C0055D1E7 /* InfoPlist.strings */ = {

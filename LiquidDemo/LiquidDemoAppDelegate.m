@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "LiquidDemoAppDelegate.h"
 #import "Liquid.h"
 
-@implementation AppDelegate
+@implementation LiquidDemoAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];

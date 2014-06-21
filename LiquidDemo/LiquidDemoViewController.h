@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Liquid.h"
 
-@interface ViewController : UIViewController <LiquidDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface LiquidDemoViewController : UIViewController <LiquidDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) IBOutlet UITextField *customEventNameTextField;
 @property (strong, nonatomic) IBOutlet UIView *bgColorSquare;

@@ -6,19 +6,19 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "LiquidDemoViewController.h"
 #import "Liquid.h"
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "UIColor+LQColor.h"
 
-@interface ViewController ()
+@interface LiquidDemoViewController ()
 
 @property (nonatomic, strong, readonly) NSDictionary *userProfiles;
 @property (nonatomic, strong) NSString *selectedUserProfile;
 
 @end
 
-@implementation ViewController
+@implementation LiquidDemoViewController
 
 NSString *const defaultTitle = @"Welcome to our app";
 NSString *const defaultBgColor = @"#FF0000";
