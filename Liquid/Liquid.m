@@ -310,12 +310,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if ([self.currentSession inProgress]) {
         [self endSessionNow];
     }
-    self.currentUser = [[LQUser alloc] initWithIdentifier:identifier attributes:attributes];
+    self.currentUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[attributes copy]];
     [self newSessionInCurrentThread:YES];
     [self requestNewLiquidPackage];
 
     // Notifiy the outside world:
-    NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.currentUser.identifier, @"identifier", nil];
+    NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[self.currentUser.identifier copy], @"identifier", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidIdentifyUser object:nil userInfo:notificationUserInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidIdentifyUserWithIdentifier:)]) {
         [self.delegate performSelectorOnMainThread:@selector(liquidDidIdentifyUserWithIdentifier:)

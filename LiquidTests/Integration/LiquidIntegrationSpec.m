@@ -78,7 +78,6 @@ describe(@"Liquid", ^{
 
             beforeAll(^{
                 liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
-                [liquidInstance identifyUser];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
