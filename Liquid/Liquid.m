@@ -303,9 +303,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
     }
-    dispatch_async(self.queue, ^() {
-        [self identifyUserSyncedWithIdentifier:identifier attributes:validAttributes];
-    });
+    [self identifyUserSyncedWithIdentifier:identifier attributes:validAttributes];
 }
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
@@ -436,11 +434,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         return;
     }
 
-    if(self.currentUser == nil) {
-        [self identifyUserSyncedWithIdentifier:nil
-                                    attributes:nil];
-        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
-    }
+    dispatch_async(self.queue, ^{
+        if(self.currentUser == nil) {
+            [self identifyUserSyncedWithIdentifier:nil
+                                        attributes:nil];
+            LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
+        }
+    });
 
     __block NSDate *now;
     if (!_firstEventSent) {
