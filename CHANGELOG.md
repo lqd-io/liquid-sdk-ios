@@ -1,5 +1,10 @@
 # Liquid iOS SDK Change Log
 
+## 0.8.1-beta: Fixes a compilation error on Xcode
+
+* **[enhancement]** Fixes a Xcode compilation error that occured when Liquid is integrated using the "Liquid Project" method
+* **[enhancement]** Under-the-hood small refactoring on Liquid Demo App
+
 ## 0.8.0-beta: Demo App + Kiwi tests + Stability improvements
 
 * **[feature]** Added Kiwi tests/specs for the most important Liquid components (use `Liquid.xcworkspace` in order to run them).
