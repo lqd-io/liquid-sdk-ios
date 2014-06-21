@@ -288,6 +288,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                           attributes:nil];
 }
 
+// Deprecated:
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
+    [self identifyUserWithIdentifier:identifier attributes:attributes];
+    dispatch_async(self.queue, ^() {
+        [self setCurrentLocation:location];
+    });
+}
+
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
     NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
 
@@ -297,19 +305,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     dispatch_async(self.queue, ^() {
         [self identifyUserSyncedWithIdentifier:identifier attributes:validAttributes];
-    });
-}
-
--(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
-    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
-
-    if (identifier && identifier.length == 0) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
-        return;
-    }
-    dispatch_async(self.queue, ^() {
-        [self identifyUserSyncedWithIdentifier:identifier attributes:validAttributes];
-        [self setCurrentLocation:location];
     });
 }
 
