@@ -368,9 +368,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Session
 
 - (void)endSessionAt:(NSDate *)endAt {
+    // adding a millisecond, just to ensure that session is ended after all anything else
+    NSDate *fixedEndAt = [[endAt copy] dateByAddingTimeInterval:0.001];
     if (self.currentUser != nil && self.currentSession != nil && self.currentSession.inProgress) {
-        [[self currentSession] endSessionOnDate:endAt];
-        [self track:@"_endSession" attributes:nil allowLqdEvents:YES];
+        [[self currentSession] endSessionOnDate:fixedEndAt];
+        [self track:@"_endSession" attributes:nil allowLqdEvents:YES withDate:fixedEndAt];
     }
 }
 
@@ -427,6 +429,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
+    [self track:eventName attributes:attributes allowLqdEvents:allowLqdEvents withDate:nil];
+}
+
+-(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents withDate:(NSDate *)eventDate {
     __block NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
 
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
@@ -444,7 +450,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     });
 
     __block NSDate *now;
-    if (!_firstEventSent) {
+    if (eventDate) {
+        now = eventDate;
+    } else if (!_firstEventSent) {
         now = [self veryFirstMoment];
         _firstEventSent = YES;
     } else {
