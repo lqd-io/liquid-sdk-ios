@@ -238,6 +238,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     // Restart flush timer
     [self startFlushTimer];
 
+    dispatch_async(self.queue, ^() {
+        self.enterBackgroundTime = nil;
+        // Restore queue from plist
+        self.httpQueue = [Liquid unarchiveQueueForToken:self.apiToken];
+    });
+
     if(!sessionTimedOut && self.inBackground) {
         [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES];
         _inBackground = NO;
@@ -245,11 +251,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
     // Request variables on app resume
     [self loadLiquidPackageSynced:YES];
-    dispatch_async(self.queue, ^() {
-        self.enterBackgroundTime = nil;
-        // Restore queue from plist
-        self.httpQueue = [Liquid unarchiveQueueForToken:self.apiToken];
-    });
 }
 
 - (void)applicationWillResignActive:(NSNotificationCenter *)notification {
