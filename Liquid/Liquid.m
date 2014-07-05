@@ -388,7 +388,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             return;
         }
         self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
-        [self track:@"_startSession" attributes:nil allowLqdEvents:YES];
+        [self track:@"_startSession" attributes:nil allowLqdEvents:YES withDate:now];
     };
     if(inThread) {
         newSessionBlock();
