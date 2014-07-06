@@ -65,6 +65,48 @@
     return automaticUserIdentifier;
 }
 
+#pragma mark - Archive to/from disk
+
++ (LQUser *)loadFromDisk {
+    LQUser *user = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] lastUserFile]];
+    if (user) {
+        NSLog(@"<Liquid> Loaded User %@ %@ from disk", user.identifier, ([user.autoIdentified boolValue] ? @" (auto identified)" : @"(manually identified)"));
+    }
+    return user;
+}
+
+- (BOOL)saveToDisk {
+    LQLog(kLQLogLevelData, @"<Liquid> Saving User to disk");
+    NSLog(@"<Liquid> Saving User %@ %@ to disk", self.identifier, ([self.autoIdentified boolValue] ? @" (auto identified)" : @"(manually identified)"));
+    return [NSKeyedArchiver archiveRootObject:self toFile:[[self class] lastUserFile]];
+}
+
++ (BOOL)destroyLastUser {
+    BOOL status = [[NSFileManager defaultManager] removeItemAtPath:[[self class] lastUserFile] error:NULL];
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached User");
+    NSLog(@"<Liquid> Destroyed cached User");
+    return status;
+}
+
++ (NSString *)liquidDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
+}
+
++ (NSString*)lastUserFile {
+    NSString *liquidDirectory = [LQUser liquidDirectory];
+    NSError *error;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:liquidDirectory])
+        [[NSFileManager defaultManager] createDirectoryAtPath:liquidDirectory
+                                  withIntermediateDirectories:NO
+                                                   attributes:nil
+                                                        error:&error];
+    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:@"last_user"];
+    LQLog(kLQLogLevelPaths,@"<Liquid> File location %@", liquidFile);
+    return liquidFile;
+}
+
 #pragma mark - NSCoding & NSCopying
 
 - (id)initWithCoder:(NSCoder *)aDecoder {

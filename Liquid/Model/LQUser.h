@@ -13,14 +13,16 @@
 @interface LQUser : LQEntity <NSCoding, NSCopying>
 
 - (id)initWithIdentifier:(NSString*)identifier attributes:(NSDictionary*)attributes;
-
--(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString*)key;
--(id)attributeForKey:(NSString*)key;
--(NSDictionary*)jsonDictionary;
-+(NSString *)automaticUserIdentifier;
+- (void)setAttribute:(id<NSCoding>)attribute forKey:(NSString*)key;
+- (id)attributeForKey:(NSString*)key;
+- (NSDictionary*)jsonDictionary;
++ (NSString *)automaticUserIdentifier;
++ (LQUser *)loadFromDisk;
+- (BOOL)saveToDisk;
++ (BOOL)destroyLastUser;
 
 @property(nonatomic, strong, readonly) NSString* identifier;
-@property(nonatomic, strong, readonly) NSDictionary* attributes;
+@property(nonatomic, strong) NSDictionary* attributes;
 @property(nonatomic, strong, readonly) NSNumber *autoIdentified;
 
 @end

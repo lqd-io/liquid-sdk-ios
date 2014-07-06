@@ -28,6 +28,7 @@
 @property(nonatomic, strong) NSString *apiToken;
 @property(nonatomic, assign) BOOL developmentMode;
 @property(nonatomic, strong) LQUser *currentUser;
+@property(nonatomic, strong) LQUser *previousUser;
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
@@ -140,6 +141,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         if(!_loadedLiquidPackage) {
             [self loadLiquidPackageSynced:YES];
         }
+
+        // Load user from previous launch:
+        _previousUser = [self loadLastUserFromDisk];
+        [self autoIdentifyUser];
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -304,27 +309,43 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
     }
-    [self identifyUserSyncedWithIdentifier:identifier attributes:validAttributes];
+    LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
+    [self identifyUserSynced:newUser];
 }
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
+    [self identifyUserSynced:[[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[attributes copy]]];
+}
+
+-(void)identifyUserSynced:(LQUser *)user {
+    LQUser *newUser = [user copy];
+    LQUser *currentUser = [self.currentUser copy];
+    if (newUser.identifier == currentUser.identifier) {
+        self.currentUser.attributes = newUser.attributes;
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
+        return;
+    }
+
     if ([self.currentSession inProgress]) {
         [self endSessionNow];
     }
-    self.currentUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[attributes copy]];
+    _previousUser = currentUser;
+    _currentUser = newUser;
     [self newSessionInCurrentThread:YES];
     [self requestNewLiquidPackage];
 
     // Notifiy the outside world:
-    NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[self.currentUser.identifier copy], @"identifier", nil];
+    NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:newUser, @"identifier", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidIdentifyUser object:nil userInfo:notificationUserInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidIdentifyUserWithIdentifier:)]) {
         [self.delegate performSelectorOnMainThread:@selector(liquidDidIdentifyUserWithIdentifier:)
-                                        withObject:self.currentUser.identifier
+                                        withObject:newUser.identifier
                                      waitUntilDone:NO];
     }
 
-    LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", self.currentUser.identifier);
+    [self saveCurrentUserToDisk];
+
+    LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
 }
 
 -(NSString *)userIdentifier {
@@ -348,6 +369,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
         [self.currentUser setAttribute:attribute
                                 forKey:key];
+        [self saveCurrentUserToDisk];
     });
 }
 
@@ -363,6 +385,29 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
         [self.device setLocation:location];
     });
+}
+
+- (void)saveCurrentUserToDisk {
+    LQUser *user = [self.currentUser copy];
+    dispatch_async(self.queue, ^() {
+        [[user copy] saveToDisk];
+    });
+}
+
+- (LQUser *)loadLastUserFromDisk {
+    LQUser *user = [LQUser loadFromDisk];
+    self.currentUser = [user copy];
+    return user;
+}
+
+- (void)autoIdentifyUser {
+    if (self.previousUser) {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: using cached user (%@)", _previousUser.identifier);
+        [self identifyUserSynced:_previousUser];
+    } else {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: creating a new auto identified user (%@)", _currentUser.identifier);
+        [self identifyUserSyncedWithIdentifier:nil attributes:nil];
+    }
 }
 
 #pragma mark - Session
@@ -381,7 +426,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)newSessionInCurrentThread:(BOOL)inThread {
-    NSDate *now = [NSDate new];
+    __block NSDate *now;
+    if (!_firstEventSent) {
+        now = [self veryFirstMoment];
+        _firstEventSent = YES;
+    } else {
+        now = [NSDate new];
+    }
     __block void (^newSessionBlock)() = ^() {
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
@@ -441,20 +492,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         return;
     }
 
-    dispatch_async(self.queue, ^{
-        if(self.currentUser == nil) {
-            [self identifyUserSyncedWithIdentifier:nil
-                                        attributes:nil];
-            LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
-        }
-    });
+    if(!self.currentUser) {
+        [self autoIdentifyUser];
+    }
 
     __block NSDate *now;
     if (eventDate) {
         now = eventDate;
-    } else if (!_firstEventSent) {
-        now = [self veryFirstMoment];
-        _firstEventSent = YES;
     } else {
         now = [NSDate new];
     }
@@ -492,35 +536,31 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Liquid Package
 
 -(LQLiquidPackage *)requestNewLiquidPackageSynced {
-    if(self.currentUser == nil || self.currentSession == nil) {
-        [self identifyUserSyncedWithIdentifier:nil
-                                    attributes:nil];
-        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user (%@)", self.currentUser.identifier);
-    } else {
-        NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
-        NSData *dataFromServer = [self getDataFromEndpoint:endPoint];
-        LQLiquidPackage *liquidPackage = nil;
-        if(dataFromServer != nil) {
-            NSDictionary *liquidPackageDictionary = [Liquid fromJSON:dataFromServer];
-            if(liquidPackageDictionary == nil) {
-                return nil;
-            }
-            liquidPackage = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
-            [liquidPackage saveToDiskForToken:_apiToken];
-
-            [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
-            if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
-                [self.delegate performSelectorOnMainThread:@selector(liquidDidReceiveValues)
-                                                withObject:nil
-                                             waitUntilDone:NO];
-            }
-            if(_autoLoadValues) {
-                [self loadLiquidPackageSynced:NO];
-            }
-        }
-        return liquidPackage;
+    if(!self.currentUser) {
+        [self autoIdentifyUser];
     }
-    return nil;
+    NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
+    NSData *dataFromServer = [self getDataFromEndpoint:endPoint];
+    LQLiquidPackage *liquidPackage = nil;
+    if(dataFromServer != nil) {
+        NSDictionary *liquidPackageDictionary = [Liquid fromJSON:dataFromServer];
+        if(liquidPackageDictionary == nil) {
+            return nil;
+        }
+        liquidPackage = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
+        [liquidPackage saveToDiskForToken:_apiToken];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
+        if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
+            [self.delegate performSelectorOnMainThread:@selector(liquidDidReceiveValues)
+                                            withObject:nil
+                                         waitUntilDone:NO];
+        }
+        if(_autoLoadValues) {
+            [self loadLiquidPackageSynced:NO];
+        }
+    }
+    return liquidPackage;
 }
 
 -(void)requestNewLiquidPackage {
@@ -813,6 +853,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 + (void)softReset {
     [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
     [Liquid destroySingleton];
+    [LQUser destroyLastUser];
     [NSThread sleepForTimeInterval:0.2f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
 }
