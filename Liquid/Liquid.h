@@ -298,6 +298,22 @@ extern NSString * const LQDidIdentifyUser;
  @method
  
  @abstract
+ Identifies the user on to the Liquid API with a given identifier.
+ 
+ @discussion
+ This will identify the user with the given identifier string.
+ 
+ @param identifier        unique name identifying the user
+ @param alias             after identifying user, alias/link the previous anonymous user with it
+ */
+
+-(void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias;
+
+
+/*!
+ @method
+ 
+ @abstract
  Identifies the user on to the Liquid API with an auto identified user and some
  attributes.
  
@@ -309,6 +325,21 @@ extern NSString * const LQDidIdentifyUser;
  */
 
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes;
+
+/*!
+ @method
+ 
+ @abstract
+ Resets user data to its initial state (a new Unique ID is generated).
+ 
+ @discussion
+ This will reset all cached user data (unique identifier and attributes).
+ From this moment on, current user is identified as an "auto identified"
+ one (initial state of the SDK). Also, current session is ended and a
+ new one is started.
+ */
+
+- (void)resetUser;
 
 
 /*!
@@ -327,6 +358,25 @@ extern NSString * const LQDidIdentifyUser;
  */
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes;
+
+
+/*!
+ @method
+ 
+ @abstract
+ Identifies the user on to the Liquid API with a given identifier and some
+ attributes.
+ 
+ @discussion
+ This will identify the user with the given identifier string and a
+ dictionary of attributes to better classify the user.
+ 
+ @param identifier        unique name identifying the user
+ @param attributes        dictionary of user attributes
+ @param alias             after identifying user, alias/link the previous anonymous user with it
+ */
+
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias;
 
 
 /*!
@@ -401,6 +451,22 @@ extern NSString * const LQDidIdentifyUser;
  */
 
 -(void)setCurrentLocation:(CLLocation *)location;
+
+
+/*!
+ @method
+ 
+ @abstract
+ Alias/links two users.
+ 
+ @discussion
+ This method alias the previous anonymous user with the current one.
+ This means that all data points of the anonymous user with belong to
+ the current (identified) one.
+ 
+ */
+
+- (void)aliasUserWithPreviousAnonymousUser;
 
 
 /*!

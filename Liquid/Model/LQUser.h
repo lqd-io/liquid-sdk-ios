@@ -17,6 +17,7 @@
 - (id)attributeForKey:(NSString*)key;
 - (NSDictionary*)jsonDictionary;
 + (NSString *)automaticUserIdentifier;
+- (BOOL)isAutoIdentified;
 + (LQUser *)loadFromDisk;
 - (BOOL)saveToDisk;
 + (BOOL)destroyLastUser;

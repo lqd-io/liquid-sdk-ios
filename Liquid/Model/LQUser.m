@@ -65,6 +65,10 @@
     return automaticUserIdentifier;
 }
 
+- (BOOL)isAutoIdentified {
+    return [self.autoIdentified isEqual:@YES];
+}
+
 #pragma mark - Archive to/from disk
 
 + (LQUser *)loadFromDisk {

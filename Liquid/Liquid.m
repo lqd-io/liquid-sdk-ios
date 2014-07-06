@@ -278,20 +278,21 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - User Interaction
 
 -(void)identifyUser {
-    [self identifyUserWithIdentifier:nil
-                          attributes:nil];
+    [self identifyUserWithIdentifier:nil attributes:nil];
 }
 
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes {
     NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
-
-    [self identifyUserWithIdentifier:nil
-                          attributes:validAttributes];
+    [self identifyUserWithIdentifier:nil attributes:validAttributes];
 }
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier {
-    [self identifyUserWithIdentifier:identifier
-                          attributes:nil];
+    [self identifyUserWithIdentifier:identifier attributes:nil];
+}
+
+-(void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias {
+    [self identifyUserWithIdentifier:identifier];
+    [self aliasUserWithPreviousAnonymousUser];
 }
 
 // Deprecated:
@@ -311,6 +312,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
     [self identifyUserSynced:newUser];
+}
+
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
+    [self identifyUserWithIdentifier:identifier attributes:attributes];
+    [self aliasUserWithPreviousAnonymousUser];
 }
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
@@ -388,9 +394,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)saveCurrentUserToDisk {
-    LQUser *user = [self.currentUser copy];
+    __block LQUser *user = [self.currentUser copy];
     dispatch_async(self.queue, ^() {
-        [[user copy] saveToDisk];
+        [user saveToDisk];
     });
 }
 
@@ -408,6 +414,30 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: creating a new auto identified user (%@)", _currentUser.identifier);
         [self identifyUserSyncedWithIdentifier:nil attributes:nil];
     }
+}
+
+- (void)aliasUserWithPreviousAnonymousUser {
+    LQUser *previousUser = [self.previousUser copy];
+    if ([previousUser isAutoIdentified]) {
+        [self reidentifyUser:previousUser withIdentifier:self.currentUser.identifier];
+    }
+}
+
+- (void)reidentifyUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier {
+    __block LQUser *userToReidentify = [user copy];
+    __block NSString *newUserIdentifier = [newIdentifier copy];
+    if (![userToReidentify isAutoIdentified]) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify auto identified users", userToReidentify.identifier);
+        return;
+    }
+    NSLog(@"<Liquid> Reidentifying auto identified user (%@) with a new identifier (%@)", userToReidentify.identifier, newUserIdentifier);
+    dispatch_async(self.queue, ^{
+        NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"new_user_id", nil];
+        NSString *endpoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/reidentify", self.serverURL, userToReidentify.identifier, self.device.uid];
+        [self addToHttpQueue:params
+                    endPoint:[NSString stringWithFormat:endpoint, self.serverURL]
+                  httpMethod:@"POST"];
+    });
 }
 
 #pragma mark - Session
