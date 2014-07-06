@@ -41,11 +41,11 @@ describe(@"Liquid", ^{
                     previousUserId = [[Liquid sharedInstance] userIdentifier];
                     previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
 
-                    [NSThread sleepForTimeInterval:0.1f];
+                    [NSThread sleepForTimeInterval:0.2f];
                     [[Liquid sharedInstance] applicationWillResignActive:nil];
                     [NSThread sleepForTimeInterval:0.25f];
                     [[Liquid sharedInstance] applicationDidBecomeActive:nil];
-                    [NSThread sleepForTimeInterval:0.1f];
+                    [NSThread sleepForTimeInterval:0.2f];
                 });
 
                 it(@"should keep the previous Session ID", ^{
