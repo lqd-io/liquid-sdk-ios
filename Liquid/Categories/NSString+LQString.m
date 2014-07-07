@@ -19,8 +19,11 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         uuid = [[NSUUID UUID] UUIDString];
     } else {
-        CFUUIDRef cfuuid = CFUUIDCreate(kCFAllocatorDefault);
-        uuid = (NSString *) CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, cfuuid));
+        CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+        CFStringRef cfuuid = CFUUIDCreateString(kCFAllocatorDefault, uuidRef);
+        CFRelease(uuidRef);
+        uuid = [((__bridge NSString *) cfuuid) copy];
+        CFRelease(cfuuid);
     }
 
     if (appendTimestamp) {
