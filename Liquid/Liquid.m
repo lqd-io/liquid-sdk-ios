@@ -404,12 +404,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)saveCurrentUserToDisk {
     __block LQUser *user = [self.currentUser copy];
     dispatch_async(self.queue, ^() {
-        [user saveToDisk];
+        [user saveToDiskForToken:_apiToken];
     });
 }
 
 - (LQUser *)loadLastUserFromDisk {
-    LQUser *user = [LQUser loadFromDisk];
+    LQUser *user = [LQUser loadFromDiskForToken:_apiToken];
     self.currentUser = [user copy];
     return user;
 }
@@ -890,8 +890,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 + (void)softReset {
     [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
+    [LQUser destroyLastUserForAllTokens];
     [Liquid destroySingleton];
-    [LQUser destroyLastUser];
     [NSThread sleepForTimeInterval:0.2f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
 }

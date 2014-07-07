@@ -17,9 +17,11 @@
 - (id)attributeForKey:(NSString*)key;
 - (NSDictionary*)jsonDictionary;
 - (BOOL)isAutoIdentified;
-+ (LQUser *)loadFromDisk;
-- (BOOL)saveToDisk;
-+ (BOOL)destroyLastUser;
+
++(LQUser *)loadFromDiskForToken:(NSString *)apiToken;
++(BOOL)destroyLastUserForToken:(NSString *)apiToken;
++(BOOL)destroyLastUserForAllTokens;
+-(BOOL)saveToDiskForToken:(NSString *)apiToken;
 
 @property(nonatomic, strong, readonly) NSString* identifier;
 @property(nonatomic, strong) NSDictionary* attributes;
