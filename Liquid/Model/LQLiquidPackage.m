@@ -146,6 +146,7 @@
 
 + (LQLiquidPackage *)loadFromDiskForToken:(NSString *)apiToken {
     LQLiquidPackage *liquidPackage = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] liquidPackageFileForToken:apiToken]];
+    LQLog(kLQLogLevelData, @"<Liquid> Loaded Liquid Package from disk, for token %@", apiToken);
     return liquidPackage;
 }
 
