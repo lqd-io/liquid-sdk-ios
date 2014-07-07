@@ -52,10 +52,10 @@
 
     // if not found:
     if (value == nil) {
-        *error = [NSError errorWithDomain:kLQVersion code:kLQErrorValueNotFound userInfo:userInfo];
+        if (error != NULL) *error = [NSError errorWithDomain:kLQVersion code:kLQErrorValueNotFound userInfo:userInfo];
         return nil;
     }
-    // if found::
+    // if found:
     if ([value isKindOfClass:[NSNull class]])
         return nil;
     return value;
