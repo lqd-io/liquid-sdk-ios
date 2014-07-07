@@ -276,7 +276,8 @@ extern NSString * const LQDidIdentifyUser;
  the uuid of the device.
  */
 
--(void)identifyUser;
+-(void)identifyUser
+  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be auto identified you can reset the user with [Liquid resetUser].");
 
 
 /*!
@@ -324,7 +325,8 @@ extern NSString * const LQDidIdentifyUser;
  @param attributes        dictionary of user attributes
  */
 
--(void)identifyUserWithAttributes:(NSDictionary *)attributes;
+-(void)identifyUserWithAttributes:(NSDictionary *)attributes
+  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be auto identified you can reset the user with [Liquid resetUser].");
 
 /*!
  @method
@@ -433,7 +435,8 @@ extern NSString * const LQDidIdentifyUser;
  @param location          the user location
  */
 
--(void)setUserLocation:(CLLocation *)location __deprecated_msg("Use setCurrentLocation: instead");
+-(void)setUserLocation:(CLLocation *)location
+  __deprecated_msg("Use setCurrentLocation: instead");
 
 
 /*!

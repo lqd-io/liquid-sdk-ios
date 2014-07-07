@@ -277,10 +277,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - User Interaction
 
--(void)identifyUser {
+- (void)resetUser {
     [self identifyUserWithIdentifier:nil attributes:nil];
 }
 
+// Deprecated:
+-(void)identifyUser {
+    [self resetUser];
+}
+
+// Deprecated:
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes {
     NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
     [self identifyUserWithIdentifier:nil attributes:validAttributes];
@@ -356,7 +362,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(NSString *)userIdentifier {
     if(self.currentUser == nil) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+        LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
     }
     return self.currentUser.identifier;
 }
@@ -370,7 +376,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
             return;
         }
         [self.currentUser setAttribute:attribute
@@ -379,6 +385,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     });
 }
 
+// Deprecated:
 -(void)setUserLocation:(CLLocation *)location {
     [self setCurrentLocation:location];
 }
@@ -386,7 +393,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 -(void)setCurrentLocation:(CLLocation *)location {
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
             return;
         }
         [self.device setLocation:location];
@@ -408,7 +415,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)autoIdentifyUser {
     if (self.previousUser) {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: using cached user (%@)", _previousUser.identifier);
+        LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user (using cached user: %@)", _previousUser.identifier);
         [self identifyUserSynced:_previousUser];
     } else {
         LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: creating a new auto identified user (%@)", _currentUser.identifier);
@@ -430,7 +437,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelError, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify auto identified users", userToReidentify.identifier);
         return;
     }
-    NSLog(@"<Liquid> Reidentifying auto identified user (%@) with a new identifier (%@)", userToReidentify.identifier, newUserIdentifier);
+    LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying auto identified user (%@) with a new identifier (%@)", userToReidentify.identifier, newUserIdentifier);
     dispatch_async(self.queue, ^{
         NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"new_user_id", nil];
         NSString *endpoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/reidentify", self.serverURL, userToReidentify.identifier, self.device.uid];
@@ -465,7 +472,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     __block void (^newSessionBlock)() = ^() {
         if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet. Please call [Liquid identifyUser] beforehand.");
+            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
             return;
         }
         self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
