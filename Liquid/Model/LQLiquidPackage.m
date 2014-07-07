@@ -8,6 +8,7 @@
 
 #import "LQLiquidPackage.h"
 #import "LQDefaults.h"
+#import "NSString+LQString.h"
 
 @interface LQLiquidPackage ()
 
@@ -189,7 +190,8 @@
                                   withIntermediateDirectories:NO
                                                    attributes:nil
                                                         error:&error];
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.last_liquid_package", apiToken]];
+    NSString *md5apiToken = [NSString md5ofString:apiToken];
+    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.last_liquid_package", md5apiToken]];
     LQLog(kLQLogLevelPaths,@"<Liquid> File location %@",liquidFile);
     return liquidFile;
 }

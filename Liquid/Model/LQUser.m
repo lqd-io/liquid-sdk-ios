@@ -102,7 +102,8 @@
                                   withIntermediateDirectories:NO
                                                    attributes:nil
                                                         error:&error];
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:@"last_user"];
+    NSString *md5apiToken = [NSString md5ofString:apiToken];
+    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.last_user", md5apiToken]];
     LQLog(kLQLogLevelPaths,@"<Liquid> File location %@", liquidFile);
     return liquidFile;
 }

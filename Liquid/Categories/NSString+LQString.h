@@ -12,5 +12,6 @@
 
 + (NSString *)generateRandomUUIDAppendingTimestamp:(BOOL)appendTimestamp;
 + (NSString *)generateRandomUUID;
++ (NSString *)md5ofString:(NSString *)string;
 
 @end

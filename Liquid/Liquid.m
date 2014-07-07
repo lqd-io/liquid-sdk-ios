@@ -22,6 +22,7 @@
 #import "LQDefaults.h"
 #import "UIColor+LQColor.h"
 #import "NSDateFormatter+LQDateFormatter.h"
+#import "NSString+LQString.h"
 
 @interface Liquid ()
 
@@ -1031,8 +1032,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                   withIntermediateDirectories:NO
                                                    attributes:nil
                                                         error:&error];
-    
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.queue", apiToken]];
+    NSString *md5apiToken = [NSString md5ofString:apiToken];
+    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.queue", md5apiToken]];
     LQLog(kLQLogLevelPaths,@"<Liquid> File location %@", liquidFile);
     return liquidFile;
 }
