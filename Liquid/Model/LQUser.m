@@ -9,6 +9,7 @@
 #import "LQDevice.h"
 #import "LQUser.h"
 #import "LQDefaults.h"
+#import "NSString+LQString.h"
 
 @implementation LQUser
 
@@ -20,7 +21,7 @@
         _identifier = identifier;
         _attributes = attributes;
         if (identifier == nil) {
-            _identifier = [LQUser automaticUserIdentifier];
+            _identifier = [LQUser generateRandomUserIdentifier];
             _autoIdentified = @YES;
         } else {
             _identifier = identifier;
@@ -56,13 +57,8 @@
     return [_attributes objectForKey:key];
 }
 
-+(NSString *)automaticUserIdentifier {
-    NSString *automaticUserIdentifier = [LQDevice uid];
-
-    if (!automaticUserIdentifier) {
-        LQLog(kLQLogLevelError, @"<Liquid> %@ could not get automatic user identifier.", self);
-    }
-    return automaticUserIdentifier;
++ (NSString *)generateRandomUserIdentifier {
+    return [NSString generateRandomUUIDAppendingTimestamp:YES];
 }
 
 - (BOOL)isAutoIdentified {

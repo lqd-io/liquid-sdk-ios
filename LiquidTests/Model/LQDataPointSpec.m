@@ -46,11 +46,11 @@ describe(@"LQDataPoint", ^{
         });
 
         it(@"should create a Data Point with a device", ^{
-            [[dataPoint.device shouldNot] beNil];
+            [[dataPoint.device shouldNot] equal:@"audreytautou@gmail.com"];
         });
 
         it(@"should create a Data Point with a Session", ^{
-            [[dataPoint.session shouldNot] beNil];
+            [[dataPoint.session shouldNot] equal:@"audreytautou@gmail.com"];
         });
 
         it(@"should create a Data Point with the correct Event name", ^{

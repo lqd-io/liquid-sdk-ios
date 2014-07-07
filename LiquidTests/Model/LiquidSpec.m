@@ -76,10 +76,10 @@ describe(@"Liquid", ^{
     });
 
     describe(@"track:", ^{
-        it(@"it should auto identify User with the auto identifier (device ID)", ^{
+        it(@"it should auto identify User with the auto identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance track:@"openApplication"];
-            [[liquidInstance.userIdentifier should] equal:liquidInstance.deviceIdentifier];
+            [[liquidInstance.userIdentifier shouldNot] equal:@"abcdef123456"];
         });
     });
 

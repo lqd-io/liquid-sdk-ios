@@ -23,7 +23,7 @@ describe(@"Liquid", ^{
             [LQDevice stub:@selector(releaseVersion) andReturn:[@"9.8" copy]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return [request.URL.path isEqualToString:[NSString stringWithFormat:@"/collect/users/%@/devices/%@/liquid_package", deviceId, deviceId]];
+                return [request.URL.path hasPrefix:@"/collect/users/"] && [request.URL.path hasSuffix:[NSString stringWithFormat:@"/devices/%@/liquid_package", deviceId]];
             } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
                 NSString *fixture = OHPathForFileInBundle(@"liquid_package1.json", nil);
                 return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
