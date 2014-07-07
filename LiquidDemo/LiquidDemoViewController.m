@@ -48,10 +48,19 @@ BOOL const defaultShowAds = YES;
     [super viewDidLoad];
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)]];
 
-    // Pre-select User with identifier "100":
-    self.selectedUserProfile = @"100";
-    [self.userSelectorSegmentedControl setSelectedSegmentIndex:0];
-    [self setCurrentUserWithIdentifier:self.selectedUserProfile];
+    // Pre-select user from previous launch:
+    NSString *currentUserIdentifier = [[Liquid sharedInstance] userIdentifier];
+    self.selectedUserProfile = currentUserIdentifier;
+    self.userUniqueId.text = currentUserIdentifier;
+    if ([currentUserIdentifier isEqualToString:@"100"]) {
+        [self.userSelectorSegmentedControl setSelectedSegmentIndex:0];
+    } else if ([currentUserIdentifier isEqualToString:@"101"]) {
+        [self.userSelectorSegmentedControl setSelectedSegmentIndex:1];
+    } else if ([currentUserIdentifier isEqualToString:@"102"]) {
+        [self.userSelectorSegmentedControl setSelectedSegmentIndex:2];
+    } else {
+        [self.userSelectorSegmentedControl setSelectedSegmentIndex:3];
+    }
 
     // Being notified about Liquid events (alternative 1):
     [[Liquid sharedInstance] setDelegate:self];
@@ -168,14 +177,19 @@ BOOL const defaultShowAds = YES;
 }
 
 - (void)setCurrentUserWithIdentifier:(NSString *)userIdentifier {
-    self.selectedUserProfile = userIdentifier;
     NSDictionary *userAttributes = [self.userProfiles objectForKey:userIdentifier];
-
     if ([userIdentifier isEqualToString:@"103"]) {
-        [[Liquid sharedInstance] identifyUser];
+        [[Liquid sharedInstance] resetUser];
     } else {
-        [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
+        [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes alias:YES]; // Recommended value: YES
+        // Same as:
+        //[[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
+        //[[Liquid sharedInstance] aliasUserWithPreviousAnonymousUser];
     }
+
+    // Update interface:
+    self.selectedUserProfile = userIdentifier;
+    self.userUniqueId.text = [[Liquid sharedInstance] userIdentifier];
 }
 
 #pragma mark - Liquid Delegate methods

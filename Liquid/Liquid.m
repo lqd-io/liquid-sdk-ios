@@ -298,7 +298,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias {
     [self identifyUserWithIdentifier:identifier];
-    [self aliasUserWithPreviousAnonymousUser];
+    if (alias) [self aliasUserWithPreviousAnonymousUser];
 }
 
 // Deprecated:
@@ -322,7 +322,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
     [self identifyUserWithIdentifier:identifier attributes:attributes];
-    [self aliasUserWithPreviousAnonymousUser];
+    if (alias) [self aliasUserWithPreviousAnonymousUser];
 }
 
 -(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {

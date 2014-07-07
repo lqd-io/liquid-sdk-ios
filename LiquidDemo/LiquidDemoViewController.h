@@ -20,5 +20,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *loadValuesButton;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *userSelectorSegmentedControl;
 @property (strong, nonatomic) IBOutlet UITableView *userAttributesTableView;
+@property (strong, nonatomic) IBOutlet UILabel *userUniqueId;
 
 @end
