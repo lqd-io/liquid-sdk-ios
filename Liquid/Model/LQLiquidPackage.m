@@ -47,7 +47,7 @@
 #pragma mark - Get dynamic values
 
 -(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error {
-    LQValue *value = [_dictOfVariablesAndValues objectForKey:variableName];
+    LQValue *value = [[_dictOfVariablesAndValues copy] objectForKey:variableName];
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Value not found on Liquid Package", NSLocalizedDescriptionKey, nil];
 
     // if not found:

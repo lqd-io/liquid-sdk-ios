@@ -95,12 +95,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    LQLiquidPackage *loadedLiquidPackage = [_loadedLiquidPackage copy];
+    __block __strong LQLiquidPackage *loadedLiquidPackage;
+    @synchronized(_loadedLiquidPackage) {
+        loadedLiquidPackage = [_loadedLiquidPackage copy];
+    }
     NSInteger numberOfInvalidatedValues = [loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-    _loadedLiquidPackage = loadedLiquidPackage;
+    @synchronized(_loadedLiquidPackage) {
+        _loadedLiquidPackage = loadedLiquidPackage;
+    }
 
     if (numberOfInvalidatedValues > 0) {
-        __block __strong LQLiquidPackage *liquidPackageToStore = [loadedLiquidPackage copy];
+        LQLiquidPackage *liquidPackageToStore = [loadedLiquidPackage copy];
         dispatch_async(self.queue, ^() {
             [liquidPackageToStore saveToDiskForToken:_apiToken];
         });
@@ -742,12 +747,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
+    NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
-        [self sendVariable:variableName fallback:fallbackValue liquidType:kLQDataTypeString];
+        [self sendVariable:variable fallback:fallbackValue liquidType:kLQDataTypeString];
     }
 
     NSError *error;
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    LQValue *value = [_loadedLiquidPackage valueForKey:variable error:&error];
     if(error == nil) {
         if(value == nil) {
             return nil;
@@ -756,55 +762,58 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             return value.value;
         }
     }
-    [self invalidateTargetThatIncludesVariable:variableName];
+    [self invalidateTargetThatIncludesVariable:variable];
     return fallbackValue;
 }
 
 -(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
+    NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
-        [self sendVariable:variableName fallback:[NSNumber numberWithInteger:fallbackValue] liquidType:kLQDataTypeInteger];
+        [self sendVariable:variable fallback:[NSNumber numberWithInteger:fallbackValue] liquidType:kLQDataTypeInteger];
     }
 
     NSError *error;
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    LQValue *value = [_loadedLiquidPackage valueForKey:variable error:&error];
     if(error == nil) {
         if([value.variable matchesLiquidType:kLQDataTypeInteger]) {
             return [value.value integerValue];
         }
     }
-    [self invalidateTargetThatIncludesVariable:variableName];
+    [self invalidateTargetThatIncludesVariable:variable];
     return fallbackValue;
 }
 
 -(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
+    NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
-        [self sendVariable:variableName fallback:[NSNumber numberWithFloat:fallbackValue] liquidType:kLQDataTypeFloat];
+        [self sendVariable:variable fallback:[NSNumber numberWithFloat:fallbackValue] liquidType:kLQDataTypeFloat];
     }
 
     NSError *error;
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    LQValue *value = [_loadedLiquidPackage valueForKey:variable error:&error];
     if(error == nil) {
         if([value.variable matchesLiquidType:kLQDataTypeFloat]) {
             return [value.value floatValue];
         }
     }
-    [self invalidateTargetThatIncludesVariable:variableName];
+    [self invalidateTargetThatIncludesVariable:variable];
     return fallbackValue;
 }
 
 -(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
+    NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
-        [self sendVariable:variableName fallback:[NSNumber numberWithBool:fallbackValue] liquidType:kLQDataTypeBoolean];
+        [self sendVariable:variable fallback:[NSNumber numberWithBool:fallbackValue] liquidType:kLQDataTypeBoolean];
     }
 
     NSError *error;
-    LQValue *value = [_loadedLiquidPackage valueForKey:variableName error:&error];
+    LQValue *value = [_loadedLiquidPackage valueForKey:variable error:&error];
     if(error == nil) {
         if([value.variable matchesLiquidType:kLQDataTypeBoolean]) {
             return [value.value boolValue];
         }
     }
-    [self invalidateTargetThatIncludesVariable:variableName];
+    [self invalidateTargetThatIncludesVariable:variable];
     return fallbackValue;
 }
 
