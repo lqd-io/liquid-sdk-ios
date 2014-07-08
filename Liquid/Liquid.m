@@ -95,13 +95,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    __block __strong LQLiquidPackage *loadedLiquidPackage = [_loadedLiquidPackage copy];
+    LQLiquidPackage *loadedLiquidPackage = [_loadedLiquidPackage copy];
     NSInteger numberOfInvalidatedValues = [loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
     _loadedLiquidPackage = loadedLiquidPackage;
 
     if (numberOfInvalidatedValues > 0) {
+        __block __strong LQLiquidPackage *liquidPackageToStore = [loadedLiquidPackage copy];
         dispatch_async(self.queue, ^() {
-            [loadedLiquidPackage saveToDiskForToken:_apiToken];
+            [liquidPackageToStore saveToDiskForToken:_apiToken];
         });
     }
 
