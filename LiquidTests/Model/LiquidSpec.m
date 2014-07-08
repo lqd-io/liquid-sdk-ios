@@ -29,7 +29,7 @@ describe(@"Liquid", ^{
             beforeAll(^{
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
                 [[Liquid sharedInstance] identifyUser];
-                [[Liquid sharedInstance] setSessionTimeout:1];
+                [[Liquid sharedInstance] setSessionTimeout:1.0f];
                 [NSThread sleepForTimeInterval:1.0f];
             });
 
