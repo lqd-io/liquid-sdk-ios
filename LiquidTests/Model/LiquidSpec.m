@@ -10,10 +10,16 @@
 #import "LiquidPrivates.h"
 #import "LQDevice.h"
 #import "NSDateFormatter+LQDateFormatter.h"
+#import "OHHTTPStubs.h"
+#import <OCMock/OCMock.h>
 
 SPEC_BEGIN(LiquidSpec)
 
 describe(@"Liquid", ^{
+    let(deviceId, ^id{
+        return [LQDevice uid];
+    });
+
     beforeAll(^{
         [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
@@ -21,6 +27,13 @@ describe(@"Liquid", ^{
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
         [LQDevice stub:@selector(appVersion) andReturn:@"9.9"];
         [LQDevice stub:@selector(releaseVersion) andReturn:@"9.8"];
+
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return [request.URL.path hasPrefix:@"/collect/users/"] && [request.URL.path hasSuffix:[NSString stringWithFormat:@"/devices/%@/liquid_package", deviceId]];
+        } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+            NSString *fixture = OHPathForFileInBundle(@"liquid_package_targets.json", nil);
+            return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
+        }];
 
         [Liquid softReset];
     });

@@ -47,7 +47,6 @@ describe(@"Liquid", ^{
 
             [Liquid softReset];
             [Liquid sharedInstanceWithToken:apiToken];
-            [[Liquid sharedInstance] identifyUser];
 
             // Simulate an app going in background and foreground again:
             [NSThread sleepForTimeInterval:0.1f];

@@ -34,7 +34,6 @@ describe(@"Liquid", ^{
             beforeAll(^{
                 [Liquid softReset];
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
-                [[Liquid sharedInstance] identifyUser];
             });
 
             context(@"given the very first launch of the app", ^{
@@ -101,7 +100,6 @@ describe(@"Liquid", ^{
                 for(NSInteger i = 0; i < 20; i++) {
                     dispatch_async(queue, ^{
                         [NSThread sleepForTimeInterval:0.1f];
-                        [liquidInstance identifyUser];
                     });
                 }
                 for(NSInteger i = 0; i < 200; i++) {
