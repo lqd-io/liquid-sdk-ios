@@ -12,10 +12,9 @@
 @implementation LiquidDemoAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    //[Liquid sharedInstanceWithToken:@"gmqrZGBtG3xyi64_tEdbua98FVrmBcQw" development:YES]; // staging key
-    [Liquid sharedInstanceWithToken:@"_uNm3RuTnoGcBj5zugzUcNYdJF5QzIkL" development:YES]; // localhost key
+    [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
     // if the application goes into background for more than 30 seconds, a new session is considered:. default is 30
-    [[Liquid sharedInstance] setSessionTimeout:5];
+    [[Liquid sharedInstance] setSessionTimeout:30];
     return YES;
 }
 							

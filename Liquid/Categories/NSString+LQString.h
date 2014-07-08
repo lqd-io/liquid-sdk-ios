@@ -1,5 +1,5 @@
 //
-//  NSString+RandomUserID.h
+//  NSString+LQString.h
 //  Liquid
 //
 //  Created by Liquid Data Intelligence, S.A. (lqd.io) on 15/05/14.

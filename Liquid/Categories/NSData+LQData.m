@@ -1,5 +1,5 @@
 //
-//  NSData+Random.m
+//  NSData+LQData.m
 //  Liquid
 //
 //  Created by Liquid Data Intelligence, S.A. (lqd.io) on 15/05/14.
