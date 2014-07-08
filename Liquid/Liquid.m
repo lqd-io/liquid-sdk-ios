@@ -277,61 +277,19 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self requestNewLiquidPackageSynced];
 }
 
-#pragma mark - User Interaction
+#pragma mark - User identifying methods (real methods)
 
-- (void)resetUser {
-    [self identifyUserWithIdentifier:nil attributes:nil];
-}
-
-// Deprecated:
--(void)identifyUser {
-    [self resetUser];
-}
-
-// Deprecated:
--(void)identifyUserWithAttributes:(NSDictionary *)attributes {
+-(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
     NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
-    [self identifyUserWithIdentifier:nil attributes:validAttributes];
-}
-
--(void)identifyUserWithIdentifier:(NSString *)identifier {
-    [self identifyUserWithIdentifier:identifier attributes:nil];
-}
-
--(void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias {
-    [self identifyUserWithIdentifier:identifier];
-    if (alias) [self aliasUserWithPreviousAnonymousUser];
-}
-
-// Deprecated:
--(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
-    [self identifyUserWithIdentifier:identifier attributes:attributes];
-    dispatch_async(self.queue, ^() {
-        [self setCurrentLocation:location];
-    });
-}
-
--(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
-    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
-
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
         return;
     }
     LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
-    [self identifyUserSynced:newUser];
+    [self identifyUserSynced:newUser alias:alias];
 }
 
--(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
-    [self identifyUserWithIdentifier:identifier attributes:attributes];
-    if (alias) [self aliasUserWithPreviousAnonymousUser];
-}
-
--(void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
-    [self identifyUserSynced:[[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[attributes copy]]];
-}
-
--(void)identifyUserSynced:(LQUser *)user {
+-(void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
     LQUser *newUser = [user copy];
     LQUser *currentUser = [self.currentUser copy];
     if (newUser.identifier == currentUser.identifier) {
@@ -358,9 +316,65 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 
     [self saveCurrentUserToDisk];
+    
+    if (alias) {
+        [self aliasUserWithPreviousAnonymousUser];
+    }
 
     LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
 }
+
+#pragma mark - User identifying methods (alias methods)
+
+// Deprecated:
+- (void)identifyUser {
+    [self resetUser];
+}
+
+// Deprecated:
+- (void)identifyUserWithAttributes:(NSDictionary *)attributes {
+    [self identifyUserWithIdentifier:nil attributes:[LQUser assertAttributesTypesAndKeys:attributes] alias:NO];
+}
+
+// Deprecated:
+- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
+    [self identifyUserWithIdentifier:identifier attributes:attributes alias:YES];
+    dispatch_async(self.queue, ^() {
+        [self setCurrentLocation:location];
+    });
+}
+
+- (void)autoIdentifyUser {
+    if (self.previousUser) {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user (using cached user: %@)", _previousUser.identifier);
+        [self identifyUserSynced:_previousUser alias:NO];
+    } else {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: creating a new auto identified user (%@)", _currentUser.identifier);
+        [self identifyUserWithIdentifier:nil attributes:nil alias:NO];
+    }
+}
+
+- (void)resetUser {
+    [self identifyUserWithIdentifier:nil attributes:nil alias:NO];
+}
+
+- (void)identifyUserWithIdentifier:(NSString *)identifier {
+    [self identifyUserWithIdentifier:identifier attributes:nil alias:YES];
+}
+
+- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
+    [self identifyUserWithIdentifier:identifier attributes:attributes alias:YES];
+}
+
+- (void)identifyUserSynced:(LQUser *)user {
+    [self identifyUserSynced:user alias:YES];
+}
+
+- (void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias {
+    [self identifyUserWithIdentifier:identifier alias:alias];
+}
+
+#pragma mark - User related stuff
 
 -(NSString *)userIdentifier {
     if(self.currentUser == nil) {
@@ -415,15 +429,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return user;
 }
 
-- (void)autoIdentifyUser {
-    if (self.previousUser) {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user (using cached user: %@)", _previousUser.identifier);
-        [self identifyUserSynced:_previousUser];
-    } else {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: creating a new auto identified user (%@)", _currentUser.identifier);
-        [self identifyUserSyncedWithIdentifier:nil attributes:nil];
-    }
-}
+#pragma mark - User aliasing of auto identified users
 
 - (void)aliasUserWithPreviousAnonymousUser {
     LQUser *previousUser = [self.previousUser copy];
@@ -449,7 +455,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     });
 }
 
-#pragma mark - Session
+#pragma mark - Sessions
 
 - (void)endSessionAt:(NSDate *)endAt {
     // adding a millisecond, just to ensure that session is ended after all anything else
