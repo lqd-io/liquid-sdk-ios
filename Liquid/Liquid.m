@@ -463,7 +463,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying auto identified user (%@) with a new identifier (%@)", userToReidentify.identifier, newUserIdentifier);
     dispatch_async(self.queue, ^{
         NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"new_user_id", nil];
-        NSString *endpoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/reidentify", self.serverURL, userToReidentify.identifier, self.device.uid];
+        NSString *endpoint = [NSString stringWithFormat:@"%@users/%@/alias", self.serverURL, userToReidentify.identifier];
         [self addToHttpQueue:params
                     endPoint:[NSString stringWithFormat:endpoint, self.serverURL]
                   httpMethod:@"POST"];
