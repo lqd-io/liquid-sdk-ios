@@ -540,6 +540,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if(!self.currentUser) {
         [self autoIdentifyUser];
     }
+    if(!self.currentSession) {
+        [self newSessionInCurrentThread:YES];
+    }
 
     __block NSDate *now;
     if (eventDate) {
@@ -583,6 +586,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 -(LQLiquidPackage *)requestNewLiquidPackageSynced {
     if(!self.currentUser) {
         [self autoIdentifyUser];
+    }
+    if(!self.currentSession) {
+        [self newSessionInCurrentThread:YES];
     }
     NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
     NSData *dataFromServer = [self getDataFromEndpoint:endPoint];
