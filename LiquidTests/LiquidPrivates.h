@@ -57,6 +57,7 @@ extern NSString * const LQDidIdentifyUser;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property(nonatomic, strong, readonly) NSString *liquidUserAgent;
+@property(nonatomic, strong) NSNumber *uniqueNowIncrement;
 
 #pragma mark - Singletons
 
@@ -177,5 +178,7 @@ extern NSString * const LQDidIdentifyUser;
 + (void)destroySingleton;
 + (void)softReset;
 + (void)hardResetForApiToken:(NSString *)token;
+
+- (NSDate *)uniqueNow;
 
 @end

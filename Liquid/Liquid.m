@@ -46,6 +46,7 @@
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property(nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property(nonatomic, strong, readonly) NSString *liquidUserAgent;
+@property(nonatomic, strong) NSNumber *uniqueNowIncrement;
 
 @end
 
@@ -61,6 +62,7 @@ static Liquid *sharedInstance = nil;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 @synthesize liquidUserAgent = _liquidUserAgent;
 @synthesize valuesSentToServer = _valuesSentToServer;
+@synthesize uniqueNowIncrement = _uniqueNowIncrement;
 
 NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
 NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
@@ -177,7 +179,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (NSDate *)veryFirstMoment {
-    if (!_veryFirstMoment) _veryFirstMoment = [NSDate new];
+    if (!_veryFirstMoment) _veryFirstMoment = [self uniqueNow];
     return _veryFirstMoment;
 }
 
@@ -241,9 +243,20 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return _valuesSentToServer;
 }
 
+- (NSNumber *)uniqueNowIncrement {
+    if (!_uniqueNowIncrement) {
+        _uniqueNowIncrement = [NSNumber numberWithFloat:0.0f];
+    }
+    return _uniqueNowIncrement;
+}
+
 #pragma mark - UIApplication notifications
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
+    @synchronized(_uniqueNowIncrement) {
+        _uniqueNowIncrement = [NSNumber numberWithFloat:0.0f];
+    }
+
     // Check for session timeout on app resume
     BOOL sessionTimedOut = [self checkSessionTimeout];
     
@@ -266,7 +279,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)applicationWillResignActive:(NSNotificationCenter *)notification {
-    self.enterBackgroundTime = [NSDate new];
+    self.enterBackgroundTime = [self uniqueNow];
     self.inBackground = YES;
 
     // Stop flush timer on app pause
@@ -464,15 +477,15 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)endSessionAt:(NSDate *)endAt {
     // adding a millisecond, just to ensure that session is ended after all anything else
-    NSDate *fixedEndAt = [[endAt copy] dateByAddingTimeInterval:0.001];
+    NSDate *endAtDate = [endAt copy];
     if (self.currentUser != nil && self.currentSession != nil && self.currentSession.inProgress) {
-        [[self currentSession] endSessionOnDate:fixedEndAt];
-        [self track:@"_endSession" attributes:nil allowLqdEvents:YES withDate:fixedEndAt];
+        [[self currentSession] endSessionOnDate:endAtDate];
+        [self track:@"_endSession" attributes:nil allowLqdEvents:YES withDate:endAtDate];
     }
 }
 
 - (void)endSessionNow {
-    [self endSessionAt:[NSDate date]];
+    [self endSessionAt:[self uniqueNow]];
 }
 
 - (void)newSessionInCurrentThread:(BOOL)inThread {
@@ -481,7 +494,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         now = [self veryFirstMoment];
         _firstEventSent = YES;
     } else {
-        now = [NSDate new];
+        now = [self uniqueNow];
     }
     __block void (^newSessionBlock)() = ^() {
         if(self.currentUser == nil) {
@@ -500,7 +513,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (BOOL)checkSessionTimeout {
     if(self.currentSession != nil) {
-        NSDate *now = [NSDate new];
+        NSDate *now = [self uniqueNow];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
         if(interval >= _sessionTimeout || interval > kLQDefaultSessionMaxLimit) {
             if ([self.currentSession inProgress]) {
@@ -553,7 +566,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (eventDate) {
         now = eventDate;
     } else {
-        now = [NSDate new];
+        now = [self uniqueNow];
     }
     
     if ([eventName hasPrefix:@"_"]) {
@@ -841,7 +854,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             NSMutableArray *failedQueue = [NSMutableArray new];
             while (self.httpQueue.count > 0) {
                 LQQueue *queuedHttp = [self.httpQueue firstObject];
-                if ([[NSDate date] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
+                if ([[self uniqueNow] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
                     LQLog(kLQLogLevelHttp, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
                     NSInteger res = [self sendData:queuedHttp.json
                                    toEndpoint:queuedHttp.url
@@ -914,6 +927,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
     [LQUser destroyLastUserForAllTokens];
     [Liquid destroySingleton];
+    @synchronized(sharedInstance.uniqueNowIncrement) {
+        sharedInstance.uniqueNowIncrement = [NSNumber numberWithFloat:0.0f];
+    }
     [NSThread sleepForTimeInterval:0.2f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
 }
@@ -1113,6 +1129,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         r = (arc4random() % max);
     }
     return (int) r;
+}
+
+- (NSDate *)uniqueNow {
+    NSTimeInterval millisecondsIncrement;
+    @synchronized(_uniqueNowIncrement) {
+        CGFloat newIncrement = [_uniqueNowIncrement doubleValue] + 0.001;
+        _uniqueNowIncrement = [NSNumber numberWithFloat:newIncrement];
+        millisecondsIncrement = newIncrement;
+    }
+    return [[NSDate new] dateByAddingTimeInterval:millisecondsIncrement];
 }
 
 @end

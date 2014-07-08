@@ -9,6 +9,7 @@
 #import <Kiwi/Kiwi.h>
 #import "LiquidPrivates.h"
 #import "LQDevice.h"
+#import "NSDateFormatter+LQDateFormatter.h"
 
 SPEC_BEGIN(LiquidSpec)
 
@@ -76,7 +77,7 @@ describe(@"Liquid", ^{
     });
 
     describe(@"track:", ^{
-        it(@"it should auto identify User with the auto identifier", ^{
+        it(@"should auto identify User with the auto identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance track:@"openApplication"];
             [[liquidInstance.userIdentifier shouldNot] equal:@"abcdef123456"];
@@ -84,17 +85,38 @@ describe(@"Liquid", ^{
     });
 
     describe(@"identifyUserWithIdentifier:", ^{
-        it(@"it should identify User with the correct identifier", ^{
+        it(@"should identify User with the correct identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [[liquidInstance.userIdentifier should] equal:@"john"];
         });
 
-        it(@"after 1 second it should keep the correct identifier", ^{
+        it(@"should keep the correct identifier after 1 second", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [NSThread sleepForTimeInterval:1.0f];
             [[liquidInstance.userIdentifier should] equal:@"john"];
+        });
+    });
+
+    describe(@"uniqueNow", ^{
+        context(@"given a Liquid singleton", ^{
+            beforeEach(^{
+                [Liquid softReset];
+                [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
+                [NSThread sleepForTimeInterval:1.0f];
+            });
+
+            it(@"should increment 1 millisecond when uniqueNow method is used", ^{
+                [[Liquid sharedInstance] uniqueNow];
+                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:0.001f]];
+            });
+
+            it(@"should increment 2 milliseconds when uniqueNow method is used two times", ^{
+                [[Liquid sharedInstance] uniqueNow];
+                [[Liquid sharedInstance] uniqueNow];
+                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:0.002f]];
+            });
         });
     });
 });
