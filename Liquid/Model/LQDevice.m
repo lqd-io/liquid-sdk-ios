@@ -113,7 +113,6 @@
     [dictionary setObject:_screenSize forKey:@"_screenSize"];
     [dictionary setObject:_carrier forKey:@"_carrier"];
     [dictionary setObject:_internetConnectivity forKey:@"_internetConnectivity"];
-    [dictionary setObject:_uid forKey:@"_uid"];
     if (_appBundle) {
         [dictionary setObject:_appBundle forKey:@"_appBundle"];
     }
