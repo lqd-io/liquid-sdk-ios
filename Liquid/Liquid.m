@@ -264,28 +264,28 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self startFlushTimer];
 
     dispatch_async(self.queue, ^() {
-        self.enterBackgroundTime = nil;
         // Restore queue from plist
         self.httpQueue = [Liquid unarchiveQueueForToken:self.apiToken];
     });
 
     if(!sessionTimedOut && self.inBackground) {
         [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES];
-        _inBackground = NO;
     }
+
+    _inBackground = NO;
 
     // Request variables on app resume
     [self loadLiquidPackageSynced:YES];
 }
 
 - (void)applicationWillResignActive:(NSNotificationCenter *)notification {
-    self.enterBackgroundTime = [self uniqueNow];
-    self.inBackground = YES;
-
     // Stop flush timer on app pause
     [self stopFlushTimer];
     
-    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES];
+    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:[self uniqueNow]];
+
+    self.enterBackgroundTime = [self uniqueNow];
+    self.inBackground = YES;
 
     if (self.flushOnBackground) {
         [self flush];
@@ -314,15 +314,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.currentUser.attributes = newUser.attributes;
         [self saveCurrentUserToDisk];
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
-        return;
-    }
-
-    if ([self.currentSession inProgress]) {
-        [self endSessionNow];
+    } else {
+        if ([self.currentSession inProgress]) {
+            [self endSessionNow];
+        }
     }
     _previousUser = currentUser;
     _currentUser = newUser;
-    [self newSessionInCurrentThread:YES];
+    if (newUser.identifier != currentUser.identifier) {
+        [self newSessionInCurrentThread:YES];
+    }
     [self requestNewLiquidPackage];
 
     // Notifiy the outside world:
@@ -520,7 +521,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             if ([self.currentSession inProgress]) {
                 [self endSessionAt:self.enterBackgroundTime];
             }
-            [self newSessionInCurrentThread:NO];
+            [self newSessionInCurrentThread:YES];
             return YES;
         }
     }
