@@ -34,6 +34,8 @@ describe(@"Liquid", ^{
             beforeAll(^{
                 [Liquid softReset];
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
+                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
+                [[Liquid sharedInstance] setFlushOnBackground:NO];
             });
 
             context(@"given the very first launch of the app", ^{
@@ -77,6 +79,8 @@ describe(@"Liquid", ^{
 
             beforeAll(^{
                 liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+                [liquidInstance stub:@selector(flush) andReturn:nil];
+                [liquidInstance setFlushOnBackground:NO];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];

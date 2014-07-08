@@ -44,6 +44,8 @@ describe(@"Liquid", ^{
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
                 [[Liquid sharedInstance] identifyUser];
                 [[Liquid sharedInstance] setSessionTimeout:1.0f];
+                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
+                [[Liquid sharedInstance] setFlushOnBackground:NO];
                 [NSThread sleepForTimeInterval:1.0f];
             });
 
@@ -92,6 +94,8 @@ describe(@"Liquid", ^{
     describe(@"track:", ^{
         it(@"should auto identify User with the auto identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+            [liquidInstance stub:@selector(flush) andReturn:nil];
+            [liquidInstance setFlushOnBackground:NO];
             [liquidInstance track:@"openApplication"];
             [[liquidInstance.userIdentifier shouldNot] equal:@"abcdef123456"];
         });
@@ -100,12 +104,16 @@ describe(@"Liquid", ^{
     describe(@"identifyUserWithIdentifier:", ^{
         it(@"should identify User with the correct identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+            [liquidInstance stub:@selector(flush) andReturn:nil];
+            [liquidInstance setFlushOnBackground:NO];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [[liquidInstance.userIdentifier should] equal:@"john"];
         });
 
         it(@"should keep the correct identifier after 1 second", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+            [liquidInstance stub:@selector(flush) andReturn:nil];
+            [liquidInstance setFlushOnBackground:NO];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [NSThread sleepForTimeInterval:1.0f];
             [[liquidInstance.userIdentifier should] equal:@"john"];
@@ -117,6 +125,8 @@ describe(@"Liquid", ^{
             beforeEach(^{
                 [Liquid softReset];
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
+                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
+                [[Liquid sharedInstance] setFlushOnBackground:NO];
                 [NSThread sleepForTimeInterval:1.0f];
             });
 

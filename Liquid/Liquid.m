@@ -263,11 +263,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     // Restart flush timer
     [self startFlushTimer];
 
-    dispatch_async(self.queue, ^() {
-        // Restore queue from plist
-        self.httpQueue = [Liquid unarchiveQueueForToken:self.apiToken];
-    });
-
     if(!sessionTimedOut && self.inBackground) {
         [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES];
     }

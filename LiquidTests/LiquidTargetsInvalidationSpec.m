@@ -9,14 +9,14 @@ SPEC_BEGIN(LiquidTargetsInvalidationSpec)
 
 describe(@"Liquid", ^{
     let(apiToken, ^id{
-        return @"12345678901234567890abcdef";
+        return @"aaaaaaaaaaaaaaaaaaaaaaa";
     });
     
     let(deviceId, ^id{
         return [LQDevice uid];
     });
     
-    let(jsonDict, nil);
+    let(jsonDictionary, nil);
     
     beforeAll(^{
         [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];
@@ -28,6 +28,8 @@ describe(@"Liquid", ^{
     });
     
     context(@"given a Liquid Package with 6 variables received from Liquid dashboard/server (user covered by one Target)", ^{
+        __block __strong Liquid *liquidInstance;
+
         beforeAll(^{
             // Targets and Variables:
             // * freeCoins and discount are defined on target 1 (d8b035d088469702d6c53800)
@@ -45,71 +47,73 @@ describe(@"Liquid", ^{
                 return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
             }];
 
-            [Liquid softReset];
-            [Liquid sharedInstanceWithToken:apiToken];
+            liquidInstance = [[Liquid alloc] initWithToken:apiToken];
+            [liquidInstance stub:@selector(flush) andReturn:nil];
+            [liquidInstance setFlushOnBackground:NO];
 
             // Simulate an app going in background and foreground again:
             [NSThread sleepForTimeInterval:0.1f];
-            [[Liquid sharedInstance] applicationWillResignActive:nil];
-            [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+            [liquidInstance applicationWillResignActive:nil];
+            [NSThread sleepForTimeInterval:0.1f];
+            [liquidInstance applicationDidBecomeActive:nil];
             [NSThread sleepForTimeInterval:0.1f];
         });
 
         it(@"should invalidate (thus fallback) 'freeCoins' variable", ^{
             NSInteger fallbackValue = 1;
-            NSInteger discount = [[Liquid sharedInstance] intForKey:@"freeCoins" fallback:fallbackValue];
+            NSInteger discount = [liquidInstance intForKey:@"freeCoins" fallback:fallbackValue];
             [[theValue(discount) should] equal:theValue(fallbackValue)];
         });
         
         context(@"given 'freeCoins' been used (an invalidated)", ^{
             beforeEach(^{
-                [[Liquid sharedInstance] intForKey:@"freeCoins" fallback:1];
+                [liquidInstance intForKey:@"freeCoins" fallback:1];
             });
             
             it(@"should invalidate (thus fallback) 'discount' variable after 'freeCoins' being used", ^{
                 CGFloat fallbackValue = 0.10;
-                CGFloat discount = [[Liquid sharedInstance] floatForKey:@"discount" fallback:fallbackValue];
+                CGFloat discount = [liquidInstance floatForKey:@"discount" fallback:fallbackValue];
                 [[theValue(discount) should] equal:theValue(fallbackValue)];
             });
             
             it(@"should NOT invalidate (thus use Liquid Package value) 'title' variable", ^{
                 NSString *fallbackValue = @"Fallback value";
                 NSString *serverValue = @"Default value of this variable";
-                NSString *title = [[Liquid sharedInstance] stringForKey:@"title" fallback:fallbackValue];
+                NSString *title = [liquidInstance stringForKey:@"title" fallback:fallbackValue];
                 [[title should] equal:serverValue];
             });
             
             it(@"should NOT invalidate (thus use Liquid Package value) 'showDate' variable", ^{
                 NSDate *fallbackValue = [NSDate dateWithTimeIntervalSince1970:0];
-                NSDate *date = [[Liquid sharedInstance] dateForKey:@"showDate" fallback:fallbackValue];
+                NSDate *date = [liquidInstance dateForKey:@"showDate" fallback:fallbackValue];
                 [[date shouldNot] equal:fallbackValue];
             });
             
             it(@"should NOT invalidate (thus use Liquid Package value) 'backgroundColor' variable", ^{
                 UIColor *fallbackValue = [UIColor blueColor];
                 UIColor *serverValue = [UIColor redColor];
-                UIColor *color = [[Liquid sharedInstance] colorForKey:@"backgroundColor" fallback:fallbackValue];
+                UIColor *color = [liquidInstance colorForKey:@"backgroundColor" fallback:fallbackValue];
                 [[color should] equal:serverValue];
             });
             
             it(@"should NOT invalidate (thus use Liquid Package value) 'showAds' variable", ^{
                 BOOL fallbackValue = NO;
                 BOOL serverValue = YES;
-                BOOL showAds = [[Liquid sharedInstance] boolForKey:@"showAds" fallback:fallbackValue];
+                BOOL showAds = [liquidInstance boolForKey:@"showAds" fallback:fallbackValue];
                 [[theValue(showAds) should] equal:theValue(serverValue)];
             });
             
             context(@"given an event that is tracked", ^{
                 beforeEach(^{
-                    [[Liquid sharedInstance] track:@"Click Button"];
-                    [NSThread sleepForTimeInterval:0.3f]; // wait for data point to be processed from the queued
-                    LQQueue *queuedRequest = [[[Liquid sharedInstance] httpQueue] lastObject];
+                    [liquidInstance track:@"Click Button"];
+                    [NSThread sleepForTimeInterval:0.15f]; // wait for data point to be processed from the queued
+                    LQQueue *queuedRequest = [[liquidInstance httpQueue] lastObject];
                     NSData *jsonData = queuedRequest.json;
-                    jsonDict = [Liquid fromJSON:jsonData];
+                    jsonDictionary = [Liquid fromJSON:jsonData];
                 });
                 
                 it(@"should send events with a Data Point that does NOT include target 'd8b035d088469702d6c53800'", ^{
-                    NSArray *values = [jsonDict objectForKey:@"values"];
+                    NSArray *values = [jsonDictionary objectForKey:@"values"];
                     NSInteger numberOfValuesWithTarget = 0;
                     for (NSDictionary *value in values) {
                         if ([[value objectForKey:@"target_id"] isKindOfClass:[NSString class]] && [[value objectForKey:@"target_id"] isEqualToString:@"d8b035d088469702d6c53800"]) {
@@ -120,7 +124,7 @@ describe(@"Liquid", ^{
                 });
                 
                 it(@"should send events with a Data Point that includes target '9702d388538a062ca6900000'", ^{
-                    NSArray *values = [jsonDict objectForKey:@"values"];
+                    NSArray *values = [jsonDictionary objectForKey:@"values"];
                     NSInteger numberOfValuesWithTarget = 0;
                     for (NSDictionary *value in values) {
                         if ([[value objectForKey:@"target_id"] isKindOfClass:[NSString class]] && [[value objectForKey:@"target_id"] isEqualToString:@"9702d388538a062ca6900000"]) {
@@ -131,7 +135,7 @@ describe(@"Liquid", ^{
                 });
                 
                 it(@"should send events with a Data Point that includes only 1 target", ^{
-                    NSArray *values = [jsonDict objectForKey:@"values"];
+                    NSArray *values = [jsonDictionary objectForKey:@"values"];
                     NSInteger numberOfValuesWithTarget = 0;
                     for (NSDictionary *value in values) {
                         if ([[value objectForKey:@"target_id"] isKindOfClass:[NSString class]]) {
@@ -142,15 +146,15 @@ describe(@"Liquid", ^{
                 });
                 
                 it(@"should send events with a Data Point that includes only 4 of the 6 values/variables", ^{
-                    NSArray *values = [jsonDict objectForKey:@"values"];
-                    [[expectFutureValue([NSNumber numberWithInt:(int)values.count]) shouldEventuallyBeforeTimingOutAfter(4)] equal:@4];
+                    NSArray *values = [jsonDictionary objectForKey:@"values"];
+                    [NSThread sleepForTimeInterval:0.5f];
+                    [[expectFutureValue([NSNumber numberWithInt:(int)values.count]) should] equal:@4];
                 });
                 
                 it(@"should send events with a Data Point that includes 'title' variable", ^{
-                    NSArray *values = [jsonDict objectForKey:@"values"];
+                    NSArray *values = [jsonDictionary objectForKey:@"values"];
                     BOOL valueFound = false;
                     for (NSDictionary *value in values) {
-                        NSLog(@"VVV: %@", values);
                         if ([[value objectForKey:@"id"] isKindOfClass:[NSString class]] && [[value objectForKey:@"id"] isEqualToString:@"5371978369702d37ca180000"]) {
                             valueFound = YES;
                             break;
@@ -160,7 +164,7 @@ describe(@"Liquid", ^{
                 });
                 
                 it(@"should send events with a Data Point that does NOT include 'freeCoins' variable", ^{
-                    NSArray *values = [jsonDict objectForKey:@"values"];
+                    NSArray *values = [jsonDictionary objectForKey:@"values"];
                     BOOL valueFound = false;
                     for (NSDictionary *value in values) {
                         if ([[value objectForKey:@"id"] isKindOfClass:[NSString class]] && [[value objectForKey:@"id"] isEqualToString:@"538382ca69702d08900c0600"]) {
@@ -172,7 +176,7 @@ describe(@"Liquid", ^{
                 });
                 
                 it(@"should send events with a Data Point that does NOT include 'discount' variable", ^{
-                    NSArray *values = [jsonDict objectForKey:@"values"];
+                    NSArray *values = [jsonDictionary objectForKey:@"values"];
                     BOOL valueFound = false;
                     for (NSDictionary *value in values) {
                         if ([[value objectForKey:@"id"] isKindOfClass:[NSString class]] && [[value objectForKey:@"id"] isEqualToString:@"538382ca69702d08900a0600"]) {
