@@ -181,10 +181,7 @@ BOOL const defaultShowAds = YES;
     if ([userIdentifier isEqualToString:@"103"]) {
         [[Liquid sharedInstance] resetUser];
     } else {
-        [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes alias:YES]; // Recommended value: YES
-        // Same as:
-        //[[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
-        //[[Liquid sharedInstance] aliasUserWithPreviousAnonymousUser];
+        [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
     }
 
     // Update interface:
