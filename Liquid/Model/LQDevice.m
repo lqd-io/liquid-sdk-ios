@@ -129,7 +129,7 @@
         [dictionary setObject:_releaseVersion forKey:@"_releaseVersion"];
     }
     if (_apnsToken) {
-        [dictionary setObject:_apnsToken forKey:@"pushToken"];
+        [dictionary setObject:_apnsToken forKey:@"push_token"];
     }
     [dictionary setObject:_liquidVersion forKey:@"_liquidVersion"];
     [dictionary setObject:self.uid forKey:@"unique_id"];
