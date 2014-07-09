@@ -130,15 +130,54 @@ describe(@"Liquid", ^{
                 [NSThread sleepForTimeInterval:1.0f];
             });
 
-            it(@"should increment 1 millisecond when uniqueNow method is used", ^{
-                [[Liquid sharedInstance] uniqueNow];
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:0.001f]];
+            it(@"should start with 0 milliseconds when uniqueNow method was never used", ^{
+                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:0]];
             });
 
-            it(@"should increment 2 milliseconds when uniqueNow method is used two times", ^{
+            it(@"should increment uniqueNowIncrement by 1 when uniqueNow method is used", ^{
+                [[Liquid sharedInstance] uniqueNow];
+                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:1]];
+            });
+
+            it(@"should increment uniqueNowIncrement by 2 when uniqueNow method is used two times", ^{
                 [[Liquid sharedInstance] uniqueNow];
                 [[Liquid sharedInstance] uniqueNow];
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:0.002f]];
+                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:2]];
+            });
+
+            context(@"given a frozen time", ^{
+                __block NSDate *fixedDate = [NSDate new];
+
+                beforeEach(^{
+                    [Liquid sharedInstance].uniqueNowIncrement = [NSNumber numberWithInteger:0];
+                    [NSDate stub:@selector(new) withBlock:^id(NSArray *params) {
+                        return [fixedDate copy];
+                    }];
+                });
+
+                it(@"should increment 1 millisecond when uniqueNow method is used two times", ^{
+                    [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.001f]];
+                });
+
+                it(@"should increment 2 milliseconds when uniqueNow method is used two times", ^{
+                    [[Liquid sharedInstance] uniqueNow];
+                    [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.002f]];
+                });
+
+                context(@"given uniqueNowIncrement at 998", ^{
+                    beforeEach(^{
+                        [Liquid sharedInstance].uniqueNowIncrement = [NSNumber numberWithInteger:998];
+                    });
+
+                    it(@"should increment be very near the next second", ^{
+                        [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.999f]];
+                    });
+
+                    it(@"should return to the initial date", ^{
+                        [[Liquid sharedInstance] uniqueNow];
+                        [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.0f]];
+                    });
+                });
             });
         });
     });

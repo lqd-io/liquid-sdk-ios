@@ -245,7 +245,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (NSNumber *)uniqueNowIncrement {
     if (!_uniqueNowIncrement) {
-        _uniqueNowIncrement = [NSNumber numberWithFloat:0.0f];
+        _uniqueNowIncrement = [NSNumber numberWithInteger:0];
     }
     return _uniqueNowIncrement;
 }
@@ -254,7 +254,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     @synchronized(_uniqueNowIncrement) {
-        _uniqueNowIncrement = [NSNumber numberWithFloat:0.0f];
+        _uniqueNowIncrement = [NSNumber numberWithInteger:0];
     }
 
     // Check for session timeout on app resume
@@ -925,7 +925,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [LQUser destroyLastUserForAllTokens];
     [Liquid destroySingleton];
     @synchronized(sharedInstance.uniqueNowIncrement) {
-        sharedInstance.uniqueNowIncrement = [NSNumber numberWithFloat:0.0f];
+        sharedInstance.uniqueNowIncrement = [NSNumber numberWithInt:0];
     }
     [NSThread sleepForTimeInterval:0.2f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
@@ -1131,9 +1131,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (NSDate *)uniqueNow {
     NSTimeInterval millisecondsIncrement;
     @synchronized(_uniqueNowIncrement) {
-        CGFloat newIncrement = [_uniqueNowIncrement doubleValue] + 0.001;
-        _uniqueNowIncrement = [NSNumber numberWithFloat:newIncrement];
-        millisecondsIncrement = newIncrement;
+        _uniqueNowIncrement = [NSNumber numberWithInteger:[_uniqueNowIncrement intValue] + 1];
+        millisecondsIncrement = ([_uniqueNowIncrement intValue] % 1000) * 0.001;
     }
     return [[NSDate new] dateByAddingTimeInterval:millisecondsIncrement];
 }
