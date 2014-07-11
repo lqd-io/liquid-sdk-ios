@@ -25,6 +25,10 @@
 #import "NSString+LQString.h"
 #import "NSData+LQData.h"
 
+#if !__has_feature(objc_arc)
+#  error Compile me with ARC, please!
+#endif
+
 @interface Liquid ()
 
 @property(nonatomic, strong) NSString *apiToken;
