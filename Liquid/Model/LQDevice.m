@@ -86,11 +86,11 @@
 -(void)setLocation:(CLLocation *)location {
     if(location == nil) {
         NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
-        [mutableAttributes removeObjectForKey:@"_latitude"];
-        [mutableAttributes removeObjectForKey:@"_longitude"];
+        [mutableAttributes removeObjectForKey:@"latitude"];
+        [mutableAttributes removeObjectForKey:@"longitude"];
     } else {
-        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:@"_latitude"];
-        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:@"_longitude"];
+        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:@"latitude"];
+        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:@"longitude"];
     }
 }
 
@@ -109,29 +109,29 @@
 -(NSDictionary *)jsonDictionary {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
-    [dictionary setObject:_vendor forKey:@"_vendor"];
-    [dictionary setObject:_deviceModel forKey:@"_deviceModel"];
-    [dictionary setObject:_systemVersion forKey:@"_systemVersion"];
-    [dictionary setObject:_deviceName forKey:@"_deviceName"];
-    [dictionary setObject:_screenSize forKey:@"_screenSize"];
-    [dictionary setObject:_carrier forKey:@"_carrier"];
-    [dictionary setObject:_internetConnectivity forKey:@"_internetConnectivity"];
+    [dictionary setObject:_vendor forKey:@"vendor"];
+    [dictionary setObject:_deviceModel forKey:@"device_model"];
+    [dictionary setObject:_systemVersion forKey:@"system_version"];
+    [dictionary setObject:_deviceName forKey:@"device_name"];
+    [dictionary setObject:_screenSize forKey:@"screen_size"];
+    [dictionary setObject:_carrier forKey:@"carrier"];
+    [dictionary setObject:_internetConnectivity forKey:@"internet_connectivity"];
     if (_appBundle) {
-        [dictionary setObject:_appBundle forKey:@"_appBundle"];
+        [dictionary setObject:_appBundle forKey:@"app_bundle"];
     }
     if (_appName) {
-        [dictionary setObject:_appName forKey:@"_appName"];
+        [dictionary setObject:_appName forKey:@"app_name"];
     }
     if (_appVersion) {
-        [dictionary setObject:_appVersion forKey:@"_appVersion"];
+        [dictionary setObject:_appVersion forKey:@"app_version"];
     }
     if (_releaseVersion) {
-        [dictionary setObject:_releaseVersion forKey:@"_releaseVersion"];
+        [dictionary setObject:_releaseVersion forKey:@"release_version"];
     }
     if (_apnsToken) {
         [dictionary setObject:_apnsToken forKey:@"push_token"];
     }
-    [dictionary setObject:_liquidVersion forKey:@"_liquidVersion"];
+    [dictionary setObject:_liquidVersion forKey:@"liquid_version"];
     [dictionary setObject:self.uid forKey:@"unique_id"];
     [dictionary setObject:kLQDevicePlatform forKey:@"platform"];
 

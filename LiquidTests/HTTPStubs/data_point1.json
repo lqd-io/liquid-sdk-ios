@@ -1,16 +1,16 @@
 {
   "device" : {
-    "_carrier" : "No Carrier",
-    "_systemVersion" : "7.1",
-    "_vendor" : "Apple",
-    "_deviceModel" : "x86_64",
-    "_uid" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
-    "_screenSize" : "640x1136",
-    "_deviceName" : "iPhone Simulator",
+    "carrier" : "No Carrier",
+    "systemVersion" : "7.1",
+    "vendor" : "Apple",
+    "deviceModel" : "x86_64",
+    "uid" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
+    "screenSize" : "640x1136",
+    "deviceName" : "iPhone Simulator",
     "platform" : "iOS",
     "unique_id" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
-    "_liquidVersion" : "0.7.2-beta",
-    "_internetConnectivity" : "WiFi"
+    "liquidVersion" : "0.7.2-beta",
+    "internetConnectivity" : "WiFi"
   },
   "user" : {
     "unique_id" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
