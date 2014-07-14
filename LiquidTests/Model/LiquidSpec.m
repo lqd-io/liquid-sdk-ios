@@ -92,7 +92,7 @@ describe(@"Liquid", ^{
     });
 
     describe(@"track:", ^{
-        it(@"should auto identify User with the auto identifier", ^{
+        it(@"should identify User (anonymous) with the automatically generated identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
             [liquidInstance setFlushOnBackground:NO];

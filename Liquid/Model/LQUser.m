@@ -11,6 +11,12 @@
 #import "LQDefaults.h"
 #import "NSString+LQString.h"
 
+@interface LQUser()
+
+@property(nonatomic, strong, readonly) NSNumber *identified;
+
+@end
+
 @implementation LQUser
 
 #pragma mark - Initializer
@@ -22,10 +28,10 @@
         _attributes = attributes;
         if (identifier == nil) {
             _identifier = [LQUser generateRandomUserIdentifier];
-            _autoIdentified = @YES;
+            _identified = @NO;
         } else {
             _identifier = identifier;
-            _autoIdentified = @NO;
+            _identified = @YES;
         }
         if(_attributes == nil)
             _attributes = [NSDictionary new];
@@ -39,7 +45,7 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_identifier forKey:@"unique_id"];
-    [dictionary setObject:_autoIdentified forKey:@"auto_identified"];
+    [dictionary setObject:_identified forKey:@"identified"];
     return dictionary;
 }
 
@@ -61,8 +67,8 @@
     return [NSString generateRandomUUIDAppendingTimestamp:YES];
 }
 
-- (BOOL)isAutoIdentified {
-    return [self.autoIdentified isEqual:@YES];
+- (BOOL)isIdentified {
+    return [self.identified isEqual:@YES];
 }
 
 #pragma mark - Archive to/from disk
@@ -70,7 +76,7 @@
 + (LQUser *)loadFromDiskForToken:(NSString *)apiToken {
     LQUser *user = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] lastUserFileForToken:apiToken]];
     if (user) {
-        LQLog(kLQLogLevelData, @"<Liquid> Loaded User %@ %@ from disk, for token %@", user.identifier, ([user.autoIdentified boolValue] ? @" (auto identified)" : @"(manually identified)"), apiToken);
+        LQLog(kLQLogLevelData, @"<Liquid> Loaded User %@ %@ from disk, for token %@", user.identifier, (![user.identified boolValue] ? @" (anonymous)" : @"(identified)"), apiToken);
     }
     return user;
 }
@@ -91,7 +97,7 @@
 }
 
 - (BOOL)saveToDiskForToken:(NSString *)apiToken {
-    LQLog(kLQLogLevelData, @"<Liquid> Saving User %@ %@ to disk, for token %@", self.identifier, ([self.autoIdentified boolValue] ? @" (auto identified)" : @"(manually identified)"), apiToken);
+    LQLog(kLQLogLevelData, @"<Liquid> Saving User %@ %@ to disk, for token %@", self.identifier, (![self.identified boolValue] ? @" (anonymous)" : @"(identified)"), apiToken);
     return [NSKeyedArchiver archiveRootObject:self toFile:[LQUser lastUserFileForToken:apiToken]];
 }
 
@@ -128,7 +134,7 @@
     if (self) {
         _identifier = [aDecoder decodeObjectForKey:@"identifier"];
         _attributes = [aDecoder decodeObjectForKey:@"attributes"];
-        _autoIdentified = [aDecoder decodeObjectForKey:@"autoIdentified"];
+        _identified = [aDecoder decodeObjectForKey:@"identified"];
     }
     return self;
 }
@@ -136,14 +142,14 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:_identifier forKey:@"identifier"];
     [aCoder encodeObject:_attributes forKey:@"attributes"];
-    [aCoder encodeObject:_autoIdentified forKey:@"autoIdentified"];
+    [aCoder encodeObject:_identified forKey:@"identified"];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
     LQUser *user = [[[self class] allocWithZone:zone] init];
     user->_identifier = [_identifier copyWithZone:zone];
     user->_attributes = [_attributes copyWithZone:zone];
-    user->_autoIdentified = [_autoIdentified copyWithZone:zone];
+    user->_identified = [_identified copyWithZone:zone];
     return user;
 }
 

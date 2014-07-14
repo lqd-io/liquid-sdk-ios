@@ -14,7 +14,7 @@
   },
   "user" : {
     "unique_id" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
-    "auto_identified" : true
+    "identified" : true
   },
   "session" : {
     "unique_id" : "C96BB192-9F7E-4009-AAA6-ECB1D2FF806D-1401979297",

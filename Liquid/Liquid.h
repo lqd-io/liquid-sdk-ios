@@ -277,7 +277,7 @@ extern NSString * const LQDidIdentifyUser;
  */
 
 -(void)identifyUser
-  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be auto identified you can reset the user with [Liquid resetUser].");
+  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be an anonymous user, you can reset the user with [Liquid resetUser].");
 
 
 /*!
@@ -315,7 +315,7 @@ extern NSString * const LQDidIdentifyUser;
  @method
  
  @abstract
- Identifies the user on to the Liquid API with an auto identified user and some
+ Identifies the user on to the Liquid API with an anonymous user and some
  attributes.
  
  @discussion
@@ -326,7 +326,7 @@ extern NSString * const LQDidIdentifyUser;
  */
 
 -(void)identifyUserWithAttributes:(NSDictionary *)attributes
-  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be auto identified you can reset the user with [Liquid resetUser].");
+  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be an anonymous user, you can reset the user with [Liquid resetUser].");
 
 /*!
  @method
@@ -336,7 +336,7 @@ extern NSString * const LQDidIdentifyUser;
  
  @discussion
  This will reset all cached user data (unique identifier and attributes).
- From this moment on, current user is identified as an "auto identified"
+ From this moment on, current user will become non identified (a.k.a. anonymous)
  one (initial state of the SDK). Also, current session is ended and a
  new one is started.
  */

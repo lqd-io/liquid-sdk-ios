@@ -368,7 +368,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user (using cached user: %@)", _previousUser.identifier);
         [self identifyUserSynced:_previousUser alias:NO];
     } else {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Auto identifying user: creating a new auto identified user (%@)", _currentUser.identifier);
+        LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously: creating a new anonymous user (%@)", _currentUser.identifier);
         [self identifyUserWithIdentifier:nil attributes:nil alias:NO];
     }
 }
@@ -448,11 +448,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return user;
 }
 
-#pragma mark - User aliasing of auto identified users
+#pragma mark - User aliasing of anonymous users
 
 - (void)aliasUserWithPreviousAnonymousUser {
     LQUser *previousUser = [self.previousUser copy];
-    if ([previousUser isAutoIdentified]) {
+    if (![previousUser isIdentified]) {
         [self reidentifyUser:previousUser withIdentifier:self.currentUser.identifier];
     }
 }
@@ -460,11 +460,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)reidentifyUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier {
     __block LQUser *userToReidentify = [user copy];
     __block NSString *newUserIdentifier = [newIdentifier copy];
-    if (![userToReidentify isAutoIdentified]) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify auto identified users", userToReidentify.identifier);
+    if ([userToReidentify isIdentified]) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify non identified users", userToReidentify.identifier);
         return;
     }
-    LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying auto identified user (%@) with a new identifier (%@)", userToReidentify.identifier, newUserIdentifier);
+    LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying anonymous user (%@) with a new identifier (%@)", userToReidentify.identifier, newUserIdentifier);
     dispatch_async(self.queue, ^{
         NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"new_user_id", nil];
         NSString *endpoint = [NSString stringWithFormat:@"%@users/%@/alias", self.serverURL, userToReidentify.identifier];

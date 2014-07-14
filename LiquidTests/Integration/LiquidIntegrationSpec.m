@@ -30,7 +30,7 @@ describe(@"Liquid", ^{
             }];
         });
 
-        context(@"given a Liquid singleton with an auto identified user", ^{
+        context(@"given a Liquid singleton with an anonymous user", ^{
             beforeAll(^{
                 [Liquid softReset];
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];

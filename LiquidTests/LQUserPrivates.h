@@ -25,5 +25,6 @@
 
 @property(nonatomic, strong, readonly) NSString* identifier;
 @property(nonatomic, strong) NSDictionary* attributes;
+@property(nonatomic, strong, readonly) NSNumber *identified;
 
 @end
