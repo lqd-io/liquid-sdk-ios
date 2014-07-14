@@ -27,6 +27,18 @@
     return self;
 }
 
+#pragma mark - Attributes
+
++ (NSDictionary *)reservedAttributes {
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            @YES, @"_id",
+            @YES, @"id",
+            @YES, @"name",
+            @YES, @"date",
+            @YES, @"created_at",
+            @YES, @"updated_at", nil];
+}
+
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {

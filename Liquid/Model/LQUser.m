@@ -51,7 +51,7 @@
 
 #pragma mark - Attributes
 
--(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key {
+-(void)setAttribute:(id <NSCoding>)attribute forKey:(NSString *)key {
     if (![LQUser assertAttributeType:attribute andKey:key]) return;
 
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
@@ -61,6 +61,18 @@
 
 -(id)attributeForKey:(NSString *)key {
     return [_attributes objectForKey:key];
+}
+
++ (NSDictionary *)reservedAttributes {
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            @YES, @"_id",
+            @YES, @"id",
+            @YES, @"unique_id",
+            @YES, @"identified",
+            @YES, @"aliased",
+            @YES, @"aliased_unique_id",
+            @YES, @"created_at",
+            @YES, @"updated_at", nil];
 }
 
 + (NSString *)generateRandomUserIdentifier {

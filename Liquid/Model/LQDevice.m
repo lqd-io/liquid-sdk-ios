@@ -94,6 +94,17 @@
     }
 }
 
++ (NSDictionary *)reservedAttributes {
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            @YES, @"_id",
+            @YES, @"id",
+            @YES, @"unique_id",
+            @YES, @"platform",
+            @YES, @"ip_address",
+            @YES, @"created_at",
+            @YES, @"updated_at", nil];
+}
+
 #pragma mark - Deallocation
 
 -(void)dealloc{

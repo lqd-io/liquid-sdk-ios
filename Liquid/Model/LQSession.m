@@ -41,11 +41,23 @@
     return [_attributes objectForKey:key];
 }
 
--(void)endSessionOnDate:(NSDate *)endDate {
-    _end = endDate;
++ (NSDictionary *)reservedAttributes {
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            @YES, @"_id",
+            @YES, @"id",
+            @YES, @"unique_id",
+            @YES, @"started_at",
+            @YES, @"ended_at",
+            @YES, @"length",
+            @YES, @"created_at",
+            @YES, @"updated_at", nil];
 }
 
 #pragma mark - Helpers
+
+- (void)endSessionOnDate:(NSDate *)endDate {
+    _end = endDate;
+}
 
 - (BOOL)inProgress {
     return (_end ? NO : YES);
