@@ -121,9 +121,9 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_vendor forKey:@"vendor"];
-    [dictionary setObject:_deviceModel forKey:@"device_model"];
+    [dictionary setObject:_deviceModel forKey:@"model"];
     [dictionary setObject:_systemVersion forKey:@"system_version"];
-    [dictionary setObject:_deviceName forKey:@"device_name"];
+    [dictionary setObject:_deviceName forKey:@"name"];
     [dictionary setObject:_screenSize forKey:@"screen_size"];
     [dictionary setObject:_carrier forKey:@"carrier"];
     [dictionary setObject:_internetConnectivity forKey:@"internet_connectivity"];
