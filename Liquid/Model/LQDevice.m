@@ -54,7 +54,10 @@
         _appVersion = [LQDevice appVersion];
         _releaseVersion = [LQDevice releaseVersion];
         _liquidVersion = liquidVersion;
-        _apnsToken = nil;
+
+        NSString *apnsTokenCacheKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"APNSToken"];
+        _apnsToken = [[NSUserDefaults standardUserDefaults] objectForKey:apnsTokenCacheKey];
+
         [self initReachabilityCallback];
         SCNetworkReachabilityFlags flags;
         if (SCNetworkReachabilityGetFlags(self.networkReachability, &flags)) {

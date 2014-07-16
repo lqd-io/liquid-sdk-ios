@@ -477,9 +477,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Sessions
 
 - (void)setApplePushNotificationToken:(NSData *)deviceToken {
-    NSString *hexToken = [deviceToken hexadecimalString];
+    NSString *hexToken = [[deviceToken copy] hexadecimalString];
+
     if (hexToken) {
         self.device.apnsToken = hexToken;
+
+        NSString *apnsTokenCacheKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"APNSToken"];
+        [[NSUserDefaults standardUserDefaults] setObject:hexToken forKey:apnsTokenCacheKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
