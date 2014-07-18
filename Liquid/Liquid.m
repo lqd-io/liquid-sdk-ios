@@ -264,8 +264,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
     // Check for session timeout on app resume
     BOOL sessionTimedOut = [self checkSessionTimeout];
-    
-    // Restart flush timer
+
     [self startFlushTimer];
 
     if(!sessionTimedOut && self.inBackground) {
@@ -274,24 +273,22 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
     _inBackground = NO;
 
-    // Request variables on app resume
     [self loadLiquidPackageSynced:YES];
 }
 
 - (void)applicationWillResignActive:(NSNotificationCenter *)notification {
-    // Stop flush timer on app pause
-    [self stopFlushTimer];
-    
-    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:[self uniqueNow]];
+    NSDate *date = [self uniqueNow];
+
+    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
 
     self.enterBackgroundTime = [self uniqueNow];
     self.inBackground = YES;
 
+    [self stopFlushTimer];
     if (self.flushOnBackground) {
         [self flush];
     }
 
-    // Request variables on app pause
     [self requestNewLiquidPackageSynced];
 }
 
@@ -577,7 +574,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
     __block NSDate *now;
     if (eventDate) {
-        now = eventDate;
+        now = [eventDate copy];
     } else {
         now = [self uniqueNow];
     }
