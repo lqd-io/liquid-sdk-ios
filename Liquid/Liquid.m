@@ -46,6 +46,7 @@
 #else
 @property(nonatomic, assign) dispatch_queue_t queue;
 #endif
+@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
@@ -148,6 +149,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
+        self.backgroundUpdateTask = UIBackgroundTaskInvalid;
         
         // Start auto flush timer
         [self startFlushTimer];
@@ -167,8 +169,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                    name:UIApplicationDidBecomeActiveNotification
                                  object:nil];
         [notificationCenter addObserver:self
-                               selector:@selector(applicationWillResignActive:)
-                                   name:UIApplicationWillResignActiveNotification
+                               selector:@selector(applicationDidEnterBackground:)
+                                   name:UIApplicationDidEnterBackgroundNotification
                                  object:nil];
         
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
@@ -276,8 +278,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self loadLiquidPackageSynced:YES];
 }
 
-- (void)applicationWillResignActive:(NSNotificationCenter *)notification {
+- (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
     NSDate *date = [self uniqueNow];
+
+    [self beginBackgroundUpdateTask];
 
     [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
 
@@ -290,6 +294,23 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 
     [self requestNewLiquidPackageSynced];
+
+    dispatch_async(self.queue, ^{
+        [self endBackgroundUpdateTask];
+    });
+}
+
+- (void)beginBackgroundUpdateTask {
+    self.backgroundUpdateTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:kLQBackgroundTaskName expirationHandler:^{
+        [self endBackgroundUpdateTask];
+    }];
+}
+
+- (void)endBackgroundUpdateTask {
+    if (self.backgroundUpdateTask != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundUpdateTask];
+        self.backgroundUpdateTask = UIBackgroundTaskInvalid;
+    }
 }
 
 #pragma mark - User identifying methods (real methods)

@@ -87,7 +87,7 @@ extern NSString * const LQDidIdentifyUser;
 #pragma mark - UIApplication notifications
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification;
-- (void)applicationWillResignActive:(NSNotificationCenter *)notification;
+- (void)applicationDidEnterBackground:(NSNotificationCenter *)notification;
 
 #pragma mark - User Interaction
 

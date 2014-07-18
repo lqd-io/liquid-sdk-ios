@@ -58,7 +58,7 @@ describe(@"Liquid", ^{
                     previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.2f];
-                    [[Liquid sharedInstance] applicationWillResignActive:nil];
+                    [[Liquid sharedInstance] applicationDidEnterBackground:nil];
                     [NSThread sleepForTimeInterval:0.25f];
                     [[Liquid sharedInstance] applicationDidBecomeActive:nil];
                     [NSThread sleepForTimeInterval:0.2f];
@@ -78,7 +78,7 @@ describe(@"Liquid", ^{
                     previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.1f];
-                    [[Liquid sharedInstance] applicationWillResignActive:nil];
+                    [[Liquid sharedInstance] applicationDidEnterBackground:nil];
                     [NSThread sleepForTimeInterval:2.0f];
                     [[Liquid sharedInstance] applicationDidBecomeActive:nil];
                     [NSThread sleepForTimeInterval:0.1f];

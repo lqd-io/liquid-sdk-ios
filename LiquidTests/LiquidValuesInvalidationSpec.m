@@ -47,7 +47,7 @@ describe(@"Liquid", ^{
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [[Liquid sharedInstance] applicationWillResignActive:nil];
+                [[Liquid sharedInstance] applicationDidEnterBackground:nil];
                 [[Liquid sharedInstance] applicationDidBecomeActive:nil];
                 [NSThread sleepForTimeInterval:0.1f];
             });
@@ -115,7 +115,7 @@ describe(@"Liquid", ^{
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [[Liquid sharedInstance] applicationWillResignActive:nil];
+                [[Liquid sharedInstance] applicationDidEnterBackground:nil];
                 [[Liquid sharedInstance] applicationDidBecomeActive:nil];
                 [NSThread sleepForTimeInterval:0.1f];
             });

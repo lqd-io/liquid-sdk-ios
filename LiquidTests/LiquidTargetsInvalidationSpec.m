@@ -53,7 +53,7 @@ describe(@"Liquid", ^{
 
             // Simulate an app going in background and foreground again:
             [NSThread sleepForTimeInterval:0.1f];
-            [liquidInstance applicationWillResignActive:nil];
+            [liquidInstance applicationDidEnterBackground:nil];
             [NSThread sleepForTimeInterval:0.1f];
             [liquidInstance applicationDidBecomeActive:nil];
             [NSThread sleepForTimeInterval:0.1f];
