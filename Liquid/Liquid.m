@@ -1147,7 +1147,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (NSDate *)uniqueNow {
     NSTimeInterval millisecondsIncrement;
     @synchronized(_uniqueNowIncrement) {
-        _uniqueNowIncrement = [NSNumber numberWithInteger:[_uniqueNowIncrement intValue] + 1];
+        _uniqueNowIncrement = [[NSNumber numberWithInteger:[_uniqueNowIncrement intValue] + 1] copy];
         millisecondsIncrement = ([_uniqueNowIncrement intValue] % 1000) * 0.001;
     }
     return [[NSDate new] dateByAddingTimeInterval:millisecondsIncrement];
