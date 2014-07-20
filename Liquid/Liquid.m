@@ -546,7 +546,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if(self.currentSession != nil) {
         NSDate *now = [self uniqueNow];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
-        if(interval >= _sessionTimeout || interval > kLQDefaultSessionMaxLimit) {
+        if(interval >= _sessionTimeout) {
             if ([self.currentSession inProgress]) {
                 [self endSessionAt:self.enterBackgroundTime];
             }

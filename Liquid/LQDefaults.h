@@ -47,7 +47,6 @@
 #define kLQDefaultFlushOnBackground YES
 #define kLQDirectory kLQBundle
 #define kLQSendFallbackValuesInDevelopmentMode YES
-#define kLQDefaultSessionMaxLimit 7200 // seconds (if for some reason the applicationWillResignActive: code doesn't run)
 
 #define kLQErrorValueNotFound 1
 
