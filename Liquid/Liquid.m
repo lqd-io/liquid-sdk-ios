@@ -172,6 +172,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                selector:@selector(applicationDidEnterBackground:)
                                    name:UIApplicationDidEnterBackgroundNotification
                                  object:nil];
+        [notificationCenter addObserver:self
+                               selector:@selector(applicationWillTerminate:)
+                                   name:UIApplicationWillTerminateNotification
+                                 object:nil];
         
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }
@@ -298,6 +302,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     dispatch_async(self.queue, ^{
         [self endBackgroundUpdateTask];
     });
+}
+
+- (void)applicationWillTerminate:(NSNotificationCenter *)notification {
+    [self track:@"_endSession" attributes:nil allowLqdEvents:YES withDate:[self uniqueNow]];
 }
 
 - (void)beginBackgroundUpdateTask {
