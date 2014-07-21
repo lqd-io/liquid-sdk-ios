@@ -555,10 +555,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 
     if(!self.currentUser) {
-        [self autoIdentifyUser];
+        LQLog(kLQLogLevelError, @"<Liquid> No user identified yet.");
     }
     if(!self.currentSession) {
-        [self startSession];
+        LQLog(kLQLogLevelError, @"<Liquid> No session started yet.");
     }
 
     __block NSDate *now;
