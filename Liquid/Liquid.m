@@ -165,8 +165,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self
-                               selector:@selector(applicationDidBecomeActive:)
-                                   name:UIApplicationDidBecomeActiveNotification
+                               selector:@selector(applicationWillEnterForeground:)
+                                   name:UIApplicationWillEnterForegroundNotification
                                  object:nil];
         [notificationCenter addObserver:self
                                selector:@selector(applicationDidEnterBackground:)
@@ -263,7 +263,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - UIApplication notifications
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
     @synchronized(_uniqueNowIncrement) {
         _uniqueNowIncrement = [NSNumber numberWithInteger:0];
     }

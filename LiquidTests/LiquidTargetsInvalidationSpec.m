@@ -55,7 +55,7 @@ describe(@"Liquid", ^{
             [NSThread sleepForTimeInterval:0.1f];
             [liquidInstance applicationDidEnterBackground:nil];
             [NSThread sleepForTimeInterval:0.1f];
-            [liquidInstance applicationDidBecomeActive:nil];
+            [liquidInstance applicationWillEnterForeground:nil];
             [NSThread sleepForTimeInterval:0.1f];
         });
 

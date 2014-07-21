@@ -38,7 +38,7 @@ describe(@"Liquid", ^{
         [Liquid softReset];
     });
 
-    describe(@"applicationDidBecomeActive:", ^{
+    describe(@"applicationWillEnterForeground:", ^{
         context(@"given a Liquid singleton", ^{
             beforeAll(^{
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
@@ -60,7 +60,7 @@ describe(@"Liquid", ^{
                     [NSThread sleepForTimeInterval:0.2f];
                     [[Liquid sharedInstance] applicationDidEnterBackground:nil];
                     [NSThread sleepForTimeInterval:0.25f];
-                    [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+                    [[Liquid sharedInstance] applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.2f];
                 });
 
@@ -80,7 +80,7 @@ describe(@"Liquid", ^{
                     [NSThread sleepForTimeInterval:0.1f];
                     [[Liquid sharedInstance] applicationDidEnterBackground:nil];
                     [NSThread sleepForTimeInterval:2.0f];
-                    [[Liquid sharedInstance] applicationDidBecomeActive:nil];
+                    [[Liquid sharedInstance] applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
 
