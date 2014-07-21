@@ -33,9 +33,9 @@ BOOL const defaultShowAds = YES;
 
 - (NSDictionary *)userProfiles {
     if (!_userProfiles) {
-        NSDictionary *user1Attributes = @{ @"name":@"Anna Martinez", @"age":@"25", @"gender":@"female" };
-        NSDictionary *user2Attributes = @{ @"name":@"John Clark", @"age":@"37", @"gender":@"male" };
-        NSDictionary *user3Attributes = @{ @"name":@"Barry Hill", @"age":@"16", @"gender":@"male" };
+        NSDictionary *user1Attributes = @{ @"name": @"Anna Martinez", @"age": @25, @"gender": @"female" };
+        NSDictionary *user2Attributes = @{ @"name": @"John Clark", @"age": @37, @"gender": @"male" };
+        NSDictionary *user3Attributes = @{ @"name": @"Barry Hill", @"age": @16, @"gender": @"male" };
         _userProfiles = [NSDictionary dictionaryWithObjectsAndKeys:user1Attributes, @"100",
                          user2Attributes, @"101", user3Attributes, @"102", nil];
     }
@@ -266,7 +266,7 @@ BOOL const defaultShowAds = YES;
     if (tableView.tag == 1) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"PropertyCell"];
         key = [[[self.userProfiles objectForKey:self.selectedUserProfile] allKeys] objectAtIndex:indexPath.row];
-        value = [[self.userProfiles objectForKey:self.selectedUserProfile] objectForKey:key];
+        value = [NSString stringWithFormat:@"%@", [[self.userProfiles objectForKey:self.selectedUserProfile] objectForKey:key]];
     }
     cell.textLabel.text = key;
     cell.detailTextLabel.text = value;
