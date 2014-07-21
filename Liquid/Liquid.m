@@ -315,7 +315,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     self.previousUser = self.currentUser;
     LQUser *newUser = [user copy];
     LQUser *currentUser = [self.currentUser copy];
-    if (newUser.identifier == currentUser.identifier) {
+    if ([newUser.identifier isEqualToString:currentUser.identifier]) {
         self.currentUser.attributes = newUser.attributes; // just updating current user attributes
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
     } else {

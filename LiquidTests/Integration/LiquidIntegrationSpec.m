@@ -35,7 +35,6 @@ describe(@"Liquid", ^{
                 [Liquid softReset];
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
                 [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
             });
 
             context(@"given the very first launch of the app", ^{

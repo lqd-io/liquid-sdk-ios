@@ -120,6 +120,59 @@ describe(@"Liquid", ^{
         });
     });
 
+    describe(@"identifyUserSynced:alias:", ^{
+        context(@"given a Liquid singleton", ^{
+            __block __strong Liquid *liquidInstance;
+            __block NSString *userId;
+            __block NSString *sessionId;
+
+            beforeEach(^{
+                [Liquid softReset];
+                liquidInstance = [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"];
+                [liquidInstance stub:@selector(flush)];
+                [liquidInstance identifyUserWithIdentifier:@"123"];
+            });
+
+            context(@"given reiniting Liquid instance", ^{
+                beforeEach(^{
+                    [NSThread sleepForTimeInterval:0.5f]; // Wait to save last user cache to disk
+                    liquidInstance = [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"];
+                    [liquidInstance stub:@selector(flush)];
+                    userId = [[liquidInstance userIdentifier] copy];
+                    sessionId = [[liquidInstance sessionIdentifier] copy];
+                });
+
+                context(@"given identifying again with the same unique_id", ^{
+                    beforeEach(^{
+                        [liquidInstance identifyUserWithIdentifier:@"123"];
+                    });
+
+                    it(@"should keep the same user identifier", ^{
+                        [[[liquidInstance userIdentifier] should] equal:userId];
+                    });
+
+                    it(@"should keep the same session identifier", ^{
+                        [[[liquidInstance sessionIdentifier] should] equal:sessionId];
+                    });
+                });
+
+                context(@"given identifying again with a different unique_id", ^{
+                    beforeEach(^{
+                        [liquidInstance identifyUserWithIdentifier:@"124"];
+                    });
+
+                    it(@"should use the new user identifier", ^{
+                        [[[liquidInstance userIdentifier] should] equal:@"124"];
+                    });
+
+                    it(@"should create a new session identifier", ^{
+                        [[[liquidInstance sessionIdentifier] shouldNot] equal:sessionId];
+                    });
+                });
+            });
+        });
+    });
+
     describe(@"uniqueNow", ^{
         context(@"given a Liquid singleton", ^{
             beforeEach(^{
