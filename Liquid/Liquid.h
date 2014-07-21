@@ -469,7 +469,7 @@ extern NSString * const LQDidIdentifyUser;
  
  */
 
-- (void)aliasUserWithPreviousAnonymousUser;
+- (void)aliasUser;
 
 
 /*!
