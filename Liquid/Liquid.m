@@ -38,8 +38,6 @@
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
-@property(nonatomic, strong) NSDate *veryFirstMoment;
-@property(nonatomic, assign) BOOL firstEventSent;
 @property(nonatomic, assign) BOOL inBackground;
 #if OS_OBJECT_USE_OBJC
 @property(nonatomic, strong) dispatch_queue_t queue;
@@ -127,8 +125,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)development {
-    [self veryFirstMoment];
-    _firstEventSent = NO;
     if (development) {
         _developmentMode = YES;
     } else {
@@ -161,6 +157,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         // Load user from previous launch:
         _previousUser = [self loadLastUserFromDisk];
         [self autoIdentifyUser];
+        if (!self.currentSession) {
+            [self startSession];
+        }
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -176,7 +175,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                selector:@selector(applicationWillTerminate:)
                                    name:UIApplicationWillTerminateNotification
                                  object:nil];
-        
+
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }
     return self;
@@ -187,11 +186,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (BOOL)inBackground {
     if (!_inBackground) _inBackground = NO;
     return _inBackground;
-}
-
-- (NSDate *)veryFirstMoment {
-    if (!_veryFirstMoment) _veryFirstMoment = [self uniqueNow];
-    return _veryFirstMoment;
 }
 
 - (BOOL)flushOnBackground {
@@ -268,16 +262,19 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _uniqueNowIncrement = [NSNumber numberWithInteger:0];
     }
 
-    // Check for session timeout on app resume
-    BOOL sessionTimedOut = [self checkSessionTimeout];
-
-    [self startFlushTimer];
-
-    if(!sessionTimedOut && self.inBackground) {
-        [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES];
+    if (self.inBackground) {
+        if([self checkSessionTimeout]) {
+            if ([self.currentSession inProgress]) {
+                [self endSessionAt:self.enterBackgroundTime];
+            }
+            [self startSession];
+        } else {
+            [self resumeSession];
+        }
     }
 
-    _inBackground = NO;
+    [self startFlushTimer];
+    self.inBackground = NO;
 
     [self loadLiquidPackageSynced:YES];
 }
@@ -287,7 +284,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
     [self beginBackgroundUpdateTask];
 
-    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
+    if (!self.inBackground) {
+        [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
+    }
 
     self.enterBackgroundTime = [self uniqueNow];
     self.inBackground = YES;
@@ -334,21 +333,18 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
+    self.previousUser = self.currentUser;
     LQUser *newUser = [user copy];
     LQUser *currentUser = [self.currentUser copy];
     if (newUser.identifier == currentUser.identifier) {
-        self.currentUser.attributes = newUser.attributes;
+        self.currentUser.attributes = newUser.attributes; // just updating current user attributes
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
     } else {
-        if ([self.currentSession inProgress]) {
-            [self endSessionNow];
-        }
+        [self endSessionNow];
+        self.currentUser = newUser;
+        [self startSession];
     }
-    _previousUser = currentUser;
-    _currentUser = newUser;
-    if (newUser.identifier != currentUser.identifier) {
-        [self newSessionInCurrentThread:YES];
-    }
+    [self saveCurrentUserToDisk];
     [self requestNewLiquidPackage];
 
     // Notifiy the outside world:
@@ -360,12 +356,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                      waitUntilDone:NO];
     }
 
-    [self saveCurrentUserToDisk];
-    
     if (alias) {
         [self aliasUser];
     }
-
     LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
 }
 
@@ -517,11 +510,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)endSessionAt:(NSDate *)endAt {
-    // adding a millisecond, just to ensure that session is ended after all anything else
     NSDate *endAtDate = [endAt copy];
     if (self.currentUser != nil && self.currentSession != nil && self.currentSession.inProgress) {
         [[self currentSession] endSessionOnDate:endAtDate];
         [self track:@"_endSession" attributes:nil allowLqdEvents:YES withDate:endAtDate];
+        LQLog(kLQLogLevelInfo, @"Ended session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:endAtDate]);
     }
 }
 
@@ -529,27 +522,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self endSessionAt:[self uniqueNow]];
 }
 
-- (void)newSessionInCurrentThread:(BOOL)inThread {
-    __block NSDate *now;
-    if (!_firstEventSent) {
-        now = [self veryFirstMoment];
-        _firstEventSent = YES;
-    } else {
-        now = [self uniqueNow];
-    }
-    __block void (^newSessionBlock)() = ^() {
-        if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
-            return;
-        }
-        self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
-        [self track:@"_startSession" attributes:nil allowLqdEvents:YES withDate:now];
-    };
-    if(inThread) {
-        newSessionBlock();
-    } else {
-        dispatch_async(self.queue, newSessionBlock);
-    }
+- (void)startSession {
+    NSDate *now = [self uniqueNow];
+    self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
+    [self track:@"_startSession" attributes:nil allowLqdEvents:YES withDate:now];
+    LQLog(kLQLogLevelInfo, @"Started session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
+}
+
+- (void)resumeSession {
+    NSDate *now = [self uniqueNow];
+    [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES withDate:now];
+    LQLog(kLQLogLevelInfo, @"Resumed session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
 }
 
 - (BOOL)checkSessionTimeout {
@@ -557,10 +540,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         NSDate *now = [self uniqueNow];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
         if(interval >= _sessionTimeout) {
-            if ([self.currentSession inProgress]) {
-                [self endSessionAt:self.enterBackgroundTime];
-            }
-            [self newSessionInCurrentThread:YES];
             return YES;
         }
     }
@@ -600,7 +579,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [self autoIdentifyUser];
     }
     if(!self.currentSession) {
-        [self newSessionInCurrentThread:YES];
+        [self startSession];
     }
 
     __block NSDate *now;
@@ -644,10 +623,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(LQLiquidPackage *)requestNewLiquidPackageSynced {
     if(!self.currentUser) {
-        [self autoIdentifyUser];
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> A user has not been identified yet.");
+        return nil;
     }
     if(!self.currentSession) {
-        [self newSessionInCurrentThread:YES];
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> No session is open yet.");
+        return nil;
     }
     NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
     NSData *dataFromServer = [self getDataFromEndpoint:endPoint];
@@ -700,6 +681,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 -(void)loadLiquidPackageSynced:(BOOL)synced {
     if (synced) {
         _loadedLiquidPackage = [self loadLiquidPackageFromDisk];
+        [self notifyDelegatesAndObserversAboutNewValues];
     } else {
         dispatch_async(self.queue, ^{
             _loadedLiquidPackage = [self loadLiquidPackageFromDisk];
@@ -875,15 +857,15 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(void)addToHttpQueue:(NSDictionary*)dictionary endPoint:(NSString*)endPoint httpMethod:(NSString*)httpMethod {
     NSData *json = [Liquid toJSON:dictionary];
-    LQQueue *queuedEvent = [[LQQueue alloc] initWithUrl:endPoint
+    LQQueue *queuedData = [[LQQueue alloc] initWithUrl:endPoint
                                          withHttpMethod:httpMethod
                                                withJSON:json];
-
+    LQLog(kLQLogLevelHttp, @"Adding a HTTP request to the queue, for the endpoint %@ %@ ", httpMethod, endPoint);
     if (self.httpQueue.count >= self.queueSizeLimit) {
         LQLog(kLQLogLevelWarning, @"<Liquid> Queue exceeded its limit size (%ld). Removing oldest event from queue.", (long) self.queueSizeLimit);
         [self.httpQueue removeObjectAtIndex:0];
     }
-    [self.httpQueue addObject:queuedEvent];
+    [self.httpQueue addObject:queuedData];
     [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
 }
 
@@ -927,7 +909,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)startFlushTimer {
-    //[self stopFlushTimer];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.flushInterval > 0 && self.timer == nil) {
             self.timer = [NSTimer scheduledTimerWithTimeInterval:self.flushInterval
@@ -938,7 +919,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             LQLog(kLQLogLevelInfoVerbose, @"<Liquid> %@ started flush timer: %@", self, self.timer);
         }
     });
-    
 }
 
 - (void)stopFlushTimer {
@@ -960,8 +940,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     sharedInstance.timer = nil;
     sharedInstance.httpQueue = nil;
     sharedInstance.loadedLiquidPackage = nil;
-    sharedInstance.firstEventSent = NO;
-    [sharedInstance veryFirstMoment];
 }
 
 + (void)softReset {

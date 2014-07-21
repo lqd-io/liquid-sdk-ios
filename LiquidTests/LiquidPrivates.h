@@ -49,8 +49,6 @@ extern NSString * const LQDidIdentifyUser;
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
-@property(nonatomic, strong) NSDate *veryFirstMoment;
-@property(nonatomic, assign) BOOL firstEventSent;
 @property(nonatomic, assign) BOOL inBackground;
 @property(nonatomic, strong) dispatch_queue_t queue;
 @property(nonatomic, strong) NSTimer *timer;
@@ -74,7 +72,6 @@ extern NSString * const LQDidIdentifyUser;
 #pragma mark - Lazy initialization
 
 - (BOOL)inBackground;
-- (NSDate *)veryFirstMoment;
 - (BOOL)flushOnBackground;
 - (NSUInteger)queueSizeLimit;
 - (BOOL)sendFallbackValuesInDevelopmentMode;
@@ -107,7 +104,7 @@ extern NSString * const LQDidIdentifyUser;
 #pragma mark - Session
 
 - (void)destroySessionIfExists;
-- (void)newSessionInCurrentThread:(BOOL)inThread;
+- (void)startSession;
 - (BOOL)checkSessionTimeout;
 
 #pragma mark - Event
