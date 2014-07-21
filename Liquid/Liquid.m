@@ -283,7 +283,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)applicationWillTerminate:(NSNotificationCenter *)notification {
-    [self track:@"_endSession" attributes:nil allowLqdEvents:YES withDate:[self uniqueNow]];
+    [self endSessionNow];
 }
 
 - (void)beginBackgroundUpdateTask {
