@@ -49,7 +49,7 @@ describe(@"Liquid", ^{
 
             liquidInstance = [[Liquid alloc] initWithToken:apiToken];
             [liquidInstance stub:@selector(flush) andReturn:nil];
-            [liquidInstance setFlushOnBackground:NO];
+            [[Liquid sharedInstance] stub:@selector(flush)];
 
             // Simulate an app going in background and foreground again:
             [NSThread sleepForTimeInterval:0.1f];

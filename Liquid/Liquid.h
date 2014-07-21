@@ -108,7 +108,8 @@ extern NSString * const LQDidIdentifyUser;
  Defaults to YES.
  */
 
-@property (nonatomic, assign) BOOL flushOnBackground;
+@property (nonatomic, assign) BOOL flushOnBackground
+__deprecated_msg("This method is not used anymore. Whe the app goes on background, flush is always perfromed");
 
 
 /*!

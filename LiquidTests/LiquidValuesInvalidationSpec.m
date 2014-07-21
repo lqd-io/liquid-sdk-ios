@@ -43,7 +43,7 @@ describe(@"Liquid", ^{
                 [Liquid sharedInstanceWithToken:apiToken];
                 [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
                 [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] setFlushOnBackground:NO];
+                [[Liquid sharedInstance] stub:@selector(flush)];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
@@ -111,7 +111,7 @@ describe(@"Liquid", ^{
                 [Liquid sharedInstanceWithToken:apiToken];
                 [[Liquid sharedInstance] identifyUserWithIdentifier:userId];
                 [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] setFlushOnBackground:NO];
+                [[Liquid sharedInstance] stub:@selector(flush)];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];

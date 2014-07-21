@@ -61,7 +61,6 @@ static Liquid *sharedInstance = nil;
 @synthesize flushInterval = _flushInterval;
 @synthesize autoLoadValues = _autoLoadValues;
 @synthesize queueSizeLimit = _queueSizeLimit;
-@synthesize flushOnBackground = _flushOnBackground;
 @synthesize sessionTimeout = _sessionTimeout;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 @synthesize liquidUserAgent = _liquidUserAgent;
@@ -188,11 +187,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return _inBackground;
 }
 
-- (BOOL)flushOnBackground {
-    if (!_flushOnBackground) _flushOnBackground = kLQDefaultFlushOnBackground;
-    return _flushOnBackground;
-}
-
 - (NSUInteger)queueSizeLimit {
     if (!_queueSizeLimit) _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
     return _queueSizeLimit;
@@ -292,9 +286,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     self.inBackground = YES;
 
     [self stopFlushTimer];
-    if (self.flushOnBackground) {
-        [self flush];
-    }
+    [self flush];
 
     [self requestNewLiquidPackageSynced];
 

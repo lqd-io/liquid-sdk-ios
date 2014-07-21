@@ -37,7 +37,6 @@ extern NSString * const LQDidIdentifyUser;
 @property (atomic, retain) NSObject<LiquidDelegate> *delegate;
 @property (atomic, copy) NSString *serverURL;
 @property (nonatomic) NSUInteger flushInterval;
-@property (nonatomic, assign) BOOL flushOnBackground;
 @property (nonatomic, assign) BOOL sendFallbackValuesInDevelopmentMode;
 @property (nonatomic, assign) NSUInteger queueSizeLimit;
 @property (atomic) BOOL autoLoadValues;
@@ -72,7 +71,6 @@ extern NSString * const LQDidIdentifyUser;
 #pragma mark - Lazy initialization
 
 - (BOOL)inBackground;
-- (BOOL)flushOnBackground;
 - (NSUInteger)queueSizeLimit;
 - (BOOL)sendFallbackValuesInDevelopmentMode;
 - (NSUInteger)flushInterval;
