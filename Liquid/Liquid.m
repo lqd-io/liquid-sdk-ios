@@ -141,6 +141,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.apiToken = apiToken;
         self.serverURL = kLQServerUrl;
         self.device = [[LQDevice alloc] initWithLiquidVersion:kLQVersion];
+        self.sessionTimeout = kLQDefaultSessionTimeout;
+        self.queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
+        self.flushInterval = kLQDefaultFlushInterval;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
@@ -187,22 +190,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return _inBackground;
 }
 
-- (NSUInteger)queueSizeLimit {
-    if (!_queueSizeLimit) _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
-    return _queueSizeLimit;
-}
-
-- (NSUInteger)flushInterval {
-    @synchronized(self) {
-        if (!_flushInterval) _flushInterval = kLQDefaultFlushInterval;
-        if (_flushInterval < kLQMinFlushInterval) return kLQMinFlushInterval;
-        return _flushInterval;
-    }
-}
-
 - (void)setQueueSizeLimit:(NSUInteger)queueSizeLimit {
     @synchronized(self) {
-        _queueSizeLimit = queueSizeLimit;
+        if (_flushInterval < kLQMinFlushInterval) {
+            _queueSizeLimit = kLQMinFlushInterval;
+        } else {
+            _queueSizeLimit = queueSizeLimit;
+        }
     }
 }
 
@@ -213,13 +207,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _flushInterval = interval;
     }
     [self startFlushTimer];
-}
-
-- (NSInteger)sessionTimeout {
-    @synchronized(self) {
-        if (!_sessionTimeout) _sessionTimeout = kLQDefaultSessionTimeout;
-        return _sessionTimeout;
-    }
 }
 
 - (void)setSessionTimeout:(NSInteger)sessionTimeout {
@@ -257,7 +244,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 
     if (self.inBackground) {
-        if([self checkSessionTimeout]) {
+        if ([self checkSessionTimeout]) {
             if ([self.currentSession inProgress]) {
                 [self endSessionAt:self.enterBackgroundTime];
             }
