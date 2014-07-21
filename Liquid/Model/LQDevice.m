@@ -43,6 +43,8 @@
         _vendor = kLQDeviceVendor;
         _deviceModel = [LQDevice deviceModel];
         _systemVersion = [LQDevice systemVersion];
+        _systemLanguage = [LQDevice systemLanguage];
+        _locale = [LQDevice locale];
         _deviceName = [LQDevice deviceName];
         _carrier = [LQDevice carrier];
         _screenSize = [LQDevice screenSize];
@@ -124,6 +126,8 @@
     [dictionary setObject:_vendor forKey:@"vendor"];
     [dictionary setObject:_deviceModel forKey:@"model"];
     [dictionary setObject:_systemVersion forKey:@"system_version"];
+    [dictionary setObject:_systemLanguage forKey:@"system_language"];
+    [dictionary setObject:_locale forKey:@"locale"];
     [dictionary setObject:_deviceName forKey:@"name"];
     [dictionary setObject:_screenSize forKey:@"screen_size"];
     [dictionary setObject:_carrier forKey:@"carrier"];
@@ -181,11 +185,23 @@
 }
 
 +(NSString*)systemVersion {
-    return [[UIDevice currentDevice]systemVersion];
+    return [[UIDevice currentDevice] systemVersion];
+}
+
++(NSString*)liquidVersion {
+    return kLQVersion;
+}
+
++(NSString*)systemLanguage {
+    return [[NSLocale preferredLanguages] firstObject];
+}
+
++(NSString*)locale {
+    return [[NSLocale currentLocale] objectForKey:NSLocaleIdentifier];
 }
 
 +(NSString*)deviceName {
-    return [[UIDevice currentDevice]name];
+    return [[UIDevice currentDevice] name];
 }
 
 +(NSString *)appleIFA {
@@ -310,6 +326,8 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
         _vendor = [aDecoder decodeObjectForKey:@"vendor"];
         _deviceModel = [aDecoder decodeObjectForKey:@"deviceModel"];
         _systemVersion = [aDecoder decodeObjectForKey:@"systemVersion"];
+        _systemLanguage = [aDecoder decodeObjectForKey:@"systemLanguage"];
+        _locale = [aDecoder decodeObjectForKey:@"locale"];
         _deviceName = [aDecoder decodeObjectForKey:@"deviceName"];
         _carrier = [aDecoder decodeObjectForKey:@"carrier"];
         _screenSize = [aDecoder decodeObjectForKey:@"screenSize"];
@@ -330,6 +348,8 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     [aCoder encodeObject:_vendor forKey:@"vendor"];
     [aCoder encodeObject:_deviceModel forKey:@"deviceModel"];
     [aCoder encodeObject:_systemVersion forKey:@"systemVersion"];
+    [aCoder encodeObject:_systemLanguage forKey:@"systemLanguage"];
+    [aCoder encodeObject:_locale forKey:@"locale"];
     [aCoder encodeObject:_deviceName forKey:@"deviceName"];
     [aCoder encodeObject:_carrier forKey:@"carrier"];
     [aCoder encodeObject:_screenSize forKey:@"screenSize"];
@@ -349,6 +369,8 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     device->_vendor = [_vendor copyWithZone:zone];
     device->_deviceModel = [_deviceModel copyWithZone:zone];
     device->_systemVersion = [_systemVersion copyWithZone:zone];
+    device->_systemLanguage = [_systemLanguage copyWithZone:zone];
+    device->_locale = [_locale copyWithZone:zone];
     device->_deviceName = [_deviceName copyWithZone:zone];
     device->_carrier = [_carrier copyWithZone:zone];
     device->_screenSize = [_screenSize copyWithZone:zone];

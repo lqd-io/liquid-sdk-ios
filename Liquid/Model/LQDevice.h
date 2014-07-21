@@ -27,6 +27,8 @@
 @property(nonatomic, strong, readonly) NSString* vendor;
 @property(nonatomic, strong, readonly) NSString* deviceModel;
 @property(nonatomic, strong, readonly) NSString* systemVersion;
+@property(nonatomic, strong, readonly) NSString* systemLanguage;
+@property(nonatomic, strong, readonly) NSString* locale;
 @property(nonatomic, strong, readonly) NSString* deviceName;
 @property(nonatomic, strong, readonly) NSString* screenSize;
 @property(nonatomic, strong, readonly) NSString* carrier;

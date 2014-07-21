@@ -140,7 +140,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         // Initialization
         self.apiToken = apiToken;
         self.serverURL = kLQServerUrl;
-        self.device = [[LQDevice alloc] initWithLiquidVersion:kLQVersion];
+        self.device = [[LQDevice alloc] initWithLiquidVersion:[Liquid liquidVersion]];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         self.queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
         self.flushInterval = kLQDefaultFlushInterval;
@@ -217,7 +217,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (NSString *)liquidUserAgent {
     if(!_liquidUserAgent) {
-        _liquidUserAgent = [NSString stringWithFormat:@"Liquid/%@ (%@ ; %@)", kLQVersion, kLQDevicePlatform, [LQDevice deviceModel]];
+        _liquidUserAgent = [NSString stringWithFormat:@"Liquid/%@ (%@; %@ %@; %@; %@)", self.device.liquidVersion,
+                            kLQDevicePlatform,
+                            kLQDevicePlatform, self.device.systemVersion,
+                            self.device.locale,
+                            [LQDevice deviceModel]
+                           ];
     }
     return _liquidUserAgent;
 }
@@ -1127,6 +1132,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         r = (arc4random() % max);
     }
     return (int) r;
+}
+
++ (NSString *)liquidVersion {
+    return kLQVersion;
 }
 
 - (NSDate *)uniqueNow {

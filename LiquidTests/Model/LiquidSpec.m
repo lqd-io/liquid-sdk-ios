@@ -38,6 +38,18 @@ describe(@"Liquid", ^{
         [Liquid softReset];
     });
 
+    describe(@"liquidUserAgent", ^{
+        it(@"should return a valid User-Agent", ^{
+            [Liquid stub:@selector(liquidVersion) andReturn:@"0.8.0-beta"];
+            [LQDevice stub:@selector(systemVersion) andReturn:@"7.1"];
+            [LQDevice stub:@selector(systemLanguage) andReturn:@"en"];
+            [LQDevice stub:@selector(locale) andReturn:@"pt_PT"];
+            [LQDevice stub:@selector(deviceModel) andReturn:@"iPhone5,2"];
+            Liquid *liquid = [[Liquid alloc] initWithToken:@"1234567890"];
+            [[[liquid liquidUserAgent] should] equal:@"Liquid/0.8.0-beta (iOS; iOS 7.1; pt_PT; iPhone5,2)"];
+        });
+    });
+
     describe(@"applicationWillEnterForeground:", ^{
         context(@"given a Liquid singleton", ^{
             beforeAll(^{
