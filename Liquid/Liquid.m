@@ -463,16 +463,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)aliasUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier {
-    __block LQUser *userToReidentify = [user copy];
+    __block LQUser *anonymousUser = [user copy];
     __block NSString *newUserIdentifier = [newIdentifier copy];
-    if ([userToReidentify isIdentified]) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify non identified users", userToReidentify.identifier);
+    if ([anonymousUser isIdentified]) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify non identified users", anonymousUser.identifier);
         return;
     }
-    LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying anonymous user (%@) with a new identifier (%@)", userToReidentify.identifier, newUserIdentifier);
+    LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying anonymous user (%@) with a new identifier (%@)", anonymousUser.identifier, newUserIdentifier);
     dispatch_async(self.queue, ^{
-        NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"new_user_id", nil];
-        NSString *endpoint = [NSString stringWithFormat:@"%@users/%@/alias", self.serverURL, userToReidentify.identifier];
+        NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"unique_id", anonymousUser.identifier, @"unique_id_alias", nil];
+        NSString *endpoint = [NSString stringWithFormat:@"%@aliases", self.serverURL];
         [self addToHttpQueue:params
                     endPoint:[NSString stringWithFormat:endpoint, self.serverURL]
                   httpMethod:@"POST"];
