@@ -35,8 +35,6 @@
 
 @implementation LQDevice
 
-@synthesize apnsToken = _apnsToken;
-
 #pragma mark - Initializer
 
 -(id)initWithLiquidVersion:(NSString *)liquidVersion {
