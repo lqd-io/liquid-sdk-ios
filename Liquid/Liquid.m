@@ -451,13 +451,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)aliasUser {
     LQUser *previousUser = [self.previousUser copy];
     if (![previousUser isIdentified]) {
-        [self reidentifyUser:previousUser withIdentifier:self.currentUser.identifier];
+        [self aliasUser:previousUser withIdentifier:self.currentUser.identifier];
     } else {
         LQLog(kLQLogLevelError, @"<Liquid> Error: Previous user is an identified user. You can only alias anonymous (non-identified) with identified users.");
     }
 }
 
-- (void)reidentifyUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier {
+- (void)aliasUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier {
     __block LQUser *userToReidentify = [user copy];
     __block NSString *newUserIdentifier = [newIdentifier copy];
     if ([userToReidentify isIdentified]) {
