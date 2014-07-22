@@ -38,7 +38,7 @@
 #ifdef DEBUG
 #    define kLQDefaultFlushInterval 5 //seconds
 #else
-#    define kLQDefaultFlushInterval 15 //seconds
+#    define kLQDefaultFlushInterval 10 //seconds
 #endif
 #define kLQMinFlushInterval 5 // seconds
 #define kLQHttpUnreachableWait 60.0f // seconds
