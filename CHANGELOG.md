@@ -1,5 +1,21 @@
 # Liquid iOS SDK Change Log
 
+## 0.9.0-beta: User alias + Stability improvements + Rename device attributes
+
+* **[feature]** Add support to **alias** *anonymous* users with *identified* users. 
+* **[feature]** Anonymous users are now automatically handled. If you never identify your user, all activity will be tracked anonymously. As soon as an user is identified, all that anonymous activity will be automatically aliased to the identified user. 
+* **[feature]** When a user is identified, it is kept in cache for the next launch. This means that you don't need to identify each time you start the app again.
+* **[bugfix]** Fix a problem on HTTP Requests queue, that could cause duplication or loss of events.
+* **[bugfix]** Fix a bug that could cause a bad access and a crash under edge cases, while loading new values for Liquid variables too often.
+* **[enhancement]** Improvements on demo app.
+* **[enhancement]** Better handling of background and foreground events.
+* **[enhancement]** Speed and stability improvements.
+* **[enhancement]** Improvements on event tracking dates that avoid two events tracked too quickly to be tracked in the wrong order.
+* **[enhancements]** The use of reserved names on Users and Events attributes will raise an assert under development environment (skipped/ignored attributes in production).
+* **[change]** Changed Device attributes from `camelCase` to `underscore` naming convention, and removed `_` prefix (e.g: attribute `_systemVersion` was changed to `system_version`). This will not affect your queries on Liquid dashboard.
+* **[change]** Renamed `device_model` and `device_name` attributes to `model` and `name` on Device entity. This will not affect your queries on Liquid dashboard.
+* **[deprecate]** Method `flushOnBackground:` was deprecated. When the app goes on background, HTTP queue is always flushed.
+
 ## 0.8.1-beta: Fixes a compilation error on Xcode
 
 * **[enhancement]** Fixes a Xcode compilation error that occured when Liquid is integrated using the "Liquid Project" method
