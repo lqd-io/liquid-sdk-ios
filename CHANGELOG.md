@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 0.9.1-beta: Avoid an infinite loop when User Alias is disabled
+
+* **[bugfix]** Fix an infinite loop when `identifyUserWithIdentifier:alias:` method is called with `alias:NO`
+
 ## 0.9.0-beta: User alias + Stability improvements + Rename device attributes
 
 * **[feature]** Add support to **alias** *anonymous* users with *identified* users. 
