@@ -388,12 +388,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self identifyUserWithIdentifier:identifier attributes:attributes alias:YES];
 }
 
-- (void)identifyUserSynced:(LQUser *)user {
-    [self identifyUserSynced:user alias:YES];
+- (void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias {
+    [self identifyUserWithIdentifier:identifier attributes:nil alias:alias];
 }
 
-- (void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias {
-    [self identifyUserWithIdentifier:identifier alias:alias];
+- (void)identifyUserSynced:(LQUser *)user {
+    [self identifyUserSynced:user alias:YES];
 }
 
 #pragma mark - User related stuff

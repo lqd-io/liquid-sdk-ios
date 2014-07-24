@@ -86,11 +86,15 @@ extern NSString * const LQDidIdentifyUser;
 
 #pragma mark - User Interaction
 
+- (void)resetUser;
 - (void)identifyUser;
 - (void)identifyUserWithIdentifier:(NSString *)identifier;
+- (void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias;
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes;
-- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location;
-- (void)identifyUserSyncedWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location;
+- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias;
+- (void)aliasUser;
+- (void)aliasUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier;
+
 - (NSString *)userIdentifier;
 - (NSString *)deviceIdentifier;
 - (NSString *)sessionIdentifier;

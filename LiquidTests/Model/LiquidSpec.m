@@ -182,6 +182,38 @@ describe(@"Liquid", ^{
                     });
                 });
             });
+
+            context(@"given an anonymous user", ^{
+                beforeEach(^{
+                    [liquidInstance resetUser];
+                });
+
+                it(@"should alias user by default", ^{
+                    [[[liquidInstance should] receive] aliasUser];
+                    [liquidInstance identifyUserWithIdentifier:@"123"];
+                });
+
+                it(@"should alias user when alias:YES", ^{
+                    [[[liquidInstance should] receive] aliasUser];
+                    [liquidInstance identifyUserWithIdentifier:@"123" alias:YES];
+                });
+
+                it(@"should not alias when alias:NO", ^{
+                    [[[liquidInstance shouldNot] receive] aliasUser];
+                    [liquidInstance identifyUserWithIdentifier:@"123" alias:NO];
+                });
+            });
+
+            context(@"given an identified user", ^{
+                beforeEach(^{
+                    [liquidInstance identifyUserWithIdentifier:@"123"];
+                });
+
+                it(@"should not alias the same user", ^{
+                    [[[liquidInstance shouldNot] receive] aliasUser];
+                    [liquidInstance identifyUserWithIdentifier:@"123"];
+                });
+            });
         });
     });
 
