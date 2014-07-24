@@ -340,7 +340,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                      waitUntilDone:NO];
     }
 
-    if (alias) {
+    if (alias && ![newUser.identifier isEqualToString:currentUser.identifier]) {
         [self aliasUser];
     }
     LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
