@@ -45,6 +45,7 @@
 		A99EB502192447FA0060E484 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
 		A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */; };
 		A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+LQColor.m */; };
+		A9A3FC3D199298830094A2B6 /* LQLiquidPackageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */; };
 		A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A58B2A19736B27007085C9 /* LQUserSpec.m */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
@@ -144,6 +145,8 @@
 		A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LQDateFormatter.m"; sourceTree = "<group>"; };
 		A99EB5521924DB730060E484 /* UIColor+LQColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+LQColor.h"; sourceTree = "<group>"; };
 		A99EB5531924DB730060E484 /* UIColor+LQColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+LQColor.m"; sourceTree = "<group>"; };
+		A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQLiquidPackageSpec.m; path = Model/LQLiquidPackageSpec.m; sourceTree = "<group>"; };
+		A9A3FC3E19929BDF0094A2B6 /* LQVariablePrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQVariablePrivates.h; sourceTree = "<group>"; };
 		A9A58B2A19736B27007085C9 /* LQUserSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQUserSpec.m; path = Model/LQUserSpec.m; sourceTree = "<group>"; };
 		A9D12F0E1935076A00D0E0A1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -234,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				A92A75EE193E2C040013F66C /* LQDataPointSpec.m */,
+				A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */,
 				A9509876194F104E0048106A /* LiquidSpec.m */,
 				A9A58B2A19736B27007085C9 /* LQUserSpec.m */,
 			);
@@ -334,6 +338,7 @@
 			children = (
 				A9253F55193F5D8400B70A43 /* LiquidPrivates.h */,
 				A91B4E2019737401005CF827 /* LQUserPrivates.h */,
+				A9A3FC3E19929BDF0094A2B6 /* LQVariablePrivates.h */,
 				A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */,
 				A9E98058193E257C0055D1E7 /* InfoPlist.strings */,
 				A9E9805D193E257C0055D1E7 /* LiquidTests-Prefix.pch */,
@@ -553,6 +558,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A95E659E194566600075161E /* LiquidTargetsInvalidationSpec.m in Sources */,
+				A9A3FC3D199298830094A2B6 /* LQLiquidPackageSpec.m in Sources */,
 				A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */,
 				A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */,
 				A9509877194F104E0048106A /* LiquidSpec.m in Sources */,

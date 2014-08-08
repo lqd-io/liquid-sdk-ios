@@ -59,7 +59,7 @@
         return nil;
     }
     // if found:
-    if ([value isKindOfClass:[NSNull class]])
+    if (value.value == [NSNull null])
         return nil;
     return value;
 }
