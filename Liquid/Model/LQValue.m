@@ -7,10 +7,11 @@
 //
 
 #import "LQValue.h"
+#import "LQVariable.h"
 
 @implementation LQValue
 
--(id)initFromDictionary:(NSDictionary *)dict {
+- (id)initFromDictionary:(NSDictionary *)dict {
     self = [super init];
     if(self) {
         _identifier = [dict objectForKey:@"id"];
@@ -23,15 +24,39 @@
     return self;
 }
 
--(id)initWithFallbackValue:(id)value {
+- (id)initWithFallbackValue:(id)value {
     self = [super init];
     if(self) {
         _identifier = nil;
         _value = nil;
-        _isDefault = nil;
         _variable = nil;
+        _isDefault = nil;
         _targetId = nil;
         _isFallback = [NSNumber numberWithBool:YES];
+    }
+    return self;
+}
+
+- (id)initWithValue:(id)value {
+    self = [super init];
+    if(self) {
+        _value = value;
+        _variable = nil;
+        _isDefault = nil;
+        _targetId = nil;
+        _isFallback = [NSNumber numberWithBool:NO];
+    }
+    return self;
+}
+
+- (id)initWithValue:(id)value variable:(LQVariable *)variable {
+    self = [super init];
+    if(self) {
+        _value = value;
+        _variable = variable;
+        _isDefault = nil;
+        _targetId = nil;
+        _isFallback = [NSNumber numberWithBool:NO];
     }
     return self;
 }

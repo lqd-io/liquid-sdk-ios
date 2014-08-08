@@ -7,6 +7,7 @@
 //
 
 #import "LQVariable.h"
+#import "LQValue.h"
 
 NSString * const kLQDataTypeString = @"string";
 NSString * const kLQDataTypeColor = @"color";
@@ -24,6 +25,15 @@ NSString * const kLQDataTypeFloat = @"float";
         _name = [dict objectForKey:@"name"];
         _defaultValue = [[dict objectForKey:@"default_value"] objectForKey:@"value"];
         _dataType = [dict objectForKey:@"data_type"];
+    }
+    return self;
+}
+
+- (id)initWithName:(NSString *)name dataType:(NSString *)dataType {
+    self = [super init];
+    if (self) {
+        _name = name;
+        _dataType = dataType;
     }
     return self;
 }

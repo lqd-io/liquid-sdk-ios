@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class LQValue;
+
 @interface LQVariable : NSObject <NSCoding, NSCopying>
 
 extern NSString * const kLQDataTypeString;
@@ -17,13 +19,14 @@ extern NSString * const kLQDataTypeBoolean;
 extern NSString * const kLQDataTypeInteger;
 extern NSString * const kLQDataTypeFloat;
 
--(id)initFromDictionary:(NSDictionary *)dict;
--(NSDictionary *)jsonDictionary;
+- (id)initFromDictionary:(NSDictionary *)dict;
+- (id)initWithName:(NSString *)name dataType:(NSString *)dataType;
+- (NSDictionary *)jsonDictionary;
 - (BOOL)matchesLiquidType:(NSString *)typeString;
 
-@property(nonatomic, strong, readonly) NSString* identifier;
-@property(nonatomic, strong, readonly) NSString* name;
-@property(nonatomic, strong, readonly) NSString* dataType;
-@property(nonatomic, strong, readonly) id defaultValue;
+@property(nonatomic, strong, readonly) NSString *identifier;
+@property(nonatomic, strong, readonly) NSString *name;
+@property(nonatomic, strong, readonly) NSString *dataType;
+@property(nonatomic, strong, readonly) LQValue *defaultValue;
 
 @end

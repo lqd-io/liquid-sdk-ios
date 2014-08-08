@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LQVariable.h"
-#import "LQTarget.h"
+
+@class LQVariable;
 
 @interface LQValue : NSObject <NSCoding, NSCopying>
 
 -(id)initFromDictionary:(NSDictionary *)dict;
+-(id)initWithValue:(id)value;
+-(id)initWithValue:(id)value variable:(LQVariable *)variable;
 -(id)initWithFallbackValue:(id)value;
 -(BOOL)variableMatchesLiquidType:(NSString *)typeString;
 -(NSDictionary *)jsonDictionary;

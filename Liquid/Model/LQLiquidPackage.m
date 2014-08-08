@@ -8,6 +8,9 @@
 
 #import "LQLiquidPackage.h"
 #import "LQDefaults.h"
+#import "LQValue.h"
+#import "LQTarget.h"
+#import "LQVariable.h"
 #import "NSString+LQString.h"
 
 @interface LQLiquidPackage ()

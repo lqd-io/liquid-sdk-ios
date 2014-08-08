@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "LQEntity.h"
-#import "LQValue.h"
-#import "LQTarget.h"
+
+@class LQValue;
+@class LQTarget;
 
 @interface LQLiquidPackage : LQEntity <NSCoding, NSCopying>
 
