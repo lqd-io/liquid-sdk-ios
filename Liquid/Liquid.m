@@ -149,6 +149,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.backgroundUpdateTask = UIBackgroundTaskInvalid;
+        self.inBackground = NO;
         
         // Start auto flush timer
         [self startFlushTimer];
@@ -185,11 +186,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 #pragma mark - Lazy initialization
-
-- (BOOL)inBackground {
-    if (!_inBackground) _inBackground = NO;
-    return _inBackground;
-}
 
 - (void)setQueueSizeLimit:(NSUInteger)queueSizeLimit {
     @synchronized(self) {
