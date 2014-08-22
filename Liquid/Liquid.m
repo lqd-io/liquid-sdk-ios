@@ -148,10 +148,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.backgroundUpdateTask = UIBackgroundTaskInvalid;
-        
-        // Start auto flush timer
-        [self startFlushTimer];
-
         if(!_loadedLiquidPackage) {
             [self loadLiquidPackageSynced:YES];
         }
@@ -162,6 +158,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         if (!self.currentSession) {
             [self startSession];
         }
+
+        // Start auto flush timer
+        [self startFlushTimer];
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
