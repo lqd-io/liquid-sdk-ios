@@ -39,7 +39,6 @@
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
-@property(nonatomic, assign) BOOL inBackground;
 #if OS_OBJECT_USE_OBJC
 @property(nonatomic, strong) dispatch_queue_t queue;
 #else
@@ -149,7 +148,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.backgroundUpdateTask = UIBackgroundTaskInvalid;
-        self.inBackground = NO;
         
         // Start auto flush timer
         [self startFlushTimer];
@@ -245,40 +243,28 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _uniqueNowIncrement = [NSNumber numberWithInteger:0];
     }
 
-    if (self.inBackground) {
-        if ([self checkSessionTimeout]) {
-            if ([self.currentSession inProgress]) {
-                [self endSessionAt:self.enterBackgroundTime];
-            }
-            [self startSession];
-        } else {
-            [self resumeSession];
+    if ([self checkSessionTimeout]) {
+        if ([self.currentSession inProgress]) {
+            [self endSessionAt:self.enterBackgroundTime];
         }
+        [self startSession];
+    } else {
+        [self resumeSession];
     }
 
     [self startFlushTimer];
-    self.inBackground = NO;
 
     [self loadLiquidPackageSynced:YES];
 }
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
     NSDate *date = [self uniqueNow];
-
     [self beginBackgroundUpdateTask];
-
-    if (!self.inBackground) {
-        [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
-    }
-
+    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
     self.enterBackgroundTime = [self uniqueNow];
-    self.inBackground = YES;
-
     [self stopFlushTimer];
     [self flush];
-
     [self requestNewLiquidPackageSynced];
-
     dispatch_async(self.queue, ^{
         [self endBackgroundUpdateTask];
     });
