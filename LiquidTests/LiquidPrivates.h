@@ -14,7 +14,7 @@
 #import "LQSession.h"
 #import "LQDevice.h"
 #import "LQUser.h"
-#import "LQQueue.h"
+#import "LQRequest.h"
 #import "LQValue.h"
 #import "LQTarget.h"
 #import "LQDataPoint.h"

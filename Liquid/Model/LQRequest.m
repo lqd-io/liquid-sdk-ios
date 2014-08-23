@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "LQQueue.h"
+#import "LQRequest.h"
 
-@implementation LQQueue
+@implementation LQRequest
 
 #define kLQQueueUrl @"Url"
 #define kLQQueueHttpMethod @"HttpMethod"

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LQQueue : NSObject <NSCoding>
+@interface LQRequest : NSObject <NSCoding>
 
 -(id)initWithUrl:(NSString*)url withHttpMethod:(NSString*)httpMethod withJSON:(NSData*)json;
 -(void)incrementNumberOfTriesBy:(NSUInteger)increment;

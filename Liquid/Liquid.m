@@ -14,7 +14,7 @@
 #import "LQSession.h"
 #import "LQDevice.h"
 #import "LQUser.h"
-#import "LQQueue.h"
+#import "LQRequest.h"
 #import "LQVariable.h"
 #import "LQValue.h"
 #import "LQTarget.h"
@@ -825,7 +825,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(void)addToHttpQueue:(NSDictionary*)dictionary endPoint:(NSString*)endPoint httpMethod:(NSString*)httpMethod {
     NSData *json = [Liquid toJSON:dictionary];
-    LQQueue *queuedData = [[LQQueue alloc] initWithUrl:endPoint
+    LQRequest *queuedData = [[LQRequest alloc] initWithUrl:endPoint
                                          withHttpMethod:httpMethod
                                                withJSON:json];
     LQLog(kLQLogLevelHttp, @"Adding a HTTP request to the queue, for the endpoint %@ %@ ", httpMethod, endPoint);
@@ -844,7 +844,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         } else {
             NSMutableArray *failedQueue = [NSMutableArray new];
             while (self.httpQueue.count > 0) {
-                LQQueue *queuedHttp = [self.httpQueue firstObject];
+                LQRequest *queuedHttp = [self.httpQueue firstObject];
                 if ([[self uniqueNow] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
                     LQLog(kLQLogLevelHttp, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
                     NSInteger res = [self sendData:queuedHttp.json

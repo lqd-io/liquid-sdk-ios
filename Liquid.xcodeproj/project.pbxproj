@@ -37,7 +37,7 @@
 		A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E7192447FA0060E484 /* LQDevice.m */; };
 		A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E9192447FA0060E484 /* LQEvent.m */; };
 		A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */; };
-		A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4ED192447FA0060E484 /* LQQueue.m */; };
+		A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4ED192447FA0060E484 /* LQRequest.m */; };
 		A99EB4FE192447FA0060E484 /* LQSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EF192447FA0060E484 /* LQSession.m */; };
 		A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F1192447FA0060E484 /* LQTarget.m */; };
 		A99EB500192447FA0060E484 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F3192447FA0060E484 /* LQUser.m */; };
@@ -129,8 +129,8 @@
 		A99EB4E9192447FA0060E484 /* LQEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEvent.m; sourceTree = "<group>"; };
 		A99EB4EA192447FA0060E484 /* LQLiquidPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQLiquidPackage.h; sourceTree = "<group>"; };
 		A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQLiquidPackage.m; sourceTree = "<group>"; };
-		A99EB4EC192447FA0060E484 /* LQQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQQueue.h; sourceTree = "<group>"; };
-		A99EB4ED192447FA0060E484 /* LQQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQQueue.m; sourceTree = "<group>"; };
+		A99EB4EC192447FA0060E484 /* LQRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQRequest.h; sourceTree = "<group>"; };
+		A99EB4ED192447FA0060E484 /* LQRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQRequest.m; sourceTree = "<group>"; };
 		A99EB4EE192447FA0060E484 /* LQSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSession.h; sourceTree = "<group>"; };
 		A99EB4EF192447FA0060E484 /* LQSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSession.m; sourceTree = "<group>"; };
 		A99EB4F0192447FA0060E484 /* LQTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQTarget.h; sourceTree = "<group>"; };
@@ -279,8 +279,8 @@
 		A99EB4E3192447FA0060E484 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A99EB4EC192447FA0060E484 /* LQQueue.h */,
-				A99EB4ED192447FA0060E484 /* LQQueue.m */,
+				A99EB4EC192447FA0060E484 /* LQRequest.h */,
+				A99EB4ED192447FA0060E484 /* LQRequest.m */,
 				A99EB4E4192447FA0060E484 /* LQDataPoint.h */,
 				A99EB4E5192447FA0060E484 /* LQDataPoint.m */,
 				A93AF9CE19316FCA0035E811 /* LQEntity.h */,
@@ -573,7 +573,7 @@
 			files = (
 				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
-				A99EB4FD192447FA0060E484 /* LQQueue.m in Sources */,
+				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
 				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,

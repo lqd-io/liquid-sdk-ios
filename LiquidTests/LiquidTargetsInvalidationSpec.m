@@ -107,7 +107,7 @@ describe(@"Liquid", ^{
                 beforeEach(^{
                     [liquidInstance track:@"Click Button"];
                     [NSThread sleepForTimeInterval:0.15f]; // wait for data point to be processed from the queued
-                    LQQueue *queuedRequest = [[liquidInstance httpQueue] lastObject];
+                    LQRequest *queuedRequest = [[liquidInstance httpQueue] lastObject];
                     NSData *jsonData = queuedRequest.json;
                     jsonDictionary = [Liquid fromJSON:jsonData];
                 });
