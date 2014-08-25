@@ -12,5 +12,7 @@
 
 + (NSData *)randomDataOfLength:(size_t)length;
 - (NSString *)hexadecimalString;
++ (id)fromJSON:(NSData *)data;
++ (NSData *)toJSON:(NSDictionary *)object;
 
 @end

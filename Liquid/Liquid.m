@@ -21,10 +21,12 @@
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
 #import "LQDefaults.h"
+#import "LQDate.h"
 #import "UIColor+LQColor.h"
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "NSString+LQString.h"
 #import "NSData+LQData.h"
+#import "LQNetworking.h"
 
 #if !__has_feature(objc_arc)
 #  error Compile me with ARC, please!
@@ -39,18 +41,15 @@
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
+@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
+@property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
+@property(nonatomic, strong) NSMutableArray *valuesSentToServer;
+@property(nonatomic, strong) LQNetworking *networking;
 #if OS_OBJECT_USE_OBJC
 @property(nonatomic, strong) dispatch_queue_t queue;
 #else
 @property(nonatomic, assign) dispatch_queue_t queue;
 #endif
-@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
-@property(nonatomic, strong) NSTimer *timer;
-@property(nonatomic, strong) NSMutableArray *httpQueue;
-@property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
-@property(nonatomic, strong) NSMutableArray *valuesSentToServer;
-@property(nonatomic, strong, readonly) NSString *liquidUserAgent;
-@property(nonatomic, strong) NSNumber *uniqueNowIncrement;
 
 @end
 
@@ -58,14 +57,12 @@ static Liquid *sharedInstance = nil;
 
 @implementation Liquid
 
-@synthesize flushInterval = _flushInterval;
 @synthesize autoLoadValues = _autoLoadValues;
 @synthesize queueSizeLimit = _queueSizeLimit;
 @synthesize sessionTimeout = _sessionTimeout;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
-@synthesize liquidUserAgent = _liquidUserAgent;
 @synthesize valuesSentToServer = _valuesSentToServer;
-@synthesize uniqueNowIncrement = _uniqueNowIncrement;
+@synthesize networking = _networking;
 
 NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
 NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
@@ -93,34 +90,26 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return sharedInstance;
 }
 
+#pragma mark - HTTP Queue
+
+- (void)setQueueSizeLimit:(NSUInteger)queueSizeLimit {
+    [_networking setQueueSizeLimit:queueSizeLimit];
+}
+
+- (void)setFlushInterval:(NSUInteger)interval {
+    [_networking setFlushInterval:interval];
+}
+
+- (void)flush {
+    dispatch_async(self.queue, ^{
+        [_networking flush];
+    });
+}
+
 #pragma mark - Initialization
 
 - (instancetype)initWithToken:(NSString *)apiToken {
     return [self initWithToken:apiToken development:NO];
-}
-
--(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    __block __strong LQLiquidPackage *loadedLiquidPackage;
-    @synchronized(_loadedLiquidPackage) {
-        loadedLiquidPackage = [_loadedLiquidPackage copy];
-    }
-    NSInteger numberOfInvalidatedValues = [loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-    @synchronized(_loadedLiquidPackage) {
-        _loadedLiquidPackage = loadedLiquidPackage;
-    }
-
-    if (numberOfInvalidatedValues > 0) {
-        LQLiquidPackage *liquidPackageToStore = [loadedLiquidPackage copy];
-        dispatch_async(self.queue, ^() {
-            [liquidPackageToStore saveToDiskForToken:_apiToken];
-        });
-    }
-
-    if (numberOfInvalidatedValues > 1) { // if included on a target
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self notifyDelegatesAndObserversAboutNewValues];
-        });
-    }
 }
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)development {
@@ -135,15 +124,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelError, @"<Liquid> Error: %@ empty API Token", self);
     }
     if (self = [self init]) {
-        self.httpQueue = [Liquid unarchiveQueueForToken:apiToken];
-        
-        // Initialization
         self.apiToken = apiToken;
-        self.serverURL = kLQServerUrl;
-        self.device = [[LQDevice alloc] initWithLiquidVersion:[Liquid liquidVersion]];
+        self.networking = [[LQNetworking alloc] initFromDiskWithToken:self.apiToken];
+        self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
-        self.queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
-        self.flushInterval = kLQDefaultFlushInterval;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
@@ -160,7 +144,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
 
         // Start auto flush timer
-        [self startFlushTimer];
+        [_networking startFlushTimer];
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -184,41 +168,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - Lazy initialization
 
-- (void)setQueueSizeLimit:(NSUInteger)queueSizeLimit {
-    @synchronized(self) {
-        if (_flushInterval < kLQMinFlushInterval) {
-            _queueSizeLimit = kLQMinFlushInterval;
-        } else {
-            _queueSizeLimit = queueSizeLimit;
-        }
-    }
-}
-
-- (void)setFlushInterval:(NSUInteger)interval {
-    [self stopFlushTimer];
-    @synchronized(self) {
-        if (_flushInterval < kLQMinFlushInterval) _flushInterval = kLQMinFlushInterval;
-        _flushInterval = interval;
-    }
-    [self startFlushTimer];
-}
-
 - (void)setSessionTimeout:(NSInteger)sessionTimeout {
     @synchronized(self) {
         _sessionTimeout = sessionTimeout;
     }
-}
-
-- (NSString *)liquidUserAgent {
-    if(!_liquidUserAgent) {
-        _liquidUserAgent = [NSString stringWithFormat:@"Liquid/%@ (%@; %@ %@; %@; %@)", self.device.liquidVersion,
-                            kLQDevicePlatform,
-                            kLQDevicePlatform, self.device.systemVersion,
-                            self.device.locale,
-                            [LQDevice deviceModel]
-                           ];
-    }
-    return _liquidUserAgent;
 }
 
 - (NSArray *)valuesSentToServer {
@@ -228,20 +181,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return _valuesSentToServer;
 }
 
-- (NSNumber *)uniqueNowIncrement {
-    if (!_uniqueNowIncrement) {
-        _uniqueNowIncrement = [NSNumber numberWithInteger:0];
-    }
-    return _uniqueNowIncrement;
-}
-
 #pragma mark - UIApplication notifications
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification {
-    @synchronized(_uniqueNowIncrement) {
-        _uniqueNowIncrement = [NSNumber numberWithInteger:0];
-    }
-
+    [LQDate resetUniqueNow];
     if ([self checkSessionTimeout]) {
         if ([self.currentSession inProgress]) {
             [self endSessionAt:self.enterBackgroundTime];
@@ -250,18 +193,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     } else {
         [self resumeSession];
     }
-
-    [self startFlushTimer];
-
+    [_networking startFlushTimer];
     [self loadLiquidPackageSynced:YES];
 }
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
-    NSDate *date = [self uniqueNow];
+    NSDate *date = [LQDate uniqueNow];
     [self beginBackgroundUpdateTask];
     [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
-    self.enterBackgroundTime = [self uniqueNow];
-    [self stopFlushTimer];
+    self.enterBackgroundTime = [LQDate uniqueNow];
+    [_networking stopFlushTimer];
     [self flush];
     [self requestNewLiquidPackageSynced];
     dispatch_async(self.queue, ^{
@@ -288,7 +229,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - User identifying methods (real methods)
 
--(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
+- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
     NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
@@ -298,7 +239,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self identifyUserSynced:newUser alias:alias];
 }
 
--(void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
+- (void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
     self.previousUser = self.currentUser;
     LQUser *newUser = [user copy];
     LQUser *currentUser = [self.currentUser copy];
@@ -380,7 +321,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - User related stuff
 
--(NSString *)userIdentifier {
+- (NSString *)userIdentifier {
     if(self.currentUser == nil) {
         LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
     }
@@ -391,7 +332,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return [self.device uid];
 }
 
--(void)setUserAttribute:(id)attribute forKey:(NSString *)key {
+- (void)setUserAttribute:(id)attribute forKey:(NSString *)key {
     if (![LQUser assertAttributeType:attribute andKey:key]) return;
 
     dispatch_async(self.queue, ^() {
@@ -406,11 +347,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 // Deprecated:
--(void)setUserLocation:(CLLocation *)location {
+- (void)setUserLocation:(CLLocation *)location {
     [self setCurrentLocation:location];
 }
 
--(void)setCurrentLocation:(CLLocation *)location {
+- (void)setCurrentLocation:(CLLocation *)location {
     dispatch_async(self.queue, ^() {
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
@@ -454,9 +395,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying anonymous user (%@) with a new identifier (%@)", anonymousUser.identifier, newUserIdentifier);
     dispatch_async(self.queue, ^{
         NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"unique_id", anonymousUser.identifier, @"unique_id_alias", nil];
-        NSString *endpoint = [NSString stringWithFormat:@"%@aliases", self.serverURL];
-        [self addToHttpQueue:params
-                    endPoint:[NSString stringWithFormat:endpoint, self.serverURL]
+        [_networking addToHttpQueue:params
+                    endPoint:@"aliases"
                   httpMethod:@"POST"];
     });
 }
@@ -465,10 +405,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)setApplePushNotificationToken:(NSData *)deviceToken {
     NSString *hexToken = [[deviceToken copy] hexadecimalString];
-
     if (hexToken) {
         self.device.apnsToken = hexToken;
-
         NSString *apnsTokenCacheKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"APNSToken"];
         [[NSUserDefaults standardUserDefaults] setObject:hexToken forKey:apnsTokenCacheKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -485,25 +423,25 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)endSessionNow {
-    [self endSessionAt:[self uniqueNow]];
+    [self endSessionAt:[LQDate uniqueNow]];
 }
 
 - (void)startSession {
-    NSDate *now = [self uniqueNow];
+    NSDate *now = [LQDate uniqueNow];
     self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
     [self track:@"_startSession" attributes:nil allowLqdEvents:YES withDate:now];
     LQLog(kLQLogLevelInfo, @"Started session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
 }
 
 - (void)resumeSession {
-    NSDate *now = [self uniqueNow];
+    NSDate *now = [LQDate uniqueNow];
     [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES withDate:now];
     LQLog(kLQLogLevelInfo, @"Resumed session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
 }
 
 - (BOOL)checkSessionTimeout {
     if(self.currentSession != nil) {
-        NSDate *now = [self uniqueNow];
+        NSDate *now = [LQDate uniqueNow];
         NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
         if(interval >= _sessionTimeout) {
             return YES;
@@ -516,23 +454,23 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return self.currentSession.identifier;
 }
 
-#pragma mark - Event
+#pragma mark - Events
 
--(void)track:(NSString *)eventName {
+- (void)track:(NSString *)eventName {
     [self track:eventName attributes:nil allowLqdEvents:NO];
 }
 
--(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
+- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
     NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
 
     [self track:eventName attributes:validAttributes allowLqdEvents:NO];
 }
 
--(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
+- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
     [self track:eventName attributes:attributes allowLqdEvents:allowLqdEvents withDate:nil];
 }
 
--(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents withDate:(NSDate *)eventDate {
+- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents withDate:(NSDate *)eventDate {
     __block NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
 
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
@@ -554,7 +492,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (eventDate) {
         now = [eventDate copy];
     } else {
-        now = [self uniqueNow];
+        now = [LQDate uniqueNow];
     }
     
     if ([eventName hasPrefix:@"_"]) {
@@ -580,16 +518,15 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                                            session:session
                                                              event:event
                                                             values:loadedValues];
-        NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
-        [self addToHttpQueue:[dataPoint jsonDictionary]
-                endPoint:endPoint
+        [_networking addToHttpQueue:[dataPoint jsonDictionary]
+                endPoint:@"data_points"
               httpMethod:@"POST"];
     });
 }
 
 #pragma mark - Liquid Package
 
--(LQLiquidPackage *)requestNewLiquidPackageSynced {
+- (LQLiquidPackage *)requestNewLiquidPackageSynced {
     if(!self.currentUser) {
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> A user has not been identified yet.");
         return nil;
@@ -598,11 +535,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> No session is open yet.");
         return nil;
     }
-    NSString *endPoint = [NSString stringWithFormat:@"%@users/%@/devices/%@/liquid_package", self.serverURL, self.currentUser.identifier, self.device.uid, nil];
-    NSData *dataFromServer = [self getDataFromEndpoint:endPoint];
+    NSString *endPoint = [NSString stringWithFormat:@"users/%@/devices/%@/liquid_package", self.currentUser.identifier, self.device.uid, nil];
+    NSData *dataFromServer = [_networking getDataFromEndpoint:endPoint];
     LQLiquidPackage *liquidPackage = nil;
     if(dataFromServer != nil) {
-        NSDictionary *liquidPackageDictionary = [Liquid fromJSON:dataFromServer];
+        NSDictionary *liquidPackageDictionary = [NSData fromJSON:dataFromServer];
         if(liquidPackageDictionary == nil) {
             return nil;
         }
@@ -622,17 +559,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return liquidPackage;
 }
 
--(void)requestNewLiquidPackage {
+- (void)requestNewLiquidPackage {
     dispatch_async(self.queue, ^{
         [self requestNewLiquidPackageSynced];
     });
 }
 
--(void)requestValues {
+- (void)requestValues {
     [self requestNewLiquidPackage];
 }
 
--(LQLiquidPackage *)loadLiquidPackageFromDisk {
+- (LQLiquidPackage *)loadLiquidPackageFromDisk {
     // Ensure legacy:
     if (_loadedLiquidPackage && ![_loadedLiquidPackage liquidVersion]) {
         LQLog(kLQLogLevelNone, @"<Liquid> SDK was updated: destroying cached Liquid Package to ensure legacy");
@@ -646,7 +583,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return [[LQLiquidPackage alloc] initWithValues:[[NSArray alloc] initWithObjects:nil]];
 }
 
--(void)loadLiquidPackageSynced:(BOOL)synced {
+- (void)loadLiquidPackageSynced:(BOOL)synced {
     if (synced) {
         _loadedLiquidPackage = [self loadLiquidPackageFromDisk];
         [self notifyDelegatesAndObserversAboutNewValues];
@@ -660,11 +597,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 }
 
--(void)loadValues {
+- (void)loadValues {
     [self loadLiquidPackageSynced:NO];
 }
 
--(void)notifyDelegatesAndObserversAboutNewValues {
+- (void)notifyDelegatesAndObserversAboutNewValues {
     NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[_loadedLiquidPackage dictOfVariablesAndValues], @"values", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:userInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidLoadValues)]) {
@@ -677,26 +614,52 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - Development functionalities
 
--(void)sendVariable:(NSString *)variableName fallback:(id)fallbackValue liquidType:(NSString *)typeString {
+- (void)sendVariable:(NSString *)variableName fallback:(id)fallbackValue liquidType:(NSString *)typeString {
     dispatch_async(self.queue, ^{
         if ([self.valuesSentToServer indexOfObject:variableName] == NSNotFound) {
             [self.valuesSentToServer addObject:variableName];
             NSDictionary *variable = [[NSDictionary alloc] initWithObjectsAndKeys:variableName, @"name",
                                       typeString, @"data_type",
                                       (fallbackValue?fallbackValue:[NSNull null]), @"default_value", nil];
-            NSData *json = [Liquid toJSON:variable];
+            NSData *json = [NSData toJSON:variable];
             LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
-            NSInteger res = [self sendData:json
-                                toEndpoint:[NSString stringWithFormat:@"%@variables", self.serverURL]
-                               usingMethod:@"POST"];
+            NSInteger res = [_networking sendData:json
+                                       toEndpoint:@"variables"
+                                      usingMethod:@"POST"];
             if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
         }
     });
 }
 
+#pragma mark - Targets
+
+- (void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
+    __block __strong LQLiquidPackage *loadedLiquidPackage;
+    @synchronized(_loadedLiquidPackage) {
+        loadedLiquidPackage = [_loadedLiquidPackage copy];
+    }
+    NSInteger numberOfInvalidatedValues = [loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
+    @synchronized(_loadedLiquidPackage) {
+        _loadedLiquidPackage = loadedLiquidPackage;
+    }
+    
+    if (numberOfInvalidatedValues > 0) {
+        LQLiquidPackage *liquidPackageToStore = [loadedLiquidPackage copy];
+        dispatch_async(self.queue, ^() {
+            [liquidPackageToStore saveToDiskForToken:_apiToken];
+        });
+    }
+    
+    if (numberOfInvalidatedValues > 1) { // if included on a target
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self notifyDelegatesAndObserversAboutNewValues];
+        });
+    }
+}
+
 #pragma mark - Values with Data Types
 
--(NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
+- (NSDate *)dateForKey:(NSString *)variableName fallback:(NSDate *)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
         [self sendVariable:variableName fallback:fallbackValue liquidType:kLQDataTypeDateTime];
     }
@@ -720,7 +683,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return fallbackValue;
 }
 
--(UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
+- (UIColor *)colorForKey:(NSString *)variableName fallback:(UIColor *)fallbackValue {
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
         [self sendVariable:variableName fallback:fallbackValue liquidType:kLQDataTypeColor];
     }
@@ -750,7 +713,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return fallbackValue;
 }
 
--(NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
+- (NSString *)stringForKey:(NSString *)variableName fallback:(NSString *)fallbackValue {
     NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode && fallbackValue) {
         [self sendVariable:variable fallback:fallbackValue liquidType:kLQDataTypeString];
@@ -770,7 +733,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return fallbackValue;
 }
 
--(NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
+- (NSInteger)intForKey:(NSString *)variableName fallback:(NSInteger)fallbackValue {
     NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
         [self sendVariable:variable fallback:[NSNumber numberWithInteger:fallbackValue] liquidType:kLQDataTypeInteger];
@@ -787,7 +750,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return fallbackValue;
 }
 
--(CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
+- (CGFloat)floatForKey:(NSString *)variableName fallback:(CGFloat)fallbackValue {
     NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
         [self sendVariable:variable fallback:[NSNumber numberWithFloat:fallbackValue] liquidType:kLQDataTypeFloat];
@@ -804,7 +767,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return fallbackValue;
 }
 
--(BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
+- (BOOL)boolForKey:(NSString *)variableName fallback:(BOOL)fallbackValue {
     NSString *variable = [variableName copy];
     if(_developmentMode && self.sendFallbackValuesInDevelopmentMode) {
         [self sendVariable:variable fallback:[NSNumber numberWithBool:fallbackValue] liquidType:kLQDataTypeBoolean];
@@ -821,92 +784,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return fallbackValue;
 }
 
-#pragma mark - Queueing
-
--(void)addToHttpQueue:(NSDictionary*)dictionary endPoint:(NSString*)endPoint httpMethod:(NSString*)httpMethod {
-    NSData *json = [Liquid toJSON:dictionary];
-    LQRequest *queuedData = [[LQRequest alloc] initWithUrl:endPoint
-                                         withHttpMethod:httpMethod
-                                               withJSON:json];
-    LQLog(kLQLogLevelHttp, @"Adding a HTTP request to the queue, for the endpoint %@ %@ ", httpMethod, endPoint);
-    if (self.httpQueue.count >= self.queueSizeLimit) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Queue exceeded its limit size (%ld). Removing oldest event from queue.", (long) self.queueSizeLimit);
-        [self.httpQueue removeObjectAtIndex:0];
-    }
-    [self.httpQueue addObject:queuedData];
-    [Liquid archiveQueue:self.httpQueue forToken:self.apiToken];
-}
-
--(void)flush {
-    dispatch_async(self.queue, ^{
-        if (![self.device reachesInternet]) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> There's no Internet connection. Will try to deliver data points later.");
-        } else {
-            NSMutableArray *failedQueue = [NSMutableArray new];
-            while (self.httpQueue.count > 0) {
-                LQRequest *queuedHttp = [self.httpQueue firstObject];
-                if ([[self uniqueNow] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
-                    LQLog(kLQLogLevelHttp, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
-                    NSInteger res = [self sendData:queuedHttp.json
-                                   toEndpoint:queuedHttp.url
-                                  usingMethod:queuedHttp.httpMethod];
-                    [self.httpQueue removeObject:queuedHttp];
-                    if(res != LQQueueStatusOk) {
-                        if([[queuedHttp numberOfTries] intValue] < kLQHttpMaxTries) {
-                            if (res == LQQueueStatusUnauthorized) {
-                                [queuedHttp incrementNumberOfTries];
-                                [queuedHttp incrementNextTryDateIn:(kLQHttpUnreachableWait + [Liquid randomInt:kLQHttpUnreachableWait/2])];
-                            }
-                            if (res == LQQueueStatusRejected) {
-                                [queuedHttp incrementNumberOfTries];
-                                [queuedHttp incrementNextTryDateIn:(kLQHttpRejectedWait + [Liquid randomInt:kLQHttpRejectedWait/2])];
-                            }
-                            [failedQueue addObject:queuedHttp];
-                        }
-                    }
-                } else {
-                    [self.httpQueue removeObject:queuedHttp];
-                    [failedQueue addObject:queuedHttp];
-                    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Queued failed request is too recent. Waiting for a while to try again (%d/%d)", [[queuedHttp numberOfTries] intValue], kLQHttpMaxTries);
-                }
-            }
-            [self.httpQueue addObjectsFromArray:failedQueue];
-            [Liquid archiveQueue:self.httpQueue forToken:_apiToken];
-        }
-    });
-}
-
-- (void)startFlushTimer {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.flushInterval > 0 && self.timer == nil) {
-            self.timer = [NSTimer scheduledTimerWithTimeInterval:self.flushInterval
-                                                          target:self
-                                                        selector:@selector(flush)
-                                                        userInfo:nil
-                                                         repeats:YES];
-            LQLog(kLQLogLevelInfoVerbose, @"<Liquid> %@ started flush timer: %@", self, self.timer);
-        }
-    });
-}
-
-- (void)stopFlushTimer {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.timer) {
-            [self.timer invalidate];
-            LQLog(kLQLogLevelInfoVerbose,@"<Liquid> %@ stopped flush timer: %@", self, self.timer);
-        }
-        self.timer = nil;
-    });
-}
-
 #pragma mark - Resetting
 
 + (void)destroySingleton {
     sharedInstance.currentUser = nil;
     sharedInstance.currentSession = nil;
     sharedInstance.enterBackgroundTime = nil;
-    sharedInstance.timer = nil;
-    sharedInstance.httpQueue = nil;
     sharedInstance.loadedLiquidPackage = nil;
 }
 
@@ -914,16 +797,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
     [LQUser destroyLastUserForAllTokens];
     [Liquid destroySingleton];
-    @synchronized(sharedInstance.uniqueNowIncrement) {
-        sharedInstance.uniqueNowIncrement = [NSNumber numberWithInt:0];
-    }
+    [LQDate resetUniqueNow];
     [NSThread sleepForTimeInterval:0.2f];
     LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
 }
 
 + (void)hardResetForApiToken:(NSString *)token {
     [self softReset];
-    [Liquid deleteFileIfExists:[Liquid liquidQueueFileForToken:token] error:nil];
+    [LQNetworking deleteQueueForToken:token];
     LQLog(kLQLogLevelInfo, @"<Liquid> Hard reset Liquid");
 }
 
@@ -933,202 +814,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)hardReset {
     [Liquid hardResetForApiToken:self.apiToken];
-}
-
-#pragma mark - Networking
-
-- (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method {
-    NSURL *url = [NSURL URLWithString:endpoint];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:method];
-    [request setValue:[NSString stringWithFormat:@"Token %@", self.apiToken] forHTTPHeaderField:@"Authorization"];
-    [request setValue:self.liquidUserAgent forHTTPHeaderField:@"User-Agent"];
-    [request setValue:@"application/vnd.lqd.v1+json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:data];
-
-    NSURLResponse *response;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                                 returningResponse:&response
-                                                             error:&error];
-    NSString __unused *responseString = [[NSString alloc] initWithData:responseData
-                                                     encoding:NSUTF8StringEncoding];
-
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    if (error) {
-        if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
-            return LQQueueStatusUnreachable;
-        } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
-            return LQQueueStatusUnauthorized;
-        } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
-            return LQQueueStatusRejected;
-        }
-    } else {
-        LQLog(kLQLogLevelHttp, @"<Liquid> Response from server: %@", responseString);
-        if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
-            return LQQueueStatusOk;
-        } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)httpResponse.statusCode);
-            return LQQueueStatusRejected;
-        }
-    }
-}
-
-- (NSData *)getDataFromEndpoint:(NSString *)endpoint {
-    NSURL *url = [NSURL URLWithString:endpoint];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"GET"];
-    [request setValue:[NSString stringWithFormat:@"Token %@", self.apiToken] forHTTPHeaderField:@"Authorization"];
-    [request setValue:self.liquidUserAgent forHTTPHeaderField:@"User-Agent"];
-    [request setValue:@"application/vnd.lqd.v1+json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    
-    NSURLResponse *response;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                                 returningResponse:&response
-                                                             error:&error];
-    NSString __unused *responseString = [[NSString alloc] initWithData:responseData
-                                                     encoding:NSUTF8StringEncoding];
-
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    if (error) {
-        if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", (long)error.code);
-        } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Unauthorized (check App Token)", (long)error.code);
-        } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server error", (long)error.code);
-        }
-        return nil;
-    } else {
-        LQLog(kLQLogLevelHttp, @"<Liquid> Response from server: %@", responseString);
-        if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
-            return responseData;
-        } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server error", (long)httpResponse.statusCode);
-            return nil;
-        }
-    }
-}
-
-#pragma mark - File Management
-
-+(NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken {
-    NSMutableArray *plistArray =  [NSKeyedUnarchiver unarchiveObjectWithFile:[Liquid liquidQueueFileForToken:apiToken]];
-    if(plistArray == nil)
-        plistArray = [NSMutableArray new];
-    LQLog(kLQLogLevelData, @"<Liquid> Loading queue with %ld items from disk", (unsigned long)plistArray.count);
-    return plistArray;
-}
-
-+(BOOL)archiveQueue:(NSArray *)queue forToken:(NSString*)apiToken {
-    if (queue.count > 0) {
-        LQLog(kLQLogLevelData, @"<Liquid> Saving queue with %ld items to disk", (unsigned long)queue.count);
-        return [NSKeyedArchiver archiveRootObject:queue
-                                           toFile:[Liquid liquidQueueFileForToken:apiToken]];
-    } else {
-        [Liquid deleteFileIfExists:[Liquid liquidQueueFileForToken:apiToken] error:nil];
-        return FALSE;
-    }
-}
-
-+(BOOL)deleteFileIfExists:(NSString *)fileName error:(NSError **)err {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    BOOL exists = [fm fileExistsAtPath:fileName];
-    if (exists == YES) return [fm removeItemAtPath:fileName error:err];
-    return exists;
-}
-
-+(NSString*)liquidQueueFileForToken:(NSString*)apiToken {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *liquidDirectory = [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
-    NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:liquidDirectory])
-        [[NSFileManager defaultManager] createDirectoryAtPath:liquidDirectory
-                                  withIntermediateDirectories:NO
-                                                   attributes:nil
-                                                        error:&error];
-    NSString *md5apiToken = [NSString md5ofString:apiToken];
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.queue", md5apiToken]];
-    LQLog(kLQLogLevelPaths,@"<Liquid> File location %@", liquidFile);
-    return liquidFile;
-}
-
-#pragma mark - Static Helpers
-
-+ (id)fromJSON:(NSData *)data {
-    if (!data) return nil;
-    __autoreleasing NSError *error = nil;
-    id result = [NSJSONSerialization JSONObjectWithData:data
-                                                options:kNilOptions
-                                                  error:&error];
-    if (error != nil) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error parsing JSON: %@", [error localizedDescription]);
-        return nil;
-    }
-    return result;
-}
-
-+ (NSData*)toJSON:(NSDictionary *)object {
-    __autoreleasing NSError *error = nil;
-    NSData *data = (id) [Liquid normalizeDataTypes:object];
-    id result = [NSJSONSerialization dataWithJSONObject:data
-                                                options:NSJSONWritingPrettyPrinted
-                                                  error:&error];
-    if (error != nil) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error creating JSON: %@", [error localizedDescription]);
-        return nil;
-    }
-    return result;
-}
-
-+ (NSDictionary *)normalizeDataTypes:(NSDictionary *)dictionary {
-    NSMutableDictionary *newDictionary = [NSMutableDictionary new];
-    for (id key in dictionary) {
-        id element = [dictionary objectForKey:key];
-        if ([element isKindOfClass:[NSDate class]]) {
-            [newDictionary setObject:[NSDateFormatter iso8601StringFromDate:element] forKey:key];
-        } else if ([element isKindOfClass:[UIColor class]]) {
-            [newDictionary setObject:[UIColor hexadecimalStringFromUIColor:element] forKey:key];
-        } else if ([element isKindOfClass:[NSDictionary class]]) {
-            [newDictionary setObject:[Liquid normalizeDataTypes:element] forKey:key];
-        } else {
-            [newDictionary setObject:element forKey:key];
-        }
-    }
-    return newDictionary;
-}
-
-+ (NSUInteger)randomInt:(NSUInteger)max {
-    int r = 0;
-    if (arc4random_uniform != NULL) {
-        r = arc4random_uniform ((int) max);
-    } else {
-        r = (arc4random() % max);
-    }
-    return (int) r;
-}
-
-+ (NSString *)liquidVersion {
-    return kLQVersion;
-}
-
-- (NSDate *)uniqueNow {
-    NSTimeInterval millisecondsIncrement;
-    @synchronized(_uniqueNowIncrement) {
-        _uniqueNowIncrement = [[NSNumber numberWithInteger:[_uniqueNowIncrement intValue] + 1] copy];
-        millisecondsIncrement = ([_uniqueNowIncrement intValue] % 1000) * 0.001;
-    }
-    return [[NSDate new] dateByAddingTimeInterval:millisecondsIncrement];
 }
 
 @end

@@ -18,7 +18,7 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 
 #ifdef LIQUID_USE_IFA
-    #import <AdSupport/ASIdentifierManager.h>
+#import <AdSupport/ASIdentifierManager.h>
 #endif
 
 #define kLQDeviceVendor @"Apple"
@@ -33,11 +33,23 @@
 
 @end
 
+static LQDevice *sharedInstance = nil;
+
 @implementation LQDevice
+
+#pragma mark - Singleton
+
++ (LQDevice *)sharedInstance {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
+}
 
 #pragma mark - Initializer
 
--(id)initWithLiquidVersion:(NSString *)liquidVersion {
+- (id)init {
     self = [super init];
     if(self) {
         _vendor = kLQDeviceVendor;
@@ -53,7 +65,7 @@
         _appName = [LQDevice appName];
         _appVersion = [LQDevice appVersion];
         _releaseVersion = [LQDevice releaseVersion];
-        _liquidVersion = liquidVersion;
+        _liquidVersion = [LQDevice liquidVersion];
 
         NSString *apnsTokenCacheKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"APNSToken"];
         _apnsToken = [[NSUserDefaults standardUserDefaults] objectForKey:apnsTokenCacheKey];
@@ -74,7 +86,7 @@
 
 #pragma mark - Attributes
 
--(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key {
+- (void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key {
     if (![LQDevice assertAttributeType:attribute andKey:key]) return;
 
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
@@ -82,11 +94,11 @@
     _attributes = mutableAttributes;
 }
 
--(id)attributeForKey:(NSString *)key {
+- (id)attributeForKey:(NSString *)key {
     return [_attributes objectForKey:key];
 }
 
--(void)setLocation:(CLLocation *)location {
+- (void)setLocation:(CLLocation *)location {
     if(location == nil) {
         NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
         [mutableAttributes removeObjectForKey:@"latitude"];
@@ -110,7 +122,7 @@
 
 #pragma mark - Deallocation
 
--(void)dealloc{
+- (void)dealloc{
     if (self.networkReachability) {
         SCNetworkReachabilitySetCallback(self.networkReachability, NULL, NULL);
         SCNetworkReachabilitySetDispatchQueue(self.networkReachability, NULL);
@@ -120,7 +132,7 @@
 
 #pragma mark - JSON
 
--(NSDictionary *)jsonDictionary {
+- (NSDictionary *)jsonDictionary {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_vendor forKey:@"vendor"];
@@ -157,7 +169,7 @@
 
 #pragma mark - Device Info
 
-+(NSString*)carrier {
++ (NSString*)carrier {
     CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [networkInfo subscriberCellularProvider];
     if (carrier.carrierName.length) {
@@ -166,7 +178,7 @@
     return @"No Carrier";
 }
 
-+(NSString*)screenSize {
++ (NSString*)screenSize {
     CGFloat scale = [UIScreen mainScreen].scale;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     NSInteger width = screenSize.width  *scale;
@@ -174,7 +186,7 @@
     return [NSString stringWithFormat:@"%ldx%ld", (unsigned long)width, (unsigned long)height];
 }
 
-+(NSString*)deviceModel {
++ (NSString*)deviceModel {
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
     char *machine = malloc(size);
@@ -184,27 +196,27 @@
     return deviceModel;
 }
 
-+(NSString*)systemVersion {
++ (NSString*)systemVersion {
     return [[UIDevice currentDevice] systemVersion];
 }
 
-+(NSString*)liquidVersion {
++ (NSString*)liquidVersion {
     return kLQVersion;
 }
 
-+(NSString*)systemLanguage {
++ (NSString*)systemLanguage {
     return [[NSLocale preferredLanguages] firstObject];
 }
 
-+(NSString*)locale {
++ (NSString*)locale {
     return [[NSLocale currentLocale] objectForKey:NSLocaleIdentifier];
 }
 
-+(NSString*)deviceName {
++ (NSString*)deviceName {
     return [[UIDevice currentDevice] name];
 }
 
-+(NSString *)appleIFA {
++ (NSString *)appleIFA {
     NSString *ifa = nil;
 #ifndef LIQUID_NO_IFA
     Class ASIdentifierManagerClass = NSClassFromString(@"ASIdentifierManager");
@@ -219,7 +231,7 @@
     return ifa;
 }
 
-+(NSString *)appleIFV {
++ (NSString *)appleIFV {
     NSString *ifv = nil;
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         if (NSClassFromString(@"UIDevice")) {
@@ -233,7 +245,7 @@
     return [NSString generateRandomUUID];
 }
 
-+(NSString*)uid {
++ (NSString*)uid {
     NSString *liquidUUIDKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"UUID"];
     NSString *uid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
     if(uid == nil) {
@@ -249,25 +261,25 @@
 
 #pragma mark - Application Info
 
-+(NSString*)appName{
++ (NSString*)appName {
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
 }
 
-+(NSString*)appBundle{
++ (NSString*)appBundle {
     return [[NSBundle mainBundle] bundleIdentifier];
 }
 
-+(NSString*)appVersion{
++ (NSString*)appVersion {
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 }
 
-+(NSString*)releaseVersion{
++ (NSString*)releaseVersion {
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
 #pragma mark - Reachability
 
--(void)initReachabilityCallback {
+- (void)initReachabilityCallback {
     BOOL reachabilityInitated = NO;
     self.networkReachability = SCNetworkReachabilityCreateWithName(NULL, KLQDeviceReachabilityUrl);
     if (self.networkReachability != NULL) {

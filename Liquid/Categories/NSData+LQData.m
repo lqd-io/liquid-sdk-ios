@@ -7,6 +7,8 @@
 //
 
 #import "NSData+LQData.h"
+#import "LQHelpers.h"
+#import "LQDefaults.h"
 
 @implementation NSData (LQData)
 
@@ -27,6 +29,32 @@
         return hexToken;
     }
     return nil;
+}
+
++ (id)fromJSON:(NSData *)data {
+    if (!data) return nil;
+    __autoreleasing NSError *error = nil;
+    id result = [NSJSONSerialization JSONObjectWithData:data
+                                                options:kNilOptions
+                                                  error:&error];
+    if (error != nil) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error parsing JSON: %@", [error localizedDescription]);
+        return nil;
+    }
+    return result;
+}
+
++ (NSData*)toJSON:(NSDictionary *)object {
+    __autoreleasing NSError *error = nil;
+    NSData *data = (id) [LQHelpers normalizeDataTypes:object];
+    id result = [NSJSONSerialization dataWithJSONObject:data
+                                                options:NSJSONWritingPrettyPrinted
+                                                  error:&error];
+    if (error != nil) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error creating JSON: %@", [error localizedDescription]);
+        return nil;
+    }
+    return result;
 }
 
 @end

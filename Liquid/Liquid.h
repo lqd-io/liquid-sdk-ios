@@ -74,20 +74,6 @@ extern NSString * const LQDidIdentifyUser;
  @property
  
  @abstract
- The base URL used for Liquid API requests.
- 
- @discussion
- Useful if you need to proxy Liquid http requests. Defaults to
- http://api.lqd.io/collect/
- */
-
-@property (atomic, copy) NSString *serverURL;
-
-
-/*!
- @property
- 
- @abstract
  The interval for the Flush timer.
  
  @discussion

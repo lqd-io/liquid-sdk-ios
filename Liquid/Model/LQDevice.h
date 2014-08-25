@@ -12,34 +12,30 @@
 
 @interface LQDevice : LQEntity <NSCoding, NSCopying>
 
--(id)initWithLiquidVersion:(NSString*)liquidVersion;
++ (LQDevice *)sharedInstance;
+- (id)init;
+- (void)setAttribute:(id <NSCoding>)attribute forKey:(NSString *)key;
+- (id)attributeForKey:(NSString *)key;
+- (void)setLocation:(CLLocation *)location;
+- (NSDictionary *)jsonDictionary;
+- (BOOL)reachesInternet;
 
--(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key;
--(id)attributeForKey:(NSString *)key;
--(void)setLocation:(CLLocation *)location;
-
--(NSDictionary*)jsonDictionary;
--(BOOL)reachesInternet;
-
-+(NSString*)deviceModel;
-+(NSString*)uid;
-
-@property(nonatomic, strong, readonly) NSString* vendor;
-@property(nonatomic, strong, readonly) NSString* deviceModel;
-@property(nonatomic, strong, readonly) NSString* systemVersion;
-@property(nonatomic, strong, readonly) NSString* systemLanguage;
-@property(nonatomic, strong, readonly) NSString* locale;
-@property(nonatomic, strong, readonly) NSString* deviceName;
-@property(nonatomic, strong, readonly) NSString* screenSize;
-@property(nonatomic, strong, readonly) NSString* carrier;
-@property(nonatomic, strong, readonly) NSString* internetConnectivity;
-@property(nonatomic, strong, readonly) NSString* uid;
-@property(nonatomic, strong, readonly) NSString* appBundle;
-@property(nonatomic, strong, readonly) NSString* appName;
-@property(nonatomic, strong, readonly) NSString* appVersion;
-@property(nonatomic, strong, readonly) NSString* releaseVersion;
-@property(nonatomic, strong, readonly) NSString* liquidVersion;
-@property(nonatomic, strong) NSString* apnsToken;
-@property(nonatomic, strong, readonly) NSDictionary* attributes;
+@property(nonatomic, strong, readonly) NSString *vendor;
+@property(nonatomic, strong, readonly) NSString *deviceModel;
+@property(nonatomic, strong, readonly) NSString *systemVersion;
+@property(nonatomic, strong, readonly) NSString *systemLanguage;
+@property(nonatomic, strong, readonly) NSString *locale;
+@property(nonatomic, strong, readonly) NSString *deviceName;
+@property(nonatomic, strong, readonly) NSString *screenSize;
+@property(nonatomic, strong, readonly) NSString *carrier;
+@property(nonatomic, strong, readonly) NSString *internetConnectivity;
+@property(nonatomic, strong, readonly) NSString *uid;
+@property(nonatomic, strong, readonly) NSString *appBundle;
+@property(nonatomic, strong, readonly) NSString *appName;
+@property(nonatomic, strong, readonly) NSString *appVersion;
+@property(nonatomic, strong, readonly) NSString *releaseVersion;
+@property(nonatomic, strong, readonly) NSString *liquidVersion;
+@property(nonatomic, strong) NSString *apnsToken;
+@property(nonatomic, strong, readonly) NSDictionary *attributes;
 
 @end
