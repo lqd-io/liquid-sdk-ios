@@ -147,8 +147,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
-        self.backgroundUpdateTask = UIBackgroundTaskInvalid;
-        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+            self.backgroundUpdateTask = UIBackgroundTaskInvalid;
+        }
+
         // Start auto flush timer
         [self startFlushTimer];
 
@@ -292,12 +294,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)beginBackgroundUpdateTask {
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) return;
     self.backgroundUpdateTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:kLQBackgroundTaskName expirationHandler:^{
         [self endBackgroundUpdateTask];
     }];
 }
 
 - (void)endBackgroundUpdateTask {
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) return;
     if (self.backgroundUpdateTask != UIBackgroundTaskInvalid) {
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundUpdateTask];
         self.backgroundUpdateTask = UIBackgroundTaskInvalid;

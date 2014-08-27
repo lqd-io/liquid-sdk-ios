@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 0.9.2-beta: Fix a crash on iOS 6 when going into background
+
+* **[bugfix]** Fix a crash that occurs when an app running on iOS 6 goes into background.
+
 ## 0.9.1-beta: Avoid an infinite loop when User Alias is disabled
 
 * **[bugfix]** Fix an infinite loop when `identifyUserWithIdentifier:alias:` method is called with `alias:NO`
