@@ -475,7 +475,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying anonymous user (%@) with a new identifier (%@)", anonymousUser.identifier, newUserIdentifier);
     dispatch_async(self.queue, ^{
-        NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"unique_id", anonymousUser.identifier, @"unique_id_alias", nil];
+        NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newUserIdentifier, @"unique_id", anonymousUser.identifier, @"unique_id_alias", nil];
         NSString *endpoint = [NSString stringWithFormat:@"%@aliases", self.serverURL];
         [self addToHttpQueue:params
                     endPoint:[NSString stringWithFormat:endpoint, self.serverURL]
