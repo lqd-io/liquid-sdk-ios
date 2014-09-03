@@ -23,10 +23,9 @@
 - (void)addToHttpQueue:(NSData *)jsonData endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
 + (NSString *)liquidUserAgent;
 
-- (BOOL)archiveQueue;
-+ (NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken;
-+ (void)deleteQueueForToken:(NSString *)token;
-+ (BOOL)destroyCachedQueueForAllTokens;
+- (BOOL)archiveHttpQueue;
++ (NSMutableArray*)unarchiveHttpQueueForToken:(NSString*)apiToken;
++ (void)deleteHttpQueueFileForToken:(NSString *)token;
 
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
 - (NSData *)getDataFromEndpoint:(NSString *)endpoint;

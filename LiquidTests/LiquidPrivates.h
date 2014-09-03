@@ -162,13 +162,6 @@ extern NSString * const LQDidIdentifyUser;
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
 - (NSData *)getDataFromEndpoint:(NSString *)endpoint;
     
-#pragma mark - File Management
-    
-+ (NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken;
-+ (BOOL)archiveQueue:(NSMutableArray*)queue forToken:(NSString*)apiToken;
-+ (BOOL)deleteFileIfExists:(NSString *)fileName error:(NSError **)err;
-+ (NSString*)liquidQueueFileForToken:(NSString*)apiToken;
-    
 #pragma mark - Static Helpers
     
 + (void)assertEventAttributesTypes:(NSDictionary *)attributes;

@@ -22,14 +22,13 @@
 - (void)resetHttpQueue;
 - (void)addDictionaryToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
 - (void)addToHttpQueue:(NSData *)jsonData endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
++ (NSString *)liquidUserAgent;
 
-- (BOOL)archiveQueue;
-+ (NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken;
-+ (void)deleteQueueForToken:(NSString *)token;
-+ (BOOL)destroyCachedQueueForAllTokens;
-+ (BOOL)archiveQueue:(NSArray *)queue forToken:(NSString*)apiToken;
+- (BOOL)archiveHttpQueue;
++ (NSMutableArray*)unarchiveHttpQueueForToken:(NSString*)apiToken;
++ (void)deleteHttpQueueFileForToken:(NSString *)token;
 
-- (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
+- (NSInteger)sendDatza:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
 - (NSData *)getDataFromEndpoint:(NSString *)endpoint;
 
 @end

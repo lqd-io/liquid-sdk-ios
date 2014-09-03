@@ -19,7 +19,6 @@ describe(@"Liquid", ^{
     });
     
     beforeAll(^{
-        [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
         [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
@@ -101,7 +100,7 @@ describe(@"Liquid", ^{
                 __block NSDictionary *jsonDictionary;
 
                 beforeEach(^{
-                    [LQNetworking deleteQueueForToken:@"liquid_tests2"];
+                    [LQNetworking deleteHttpQueueFileForToken:@"liquid_tests2"];
                     [liquidInstance.networking resetHttpQueue];
                     [liquidInstance track:@"Click Button"];
                     [NSThread sleepForTimeInterval:0.10f]; // wait for data point to be processed from the queue

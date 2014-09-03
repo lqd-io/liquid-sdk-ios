@@ -9,12 +9,13 @@
 #import <Kiwi/Kiwi.h>
 #import "LQNetworking.h"
 #import "LQDevice.h"
+#import "LQStorage.h"
 
 SPEC_BEGIN(LQNetworkingSpec)
 
 describe(@"LQNetworking", ^{
     beforeEach(^{
-        [LQNetworking destroyCachedQueueForAllTokens];
+        [LQStorage deleteAllLiquidFiles];
     });
 
     describe(@"liquidUserAgent", ^{

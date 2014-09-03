@@ -14,15 +14,14 @@
 
 @interface LQLiquidPackage : LQEntity <NSCoding, NSCopying>
 
--(id)initFromDictionary:(NSDictionary *)dict;
--(id)initWithValues:(NSArray *)values;
--(LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error;
--(NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName;
+- (id)initFromDictionary:(NSDictionary *)dict;
+- (id)initWithValues:(NSArray *)values;
+- (LQValue *)valueForKey:(NSString *)variableName error:(NSError **)error;
+- (NSInteger)invalidateTargetThatIncludesVariable:(NSString *)variableName;
 
-+(LQLiquidPackage *)loadFromDiskForToken:(NSString *)apiToken;
-+(BOOL)destroyCachedLiquidPackageForToken:(NSString *)apiToken;
-+(BOOL)destroyCachedLiquidPackageForAllTokens;
--(BOOL)saveToDiskForToken:(NSString *)apiToken;
+- (BOOL)archiveLiquidPackageForToken:(NSString *)apiToken;
++ (LQLiquidPackage *)unarchiveLiquidPackageForToken:(NSString *)apiToken;
++ (void)deleteLiquidPackageFileForToken:(NSString *)apiToken;
 
 @property(atomic, strong, readonly) NSArray *values;
 @property(atomic, strong, readonly) NSString *liquidVersion;

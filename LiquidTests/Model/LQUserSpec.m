@@ -9,12 +9,13 @@
 #import <Kiwi/Kiwi.h>
 
 #import "LQUserPrivates.h"
+#import "LQStorage.h"
 
 SPEC_BEGIN(LQUserSpec)
 
 describe(@"LQUser", ^{
     beforeEach(^{
-        [LQUser destroyLastUserForAllTokens];
+        [LQStorage deleteAllLiquidFiles];
     });
 
     describe(@"copy", ^{

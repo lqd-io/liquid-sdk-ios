@@ -33,7 +33,6 @@
 #endif
 
 #define kLQDefaultSessionTimeout 30 //seconds
-#define kLQDirectory kLQBundle
 #define kLQSendFallbackValuesInDevelopmentMode YES
 
 #define kLQErrorValueNotFound 1

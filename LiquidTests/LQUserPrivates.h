@@ -20,8 +20,7 @@
 - (BOOL)isAnonymous;
 
 +(LQUser *)loadFromDiskForToken:(NSString *)apiToken;
-+(BOOL)destroyLastUserForToken:(NSString *)apiToken;
-+(BOOL)destroyLastUserForAllTokens;
++(BOOL)destroyLastUserFileForToken:(NSString *)apiToken;
 -(BOOL)saveToDiskForToken:(NSString *)apiToken;
 
 @property(nonatomic, strong) NSString* identifier;

@@ -10,12 +10,13 @@
 #import "LQLiquidPackage.h"
 #import "LQVariable.h"
 #import "LQValue.h"
+#import "LQStorage.h"
 
 SPEC_BEGIN(LQLiquidPackageSpec)
 
 describe(@"LQLiquidPackage", ^{
     beforeEach(^{
-        [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
+        [LQStorage deleteAllLiquidFiles];
     });
 
     describe(@"valueForKey:error:", ^{

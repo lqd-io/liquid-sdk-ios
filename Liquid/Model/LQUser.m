@@ -10,6 +10,7 @@
 #import "LQUser.h"
 #import "LQDefaults.h"
 #import "NSString+LQString.h"
+#import "LQStorage.h"
 
 @interface LQUser()
 
@@ -97,58 +98,42 @@
 
 #pragma mark - Archive to/from disk
 
-+ (LQUser *)loadFromDiskForToken:(NSString *)apiToken {
-    LQUser *user = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] lastUserFileForToken:apiToken]];
+- (BOOL)archiveUserForToken:(NSString *)apiToken {
+    LQLog(kLQLogLevelData, @"<Liquid> Saving User %@ %@ to disk, for token %@", self.identifier, (![self.identified boolValue] ? @" (anonymous)" : @"(identified)"), apiToken);
+    return [NSKeyedArchiver archiveRootObject:self toFile:[LQUser userFileForToken:apiToken]];
+}
+
++ (LQUser *)unarchiveUserForToken:(NSString *)apiToken {
+    NSString *token = apiToken;
+    NSString *filePath = [LQUser userFileForToken:token];
+    LQUser *user = nil;
+    @try {
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        user = [object isKindOfClass:[LQUser class]] ? object : nil;
+    }
+    @catch (NSException *exception) {
+        LQLog(kLQLogLevelError, @"<Liquid> %@: Found invalid Liquid Package on cache. Destroying it...", [exception name]);
+        [LQStorage deleteFileIfExists:filePath error:nil];
+    }
     if (user) {
-        LQLog(kLQLogLevelData, @"<Liquid> Loaded User %@ %@ from disk, for token %@", user.identifier, (![user.identified boolValue] ? @" (anonymous)" : @"(identified)"), apiToken);
+        LQLog(kLQLogLevelData, @"<Liquid> Loaded User %@ %@ from disk, for token %@", user.identifier, (![user.identified boolValue] ? @" (anonymous)" : @"(identified)"), token);
     }
     return user;
 }
 
-+ (BOOL)destroyLastUserForToken:(NSString *)apiToken {
-    BOOL status = [[NSFileManager defaultManager] removeItemAtPath:[LQUser lastUserFileForToken:apiToken] error:NULL];
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached User, for token %@", apiToken);
-    return status;
++ (NSString*)userFileForToken:(NSString *)apiToken {
+    return [LQStorage filePathWithExtension:@"last_user" forToken:apiToken];
 }
 
-+ (BOOL)destroyLastUserForAllTokens {
-    BOOL status = false;
-    for (NSString *path in [LQUser filesInDirectory:[LQUser liquidDirectory]]) {
-        status &= [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
-    }
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Last Users");
-    return status;
-}
-
-- (BOOL)saveToDiskForToken:(NSString *)apiToken {
-    LQLog(kLQLogLevelData, @"<Liquid> Saving User %@ %@ to disk, for token %@", self.identifier, (![self.identified boolValue] ? @" (anonymous)" : @"(identified)"), apiToken);
-    return [NSKeyedArchiver archiveRootObject:self toFile:[LQUser lastUserFileForToken:apiToken]];
-}
-
-+ (NSString*)lastUserFileForToken:(NSString *)apiToken {
-    NSString *liquidDirectory = [LQUser liquidDirectory];
++ (void)deleteUserFileForToken:(NSString *)apiToken {
+    NSString *token = apiToken;
+    NSString *filePath = [LQUser userFileForToken:token];
+    LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached User, for token %@", token);
     NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:liquidDirectory])
-        [[NSFileManager defaultManager] createDirectoryAtPath:liquidDirectory
-                                  withIntermediateDirectories:NO
-                                                   attributes:nil
-                                                        error:&error];
-    NSString *md5apiToken = [NSString md5ofString:apiToken];
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.last_user", md5apiToken]];
-    LQLog(kLQLogLevelPaths,@"<Liquid> File location %@", liquidFile);
-    return liquidFile;
-}
-
-+ (NSString *)liquidDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
-}
-
-+ (NSArray *)filesInDirectory:(NSString *)directoryPath {
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
-    NSArray *files = [fileManager contentsOfDirectoryAtPath:directoryPath error:nil];
-    return files;
+    [LQStorage deleteFileIfExists:filePath error:&error];
+    if (error) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error deleting cached User, for token %@", apiToken);
+    }
 }
 
 #pragma mark - NSCoding & NSCopying

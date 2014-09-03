@@ -22,7 +22,6 @@ describe(@"Liquid", ^{
     });
     
     beforeAll(^{
-        [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
         [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
@@ -47,7 +46,7 @@ describe(@"Liquid", ^{
                 liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
                 [liquid identifyUserWithIdentifier:userId];
                 [liquid stub:@selector(flush)];
-                //                [LQNetworking deleteQueueForToken:@"liquid_tests"];
+                //                [LQNetworking deleteHttpQueueFileForToken:@"liquid_tests"];
                 //                [liquid.networking resetQueue];
                 
                 // Simulate an app going in background and foreground again:

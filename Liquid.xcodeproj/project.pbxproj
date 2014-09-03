@@ -51,6 +51,7 @@
 		A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */; };
 		A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2919AA698700E1F0F2 /* LQDate.m */; };
 		A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */; };
+		A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E789E619BFBBC0006CA1D8 /* LQStorage.m */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A9E98054193E257C0055D1E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -162,6 +163,8 @@
 		A9D12F0E1935076A00D0E0A1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A9D12F121935077600D0E0A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		A9E789E519BFBBC0006CA1D8 /* LQStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQStorage.h; sourceTree = "<group>"; };
+		A9E789E619BFBBC0006CA1D8 /* LQStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQStorage.m; sourceTree = "<group>"; };
 		A9E98050193E257C0055D1E7 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E98051193E257C0055D1E7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidTests-Info.plist"; sourceTree = "<group>"; };
@@ -397,6 +400,8 @@
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
 				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
 				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
+				A9E789E519BFBBC0006CA1D8 /* LQStorage.h */,
+				A9E789E619BFBBC0006CA1D8 /* LQStorage.m */,
 				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
 				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
@@ -590,6 +595,7 @@
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
+				A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,

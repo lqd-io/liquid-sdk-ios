@@ -27,6 +27,7 @@
 #import "NSString+LQString.h"
 #import "NSData+LQData.h"
 #import "LQNetworking.h"
+#import "LQStorage.h"
 
 #if !__has_feature(objc_arc)
 #  error Compile me with ARC, please!
@@ -138,7 +139,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
 
         // Load user from previous launch:
-        _previousUser = [LQUser loadFromDiskForToken:_apiToken];
+        _previousUser = [LQUser unarchiveUserForToken:_apiToken];
         [self autoIdentifyUser];
         if (!self.currentSession) {
             [self startSessionBy:@"App Start"];
@@ -368,7 +369,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)saveCurrentUserToDisk {
     LQUser *user = [self.currentUser copy];
     dispatch_async(self.queue, ^{
-        [user saveToDiskForToken:_apiToken];
+        [user archiveUserForToken:_apiToken];
     });
 }
 
@@ -551,7 +552,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             return nil;
         }
         liquidPackage = [[LQLiquidPackage alloc] initFromDictionary:liquidPackageDictionary];
-        [liquidPackage saveToDiskForToken:_apiToken];
+        [liquidPackage archiveLiquidPackageForToken:_apiToken];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
         if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
@@ -578,10 +579,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     // Ensure legacy:
     if (_loadedLiquidPackage && ![_loadedLiquidPackage liquidVersion]) {
         LQLog(kLQLogLevelNone, @"<Liquid> SDK was updated: destroying cached Liquid Package to ensure legacy");
-        [LQLiquidPackage destroyCachedLiquidPackageForToken:_apiToken];
+        [LQLiquidPackage deleteLiquidPackageFileForToken:_apiToken];
     }
 
-    LQLiquidPackage *cachedLiquidPackage = [LQLiquidPackage loadFromDiskForToken:_apiToken];
+    LQLiquidPackage *cachedLiquidPackage = [LQLiquidPackage unarchiveLiquidPackageForToken:_apiToken];
     if (cachedLiquidPackage) {
         return cachedLiquidPackage;
     }
@@ -645,7 +646,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (numberOfInvalidatedValues > 0) {
         LQLiquidPackage *liquidPackageToStore = [_loadedLiquidPackage copy];
         dispatch_async(self.queue, ^{
-            [liquidPackageToStore saveToDiskForToken:_apiToken];
+            [liquidPackageToStore archiveLiquidPackageForToken:_apiToken];
         });
     }
 
@@ -793,9 +794,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 + (void)softReset {
-    [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
-    [LQUser destroyLastUserForAllTokens];
-    [LQNetworking destroyCachedQueueForAllTokens];
+    [LQStorage deleteAllLiquidFiles];
     [Liquid destroySingleton];
     [LQDate resetUniqueNow];
     [NSThread sleepForTimeInterval:0.2f];
@@ -804,7 +803,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 + (void)hardResetForApiToken:(NSString *)token {
     [self softReset];
-    [LQNetworking deleteQueueForToken:token];
+    [LQNetworking deleteHttpQueueFileForToken:token];
     LQLog(kLQLogLevelInfo, @"<Liquid> Hard reset Liquid");
 }
 

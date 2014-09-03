@@ -16,6 +16,7 @@
 #import "LQDate.h"
 #import "LQHelpers.h"
 #import "LQDevice.h"
+#import "LQStorage.h"
 
 #define kLQServerUrl @"https://api.lqd.io/collect/"
 #define kLQDefaultHttpQueueSizeLimit 500 // number of requests (data points) to keep in queue
@@ -69,7 +70,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 - (instancetype)initFromDiskWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue {
     if ([self isMemberOfClass:[LQNetworking class]]) {
-        _httpQueue = [LQNetworking unarchiveQueueForToken:apiToken];
+        _httpQueue = [LQNetworking unarchiveHttpQueueForToken:apiToken];
         _appToken = apiToken;
         _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
         _flushInterval = kLQDefaultFlushInterval;
@@ -174,7 +175,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
             }
         }
         [self.httpQueue addObjectsFromArray:failedQueue];
-        [self archiveQueue];
+        [self archiveHttpQueue];
     }
 }
 
@@ -195,95 +196,53 @@ NSUInteger const maxTries = kLQHttpMaxTries;
         [self.httpQueue removeObjectAtIndex:0];
     }
     [self.httpQueue addObject:queuedData];
-    [self archiveQueue];
+    [self archiveHttpQueue];
 }
 
 #pragma mark - Save and Restore to/from Disk
 
-- (BOOL)archiveQueue {
-    return [LQNetworking archiveQueue:_httpQueue forToken:_appToken];
-}
-
-+ (BOOL)archiveQueue:(NSArray *)queue forToken:(NSString*)apiToken {
-    if (queue.count > 0) {
-        LQLog(kLQLogLevelData, @"<Liquid> Saving queue with %ld items to disk", (unsigned long)queue.count);
-        return [NSKeyedArchiver archiveRootObject:queue toFile:[LQNetworking liquidQueueFileForToken:apiToken]];
+- (BOOL)archiveHttpQueue {
+    if (_httpQueue.count > 0) {
+        LQLog(kLQLogLevelData, @"<Liquid> Saving queue with %ld items to disk", (unsigned long) _httpQueue.count);
+        return [NSKeyedArchiver archiveRootObject:_httpQueue toFile:[LQNetworking liquidHttpQueueFileForToken:_appToken]];
     } else {
-        [LQNetworking deleteFileIfExists:[LQNetworking liquidQueueFileForToken:apiToken] error:nil];
+        [LQStorage deleteFileIfExists:[LQNetworking liquidHttpQueueFileForToken:_appToken] error:nil];
         return FALSE;
     }
 }
 
-+ (NSMutableArray*)unarchiveQueueForToken:(NSString *)apiToken {
++ (NSMutableArray*)unarchiveHttpQueueForToken:(NSString *)apiToken {
     NSString *token = apiToken;
-    NSMutableArray *plistArray;
-    NSString *filePath = [LQNetworking liquidQueueFileForToken:token];
+    NSString *filePath = [LQNetworking liquidHttpQueueFileForToken:token];
+    NSMutableArray *plistArray = nil;
     @try {
-        plistArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        plistArray = [object isKindOfClass:[NSArray class]] ? object : nil;
+        LQLog(kLQLogLevelData, @"<Liquid> Loading queue with %ld items from disk", (unsigned long) [plistArray count]);
     }
     @catch (NSException *exception) {
         LQLog(kLQLogLevelError, @"<Liquid> %@: Found invalid queue on cache. Destroying it...", [exception name]);
-        [LQNetworking deleteFileIfExists:filePath error:nil];
-        plistArray = nil;
+        [LQStorage deleteFileIfExists:filePath error:nil];
     }
     if(plistArray == nil) {
         plistArray = [NSMutableArray new];
     }
-    LQLog(kLQLogLevelData, @"<Liquid> Loading queue with %ld items from disk", (unsigned long) [plistArray count]);
     return plistArray;
 }
 
-+ (BOOL)deleteFileIfExists:(NSString *)fileName error:(NSError **)err {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    BOOL exists = [fm fileExistsAtPath:fileName];
-    if (exists == YES) return [fm removeItemAtPath:fileName error:err];
-    return exists;
++ (NSString*)liquidHttpQueueFileForToken:(NSString*)apiToken {
+    return [LQStorage filePathWithExtension:@"queue" forToken:apiToken];
 }
 
-+ (NSString*)liquidQueueFileForToken:(NSString*)apiToken {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *liquidDirectory = [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
-    NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:liquidDirectory]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:liquidDirectory withIntermediateDirectories:NO attributes:nil error:&error];
-    }
-    NSString *md5apiToken = [NSString md5ofString:apiToken];
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.queue", md5apiToken]];
-    LQLog(kLQLogLevelPaths, @"<Liquid> File location %@", liquidFile);
-    return liquidFile;
-}
-
-+ (void)deleteQueueForToken:(NSString *)token {
++ (void)deleteHttpQueueFileForToken:(NSString *)token {
     NSString *apiToken = token;
-    NSString *filePath = [LQNetworking liquidQueueFileForToken:apiToken];
-    LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached queue for token %@", apiToken);
+    NSString *filePath = [LQNetworking liquidHttpQueueFileForToken:apiToken];
+    LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached HTTP Queue, for token %@", apiToken);
     NSError *error;
-    [LQNetworking deleteFileIfExists:filePath error:&error];
+    [LQStorage deleteFileIfExists:filePath error:&error];
     if (error) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error deleting cached queue for token %@", apiToken);
+        LQLog(kLQLogLevelError, @"<Liquid> Error deleting cached HTTP Queue, for token %@", apiToken);
     }
-}
-
-+ (NSString *)liquidPackagesDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
-}
-
-+ (NSArray *)filesInDirectory:(NSString *)directoryPath {
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
-    NSArray *files = [fileManager contentsOfDirectoryAtPath:directoryPath error:nil];
-    return files;
-}
-
-+ (BOOL)destroyCachedQueueForAllTokens {
-    BOOL status = false;
-    for (NSString *path in [LQNetworking filesInDirectory:[LQNetworking liquidPackagesDirectory]]) {
-        status &= [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
-    }
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Queue for all tokens");
-    return status;
 }
 
 #pragma mark - Networking

@@ -12,6 +12,7 @@
 #import "LQTarget.h"
 #import "LQVariable.h"
 #import "NSString+LQString.h"
+#import "LQStorage.h"
 
 @interface LQLiquidPackage ()
 
@@ -139,57 +140,40 @@
 
 #pragma mark - Archive to/from disk
 
-+ (LQLiquidPackage *)loadFromDiskForToken:(NSString *)apiToken {
-    LQLiquidPackage *liquidPackage = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] liquidPackageFileForToken:apiToken]];
-    LQLog(kLQLogLevelData, @"<Liquid> Loaded Liquid Package from disk, for token %@", apiToken);
+- (BOOL)archiveLiquidPackageForToken:(NSString *)apiToken {
+    LQLog(kLQLogLevelData, @"<Liquid> Saving Liquid Package to disk");
+    return [NSKeyedArchiver archiveRootObject:self toFile:[LQLiquidPackage liquidPackageFileForToken:apiToken]];
+}
+
++ (LQLiquidPackage *)unarchiveLiquidPackageForToken:(NSString *)apiToken {
+    NSString *token = apiToken;
+    NSString *filePath = [LQLiquidPackage liquidPackageFileForToken:token];
+    LQLiquidPackage *liquidPackage = nil;
+    @try {
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        liquidPackage = [object isKindOfClass:[LQLiquidPackage class]] ? object : nil;
+        LQLog(kLQLogLevelData, @"<Liquid> Loaded Liquid Package from disk, for token %@", token);
+    }
+    @catch (NSException *exception) {
+        LQLog(kLQLogLevelError, @"<Liquid> %@: Found invalid Liquid Package on cache. Destroying it...", [exception name]);
+        [LQStorage deleteFileIfExists:filePath error:nil];
+    }
     return liquidPackage;
 }
 
-+ (BOOL)destroyCachedLiquidPackageForToken:(NSString *)apiToken {
-    BOOL status = [[NSFileManager defaultManager] removeItemAtPath:[[self class] liquidPackageFileForToken:apiToken] error:NULL];
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Liquid Package for token %@", apiToken);
-    return status;
-}
-
-+ (NSArray *)filesInDirectory:(NSString *)directoryPath {
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
-    NSArray *files = [fileManager contentsOfDirectoryAtPath:directoryPath error:nil];
-    return files;
-}
-
-+ (BOOL)destroyCachedLiquidPackageForAllTokens {
-    BOOL status = false;
-    for (NSString *path in [LQLiquidPackage filesInDirectory:[[self class] liquidPackagesDirectory]]) {
-        status &= [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
-    }
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Liquid Package");
-    return status;
-}
-
-- (BOOL)saveToDiskForToken:(NSString *)apiToken {
-    LQLog(kLQLogLevelData, @"<Liquid> Saving Liquid Package to disk");
-    return [NSKeyedArchiver archiveRootObject:self
-                                       toFile:[[self class] liquidPackageFileForToken:apiToken]];
-}
-
-+ (NSString *)liquidPackagesDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
-}
-
 + (NSString*)liquidPackageFileForToken:(NSString *)apiToken {
-    NSString *liquidDirectory = [LQLiquidPackage liquidPackagesDirectory];
+    return [LQStorage filePathWithExtension:@"last_liquid_package" forToken:apiToken];
+}
+
++ (void)deleteLiquidPackageFileForToken:(NSString *)apiToken {
+    NSString *token = apiToken;
+    NSString *filePath = [LQLiquidPackage liquidPackageFileForToken:token];
+    LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached Liquid Package, for token %@", token);
     NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:liquidDirectory])
-        [[NSFileManager defaultManager] createDirectoryAtPath:liquidDirectory
-                                  withIntermediateDirectories:NO
-                                                   attributes:nil
-                                                        error:&error];
-    NSString *md5apiToken = [NSString md5ofString:apiToken];
-    NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.last_liquid_package", md5apiToken]];
-    LQLog(kLQLogLevelPaths,@"<Liquid> File location %@",liquidFile);
-    return liquidFile;
+    [LQStorage deleteFileIfExists:filePath error:&error];
+    if (error) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error deleting cached Liquid Package, for token %@", apiToken);
+    }
 }
 
 @end

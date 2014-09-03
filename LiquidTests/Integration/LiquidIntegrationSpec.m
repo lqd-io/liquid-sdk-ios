@@ -20,7 +20,6 @@ describe(@"Liquid", ^{
 
     context(@"given a Liquid Package with 2 variables", ^{
         beforeAll(^{
-            [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
             [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
             [LQDevice stub:@selector(appName) andReturn:[@"LiquidTest" copy]];
             [LQDevice stub:@selector(appBundle) andReturn:[kLQBundle copy]];
@@ -85,7 +84,7 @@ describe(@"Liquid", ^{
                 liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
                 [liquid stub:@selector(flush) andReturn:nil];
                 [liquid.networking stub:@selector(flush)];
-                [liquid.networking stub:@selector(archiveQueue)];
+                [liquid.networking stub:@selector(archiveHttpQueue)];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];

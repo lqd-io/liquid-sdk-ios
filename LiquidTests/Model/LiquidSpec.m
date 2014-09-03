@@ -26,7 +26,6 @@ describe(@"Liquid", ^{
     });
 
     beforeAll(^{
-        [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
         [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
@@ -67,7 +66,7 @@ describe(@"Liquid", ^{
             beforeEach(^{
                 liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
                 [liquid stub:@selector(saveCurrentUserToDisk) andReturn:nil];
-                [LQUser stub:@selector(loadFromDiskForToken:) andReturn:nil];
+                [LQUser stub:@selector(unarchiveUserForToken:) andReturn:nil];
             });
 
             it(@"should not create an identified user with if the ID is an auto generated ID", ^{
