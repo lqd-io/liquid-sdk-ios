@@ -131,7 +131,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
-        self.backgroundUpdateTask = UIBackgroundTaskInvalid;
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+            self.backgroundUpdateTask = UIBackgroundTaskInvalid;
+        }
+
         if(!_loadedLiquidPackage) {
             [self loadLiquidPackageSynced:YES];
         }
@@ -215,12 +218,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)beginBackgroundUpdateTask {
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) return;
     self.backgroundUpdateTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:kLQBackgroundTaskName expirationHandler:^{
         [self endBackgroundUpdateTask];
     }];
 }
 
 - (void)endBackgroundUpdateTask {
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) return;
     if (self.backgroundUpdateTask != UIBackgroundTaskInvalid) {
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundUpdateTask];
         self.backgroundUpdateTask = UIBackgroundTaskInvalid;
@@ -394,10 +399,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying anonymous user (%@) with a new identifier (%@)", anonymousUser.identifier, newUserIdentifier);
     dispatch_async(self.queue, ^{
-        NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newIdentifier, @"unique_id", anonymousUser.identifier, @"unique_id_alias", nil];
-        [_networking addToHttpQueue:params
-                    endPoint:@"aliases"
-                  httpMethod:@"POST"];
+        NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:newUserIdentifier, @"unique_id", anonymousUser.identifier, @"unique_id_alias", nil];
+        [_networking addToHttpQueue:params endPoint:@"aliases" httpMethod:@"POST"];
     });
 }
 
