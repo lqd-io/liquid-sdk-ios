@@ -140,7 +140,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
 
         // Load user from previous launch:
-        _previousUser = [self loadLastUserFromDisk];
+        _previousUser = [LQUser loadFromDiskForToken:_apiToken];
+        _currentUser = [_previousUser copy];
         [self autoIdentifyUser];
         if (!self.currentSession) {
             [self startSession];
@@ -373,12 +374,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     });
 }
 
-- (LQUser *)loadLastUserFromDisk {
-    LQUser *user = [LQUser loadFromDiskForToken:_apiToken];
-    self.currentUser = [user copy];
-    return user;
-}
-
 #pragma mark - User aliasing of anonymous users
 
 - (void)aliasUser {
@@ -515,15 +510,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     __block __strong LQSession *session = [self.currentSession copy];
     __block __strong NSArray *loadedValues = [_loadedLiquidPackage.values copy];
     dispatch_async(self.queue, ^{
-        LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
-                                                              user:user
-                                                            device:device
-                                                           session:session
-                                                             event:event
-                                                            values:loadedValues];
-        [_networking addToHttpQueue:[dataPoint jsonDictionary]
-                endPoint:@"data_points"
-              httpMethod:@"POST"];
+        LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now user:user device:device session:session event:event values:loadedValues];
+        NSDictionary *json = [dataPoint jsonDictionary];
+        [_networking addToHttpQueue:json endPoint:@"data_points" httpMethod:@"POST"];
     });
 }
 
@@ -551,9 +540,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
         [[NSNotificationCenter defaultCenter] postNotificationName:LQDidReceiveValues object:nil];
         if([self.delegate respondsToSelector:@selector(liquidDidReceiveValues)]) {
-            [self.delegate performSelectorOnMainThread:@selector(liquidDidReceiveValues)
-                                            withObject:nil
-                                         waitUntilDone:NO];
+            [self.delegate performSelectorOnMainThread:@selector(liquidDidReceiveValues) withObject:nil waitUntilDone:NO];
         }
         if(_autoLoadValues) {
             [self loadLiquidPackageSynced:NO];
@@ -608,9 +595,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[_loadedLiquidPackage dictOfVariablesAndValues], @"values", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidLoadValues object:nil userInfo:userInfo];
     if([self.delegate respondsToSelector:@selector(liquidDidLoadValues)]) {
-        [self.delegate performSelectorOnMainThread:@selector(liquidDidLoadValues)
-                                        withObject:nil
-                                     waitUntilDone:NO];
+        [self.delegate performSelectorOnMainThread:@selector(liquidDidLoadValues) withObject:nil waitUntilDone:NO];
     }
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", [_loadedLiquidPackage dictOfVariablesAndValues]);
 }
@@ -637,22 +622,21 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Targets
 
 - (void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    __block __strong LQLiquidPackage *loadedLiquidPackage;
+    __block __strong LQLiquidPackage *newLiquidPackage;
+    NSInteger numberOfInvalidatedValues;
     @synchronized(_loadedLiquidPackage) {
-        loadedLiquidPackage = [_loadedLiquidPackage copy];
+        newLiquidPackage = [_loadedLiquidPackage copy];
+        numberOfInvalidatedValues = [newLiquidPackage invalidateTargetThatIncludesVariable:variableName];
+        _loadedLiquidPackage = newLiquidPackage;
     }
-    NSInteger numberOfInvalidatedValues = [loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-    @synchronized(_loadedLiquidPackage) {
-        _loadedLiquidPackage = loadedLiquidPackage;
-    }
-    
-    if (numberOfInvalidatedValues > 0) {
-        LQLiquidPackage *liquidPackageToStore = [loadedLiquidPackage copy];
+
+    if (numberOfInvalidatedValues > 0) { // if not included on any target
+        __block __strong LQLiquidPackage *liquidPackageToStore = [newLiquidPackage copy];
         dispatch_async(self.queue, ^() {
             [liquidPackageToStore saveToDiskForToken:_apiToken];
         });
     }
-    
+
     if (numberOfInvalidatedValues > 1) { // if included on a target
         dispatch_async(dispatch_get_main_queue(), ^{
             [self notifyDelegatesAndObserversAboutNewValues];
