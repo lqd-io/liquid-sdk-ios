@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LQEntity : NSObject
+@interface LQEntity : NSObject <NSCopying>
 
 + (BOOL)assertAttributeType:(id)attribute andKey:(NSString *)key;
 + (NSDictionary *)assertAttributesTypesAndKeys:(NSDictionary *)attributes;

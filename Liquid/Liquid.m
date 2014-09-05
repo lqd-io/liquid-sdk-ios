@@ -100,17 +100,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)invalidateTargetThatIncludesVariable:(NSString *)variableName {
-    __block __strong LQLiquidPackage *loadedLiquidPackage;
+    NSInteger numberOfInvalidatedValues;
     @synchronized(_loadedLiquidPackage) {
-        loadedLiquidPackage = [_loadedLiquidPackage copy];
-    }
-    NSInteger numberOfInvalidatedValues = [loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
-    @synchronized(_loadedLiquidPackage) {
-        _loadedLiquidPackage = loadedLiquidPackage;
+        numberOfInvalidatedValues = [_loadedLiquidPackage invalidateTargetThatIncludesVariable:variableName];
     }
 
     if (numberOfInvalidatedValues > 0) {
-        LQLiquidPackage *liquidPackageToStore = [loadedLiquidPackage copy];
+        __block LQLiquidPackage *liquidPackageToStore = [_loadedLiquidPackage copy];
         dispatch_async(self.queue, ^() {
             [liquidPackageToStore saveToDiskForToken:_apiToken];
         });
@@ -321,16 +317,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 -(void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
-    self.previousUser = self.currentUser;
+    self.previousUser = [self.currentUser copy];
+    NSString *userIdentifier = self.currentUser.identifier;
     LQUser *newUser = [user copy];
-    LQUser *currentUser = [self.currentUser copy];
-    if ([newUser.identifier isEqualToString:currentUser.identifier]) {
+    if ([newUser.identifier isEqualToString:userIdentifier]) {
         self.currentUser.attributes = newUser.attributes; // just updating current user attributes
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
     } else {
         [self endSessionNow];
         self.currentUser = newUser;
         [self startSession];
+        LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
     }
     [self saveCurrentUserToDisk];
     [self requestNewLiquidPackage];
@@ -344,10 +341,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                      waitUntilDone:NO];
     }
 
-    if (alias && ![newUser.identifier isEqualToString:currentUser.identifier]) {
+    if (alias && ![newUser.identifier isEqualToString:userIdentifier]) {
         [self aliasUser];
     }
-    LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
+    
 }
 
 #pragma mark - User identifying methods (alias methods)
@@ -452,7 +449,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (LQUser *)loadLastUserFromDisk {
     LQUser *user = [LQUser loadFromDiskForToken:_apiToken];
     self.currentUser = [user copy];
-    return user;
+    return self.currentUser;
 }
 
 #pragma mark - User aliasing of anonymous users
@@ -572,7 +569,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         return;
     }
 
-    __block NSDate *now;
+    NSDate *now;
     if (eventDate) {
         now = [eventDate copy];
     } else {
@@ -585,7 +582,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [NSDateFormatter iso8601StringFromDate:now]);
     }
     
-    __block NSString *finalEventName = eventName;
+    NSString *finalEventName = eventName;
     if (eventName == nil || [eventName length] == 0) {
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
         finalEventName = @"unnamedEvent";
@@ -601,10 +598,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                                        session:session
                                                          event:event
                                                         values:loadedValues];
-    __block __strong NSDictionary *json;
-    @synchronized(_currentUser) {
-        json = [dataPoint jsonDictionary];
-    }
+    __block NSDictionary *json = [dataPoint jsonDictionary];
     dispatch_async(self.queue, ^{
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
         [self addToHttpQueue:json endPoint:endPoint httpMethod:@"POST"];
@@ -1129,7 +1123,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             [newDictionary setObject:element forKey:key];
         }
     }
-    return newDictionary;
+    return [NSDictionary dictionaryWithDictionary:newDictionary];
 }
 
 + (NSUInteger)randomInt:(NSUInteger)max {

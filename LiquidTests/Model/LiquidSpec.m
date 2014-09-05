@@ -251,22 +251,17 @@ describe(@"Liquid", ^{
         });
 
         context(@"given a Liquid instance", ^{
-            __block Liquid *liquid;
-            
-            beforeEach(^{
-                liquid = [[Liquid alloc] initWithToken:@"abcdef"];
-                //[liquid stub:@selector(saveCurrentUserToDisk) andReturn:nil];
-                //[liquid stub:@selector(loadLastUserFromDisk) andReturn:nil];
-                //[[NSNotificationCenter defaultCenter] stub:@selector(postNotificationName:object:userInfo:) andReturn:nil];
-            });
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"abcdef"]; });
 
             it(@"should not create an identified user with if the ID is an auto generated ID", ^{
                 dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 BOOL failed;
                 for(NSInteger i = 0; i < 200; i++) {
+                    LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
                     dispatch_async(queue1, ^{
-                        LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
+                        NSLog(@"Start Iteration %d %@",i,user);
                         [liquid identifyUserSynced:user alias:NO];
+                        NSLog(@"Finished Iteration %d",i);
                     });
                 }
                 [[theValue(failed) should] beNo];

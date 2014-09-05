@@ -364,26 +364,4 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     [aCoder encodeObject:_attributes forKey:@"attributes"];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-    LQDevice *device = [[[self class] allocWithZone:zone] init];
-    device->_vendor = [_vendor copyWithZone:zone];
-    device->_deviceModel = [_deviceModel copyWithZone:zone];
-    device->_systemVersion = [_systemVersion copyWithZone:zone];
-    device->_systemLanguage = [_systemLanguage copyWithZone:zone];
-    device->_locale = [_locale copyWithZone:zone];
-    device->_deviceName = [_deviceName copyWithZone:zone];
-    device->_carrier = [_carrier copyWithZone:zone];
-    device->_screenSize = [_screenSize copyWithZone:zone];
-    device->_uid = [_uid copyWithZone:zone];
-    device->_appBundle = [_appBundle copyWithZone:zone];
-    device->_appName = [_appName copyWithZone:zone];
-    device->_appVersion = [_appVersion copyWithZone:zone];
-    device->_releaseVersion = [_releaseVersion copyWithZone:zone];
-    device->_liquidVersion = [_liquidVersion copyWithZone:zone];
-    device->_internetConnectivity = [_internetConnectivity copyWithZone:zone];
-    device->_apnsToken = [_apnsToken copyWithZone:zone];
-    device->_attributes = [_attributes copyWithZone:zone];
-    return device;
-}
-
 @end

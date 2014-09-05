@@ -51,12 +51,17 @@
 
 #pragma mark - Attributes
 
+-(void)setAttributes:(NSDictionary *)attributes {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:attributes];
+    _attributes = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+}
+
 -(void)setAttribute:(id <NSCoding>)attribute forKey:(NSString *)key {
     if (![LQUser assertAttributeType:attribute andKey:key]) return;
 
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
     [mutableAttributes setObject:attribute forKey:key];
-    _attributes = mutableAttributes;
+    _attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
 }
 
 -(id)attributeForKey:(NSString *)key {
@@ -155,14 +160,6 @@
     [aCoder encodeObject:_identifier forKey:@"identifier"];
     [aCoder encodeObject:_attributes forKey:@"attributes"];
     [aCoder encodeObject:_identified forKey:@"identified"];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    LQUser *user = [[[self class] allocWithZone:zone] init];
-    user->_identifier = [_identifier copyWithZone:zone];
-    user->_attributes = [_attributes copyWithZone:zone];
-    user->_identified = [_identified copyWithZone:zone];
-    return user;
 }
 
 @end

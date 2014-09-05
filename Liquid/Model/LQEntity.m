@@ -68,7 +68,12 @@
             [newDict removeObjectForKey:k];
         }
     }
-    return newDict;
+    return [NSDictionary dictionaryWithDictionary:newDict];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 @end

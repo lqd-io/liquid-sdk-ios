@@ -103,14 +103,4 @@
     [aCoder encodeObject:_attributes forKey:@"attributes"];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-    LQSession *session = [[[self class] allocWithZone:zone] init];
-    session->_identifier = [_identifier copyWithZone:zone];
-    session->_start = [_start copyWithZone:zone];
-    session->_end = [_end copyWithZone:zone];
-    session->_timeout = [_timeout copyWithZone:zone];
-    session->_attributes = [_attributes copyWithZone:zone];
-    return session;
-}
-
 @end

@@ -43,9 +43,8 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    LQTarget *target = [[[self class] allocWithZone:zone] init];
-    target->_identifier = [_identifier copyWithZone:zone];
-    return target;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 #pragma mark - JSON

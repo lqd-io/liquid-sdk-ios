@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define kLQVersion @"0.9.2-beta"
+#define kLQVersion @"0.9.2.1-beta"
 #define kLQBundle @"io.lqd.ios"
 #define kLQServerUrl @"https://api.lqd.io/collect/"
 #define kLQDevicePlatform @"iOS"
@@ -28,7 +28,7 @@
 #define kLQLogLevelNone        0
 
 #ifdef DEBUG
-#    define kLQLogLevel kLQLogLevelError
+#    define kLQLogLevel kLQLogLevelAssert
 #else
 #    define kLQLogLevel kLQLogLevelAssert
 #endif
