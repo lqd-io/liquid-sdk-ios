@@ -8,10 +8,6 @@
 SPEC_BEGIN(LiquidTargetsInvalidationSpec)
 
 describe(@"Liquid", ^{
-    let(apiToken, ^id{
-        return @"aaaaaaaaaaaaaaaaaaaaaaa";
-    });
-    
     let(deviceId, ^id{
         return [LQDevice uid];
     });
@@ -47,9 +43,8 @@ describe(@"Liquid", ^{
                 return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
             }];
 
-            liquidInstance = [[Liquid alloc] initWithToken:apiToken];
-            [liquidInstance stub:@selector(flush) andReturn:nil];
-            [[Liquid sharedInstance] stub:@selector(flush)];
+            liquidInstance = [[Liquid alloc] initWithToken:@"abcdefghi123456"];
+            [liquidInstance stub:@selector(flush)];
 
             // Simulate an app going in background and foreground again:
             [NSThread sleepForTimeInterval:0.1f];

@@ -141,7 +141,7 @@ describe(@"Liquid", ^{
         it(@"should identify User (anonymous) with the automatically generated identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+            [liquidInstance stub:@selector(flush)];
             [liquidInstance track:@"openApplication"];
             [[liquidInstance.userIdentifier shouldNot] equal:@"abcdef123456"];
         });
@@ -151,7 +151,7 @@ describe(@"Liquid", ^{
         it(@"should identify User with the correct identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+            [liquidInstance stub:@selector(flush)];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [[liquidInstance.userIdentifier should] equal:@"john"];
         });
@@ -159,7 +159,7 @@ describe(@"Liquid", ^{
         it(@"should keep the correct identifier after 1 second", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+            [liquidInstance stub:@selector(flush)];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [NSThread sleepForTimeInterval:1.0f];
             [[liquidInstance.userIdentifier should] equal:@"john"];
@@ -259,74 +259,10 @@ describe(@"Liquid", ^{
                 for(NSInteger i = 0; i < 200; i++) {
                     LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
                     dispatch_async(queue1, ^{
-                        NSLog(@"Start Iteration %d %@",i,user);
                         [liquid identifyUserSynced:user alias:NO];
-                        NSLog(@"Finished Iteration %d",i);
                     });
                 }
                 [[theValue(failed) should] beNo];
-            });
-        });
-    });
-
-    describe(@"uniqueNow", ^{
-        context(@"given a Liquid singleton", ^{
-            beforeEach(^{
-                [Liquid softReset];
-                [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
-                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
-                [NSThread sleepForTimeInterval:1.0f];
-            });
-
-            it(@"should start with 0 milliseconds when uniqueNow method was never used", ^{
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:0]];
-            });
-
-            it(@"should increment uniqueNowIncrement by 1 when uniqueNow method is used", ^{
-                [[Liquid sharedInstance] uniqueNow];
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:1]];
-            });
-
-            it(@"should increment uniqueNowIncrement by 2 when uniqueNow method is used two times", ^{
-                [[Liquid sharedInstance] uniqueNow];
-                [[Liquid sharedInstance] uniqueNow];
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:2]];
-            });
-
-            context(@"given a frozen time", ^{
-                __block NSDate *fixedDate = [NSDate new];
-
-                beforeEach(^{
-                    [Liquid sharedInstance].uniqueNowIncrement = [NSNumber numberWithInteger:0];
-                    [NSDate stub:@selector(new) withBlock:^id(NSArray *params) {
-                        return [fixedDate copy];
-                    }];
-                });
-
-                it(@"should increment 1 millisecond when uniqueNow method is used two times", ^{
-                    [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.001f]];
-                });
-
-                it(@"should increment 2 milliseconds when uniqueNow method is used two times", ^{
-                    [[Liquid sharedInstance] uniqueNow];
-                    [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.002f]];
-                });
-
-                context(@"given uniqueNowIncrement at 998", ^{
-                    beforeEach(^{
-                        [Liquid sharedInstance].uniqueNowIncrement = [NSNumber numberWithInteger:998];
-                    });
-
-                    it(@"should increment be very near the next second", ^{
-                        [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.999f]];
-                    });
-
-                    it(@"should return to the initial date", ^{
-                        [[Liquid sharedInstance] uniqueNow];
-                        [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.0f]];
-                    });
-                });
             });
         });
     });

@@ -30,61 +30,63 @@ describe(@"Liquid", ^{
             }];
         });
 
-        context(@"given a Liquid singleton with an anonymous user", ^{
-            beforeAll(^{
-                [Liquid softReset];
-                [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
-                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
+        context(@"given a Liquid instance with an anonymous user", ^{
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"]; });
+
+            beforeEach(^{
+                [liquid stub:@selector(flush) andReturn:nil];
             });
 
             context(@"given the very first launch of the app", ^{
                 it(@"should use fallback values", ^{
-                    [[[[Liquid sharedInstance] stringForKey:@"welcomeText" fallback:@"Fallback text"] should] equal:@"Fallback text"];
+                    [[[liquid stringForKey:@"welcomeText" fallback:@"Fallback text"] should] equal:@"Fallback text"];
                 });
             });
-            
+
             context(@"given the second launch of the app (with 2 variables loaded in memory)", ^{
                 beforeAll(^{
                     // Simulate an app going in background and foreground again:
                     [NSThread sleepForTimeInterval:0.1f];
-                    [[Liquid sharedInstance] applicationDidEnterBackground:nil];
-                    [[Liquid sharedInstance] applicationWillEnterForeground:nil];
+                    [liquid applicationDidEnterBackground:nil];
+                    [liquid applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
 
                 it(@"should use a variable from the Liquid Package if it matches name and type", ^{
                     NSString *fallbackValue = @"A fallback value";
                     NSString *serverValue = @"Be very welcome";
-                    NSString *title = [[Liquid sharedInstance] stringForKey:@"welcomeMessage" fallback:fallbackValue];
+                    NSString *title = [liquid stringForKey:@"welcomeMessage" fallback:fallbackValue];
                     [[title should] equal:serverValue];
                 });
                 
                 it(@"should use the fallback value if the variable from the Liquid Package if data type doesn't match", ^{
                     NSString *fallbackValue = @"Welcome to Liquid";
-                    NSString *title = [[Liquid sharedInstance] stringForKey:@"discount" fallback:fallbackValue];
+                    NSString *title = [liquid stringForKey:@"discount" fallback:fallbackValue];
                     [[title should] equal:fallbackValue];
                 });
                 
                 it(@"should use the fallback value if the variable from the Liquid Package if variable does not exist", ^{
                     NSString *fallbackValue = @"A fallback value";
-                    NSString *title = [[Liquid sharedInstance] stringForKey:@"anUnkownVariable" fallback:fallbackValue];
+                    NSString *title = [liquid stringForKey:@"anUnkownVariable" fallback:fallbackValue];
                     [[title should] equal:fallbackValue];
                 });
             });
         });
 
-        context(@"given a Liquid singleton with an identified user", ^{
-            __block __strong Liquid *liquidInstance;
+        context(@"given a Liquid Package with an identified user", ^{
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"]; });
+
+            beforeEach(^{
+                [liquid stub:@selector(flush) andReturn:nil];
+            });
 
             beforeAll(^{
-                liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
-                [liquidInstance stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+                liquid = [[Liquid alloc] initWithToken:@"abcdef123456"];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [liquidInstance applicationDidEnterBackground:nil];
-                [liquidInstance applicationWillEnterForeground:nil];
+                [liquid applicationDidEnterBackground:nil];
+                [liquid applicationWillEnterForeground:nil];
                 [NSThread sleepForTimeInterval:0.1f];
             });
 
@@ -93,10 +95,10 @@ describe(@"Liquid", ^{
                 for(NSInteger i = 0; i < 200; i++) {
                     dispatch_async(queue1, ^{
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [liquidInstance applicationDidEnterBackground:nil];
+                            [liquid applicationDidEnterBackground:nil];
                         });
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [liquidInstance applicationWillEnterForeground:nil];
+                            [liquid applicationWillEnterForeground:nil];
                         });
                     });
                 }
@@ -111,28 +113,28 @@ describe(@"Liquid", ^{
                 dispatch_queue_t queue3 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
                     dispatch_async(queue3, ^{
-                        [liquidInstance requestValues];
+                        [liquid requestValues];
                     });
                 }
 
                 dispatch_queue_t queue4 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
                     dispatch_async(queue4, ^{
-                        [liquidInstance loadValues];
+                        [liquid loadValues];
                     });
                 }
 
                 dispatch_queue_t queue5 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
                     dispatch_async(queue5, ^{
-                        [liquidInstance stringForKey:@"welcomeText" fallback:@"A fallback value"];
+                        [liquid stringForKey:@"welcomeText" fallback:@"A fallback value"];
                     });
                 }
 
                 dispatch_queue_t queue6 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
                     dispatch_async(queue6, ^{
-                        [liquidInstance stringForKey:@"unknownVariable" fallback:@"A fallback value"];
+                        [liquid stringForKey:@"unknownVariable" fallback:@"A fallback value"];
                     });
                 }
 
