@@ -45,6 +45,7 @@ extern NSString * const LQDidIdentifyUser;
 @property(nonatomic, strong) NSString *apiToken;
 @property(nonatomic, assign) BOOL developmentMode;
 @property(nonatomic, strong) LQUser *currentUser;
+@property(nonatomic, strong) LQUser *previousUser;
 @property(nonatomic, strong) LQDevice *device;
 @property(nonatomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
@@ -92,6 +93,7 @@ extern NSString * const LQDidIdentifyUser;
 - (void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias;
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes;
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias;
+- (void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias;
 - (void)aliasUser;
 - (void)aliasUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier;
 
@@ -179,5 +181,9 @@ extern NSString * const LQDidIdentifyUser;
 + (void)hardResetForApiToken:(NSString *)token;
 
 - (NSDate *)uniqueNow;
+- (void)saveCurrentUserToDisk;
+- (LQUser *)loadLastUserFromDisk;
+- (void)beginBackgroundUpdateTask;
+- (void)endBackgroundUpdateTask;
 
 @end

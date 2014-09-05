@@ -89,9 +89,9 @@ describe(@"Liquid", ^{
             });
 
             it(@"should be possible to perform multiple operations simultaneously, without race conditions", ^{
-                dispatch_queue_t queue = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue, ^{
+                    dispatch_async(queue1, ^{
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [liquidInstance applicationDidEnterBackground:nil];
                         });
@@ -100,31 +100,42 @@ describe(@"Liquid", ^{
                         });
                     });
                 }
+
+                dispatch_queue_t queue2 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 20; i++) {
-                    dispatch_async(queue, ^{
+                    dispatch_async(queue2, ^{
                         [NSThread sleepForTimeInterval:0.1f];
                     });
                 }
+
+                dispatch_queue_t queue3 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue, ^{
+                    dispatch_async(queue3, ^{
                         [liquidInstance requestValues];
                     });
                 }
+
+                dispatch_queue_t queue4 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue, ^{
+                    dispatch_async(queue4, ^{
                         [liquidInstance loadValues];
                     });
                 }
+
+                dispatch_queue_t queue5 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue, ^{
+                    dispatch_async(queue5, ^{
                         [liquidInstance stringForKey:@"welcomeText" fallback:@"A fallback value"];
                     });
                 }
+
+                dispatch_queue_t queue6 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
                 for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue, ^{
+                    dispatch_async(queue6, ^{
                         [liquidInstance stringForKey:@"unknownVariable" fallback:@"A fallback value"];
                     });
                 }
+
                 [NSThread sleepForTimeInterval:6.0f];
             });
         });

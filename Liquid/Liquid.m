@@ -33,10 +33,10 @@
 
 @property(nonatomic, strong) NSString *apiToken;
 @property(nonatomic, assign) BOOL developmentMode;
-@property(nonatomic, strong) LQUser *currentUser;
-@property(nonatomic, strong) LQUser *previousUser;
-@property(nonatomic, strong) LQDevice *device;
-@property(nonatomic, strong) LQSession *currentSession;
+@property(atomic, strong) LQUser *currentUser;
+@property(atomic, strong) LQUser *previousUser;
+@property(atomic, strong) LQDevice *device;
+@property(atomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
 @property(nonatomic, assign) BOOL inBackground;
 #if OS_OBJECT_USE_OBJC
@@ -590,22 +590,24 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
         finalEventName = @"unnamedEvent";
     }
-    __block __strong LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
-    __block __strong LQUser *user = [self.currentUser copy];
-    __block __strong LQDevice *device = [self.device copy];
-    __block __strong LQSession *session = [self.currentSession copy];
-    __block __strong NSArray *loadedValues = [_loadedLiquidPackage.values copy];
+    LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
+    LQUser *user = self.currentUser;
+    LQDevice *device = self.device;
+    LQSession *session = self.currentSession;
+    NSArray *loadedValues = _loadedLiquidPackage.values;
+    LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
+                                                          user:user
+                                                        device:device
+                                                       session:session
+                                                         event:event
+                                                        values:loadedValues];
+    __block __strong NSDictionary *json;
+    @synchronized(_currentUser) {
+        json = [dataPoint jsonDictionary];
+    }
     dispatch_async(self.queue, ^{
-        LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
-                                                              user:user
-                                                            device:device
-                                                           session:session
-                                                             event:event
-                                                            values:loadedValues];
         NSString *endPoint = [NSString stringWithFormat:@"%@data_points", self.serverURL, nil];
-        [self addToHttpQueue:[dataPoint jsonDictionary]
-                endPoint:endPoint
-              httpMethod:@"POST"];
+        [self addToHttpQueue:json endPoint:endPoint httpMethod:@"POST"];
     });
 }
 

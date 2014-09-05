@@ -38,6 +38,36 @@ describe(@"Liquid", ^{
         [Liquid softReset];
     });
 
+    describe(@"aliasUser:withIdentifier:", ^{
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid;
+
+            beforeEach(^{
+                liquid = [[Liquid alloc] initWithToken:@"abcdef"];
+                [liquid stub:@selector(saveCurrentUserToDisk) andReturn:nil];
+                [liquid stub:@selector(loadLastUserFromDisk) andReturn:nil];
+            });
+
+            it(@"should not create an identified user with if the ID is an auto generated ID", ^{
+                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                __block NSNumber *failed = @NO;
+                for(NSInteger i = 0; i < 100; i++) {
+                    dispatch_async(queue1, ^{
+                        [liquid resetUser];
+                        [liquid identifyUserWithIdentifier:@"123" attributes:@{ @"age": @23 } alias:NO];
+                        [liquid aliasUser];
+                        if (liquid.previousUser.isIdentified || [liquid.previousUser.identifier isEqualToString:@"123"]) {
+                            @synchronized(failed) {
+                                failed = @YES;
+                            }
+                        }
+                    });
+                }
+                [[failed should] equal:@NO];
+            });
+        });
+    });
+
     describe(@"liquidUserAgent", ^{
         it(@"should return a valid User-Agent", ^{
             [Liquid stub:@selector(liquidVersion) andReturn:@"0.8.0-beta"];
@@ -55,9 +85,11 @@ describe(@"Liquid", ^{
             beforeAll(^{
                 [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
                 [[Liquid sharedInstance] identifyUser];
-                [[Liquid sharedInstance] setSessionTimeout:1.0f];
+                [[Liquid sharedInstance] setSessionTimeout:2.0f];
                 [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
                 [[Liquid sharedInstance] stub:@selector(flush)];
+                [[Liquid sharedInstance] stub:@selector(beginBackgroundUpdateTask)];
+                [[Liquid sharedInstance] stub:@selector(track:attributes:allowLqdEvents:)];
                 [NSThread sleepForTimeInterval:1.0f];
             });
 
@@ -91,7 +123,7 @@ describe(@"Liquid", ^{
 
                     [NSThread sleepForTimeInterval:0.1f];
                     [[Liquid sharedInstance] applicationDidEnterBackground:nil];
-                    [NSThread sleepForTimeInterval:2.0f];
+                    [NSThread sleepForTimeInterval:3.0f];
                     [[Liquid sharedInstance] applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
@@ -213,6 +245,29 @@ describe(@"Liquid", ^{
                     [[[liquidInstance shouldNot] receive] aliasUser];
                     [liquidInstance identifyUserWithIdentifier:@"123"];
                 });
+            });
+        });
+
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid;
+            
+            beforeEach(^{
+                liquid = [[Liquid alloc] initWithToken:@"abcdef"];
+                //[liquid stub:@selector(saveCurrentUserToDisk) andReturn:nil];
+                //[liquid stub:@selector(loadLastUserFromDisk) andReturn:nil];
+                //[[NSNotificationCenter defaultCenter] stub:@selector(postNotificationName:object:userInfo:) andReturn:nil];
+            });
+
+            it(@"should not create an identified user with if the ID is an auto generated ID", ^{
+                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                BOOL failed;
+                for(NSInteger i = 0; i < 200; i++) {
+                    dispatch_async(queue1, ^{
+                        LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
+                        [liquid identifyUserSynced:user alias:NO];
+                    });
+                }
+                [[theValue(failed) should] beNo];
             });
         });
     });
