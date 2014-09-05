@@ -81,15 +81,17 @@ describe(@"Liquid", ^{
     });
 
     describe(@"applicationWillEnterForeground:", ^{
-        context(@"given a Liquid singleton", ^{
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid;
+
             beforeAll(^{
-                [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
-                [[Liquid sharedInstance] identifyUser];
-                [[Liquid sharedInstance] setSessionTimeout:2.0f];
-                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
-                [[Liquid sharedInstance] stub:@selector(beginBackgroundUpdateTask)];
-                [[Liquid sharedInstance] stub:@selector(track:attributes:allowLqdEvents:)];
+                liquid = [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"];
+                [liquid identifyUser];
+                [liquid setSessionTimeout:1.5f];
+                [liquid stub:@selector(flush) andReturn:nil];
+                [liquid stub:@selector(flush)];
+                [liquid stub:@selector(beginBackgroundUpdateTask)];
+                [liquid stub:@selector(track:attributes:allowLqdEvents:)];
                 [NSThread sleepForTimeInterval:1.0f];
             });
 
@@ -98,18 +100,18 @@ describe(@"Liquid", ^{
                 __block NSString *previousSessionId;
 
                 beforeEach(^{
-                    previousUserId = [[Liquid sharedInstance] userIdentifier];
-                    previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
+                    previousUserId = [liquid userIdentifier];
+                    previousSessionId = [liquid sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.2f];
-                    [[Liquid sharedInstance] applicationDidEnterBackground:nil];
+                    [liquid applicationDidEnterBackground:nil];
                     [NSThread sleepForTimeInterval:0.25f];
-                    [[Liquid sharedInstance] applicationWillEnterForeground:nil];
+                    [liquid applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.2f];
                 });
 
                 it(@"should keep the previous Session ID", ^{
-                    [[[[Liquid sharedInstance] sessionIdentifier] should] equal:(NSString *)previousSessionId];
+                    [[[liquid sessionIdentifier] should] equal:(NSString *)previousSessionId];
                 });
             });
 
@@ -118,18 +120,18 @@ describe(@"Liquid", ^{
                 __block NSString *previousSessionId;
 
                 beforeEach(^{
-                    previousUserId = [[Liquid sharedInstance] userIdentifier];
-                    previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
+                    previousUserId = [liquid userIdentifier];
+                    previousSessionId = [liquid sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.1f];
-                    [[Liquid sharedInstance] applicationDidEnterBackground:nil];
+                    [liquid applicationDidEnterBackground:nil];
                     [NSThread sleepForTimeInterval:3.0f];
-                    [[Liquid sharedInstance] applicationWillEnterForeground:nil];
+                    [liquid applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
 
                 it(@"should create a new Session ID", ^{
-                    [[[[Liquid sharedInstance] sessionIdentifier] shouldNot] equal:(NSString *)previousSessionId];
+                    [[[liquid sessionIdentifier] shouldNot] equal:(NSString *)previousSessionId];
                 });
             });
         });
