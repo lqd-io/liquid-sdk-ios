@@ -21,7 +21,7 @@
 
 #pragma mark - Initializer
 
--(id)initWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
+- (id)initWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes {
     self = [super init];
     if(self) {
         _identifier = identifier;
@@ -39,6 +39,10 @@
     return self;
 }
 
+- (void)setIdentifier:(NSString *)identifier {
+    _identifier = identifier;
+}
+
 #pragma mark - JSON
 
 -(NSDictionary *)jsonDictionary {
@@ -46,7 +50,7 @@
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_identifier forKey:@"unique_id"];
     [dictionary setObject:_identified forKey:@"identified"];
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 #pragma mark - Attributes

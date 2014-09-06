@@ -13,6 +13,50 @@
 SPEC_BEGIN(LQUserSpec)
 
 describe(@"LQUser", ^{
+    describe(@"copy", ^{
+        context(@"given copying an user", ^{
+            __block LQUser *user1;
+            __block LQUser *user2;
+            
+            beforeEach(^{
+                user1 = [[LQUser alloc] initWithIdentifier:@"123" attributes:[NSDictionary dictionaryWithObjectsAndKeys:@29, @"age", nil]];
+                user2 = [user1 copy];
+            });
+
+            it(@"should copy the object and keep the identifier", ^{
+                [[user2.identifier should] equal:@"123"];
+            });
+            
+            context(@"given changing the identifier of the copy", ^{
+                beforeEach(^{
+                    user2.identifier = @"456";
+                });
+
+                it(@"should keep the identifier of the original user", ^{
+                    [[user1.identifier should] equal:@"123"];
+                });
+
+                it(@"should change the identifier of the copy", ^{
+                    [[user2.identifier should] equal:@"456"];
+                });
+            });
+
+            context(@"given changing the age attribute of original user", ^{
+                beforeEach(^{
+                    user1.attributes = [NSDictionary dictionaryWithObjectsAndKeys:@30, @"age", nil];
+                });
+
+                it(@"should change the age attribute of original user", ^{
+                    [[[user1.attributes objectForKey:@"age"] should] equal:@30];
+                });
+
+                it(@"should not change the age attribute of copied user", ^{
+                    [[[user2.attributes objectForKey:@"age"] should] equal:@29];
+                });
+            });
+        });
+    });
+
     context(@"given an identified user", ^{
         __block LQUser *user;
         
@@ -60,7 +104,6 @@ describe(@"LQUser", ^{
             [[[[user jsonDictionary] objectForKey:@"identified"] should] equal:@NO];
         });
     });
-    
 });
 
 SPEC_END

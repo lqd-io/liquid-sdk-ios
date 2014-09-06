@@ -77,7 +77,7 @@ NSString * const kLQDataTypeFloat = @"float";
     [dictionary setObject:_identifier forKey:@"id"];
     [dictionary setObject:_name forKey:@"name"];
     [dictionary setObject:_dataType forKey:@"data_type"];
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 @end
