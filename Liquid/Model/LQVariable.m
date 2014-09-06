@@ -66,12 +66,8 @@ NSString * const kLQDataTypeFloat = @"float";
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    LQVariable *variable = [[[self class] allocWithZone:zone] init];
-    variable->_identifier = [_identifier copyWithZone:zone];
-    variable->_name = [_name copyWithZone:zone];
-    variable->_dataType = [_dataType copyWithZone:zone];
-    variable->_defaultValue = [_defaultValue copyWithZone:zone];
-    return variable;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 #pragma mark - JSON

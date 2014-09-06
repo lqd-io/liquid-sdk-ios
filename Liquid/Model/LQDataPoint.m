@@ -52,15 +52,8 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    LQDataPoint *dataPoint = [[[self class] allocWithZone:zone] init];
-    dataPoint->_user = _user;
-    dataPoint->_device = [_device copyWithZone:zone];
-    dataPoint->_session = [_session copyWithZone:zone];
-    dataPoint->_event = [_event copyWithZone:zone];
-    dataPoint->_targets = [_targets copyWithZone:zone];
-    dataPoint->_values = [_values copyWithZone:zone];
-    dataPoint->_timestamp = [_timestamp copyWithZone:zone];
-    return dataPoint;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 #pragma mark - JSON

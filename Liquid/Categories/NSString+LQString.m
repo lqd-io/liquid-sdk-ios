@@ -27,7 +27,7 @@
     }
 
     if (appendTimestamp) {
-        return [[NSString alloc] initWithFormat:@"%@-%ld", uuid, (long) [[NSDate date] timeIntervalSince1970]];
+        return [NSString stringWithFormat:@"%@-%ld", uuid, (long) [[NSDate date] timeIntervalSince1970]];
     } else {
         return uuid;
     }

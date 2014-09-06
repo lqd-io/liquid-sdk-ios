@@ -67,12 +67,4 @@
     [aCoder encodeObject:_date forKey:@"date"];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-    LQEvent *event = [[[self class] allocWithZone:zone] init];
-    event->_name = [_name copyWithZone:zone];
-    event->_attributes = [_attributes copyWithZone:zone];
-    event->_date = [_date copyWithZone:zone];
-    return event;
-}
-
 @end

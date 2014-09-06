@@ -38,6 +38,36 @@ describe(@"Liquid", ^{
         [Liquid softReset];
     });
 
+    describe(@"aliasUser:withIdentifier:", ^{
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid;
+
+            beforeEach(^{
+                liquid = [[Liquid alloc] initWithToken:@"abcdef"];
+                [liquid stub:@selector(saveCurrentUserToDisk) andReturn:nil];
+                [liquid stub:@selector(loadLastUserFromDisk) andReturn:nil];
+            });
+
+            it(@"should not create an identified user with if the ID is an auto generated ID", ^{
+                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                __block NSNumber *failed = @NO;
+                for(NSInteger i = 0; i < 100; i++) {
+                    dispatch_async(queue1, ^{
+                        [liquid resetUser];
+                        [liquid identifyUserWithIdentifier:@"123" attributes:@{ @"age": @23 } alias:NO];
+                        [liquid aliasUser];
+                        if (liquid.previousUser.isIdentified || [liquid.previousUser.identifier isEqualToString:@"123"]) {
+                            @synchronized(failed) {
+                                failed = @YES;
+                            }
+                        }
+                    });
+                }
+                [[failed should] equal:@NO];
+            });
+        });
+    });
+
     describe(@"liquidUserAgent", ^{
         it(@"should return a valid User-Agent", ^{
             [Liquid stub:@selector(liquidVersion) andReturn:@"0.8.0-beta"];
@@ -51,13 +81,17 @@ describe(@"Liquid", ^{
     });
 
     describe(@"applicationWillEnterForeground:", ^{
-        context(@"given a Liquid singleton", ^{
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid;
+
             beforeAll(^{
-                [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
-                [[Liquid sharedInstance] identifyUser];
-                [[Liquid sharedInstance] setSessionTimeout:1.0f];
-                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+                liquid = [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"];
+                [liquid identifyUser];
+                [liquid setSessionTimeout:1.5f];
+                [liquid stub:@selector(flush) andReturn:nil];
+                [liquid stub:@selector(flush)];
+                [liquid stub:@selector(beginBackgroundUpdateTask)];
+                [liquid stub:@selector(track:attributes:allowLqdEvents:)];
                 [NSThread sleepForTimeInterval:1.0f];
             });
 
@@ -66,18 +100,18 @@ describe(@"Liquid", ^{
                 __block NSString *previousSessionId;
 
                 beforeEach(^{
-                    previousUserId = [[Liquid sharedInstance] userIdentifier];
-                    previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
+                    previousUserId = [liquid userIdentifier];
+                    previousSessionId = [liquid sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.2f];
-                    [[Liquid sharedInstance] applicationDidEnterBackground:nil];
+                    [liquid applicationDidEnterBackground:nil];
                     [NSThread sleepForTimeInterval:0.25f];
-                    [[Liquid sharedInstance] applicationWillEnterForeground:nil];
+                    [liquid applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.2f];
                 });
 
                 it(@"should keep the previous Session ID", ^{
-                    [[[[Liquid sharedInstance] sessionIdentifier] should] equal:(NSString *)previousSessionId];
+                    [[[liquid sessionIdentifier] should] equal:(NSString *)previousSessionId];
                 });
             });
 
@@ -86,18 +120,18 @@ describe(@"Liquid", ^{
                 __block NSString *previousSessionId;
 
                 beforeEach(^{
-                    previousUserId = [[Liquid sharedInstance] userIdentifier];
-                    previousSessionId = [[Liquid sharedInstance] sessionIdentifier];
+                    previousUserId = [liquid userIdentifier];
+                    previousSessionId = [liquid sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.1f];
-                    [[Liquid sharedInstance] applicationDidEnterBackground:nil];
-                    [NSThread sleepForTimeInterval:2.0f];
-                    [[Liquid sharedInstance] applicationWillEnterForeground:nil];
+                    [liquid applicationDidEnterBackground:nil];
+                    [NSThread sleepForTimeInterval:3.0f];
+                    [liquid applicationWillEnterForeground:nil];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
 
                 it(@"should create a new Session ID", ^{
-                    [[[[Liquid sharedInstance] sessionIdentifier] shouldNot] equal:(NSString *)previousSessionId];
+                    [[[liquid sessionIdentifier] shouldNot] equal:(NSString *)previousSessionId];
                 });
             });
         });
@@ -107,7 +141,7 @@ describe(@"Liquid", ^{
         it(@"should identify User (anonymous) with the automatically generated identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+            [liquidInstance stub:@selector(flush)];
             [liquidInstance track:@"openApplication"];
             [[liquidInstance.userIdentifier shouldNot] equal:@"abcdef123456"];
         });
@@ -117,7 +151,7 @@ describe(@"Liquid", ^{
         it(@"should identify User with the correct identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+            [liquidInstance stub:@selector(flush)];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [[liquidInstance.userIdentifier should] equal:@"john"];
         });
@@ -125,7 +159,7 @@ describe(@"Liquid", ^{
         it(@"should keep the correct identifier after 1 second", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
+            [liquidInstance stub:@selector(flush)];
             [liquidInstance identifyUserWithIdentifier:@"john"];
             [NSThread sleepForTimeInterval:1.0f];
             [[liquidInstance.userIdentifier should] equal:@"john"];
@@ -215,66 +249,20 @@ describe(@"Liquid", ^{
                 });
             });
         });
-    });
 
-    describe(@"uniqueNow", ^{
-        context(@"given a Liquid singleton", ^{
-            beforeEach(^{
-                [Liquid softReset];
-                [Liquid sharedInstanceWithToken:@"12345678901234567890abcdef"];
-                [[Liquid sharedInstance] stub:@selector(flush) andReturn:nil];
-                [[Liquid sharedInstance] stub:@selector(flush)];
-                [NSThread sleepForTimeInterval:1.0f];
-            });
+        context(@"given a Liquid instance", ^{
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"abcdef"]; });
 
-            it(@"should start with 0 milliseconds when uniqueNow method was never used", ^{
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:0]];
-            });
-
-            it(@"should increment uniqueNowIncrement by 1 when uniqueNow method is used", ^{
-                [[Liquid sharedInstance] uniqueNow];
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:1]];
-            });
-
-            it(@"should increment uniqueNowIncrement by 2 when uniqueNow method is used two times", ^{
-                [[Liquid sharedInstance] uniqueNow];
-                [[Liquid sharedInstance] uniqueNow];
-                [[[[Liquid sharedInstance] uniqueNowIncrement] should] equal:[NSNumber numberWithFloat:2]];
-            });
-
-            context(@"given a frozen time", ^{
-                __block NSDate *fixedDate = [NSDate new];
-
-                beforeEach(^{
-                    [Liquid sharedInstance].uniqueNowIncrement = [NSNumber numberWithInteger:0];
-                    [NSDate stub:@selector(new) withBlock:^id(NSArray *params) {
-                        return [fixedDate copy];
-                    }];
-                });
-
-                it(@"should increment 1 millisecond when uniqueNow method is used two times", ^{
-                    [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.001f]];
-                });
-
-                it(@"should increment 2 milliseconds when uniqueNow method is used two times", ^{
-                    [[Liquid sharedInstance] uniqueNow];
-                    [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.002f]];
-                });
-
-                context(@"given uniqueNowIncrement at 998", ^{
-                    beforeEach(^{
-                        [Liquid sharedInstance].uniqueNowIncrement = [NSNumber numberWithInteger:998];
+            it(@"should not create an identified user with if the ID is an auto generated ID", ^{
+                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                BOOL failed;
+                for(NSInteger i = 0; i < 200; i++) {
+                    LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
+                    dispatch_async(queue1, ^{
+                        [liquid identifyUserSynced:user alias:NO];
                     });
-
-                    it(@"should increment be very near the next second", ^{
-                        [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.999f]];
-                    });
-
-                    it(@"should return to the initial date", ^{
-                        [[Liquid sharedInstance] uniqueNow];
-                        [[[[Liquid sharedInstance] uniqueNow] should] equal:[fixedDate dateByAddingTimeInterval:0.0f]];
-                    });
-                });
+                }
+                [[theValue(failed) should] beNo];
             });
         });
     });

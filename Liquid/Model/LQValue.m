@@ -93,14 +93,8 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    LQValue *value = [[[self class] allocWithZone:zone] init];
-    value->_identifier = [_identifier copyWithZone:zone];
-    value->_value = [_value copyWithZone:zone];
-    value->_variable = [_variable copyWithZone:zone];
-    value->_targetId = [_targetId copyWithZone:zone];
-    value->_isDefault = [_isDefault copyWithZone:zone];
-    value->_isFallback = [_isFallback copyWithZone:zone];
-    return value;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 #pragma mark - JSON
@@ -109,7 +103,7 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary setObject:_identifier forKey:@"id"];
     [dictionary setObject:_targetId forKey:@"target_id"];
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 +(NSDictionary *)dictionaryFromArrayOfValues:(NSArray *)values {
@@ -120,7 +114,7 @@
                 [dictOfValues setObject:value forKey:value.variable.name];
         }
     }
-    return dictOfValues;
+    return [NSDictionary dictionaryWithDictionary:dictOfValues];
 }
 
 @end

@@ -137,14 +137,6 @@
     [aCoder encodeObject:_liquidVersion forKey:@"liquid_version"];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-    LQLiquidPackage *liquidPackage = [[[self class] allocWithZone:zone] init];
-    liquidPackage->_values = [_values copyWithZone:zone];
-    liquidPackage->_liquidVersion = [_liquidVersion copyWithZone:zone];
-    liquidPackage->_dictOfVariablesAndValues = [_dictOfVariablesAndValues copyWithZone:zone];
-    return liquidPackage;
-}
-
 #pragma mark - Archive to/from disk
 
 + (LQLiquidPackage *)loadFromDiskForToken:(NSString *)apiToken {

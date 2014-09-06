@@ -19,10 +19,10 @@
 -(id)initWithDate:(NSDate *)date user:(LQUser *)user device:(LQDevice *)device session:(LQSession *)session event:(LQEvent *)event values:(NSArray *)values;
 -(NSDictionary *)jsonDictionary;
 
-@property(nonatomic, strong, readonly) LQUser* user;
-@property(nonatomic, strong, readonly) LQDevice* device;
-@property(nonatomic, strong, readonly) LQSession* session;
-@property(nonatomic, strong, readonly) LQEvent* event;
+@property(atomic, strong, readonly) LQUser* user;
+@property(atomic, strong, readonly) LQDevice* device;
+@property(atomic, strong, readonly) LQSession* session;
+@property(atomic, strong, readonly) LQEvent* event;
 @property(nonatomic, strong, readonly) NSArray* targets;
 @property(nonatomic, strong, readonly) NSArray* values;
 @property(nonatomic, strong, readonly) NSDate* timestamp;
