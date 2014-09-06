@@ -82,7 +82,7 @@
     [dictionary setObject:valuesArray forKey:@"values"];
 
     [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_timestamp] forKey:@"timestamp"];
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 @end

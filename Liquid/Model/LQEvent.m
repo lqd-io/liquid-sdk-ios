@@ -46,7 +46,7 @@
     [dictionary addEntriesFromDictionary:_attributes];
     [dictionary setObject:_name forKey:@"name"];
     [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_date] forKey:@"date"];
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 #pragma mark - NSCoding & NSCopying

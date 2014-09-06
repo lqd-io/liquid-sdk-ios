@@ -36,7 +36,7 @@
             [newDictionary setObject:element forKey:key];
         }
     }
-    return newDictionary;
+    return [NSDictionary dictionaryWithDictionary:newDictionary];
 }
 
 @end

@@ -58,7 +58,6 @@
 
 -(void)setAttribute:(id <NSCoding>)attribute forKey:(NSString *)key {
     if (![LQUser assertAttributeType:attribute andKey:key]) return;
-
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
     [mutableAttributes setObject:attribute forKey:key];
     _attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];

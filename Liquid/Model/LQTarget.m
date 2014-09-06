@@ -52,7 +52,7 @@
 -(NSDictionary *)jsonDictionary {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary setObject:_identifier forKey:@"id"];
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 @end

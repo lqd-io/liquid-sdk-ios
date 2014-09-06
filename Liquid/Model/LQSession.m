@@ -31,10 +31,9 @@
 
 -(void)setAttribute:(id<NSCoding>)attribute forKey:(NSString *)key {
     if (![LQSession assertAttributeType:attribute andKey:key]) return;
-
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
     [mutableAttributes setObject:attribute forKey:key];
-    _attributes = mutableAttributes;
+    _attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
 }
 
 -(id)attributeForKey:(NSString *)key {
@@ -74,7 +73,7 @@
     if(_end != nil) {
         [dictionary setObject:[NSDateFormatter iso8601StringFromDate:_end] forKey:@"ended_at"];
     }
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 + (NSString *)generateRandomSessionIdentifier {

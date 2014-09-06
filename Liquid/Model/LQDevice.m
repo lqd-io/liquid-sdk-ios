@@ -91,7 +91,7 @@ static LQDevice *sharedInstance = nil;
 
     NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
     [mutableAttributes setObject:attribute forKey:key];
-    _attributes = mutableAttributes;
+    _attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
 }
 
 - (id)attributeForKey:(NSString *)key {
@@ -99,14 +99,15 @@ static LQDevice *sharedInstance = nil;
 }
 
 - (void)setLocation:(CLLocation *)location {
+    NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
     if(location == nil) {
-        NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
         [mutableAttributes removeObjectForKey:@"latitude"];
         [mutableAttributes removeObjectForKey:@"longitude"];
     } else {
-        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:@"latitude"];
-        [self setAttribute:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:@"longitude"];
+        [mutableAttributes setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:@"latitude"];
+        [mutableAttributes setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:@"longitude"];
     }
+    _attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
 }
 
 + (NSDictionary *)reservedAttributes {
@@ -163,7 +164,7 @@ static LQDevice *sharedInstance = nil;
     [dictionary setObject:self.uid forKey:@"unique_id"];
     [dictionary setObject:kLQDevicePlatform forKey:@"platform"];
 
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 
