@@ -72,8 +72,8 @@ describe(@"LQUser", ^{
             [[user.identified should] equal:@YES];
         });
 
-        it(@"should have the User's isIdentified field set to YES", ^{
-            [[theValue(user.isIdentified) should] equal:[NSNumber numberWithBool:YES]];
+        it(@"should have the User's isIdentified method set to YES", ^{
+            [[theValue([user isIdentified]) should] beYes];
         });
 
         it(@"should include the correct value for the 'unique_id' key on the JSON object", ^{
@@ -85,7 +85,7 @@ describe(@"LQUser", ^{
         });
     });
 
-    context(@"given an identified user", ^{
+    context(@"given an anonymous user", ^{
         __block LQUser *user;
 
         beforeEach(^{
@@ -102,6 +102,58 @@ describe(@"LQUser", ^{
 
         it(@"should include the value for the 'identified' key on the JSON object set to @NO", ^{
             [[[[user jsonDictionary] objectForKey:@"identified"] should] equal:@NO];
+        });
+    });
+
+    describe(@"isIdentified", ^{
+        context(@"given an identifier user", ^{
+            __block LQUser *user;
+            
+            beforeEach(^{
+                user = [[LQUser alloc] initWithIdentifier:@"audreytautou@gmail.com" attributes:nil];
+            });
+            
+            it(@"should return YES", ^{
+                [[theValue([user isIdentified]) should] beYes];
+            });
+        });
+
+        context(@"given an anonymous user", ^{
+            __block LQUser *user;
+            
+            beforeEach(^{
+                user = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
+            });
+            
+            it(@"should return NO", ^{
+                [[theValue([user isIdentified]) should] beNo];
+            });
+        });
+    });
+
+    describe(@"isAnonymous", ^{
+        context(@"given an identifier user", ^{
+            __block LQUser *user;
+            
+            beforeEach(^{
+                user = [[LQUser alloc] initWithIdentifier:@"audreytautou@gmail.com" attributes:nil];
+            });
+            
+            it(@"should return NO", ^{
+                [[theValue([user isAnonymous]) should] beNo];
+            });
+        });
+        
+        context(@"given an anonymous user", ^{
+            __block LQUser *user;
+            
+            beforeEach(^{
+                user = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
+            });
+            
+            it(@"should return YES", ^{
+                [[theValue([user isAnonymous]) should] beYes];
+            });
         });
     });
 });

@@ -17,6 +17,7 @@
 - (id)attributeForKey:(NSString*)key;
 - (NSDictionary*)jsonDictionary;
 - (BOOL)isIdentified;
+- (BOOL)isAnonymous;
 
 +(LQUser *)loadFromDiskForToken:(NSString *)apiToken;
 +(BOOL)destroyLastUserForToken:(NSString *)apiToken;

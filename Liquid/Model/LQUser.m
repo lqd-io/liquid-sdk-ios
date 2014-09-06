@@ -88,7 +88,11 @@
 }
 
 - (BOOL)isIdentified {
-    return [self.identified isEqual:@YES];
+    return !![_identified boolValue];
+}
+
+- (BOOL)isAnonymous {
+    return ![self isIdentified];
 }
 
 #pragma mark - Archive to/from disk

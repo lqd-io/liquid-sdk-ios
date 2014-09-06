@@ -39,6 +39,23 @@ describe(@"Liquid", ^{
         [Liquid softReset];
     });
 
+    describe(@"aliasUser", ^{
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid = [[Liquid alloc] initWithToken:@"123"];
+
+            context(@"given identifying anonymously", ^{
+                beforeEach(^{
+                    [liquid identifyUserWithIdentifier:nil attributes:nil alias:NO];
+                });
+
+                it(@"should not alias user", ^{
+                    [[liquid shouldNot] receive:@selector(aliasUser:withIdentifier:)];
+                    [liquid aliasUser];
+                });
+            });
+        });
+    });
+
     describe(@"aliasUser:withIdentifier:", ^{
         context(@"given a Liquid instance", ^{
             __block Liquid *liquid;

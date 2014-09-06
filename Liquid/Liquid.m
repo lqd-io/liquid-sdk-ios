@@ -375,11 +375,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - User aliasing of anonymous users
 
 - (void)aliasUser {
-    if (![self.previousUser isIdentified]) {
-        [self aliasUser:self.previousUser withIdentifier:self.currentUser.identifier];
-    } else {
+    LQUser *currentUser = self.currentUser;
+    LQUser *previousUser = self.previousUser;
+    if ([previousUser isIdentified]) {
         LQLog(kLQLogLevelError, @"<Liquid> Error: Previous user is an identified user. You can only alias anonymous (non-identified) with identified users.");
+        return;
     }
+    if ([currentUser isAnonymous]) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: Current user is an anonymous user. You can only alias anonymous (non-identified) with identified users.");
+        return;
+    }
+    [self aliasUser:previousUser withIdentifier:currentUser.identifier];
 }
 
 - (void)aliasUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier {
