@@ -26,7 +26,7 @@ describe(@"LQDataPoint", ^{
                 @"name": @"Audrey Tautou",
                 @"age": [NSNumber numberWithInt:37]
             }];
-            LQDevice *device = [[LQDevice alloc] initWithLiquidVersion:kLQVersion];
+            LQDevice *device = [[LQDevice alloc] init];
             LQSession *session = [[LQSession alloc] initWithDate:[NSDate date] timeout:[NSNumber numberWithInt:30]];
             LQEvent *event = [[LQEvent alloc] initWithName:@"Click Button" attributes:nil date:[NSDate date]];
             dataPoint = [[LQDataPoint alloc] initWithDate:event.date

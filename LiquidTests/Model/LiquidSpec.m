@@ -12,6 +12,7 @@
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "OHHTTPStubs.h"
 #import <OCMock/OCMock.h>
+#import "LQNetworkingPrivates.h"
 
 SPEC_BEGIN(LiquidSpec)
 
@@ -21,7 +22,7 @@ describe(@"Liquid", ^{
     });
 
     beforeAll(^{
-        [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];
+        [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
         [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
@@ -45,7 +46,7 @@ describe(@"Liquid", ^{
             beforeEach(^{
                 liquid = [[Liquid alloc] initWithToken:@"abcdef"];
                 [liquid stub:@selector(saveCurrentUserToDisk) andReturn:nil];
-                [liquid stub:@selector(loadLastUserFromDisk) andReturn:nil];
+                [LQUser stub:@selector(loadFromDiskForToken:) andReturn:nil];
             });
 
             it(@"should not create an identified user with if the ID is an auto generated ID", ^{
@@ -65,18 +66,6 @@ describe(@"Liquid", ^{
                 }
                 [[failed should] equal:@NO];
             });
-        });
-    });
-
-    describe(@"liquidUserAgent", ^{
-        it(@"should return a valid User-Agent", ^{
-            [Liquid stub:@selector(liquidVersion) andReturn:@"0.8.0-beta"];
-            [LQDevice stub:@selector(systemVersion) andReturn:@"7.1"];
-            [LQDevice stub:@selector(systemLanguage) andReturn:@"en"];
-            [LQDevice stub:@selector(locale) andReturn:@"pt_PT"];
-            [LQDevice stub:@selector(deviceModel) andReturn:@"iPhone5,2"];
-            Liquid *liquid = [[Liquid alloc] initWithToken:@"1234567890"];
-            [[[liquid liquidUserAgent] should] equal:@"Liquid/0.8.0-beta (iOS; iOS 7.1; pt_PT; iPhone5,2)"];
         });
     });
 

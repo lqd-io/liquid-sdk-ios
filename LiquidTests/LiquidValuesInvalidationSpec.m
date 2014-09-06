@@ -4,6 +4,7 @@
 #import "NSString+LQString.h"
 #import "LQDevice.h"
 #import <OCMock/OCMock.h>
+#import "LQNetworkingPrivates.h"
 
 SPEC_BEGIN(LiquidValuesInvalidationSpec)
 
@@ -17,7 +18,7 @@ describe(@"Liquid", ^{
     });
     
     beforeAll(^{
-        [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];
+        [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
         [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];

@@ -19,6 +19,7 @@
 - (void)setLocation:(CLLocation *)location;
 - (NSDictionary *)jsonDictionary;
 - (BOOL)reachesInternet;
++ (NSString *)uid;
 
 @property(nonatomic, strong, readonly) NSString *vendor;
 @property(nonatomic, strong, readonly) NSString *deviceModel;

@@ -12,6 +12,7 @@
 
 @property(nonatomic, assign) NSUInteger queueSizeLimit;
 @property(nonatomic, assign) NSUInteger flushInterval;
+@property(nonatomic, strong) NSMutableArray *httpQueue;
 
 - (instancetype)initWithToken:(NSString *)apiToken;
 - (instancetype)initFromDiskWithToken:(NSString *)apiToken;
@@ -19,11 +20,11 @@
 - (void)stopFlushTimer;
 - (void)flush;
 - (void)addToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
-+ (NSString *)liquidUserAgent;
 
 - (BOOL)archiveQueue;
 + (NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken;
 + (void)deleteQueueForToken:(NSString *)token;
++ (BOOL)archiveQueue:(NSArray *)queue forToken:(NSString*)apiToken;
 
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
 - (NSData *)getDataFromEndpoint:(NSString *)endpoint;

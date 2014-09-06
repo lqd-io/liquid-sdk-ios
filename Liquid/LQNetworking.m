@@ -84,15 +84,19 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 - (NSString *)liquidUserAgent {
     if(!_liquidUserAgent) {
-        LQDevice *device = [LQDevice sharedInstance];
-        _liquidUserAgent = [NSString stringWithFormat:@"Liquid/%@ (%@; %@ %@; %@; %@)", [device liquidVersion],
-                            kLQDevicePlatform,
-                            kLQDevicePlatform, [device systemVersion],
-                            [device locale],
-                            [device deviceModel]
-                           ];
+        _liquidUserAgent = [LQNetworking liquidUserAgent];
     }
     return _liquidUserAgent;
+}
+
++ (NSString *)liquidUserAgent {
+    LQDevice *device = [LQDevice sharedInstance];
+    return [NSString stringWithFormat:@"Liquid/%@ (%@; %@ %@; %@; %@)", [device liquidVersion],
+        kLQDevicePlatform,
+        kLQDevicePlatform, [device systemVersion],
+        [device locale],
+        [device deviceModel]
+    ];
 }
 
 - (void)setFlushInterval:(NSUInteger)interval {

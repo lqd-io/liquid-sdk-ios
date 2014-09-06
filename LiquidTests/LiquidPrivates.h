@@ -20,6 +20,7 @@
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
 #import "LQDefaults.h"
+#import "LQNetworkingPrivates.h"
 
 @protocol LiquidDelegate <NSObject>
 @optional
@@ -56,6 +57,7 @@ extern NSString * const LQDidIdentifyUser;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property(nonatomic, strong, readonly) NSString *liquidUserAgent;
 @property(nonatomic, strong) NSNumber *uniqueNowIncrement;
+@property(nonatomic, strong) LQNetworking *networking;
 
 #pragma mark - Singletons
 

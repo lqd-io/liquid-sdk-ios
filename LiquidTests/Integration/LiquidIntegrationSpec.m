@@ -5,6 +5,7 @@
 #import "LQDevice.h"
 #import <OCMock/OCMock.h>
 #import "LQDefaults.h"
+#import "LQNetworkingPrivates.h"
 
 SPEC_BEGIN(LiquidIntegrationSpec)
 
@@ -15,7 +16,7 @@ describe(@"Liquid", ^{
 
     context(@"given a Liquid Package with 2 variables", ^{
         beforeAll(^{
-            [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];
+            [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
             [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
             [LQDevice stub:@selector(appName) andReturn:[@"LiquidTest" copy]];
             [LQDevice stub:@selector(appBundle) andReturn:[kLQBundle copy]];

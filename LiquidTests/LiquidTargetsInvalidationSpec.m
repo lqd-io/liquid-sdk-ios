@@ -2,8 +2,10 @@
 #import "LiquidPrivates.h"
 #import "OHHTTPStubs.h"
 #import "NSString+LQString.h"
+#import "NSData+LQData.h"
 #import "LQDevice.h"
 #import <OCMock/OCMock.h>
+#import "LQNetworkingPrivates.h"
 
 SPEC_BEGIN(LiquidTargetsInvalidationSpec)
 
@@ -15,7 +17,7 @@ describe(@"Liquid", ^{
     let(jsonDictionary, nil);
     
     beforeAll(^{
-        [Liquid stub:@selector(archiveQueue:forToken:) andReturn:nil];
+        [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
         [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
@@ -102,9 +104,9 @@ describe(@"Liquid", ^{
                 beforeEach(^{
                     [liquidInstance track:@"Click Button"];
                     [NSThread sleepForTimeInterval:0.15f]; // wait for data point to be processed from the queued
-                    LQRequest *queuedRequest = [[liquidInstance httpQueue] lastObject];
+                    LQRequest *queuedRequest = [liquidInstance.networking.httpQueue lastObject];
                     NSData *jsonData = queuedRequest.json;
-                    jsonDictionary = [Liquid fromJSON:jsonData];
+                    jsonDictionary = [NSData fromJSON:jsonData];
                 });
                 
                 it(@"should send events with a Data Point that does NOT include target 'd8b035d088469702d6c53800'", ^{
