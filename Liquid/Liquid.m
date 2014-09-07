@@ -301,7 +301,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [self identifyUserSynced:_previousUser alias:NO];
         LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user (using cached user: %@)", _previousUser.identifier);
     } else {
-        [self identifyUserWithIdentifier:nil attributes:nil alias:NO];
+        LQUser *anonymousUser = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
+        [self identifyUserSynced:anonymousUser alias:NO];
         LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously: creating a new anonymous user (%@)", _currentUser.identifier);
     }
 }
