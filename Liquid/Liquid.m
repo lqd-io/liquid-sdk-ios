@@ -238,7 +238,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
     NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
     if (identifier && identifier.length == 0) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error (%@): No User identifier was given: %@", self, identifier);
+        LQLog(kLQLogLevelError, @"<Liquid> Error (%@): User identifier cannot be an empty string", self);
         return;
     }
     LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
