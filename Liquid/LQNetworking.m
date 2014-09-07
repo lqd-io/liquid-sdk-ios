@@ -30,7 +30,7 @@
 
 @interface LQNetworking ()
 
-@property(nonatomic, strong) NSMutableArray *httpQueue;
+@property(atomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSString *appToken;
 @property(nonatomic, strong, readonly) NSString *liquidUserAgent;

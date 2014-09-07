@@ -42,13 +42,13 @@
 @property(atomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
 @property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
-@property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
+@property(atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property(nonatomic, strong) NSMutableArray *valuesSentToServer;
-@property(nonatomic, strong) LQNetworking *networking;
+@property(atomic, strong) LQNetworking *networking;
 #if OS_OBJECT_USE_OBJC
-@property(nonatomic, strong) dispatch_queue_t queue;
+@property(atomic, strong) dispatch_queue_t queue;
 #else
-@property(nonatomic, assign) dispatch_queue_t queue;
+@property(atomic, assign) dispatch_queue_t queue;
 #endif
 
 @end
@@ -177,7 +177,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 }
 
-- (NSArray *)valuesSentToServer {
+- (NSMutableArray *)valuesSentToServer {
     if (!_valuesSentToServer) {
         _valuesSentToServer = [[NSMutableArray alloc] init];
     }

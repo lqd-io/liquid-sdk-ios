@@ -24,8 +24,8 @@
 +(BOOL)destroyCachedLiquidPackageForAllTokens;
 -(BOOL)saveToDiskForToken:(NSString *)apiToken;
 
-@property(nonatomic, strong, readonly) NSArray *values;
-@property(nonatomic, strong, readonly) NSString *liquidVersion;
-@property(nonatomic, strong, readonly) NSDictionary *dictOfVariablesAndValues;
+@property(atomic, strong, readonly) NSArray *values;
+@property(atomic, strong, readonly) NSString *liquidVersion;
+@property(atomic, strong, readonly) NSDictionary *dictOfVariablesAndValues;
 
 @end
