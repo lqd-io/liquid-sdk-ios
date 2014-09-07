@@ -289,7 +289,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 // Deprecated:
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
     [self identifyUserWithIdentifier:identifier attributes:attributes alias:YES];
-    dispatch_async(self.queue, ^() {
+    dispatch_async(self.queue, ^{
         [self setCurrentLocation:location];
     });
 }
@@ -341,7 +341,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)setUserAttribute:(id)attribute forKey:(NSString *)key {
     if (![LQUser assertAttributeType:attribute andKey:key]) return;
 
-    dispatch_async(self.queue, ^() {
+    dispatch_async(self.queue, ^{
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
             return;
@@ -358,7 +358,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)setCurrentLocation:(CLLocation *)location {
-    dispatch_async(self.queue, ^() {
+    dispatch_async(self.queue, ^{
         if(self.currentUser == nil) {
             LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
             return;
@@ -369,7 +369,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)saveCurrentUserToDisk {
     LQUser *user = [self.currentUser copy];
-    dispatch_async(self.queue, ^() {
+    dispatch_async(self.queue, ^{
         [user saveToDiskForToken:_apiToken];
     });
 }
@@ -640,7 +640,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     
     if (numberOfInvalidatedValues > 0) {
         LQLiquidPackage *liquidPackageToStore = [_loadedLiquidPackage copy];
-        dispatch_async(self.queue, ^() {
+        dispatch_async(self.queue, ^{
             [liquidPackageToStore saveToDiskForToken:_apiToken];
         });
     }
