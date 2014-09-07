@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
+#import <Foundation/NSKeyedArchiver.h>
 #import "LQNetworking.h"
 #import "LQDefaults.h"
 #import "LQRequest.h"
@@ -209,8 +210,17 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     }
 }
 
-+ (NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken {
-    NSMutableArray *plistArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[LQNetworking liquidQueueFileForToken:apiToken]];
++ (NSMutableArray*)unarchiveQueueForToken:(NSString *)apiToken {
+    NSString *token = apiToken;
+    NSMutableArray *plistArray;
+    NSString *filePath = [LQNetworking liquidQueueFileForToken:token];
+    @try {
+        plistArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    }
+    @catch (NSException *exception) {
+        LQLog(kLQLogLevelError, @"<Liquid> %@: Found invalid queue on cache. Destroying it...", [exception name]);
+        plistArray = nil;
+    }
     if(plistArray == nil) {
         plistArray = [NSMutableArray new];
     }
@@ -240,8 +250,14 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 }
 
 + (void)deleteQueueForToken:(NSString *)token {
-    NSString *filePath = [LQNetworking liquidQueueFileForToken:token];
-    [LQNetworking deleteFileIfExists:filePath error:nil];
+    NSString *apiToken = token;
+    NSString *filePath = [LQNetworking liquidQueueFileForToken:apiToken];
+    LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached queue for token %@", apiToken);
+    NSError *error;
+    [LQNetworking deleteFileIfExists:filePath error:&error];
+    if (error) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error deleting cached queue for token %@", apiToken);
+    }
 }
 
 #pragma mark - Networking
