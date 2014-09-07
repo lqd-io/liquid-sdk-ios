@@ -144,7 +144,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         _currentUser = [_previousUser copy];
         [self autoIdentifyUser];
         if (!self.currentSession) {
-            [self startSession];
+            [self startSessionBy:@"App Start"];
         }
 
         // Start auto flush timer
@@ -191,9 +191,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [LQDate resetUniqueNow];
     if ([self checkSessionTimeout]) {
         if ([self.currentSession inProgress]) {
-            [self endSessionAt:self.enterBackgroundTime];
+            [self endSessionAt:self.enterBackgroundTime by:@"Session Timeout"];
         }
-        [self startSession];
+        [self startSessionBy:@"Previous Session Timeout"];
     } else {
         [self resumeSession];
     }
@@ -215,7 +215,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)applicationWillTerminate:(NSNotificationCenter *)notification {
-    [self endSessionNow];
+    [self endSessionNowBy:@"App Terminate"];
 }
 
 - (void)beginBackgroundUpdateTask {
@@ -253,9 +253,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.currentUser.attributes = newUser.attributes; // just updating current user attributes
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
     } else {
-        [self endSessionNow];
+        [self endSessionNowBy:@"Other User Identify"];
         self.currentUser = newUser;
-        [self startSession];
+        [self startSessionBy:@"User Identify"];
         LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
     }
     [self saveCurrentUserToDisk];
@@ -273,7 +273,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (alias && ![newUser.identifier isEqualToString:userIdentifier]) {
         [self aliasUser];
     }
-    
 }
 
 #pragma mark - User identifying methods (alias methods)
@@ -412,23 +411,25 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 }
 
-- (void)endSessionAt:(NSDate *)endAt {
+- (void)endSessionAt:(NSDate *)endAt by:(NSString *)by {
     NSDate *endAtDate = [endAt copy];
     if (self.currentUser != nil && self.currentSession != nil && self.currentSession.inProgress) {
         [[self currentSession] endSessionOnDate:endAtDate];
-        [self track:@"_endSession" attributes:nil allowLqdEvents:YES withDate:endAtDate];
+        NSDictionary *attributes = by ? [[NSDictionary alloc] initWithObjectsAndKeys:by, @"by", nil] : nil;
+        [self track:@"_endSession" attributes:attributes allowLqdEvents:YES withDate:endAtDate];
         LQLog(kLQLogLevelInfo, @"Ended session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:endAtDate]);
     }
 }
 
-- (void)endSessionNow {
-    [self endSessionAt:[LQDate uniqueNow]];
+- (void)endSessionNowBy:(NSString *)by {
+    [self endSessionAt:[LQDate uniqueNow] by:by];
 }
 
-- (void)startSession {
+- (void)startSessionBy:(NSString *)by {
     NSDate *now = [LQDate uniqueNow];
     self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
-    [self track:@"_startSession" attributes:nil allowLqdEvents:YES withDate:now];
+    NSDictionary *attributes = by ? [[NSDictionary alloc] initWithObjectsAndKeys:by, @"by", nil] : nil;
+    [self track:@"_startSession" attributes:attributes allowLqdEvents:YES withDate:now];
     LQLog(kLQLogLevelInfo, @"Started session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
 }
 
