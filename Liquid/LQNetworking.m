@@ -166,9 +166,13 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     }
 }
 
-- (void)addToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod {
-    NSData *json = [NSData toJSON:dictionary];
-    LQRequest *queuedData = [[LQRequest alloc] initWithUrl:endPoint withHttpMethod:httpMethod withJSON:json];
+- (void)addDictionaryToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod {
+    NSData *jsonData = [NSData toJSON:dictionary];
+    [self addToHttpQueue:jsonData endPoint:endPoint httpMethod:httpMethod];
+}
+
+- (void)addToHttpQueue:(NSData *)jsonData endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod {
+    LQRequest *queuedData = [[LQRequest alloc] initWithUrl:endPoint withHttpMethod:httpMethod withJSON:jsonData];
     LQLog(kLQLogLevelHttp, @"Adding a HTTP request to the queue, for the endpoint %@ %@ ", httpMethod, endPoint);
     if (self.httpQueue.count >= self.queueSizeLimit) {
         LQLog(kLQLogLevelWarning, @"<Liquid> Queue exceeded its limit size (%ld). Removing oldest event from queue.", (long) self.queueSizeLimit);

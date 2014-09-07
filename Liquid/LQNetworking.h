@@ -18,7 +18,8 @@
 - (void)startFlushTimer;
 - (void)stopFlushTimer;
 - (void)flush;
-- (void)addToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
+- (void)addDictionaryToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
+- (void)addToHttpQueue:(NSData *)jsonData endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
 + (NSString *)liquidUserAgent;
 
 - (BOOL)archiveQueue;

@@ -144,7 +144,6 @@ extern NSString * const LQDidIdentifyUser;
 
 #pragma mark - Queueing
 
-- (void)addToHttpQueue:(NSDictionary*)dictionary endPoint:(NSString*)endPoint httpMethod:(NSString*)httpMethod;
 - (void)flush;
 - (void)startFlushTimer;
 - (void)stopFlushTimer;
