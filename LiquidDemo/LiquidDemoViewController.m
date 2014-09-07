@@ -33,11 +33,12 @@ BOOL const defaultShowAds = YES;
 
 - (NSDictionary *)userProfiles {
     if (!_userProfiles) {
-        NSDictionary *user1Attributes = @{ @"name": @"Anna Martinez", @"age": @25, @"gender": @"female" };
-        NSDictionary *user2Attributes = @{ @"name": @"John Clark", @"age": @37, @"gender": @"male" };
-        NSDictionary *user3Attributes = @{ @"name": @"Barry Hill", @"age": @16, @"gender": @"male" };
-        _userProfiles = [NSDictionary dictionaryWithObjectsAndKeys:user1Attributes, @"100",
-                         user2Attributes, @"101", user3Attributes, @"102", nil];
+        NSDictionary *user0Attributes = @{ @"name": @"Anna Martinez", @"age": @25, @"gender": @"female" };
+        NSDictionary *user1Attributes = @{ @"name": @"John Clark", @"age": @37, @"gender": @"male" };
+        NSDictionary *user2Attributes = @{ @"name": @"Barry Hill", @"age": @16, @"gender": @"male" };
+        NSDictionary *user3Attributes = @{ @"name": @"Guilherme Alves", @"age": @1, @"gender": @"male" };
+        _userProfiles = [NSDictionary dictionaryWithObjectsAndKeys:user0Attributes, @"100",
+                         user1Attributes, @"101", user2Attributes, @"102", user3Attributes, @"103", nil];
     }
     return _userProfiles;
 }
@@ -58,7 +59,7 @@ BOOL const defaultShowAds = YES;
         [self.userSelectorSegmentedControl setSelectedSegmentIndex:1];
     } else if ([currentUserIdentifier isEqualToString:@"102"]) {
         [self.userSelectorSegmentedControl setSelectedSegmentIndex:2];
-    } else {
+    } else if ([currentUserIdentifier isEqualToString:@"103"]) {
         [self.userSelectorSegmentedControl setSelectedSegmentIndex:3];
     }
 
@@ -180,16 +181,19 @@ BOOL const defaultShowAds = YES;
     NSLog(@"discount: %f", discount);
     NSLog(@"showAds: %@", (showAds ? @"yes" : @"no"));
 }
+- (IBAction)IdentifyAnonymousButton:(UIButton *)sender {
+    [[Liquid sharedInstance] resetUser];
+    [sender setSelected:YES];
+    // Unselect all Segmented Control buttons
+    [self.userSelectorSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+}
 
 - (void)setCurrentUserWithIdentifier:(NSString *)userIdentifier {
     NSDictionary *userAttributes = [self.userProfiles objectForKey:userIdentifier];
-    if ([userIdentifier isEqualToString:@"103"]) {
-        [[Liquid sharedInstance] resetUser];
-    } else {
-        [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
-    }
+    [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
 
     // Update interface:
+    self.anonymousUserButton.selected = false;
     self.selectedUserProfile = userIdentifier;
     self.userUniqueId.text = [[Liquid sharedInstance] userIdentifier];
 }
