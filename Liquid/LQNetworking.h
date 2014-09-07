@@ -13,8 +13,8 @@
 @property(nonatomic, assign) NSUInteger queueSizeLimit;
 @property(nonatomic, assign) NSUInteger flushInterval;
 
-- (instancetype)initWithToken:(NSString *)apiToken;
-- (instancetype)initFromDiskWithToken:(NSString *)apiToken;
+- (instancetype)initWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue;
+- (instancetype)initFromDiskWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue;
 - (void)startFlushTimer;
 - (void)stopFlushTimer;
 - (void)flush;

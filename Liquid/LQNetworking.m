@@ -34,6 +34,11 @@
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSString *appToken;
 @property(nonatomic, strong, readonly) NSString *liquidUserAgent;
+#if OS_OBJECT_USE_OBJC
+@property(atomic, strong) dispatch_queue_t queue;
+#else
+@property(atomic, assign) dispatch_queue_t queue;
+#endif
 
 @end
 
@@ -50,24 +55,24 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 #pragma mark - Initializers
 
-- (instancetype)initWithToken:(NSString *)apiToken {
+- (instancetype)initWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue {
     if ([self isMemberOfClass:[LQNetworking class]]) {
         _httpQueue = [NSMutableArray new];
         _appToken = apiToken;
         _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
         _flushInterval = kLQDefaultFlushInterval;
-
+        _queue = queue;
     }
     return self;
 }
 
-- (instancetype)initFromDiskWithToken:(NSString *)apiToken {
+- (instancetype)initFromDiskWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue {
     if ([self isMemberOfClass:[LQNetworking class]]) {
         _httpQueue = [LQNetworking unarchiveQueueForToken:apiToken];
         _appToken = apiToken;
         _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
         _flushInterval = kLQDefaultFlushInterval;
-        
+        _queue = queue;
     }
     return self;
 }
@@ -130,6 +135,12 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 }
 
 - (void)flush {
+    dispatch_async(_queue, ^{
+        [self flushSynced];
+    });
+}
+
+- (void)flushSynced {
     if (![[LQDevice sharedInstance] reachesInternet]) {
         LQLog(kLQLogLevelWarning, @"<Liquid> There's no Internet connection. Will try to deliver data points later.");
     } else {

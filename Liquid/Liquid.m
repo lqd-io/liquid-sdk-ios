@@ -101,9 +101,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)flush {
-    dispatch_async(self.queue, ^{
-        [_networking flush];
-    });
+    [_networking flush];
 }
 
 #pragma mark - Initialization
@@ -125,12 +123,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     if (self = [self init]) {
         self.apiToken = apiToken;
-        self.networking = [[LQNetworking alloc] initFromDiskWithToken:self.apiToken];
+        NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
+        self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
+        self.networking = [[LQNetworking alloc] initFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
         self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
-        NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
-        self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
             self.backgroundUpdateTask = UIBackgroundTaskInvalid;
         }
@@ -206,7 +204,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
     self.enterBackgroundTime = [LQDate uniqueNow];
     [_networking stopFlushTimer];
-    [self flush];
+    [_networking flush];
     [self requestNewLiquidPackageSynced];
     dispatch_async(self.queue, ^{
         [self endBackgroundUpdateTask];
