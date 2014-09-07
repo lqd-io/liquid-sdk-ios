@@ -21,5 +21,6 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *userSelectorSegmentedControl;
 @property (strong, nonatomic) IBOutlet UITableView *userAttributesTableView;
 @property (strong, nonatomic) IBOutlet UILabel *userUniqueId;
+@property (strong, nonatomic) IBOutlet UIButton *anonymousUserButton;
 
 @end
