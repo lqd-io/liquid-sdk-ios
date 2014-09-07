@@ -141,7 +141,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
         // Load user from previous launch:
         _previousUser = [LQUser loadFromDiskForToken:_apiToken];
-        _currentUser = [_previousUser copy];
         [self autoIdentifyUser];
         if (!self.currentSession) {
             [self startSessionBy:@"App Start"];
@@ -247,13 +246,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 -(void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
     self.previousUser = [self.currentUser copy];
-    NSString *userIdentifier = self.currentUser.identifier;
+    LQUser *currentUser = self.currentUser;
     LQUser *newUser = [user copy];
-    if ([newUser.identifier isEqualToString:userIdentifier]) {
+    if (currentUser && [newUser.identifier isEqualToString:currentUser.identifier]) {
         self.currentUser.attributes = newUser.attributes; // just updating current user attributes
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
     } else {
-        [self endSessionNowBy:@"Other User Identify"];
+        [self endSessionNowBy:@"User Unidentify"];
         self.currentUser = newUser;
         [self startSessionBy:@"User Identify"];
         LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
@@ -270,7 +269,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                      waitUntilDone:NO];
     }
 
-    if (alias && ![newUser.identifier isEqualToString:userIdentifier]) {
+    if (alias && ![newUser.identifier isEqualToString:currentUser.identifier]) {
         [self aliasUser];
     }
 }
@@ -413,11 +412,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)endSessionAt:(NSDate *)endAt by:(NSString *)by {
     NSDate *endAtDate = [endAt copy];
-    if (self.currentUser != nil && self.currentSession != nil && self.currentSession.inProgress) {
-        [[self currentSession] endSessionOnDate:endAtDate];
+    LQSession *session = self.currentSession;
+    if (self.currentUser && session && session.inProgress) {
+        [session endSessionOnDate:endAtDate];
         NSDictionary *attributes = by ? [[NSDictionary alloc] initWithObjectsAndKeys:by, @"by", nil] : nil;
         [self track:@"_endSession" attributes:attributes allowLqdEvents:YES withDate:endAtDate];
-        LQLog(kLQLogLevelInfo, @"Ended session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:endAtDate]);
+        LQLog(kLQLogLevelInfo, @"Ended session %@ for user %@ (%@) at %@", session.identifier, session.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:endAtDate]);
     }
 }
 
@@ -427,10 +427,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)startSessionBy:(NSString *)by {
     NSDate *now = [LQDate uniqueNow];
-    self.currentSession = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
+    LQSession *session = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
+    self.currentSession = session;
     NSDictionary *attributes = by ? [[NSDictionary alloc] initWithObjectsAndKeys:by, @"by", nil] : nil;
     [self track:@"_startSession" attributes:attributes allowLqdEvents:YES withDate:now];
-    LQLog(kLQLogLevelInfo, @"Started session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
+    LQLog(kLQLogLevelInfo, @"Started session %@ for user %@ (%@) at %@", session.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
 }
 
 - (void)resumeSession {
