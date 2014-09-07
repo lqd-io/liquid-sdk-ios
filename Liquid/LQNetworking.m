@@ -238,7 +238,9 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method {
     NSString *fullUrl = [NSString stringWithFormat:@"%@%@", serverUrl, endpoint];
     NSURL *url = [NSURL URLWithString:fullUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:5.0f];
     [request setHTTPMethod:method];
     [request setValue:[NSString stringWithFormat:@"Token %@", _appToken] forHTTPHeaderField:@"Authorization"];
     [request setValue:self.liquidUserAgent forHTTPHeaderField:@"User-Agent"];
