@@ -368,7 +368,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)saveCurrentUserToDisk {
-    __block LQUser *user = [self.currentUser copy];
+    LQUser *user = [self.currentUser copy];
     dispatch_async(self.queue, ^() {
         [user saveToDiskForToken:_apiToken];
     });
@@ -474,7 +474,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents withDate:(NSDate *)eventDate {
-    __block NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
+    NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
 
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
         NSAssert(false, @"<Liquid> Event names cannot start with _");
@@ -521,7 +521,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                                          event:event
                                                         values:loadedValues];
     NSDictionary *jsonDict = [dataPoint jsonDictionary];
-    __block NSData *jsonData = [NSData toJSON:jsonDict];
+    NSData *jsonData = [NSData toJSON:jsonDict];
     dispatch_async(self.queue, ^{
         [_networking addToHttpQueue:jsonData endPoint:@"data_points" httpMethod:@"POST"];
     });
@@ -639,7 +639,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     
     if (numberOfInvalidatedValues > 0) {
-        __block LQLiquidPackage *liquidPackageToStore = [_loadedLiquidPackage copy];
+        LQLiquidPackage *liquidPackageToStore = [_loadedLiquidPackage copy];
         dispatch_async(self.queue, ^() {
             [liquidPackageToStore saveToDiskForToken:_apiToken];
         });
