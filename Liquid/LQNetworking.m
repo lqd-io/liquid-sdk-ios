@@ -136,7 +136,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
         NSMutableArray *failedQueue = [NSMutableArray new];
         while (self.httpQueue.count > 0) {
             LQRequest *queuedHttp = [self.httpQueue firstObject];
-            if ([[LQDate uniqueNow] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
+            if ([[NSDate new] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
                 LQLog(kLQLogLevelHttp, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
                 NSInteger res = [self sendData:queuedHttp.json
                                     toEndpoint:queuedHttp.url
@@ -247,7 +247,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:data];
-    
+
     NSURLResponse *response;
     NSError *error = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request
@@ -255,7 +255,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
                                                              error:&error];
     NSString __unused *responseString = [[NSString alloc] initWithData:responseData
                                                               encoding:NSUTF8StringEncoding];
-    
+
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
