@@ -47,6 +47,10 @@ static LQDevice *sharedInstance = nil;
     return sharedInstance;
 }
 
++ (void)resetSharedInstance {
+    sharedInstance = [[self alloc] init];
+}
+
 #pragma mark - Initializer
 
 - (id)init {

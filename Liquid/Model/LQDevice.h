@@ -13,6 +13,7 @@
 @interface LQDevice : LQEntity <NSCoding, NSCopying>
 
 + (LQDevice *)sharedInstance;
++ (void)resetSharedInstance;
 - (id)init;
 - (void)setAttribute:(id <NSCoding>)attribute forKey:(NSString *)key;
 - (id)attributeForKey:(NSString *)key;
