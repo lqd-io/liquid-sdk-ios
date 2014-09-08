@@ -79,14 +79,13 @@ describe(@"Liquid", ^{
         });
 
         context(@"given a Liquid Package with an identified user", ^{
-            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"liquid_tests"]; });
+            __block Liquid *liquid;
 
             beforeEach(^{
-                [liquid stub:@selector(flush) andReturn:nil];
-            });
-
-            beforeAll(^{
                 liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
+                [liquid stub:@selector(flush) andReturn:nil];
+                [liquid.networking stub:@selector(flush)];
+                [liquid.networking stub:@selector(archiveQueue)];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
@@ -96,54 +95,60 @@ describe(@"Liquid", ^{
             });
 
             it(@"should be possible to perform multiple operations simultaneously, without race conditions", ^{
-                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-                for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue1, ^{
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [liquid applicationDidEnterBackground:nil];
-                        });
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [liquid applicationWillEnterForeground:nil];
-                        });
-                    });
-                }
-
-                dispatch_queue_t queue2 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                __block NSNumber *totalOfBlocks = @0;
+                dispatch_queue_t serialQueue = dispatch_queue_create([@"serial" UTF8String], DISPATCH_QUEUE_SERIAL);
                 for(NSInteger i = 0; i < 20; i++) {
-                    dispatch_async(queue2, ^{
+                    dispatch_async(serialQueue, ^{
+                        [liquid applicationDidEnterBackground:nil];
+                        [NSThread sleepForTimeInterval:0.25f];
+                        [liquid applicationWillEnterForeground:nil];
+                        @synchronized(totalOfBlocks) {
+                            totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
+                        }
+                    });
+                }
+                for(NSInteger i = 0; i < 20; i++) {
+                    dispatch_async(serialQueue, ^{
                         [NSThread sleepForTimeInterval:0.1f];
+                        @synchronized(totalOfBlocks) {
+                            totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
+                        }
                     });
                 }
-
-                dispatch_queue_t queue3 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-                for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue3, ^{
+                for(NSInteger i = 0; i < 20; i++) {
+                    dispatch_async(serialQueue, ^{
                         [liquid requestValues];
+                        @synchronized(totalOfBlocks) {
+                            totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
+                        }
                     });
                 }
-
-                dispatch_queue_t queue4 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-                for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue4, ^{
+                for(NSInteger i = 0; i < 20; i++) {
+                    dispatch_async(serialQueue, ^{
                         [liquid loadValues];
+                        @synchronized(totalOfBlocks) {
+                            totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
+                        }
                     });
                 }
-
-                dispatch_queue_t queue5 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-                for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue5, ^{
+                for(NSInteger i = 0; i < 20; i++) {
+                    dispatch_async(serialQueue, ^{
                         [liquid stringForKey:@"welcomeText" fallback:@"A fallback value"];
+                        @synchronized(totalOfBlocks) {
+                            totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
+                        }
                     });
                 }
-
-                dispatch_queue_t queue6 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-                for(NSInteger i = 0; i < 200; i++) {
-                    dispatch_async(queue6, ^{
+                for(NSInteger i = 0; i < 20; i++) {
+                    dispatch_async(serialQueue, ^{
                         [liquid stringForKey:@"unknownVariable" fallback:@"A fallback value"];
+                        @synchronized(totalOfBlocks) {
+                            totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
+                        }
                     });
                 }
 
-                [NSThread sleepForTimeInterval:6.0f];
+                [[expectFutureValue(totalOfBlocks) shouldEventuallyBeforeTimingOutAfter(20.0f)] equal:[NSNumber numberWithInt:120]];
             });
         });
     });

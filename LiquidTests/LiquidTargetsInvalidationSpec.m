@@ -48,7 +48,9 @@ describe(@"Liquid", ^{
                 NSString *fixture = OHPathForFileInBundle(@"liquid_package_targets.json", nil);
                 return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
             }];
+        });
 
+        beforeEach(^{
             liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
             [liquidInstance stub:@selector(flush)];
 

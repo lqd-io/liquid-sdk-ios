@@ -45,10 +45,10 @@ extern NSString * const LQDidIdentifyUser;
 
 @property(nonatomic, strong) NSString *apiToken;
 @property(nonatomic, assign) BOOL developmentMode;
-@property(nonatomic, strong) LQUser *currentUser;
-@property(nonatomic, strong) LQUser *previousUser;
-@property(nonatomic, strong) LQDevice *device;
-@property(nonatomic, strong) LQSession *currentSession;
+@property(atomic, strong) LQUser *currentUser;
+@property(atomic, strong) LQUser *previousUser;
+@property(atomic, strong) LQDevice *device;
+@property(atomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
 @property(nonatomic, assign) BOOL inBackground;
 @property(nonatomic, strong) dispatch_queue_t queue;

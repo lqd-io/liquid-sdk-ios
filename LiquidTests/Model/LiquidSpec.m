@@ -71,10 +71,10 @@ describe(@"Liquid", ^{
             });
 
             it(@"should not create an identified user with if the ID is an auto generated ID", ^{
-                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
+                dispatch_queue_t queue = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_SERIAL);
                 __block NSNumber *failed = @NO;
-                for(NSInteger i = 0; i < 100; i++) {
-                    dispatch_async(queue1, ^{
+                for(NSInteger i = 0; i < 10; i++) {
+                    dispatch_async(queue, ^{
                         [liquid resetUser];
                         [liquid identifyUserWithIdentifier:@"123" attributes:@{ @"age": @23 } alias:NO];
                         [liquid aliasUser];
@@ -85,7 +85,7 @@ describe(@"Liquid", ^{
                         }
                     });
                 }
-                [[failed should] equal:@NO];
+                [[expectFutureValue(failed) shouldNotEventuallyBeforeTimingOutAfter(10)] equal:@YES];
             });
         });
     });
@@ -263,16 +263,22 @@ describe(@"Liquid", ^{
         context(@"given a Liquid instance", ^{
             let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"liquid_tests"]; });
 
-            it(@"should not create an identified user with if the ID is an auto generated ID", ^{
-                dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
-                BOOL failed;
-                for(NSInteger i = 0; i < 200; i++) {
-                    LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
-                    dispatch_async(queue1, ^{
-                        [liquid identifyUserSynced:user alias:NO];
+            it(@"should not create anonymous users if all users have an user identifier", ^{
+                dispatch_queue_t queue = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_SERIAL);
+                __block NSNumber *failed = @NO;
+                for(NSInteger i = 0; i < 10; i++) {
+                    dispatch_async(queue, ^{
+                        Liquid *liquidInstance = liquid;
+                        LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
+                        [liquidInstance identifyUserSynced:user alias:NO];
+                        if ([liquidInstance.currentUser isAnonymous]) {
+                            @synchronized(failed) {
+                                failed = @YES;
+                            }
+                        }
                     });
                 }
-                [[theValue(failed) should] beNo];
+                [[expectFutureValue(failed) shouldNotEventuallyBeforeTimingOutAfter(10)] equal:@YES];
             });
         });
     });
