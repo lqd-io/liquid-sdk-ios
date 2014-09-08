@@ -25,6 +25,7 @@
 - (BOOL)archiveQueue;
 + (NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken;
 + (void)deleteQueueForToken:(NSString *)token;
++ (BOOL)destroyCachedQueueForAllTokens;
 
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
 - (NSData *)getDataFromEndpoint:(NSString *)endpoint;

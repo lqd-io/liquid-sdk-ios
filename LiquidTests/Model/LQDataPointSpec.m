@@ -36,11 +36,7 @@ describe(@"LQDataPoint", ^{
                                                     event:event
                                                    values:nil];
         });
-        
-        afterEach(^{
-            dataPoint = nil;
-        });
-        
+
         it(@"should create a Data Point with the corrrect User unique identifier", ^{
             [[dataPoint.user.identifier should] equal:@"audreytautou@gmail.com"];
         });

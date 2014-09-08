@@ -13,6 +13,10 @@
 SPEC_BEGIN(LQNetworkingSpec)
 
 describe(@"LQNetworking", ^{
+    beforeEach(^{
+        [LQNetworking destroyCachedQueueForAllTokens];
+    });
+
     describe(@"liquidUserAgent", ^{
         it(@"should return a valid User-Agent", ^{
             LQDevice *device = [[LQDevice alloc] init];

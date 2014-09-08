@@ -13,6 +13,10 @@
 SPEC_BEGIN(LQUserSpec)
 
 describe(@"LQUser", ^{
+    beforeEach(^{
+        [LQUser destroyLastUserForAllTokens];
+    });
+
     describe(@"copy", ^{
         context(@"given copying an user", ^{
             __block LQUser *user1;

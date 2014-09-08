@@ -17,6 +17,10 @@
 SPEC_BEGIN(LiquidSpec)
 
 describe(@"Liquid", ^{
+    beforeEach(^{
+        [Liquid softReset];
+    });
+
     let(deviceId, ^id{
         return [LQDevice uid];
     });

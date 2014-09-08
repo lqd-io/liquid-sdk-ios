@@ -14,6 +14,10 @@
 SPEC_BEGIN(LQLiquidPackageSpec)
 
 describe(@"LQLiquidPackage", ^{
+    beforeEach(^{
+        [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
+    });
+
     describe(@"valueForKey:error:", ^{
         context(@"given a Liquid Package with a value for a String Variable", ^{
             __block LQLiquidPackage *liquidPackage;

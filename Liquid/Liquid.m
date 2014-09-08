@@ -795,6 +795,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 + (void)softReset {
     [LQLiquidPackage destroyCachedLiquidPackageForAllTokens];
     [LQUser destroyLastUserForAllTokens];
+    [LQNetworking destroyCachedQueueForAllTokens];
     [Liquid destroySingleton];
     [LQDate resetUniqueNow];
     [NSThread sleepForTimeInterval:0.2f];

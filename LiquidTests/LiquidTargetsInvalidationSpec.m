@@ -10,6 +10,10 @@
 SPEC_BEGIN(LiquidTargetsInvalidationSpec)
 
 describe(@"Liquid", ^{
+    beforeEach(^{
+        [Liquid softReset];
+    });
+
     let(deviceId, ^id{
         return [LQDevice uid];
     });

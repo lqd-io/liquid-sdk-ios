@@ -260,6 +260,27 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     }
 }
 
++ (NSString *)liquidPackagesDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:kLQDirectory];
+}
+
++ (NSArray *)filesInDirectory:(NSString *)directoryPath {
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSArray *files = [fileManager contentsOfDirectoryAtPath:directoryPath error:nil];
+    return files;
+}
+
++ (BOOL)destroyCachedQueueForAllTokens {
+    BOOL status = false;
+    for (NSString *path in [LQNetworking filesInDirectory:[LQNetworking liquidPackagesDirectory]]) {
+        status &= [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+    }
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Destroyed cached Queue for all tokens");
+    return status;
+}
+
 #pragma mark - Networking
 
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method {
