@@ -27,7 +27,7 @@
 #define kLQLogLevelNone        0
 
 #ifdef DEBUG
-#    define kLQLogLevel kLQLogLevelAssert
+#    define kLQLogLevel kLQLogLevelError
 #else
 #    define kLQLogLevel kLQLogLevelAssert
 #endif
