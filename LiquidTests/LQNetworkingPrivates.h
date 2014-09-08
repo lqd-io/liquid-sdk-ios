@@ -19,12 +19,14 @@
 - (void)startFlushTimer;
 - (void)stopFlushTimer;
 - (void)flush;
+- (void)resetHttpQueue;
 - (void)addDictionaryToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
 - (void)addToHttpQueue:(NSData *)jsonData endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
 
 - (BOOL)archiveQueue;
 + (NSMutableArray*)unarchiveQueueForToken:(NSString*)apiToken;
 + (void)deleteQueueForToken:(NSString *)token;
++ (BOOL)destroyCachedQueueForAllTokens;
 + (BOOL)archiveQueue:(NSArray *)queue forToken:(NSString*)apiToken;
 
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;

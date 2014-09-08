@@ -32,12 +32,7 @@ describe(@"Liquid", ^{
 
     context(@"given a Liquid Package with 6 variables", ^{
         context(@"given correct data types for all 6 variables", ^{
-            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"liquid_tests"]; });
-
-            beforeEach(^{
-                [liquid identifyUserWithIdentifier:userId];
-                [liquid stub:@selector(flush)];
-            });
+            __block Liquid *liquid;
 
             beforeAll(^{
                 [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -46,7 +41,15 @@ describe(@"Liquid", ^{
                     NSString *fixture = OHPathForFileInBundle(@"liquid_package_correct_data_types.json", nil);
                     return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
                 }];
+            });
 
+            beforeEach(^{
+                liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
+                [liquid identifyUserWithIdentifier:userId];
+                [liquid stub:@selector(flush)];
+                //                [LQNetworking deleteQueueForToken:@"liquid_tests"];
+                //                [liquid.networking resetQueue];
+                
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
                 [liquid applicationDidEnterBackground:nil];
@@ -105,11 +108,6 @@ describe(@"Liquid", ^{
                 return [[Liquid alloc] initWithToken:@"liquid_tests"];
             });
 
-            beforeEach(^{
-                [liquid identifyUserWithIdentifier:userId];
-                [liquid stub:@selector(flush)];
-            });
-
             beforeAll(^{
                 [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                     return [request.URL.path isEqualToString:[NSString stringWithFormat:@"/collect/users/%@/devices/%@/liquid_package", userId, deviceId]];
@@ -117,6 +115,11 @@ describe(@"Liquid", ^{
                     NSString *fixture = OHPathForFileInBundle(@"liquid_package_incorrect_data_types.json", nil);
                     return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
                 }];
+            });
+
+            beforeEach(^{
+                [liquid identifyUserWithIdentifier:userId];
+                [liquid stub:@selector(flush)];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];

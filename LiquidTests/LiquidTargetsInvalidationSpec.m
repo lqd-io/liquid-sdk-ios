@@ -18,8 +18,6 @@ describe(@"Liquid", ^{
         return [LQDevice uid];
     });
     
-    let(jsonDictionary, nil);
-    
     beforeAll(^{
         [LQNetworking stub:@selector(archiveQueue:forToken:) andReturn:nil];
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
@@ -53,13 +51,6 @@ describe(@"Liquid", ^{
         beforeEach(^{
             liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
             [liquidInstance stub:@selector(flush)];
-
-            // Simulate an app going in background and foreground again:
-            [NSThread sleepForTimeInterval:0.1f];
-            [liquidInstance applicationDidEnterBackground:nil];
-            [NSThread sleepForTimeInterval:0.1f];
-            [liquidInstance applicationWillEnterForeground:nil];
-            [NSThread sleepForTimeInterval:0.1f];
         });
 
         it(@"should invalidate (thus fallback) 'freeCoins' variable", ^{
@@ -68,7 +59,7 @@ describe(@"Liquid", ^{
             [[theValue(discount) should] equal:theValue(fallbackValue)];
         });
         
-        context(@"given 'freeCoins' been used (an invalidated)", ^{
+        context(@"given 'freeCoins' been used (and invalidated)", ^{
             beforeEach(^{
                 [liquidInstance intForKey:@"freeCoins" fallback:1];
             });
@@ -107,14 +98,18 @@ describe(@"Liquid", ^{
             });
             
             context(@"given an event that is tracked", ^{
+                __block NSDictionary *jsonDictionary;
+
                 beforeEach(^{
+                    [LQNetworking deleteQueueForToken:@"liquid_tests2"];
+                    [liquidInstance.networking resetHttpQueue];
                     [liquidInstance track:@"Click Button"];
-                    [NSThread sleepForTimeInterval:0.15f]; // wait for data point to be processed from the queued
+                    [NSThread sleepForTimeInterval:0.10f]; // wait for data point to be processed from the queue
                     LQRequest *queuedRequest = [liquidInstance.networking.httpQueue lastObject];
                     NSData *jsonData = queuedRequest.json;
                     jsonDictionary = [NSData fromJSON:jsonData];
                 });
-                
+
                 it(@"should send events with a Data Point that does NOT include target 'd8b035d088469702d6c53800'", ^{
                     NSArray *values = [jsonDictionary objectForKey:@"values"];
                     NSInteger numberOfValuesWithTarget = 0;
@@ -134,7 +129,7 @@ describe(@"Liquid", ^{
                             numberOfValuesWithTarget++;
                         }
                     }
-                    [[theValue(numberOfValuesWithTarget) should] equal:theValue(1)];
+                    [[expectFutureValue(theValue(numberOfValuesWithTarget)) shouldEventually] equal:theValue(1)];
                 });
                 
                 it(@"should send events with a Data Point that includes only 1 target", ^{
@@ -145,7 +140,7 @@ describe(@"Liquid", ^{
                             numberOfValuesWithTarget++;
                         }
                     }
-                    [[theValue(numberOfValuesWithTarget) should] equal:theValue(1)];
+                    [[expectFutureValue(theValue(numberOfValuesWithTarget)) shouldEventually] equal:theValue(1)];
                 });
                 
                 it(@"should send events with a Data Point that includes only 4 of the 6 values/variables", ^{

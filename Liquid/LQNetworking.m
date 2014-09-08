@@ -178,6 +178,10 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     }
 }
 
+- (void)resetHttpQueue {
+    _httpQueue = [NSMutableArray new];
+}
+
 - (void)addDictionaryToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod {
     NSData *jsonData = [NSData toJSON:dictionary];
     [self addToHttpQueue:jsonData endPoint:endPoint httpMethod:httpMethod];

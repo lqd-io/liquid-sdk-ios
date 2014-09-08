@@ -51,7 +51,11 @@ extern NSString * const LQDidIdentifyUser;
 @property(atomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
 @property(nonatomic, assign) BOOL inBackground;
-@property(nonatomic, strong) dispatch_queue_t queue;
+#if OS_OBJECT_USE_OBJC
+@property(atomic, strong) dispatch_queue_t queue;
+#else
+@property(atomic, assign) dispatch_queue_t queue;
+#endif
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
