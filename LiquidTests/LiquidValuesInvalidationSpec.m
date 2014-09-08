@@ -32,7 +32,7 @@ describe(@"Liquid", ^{
 
     context(@"given a Liquid Package with 6 variables", ^{
         context(@"given correct data types for all 6 variables", ^{
-            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"]; });
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"liquid_tests"]; });
 
             beforeEach(^{
                 [liquid identifyUserWithIdentifier:userId];
@@ -102,7 +102,7 @@ describe(@"Liquid", ^{
 
         context(@"given INCORRECT data types for all 6 variables", ^{
             let(liquid, ^id{
-                return [[Liquid alloc] initWithToken:@"abcdefhi123456"];
+                return [[Liquid alloc] initWithToken:@"liquid_tests"];
             });
 
             beforeEach(^{

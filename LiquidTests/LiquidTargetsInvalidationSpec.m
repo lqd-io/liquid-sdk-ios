@@ -49,7 +49,7 @@ describe(@"Liquid", ^{
                 return [OHHTTPStubsResponse responseWithFileAtPath:fixture statusCode:200 headers:@{@"Content-Type": @"text/json"}];
             }];
 
-            liquidInstance = [[Liquid alloc] initWithToken:@"abcdefghi123456"];
+            liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
             [liquidInstance stub:@selector(flush)];
 
             // Simulate an app going in background and foreground again:

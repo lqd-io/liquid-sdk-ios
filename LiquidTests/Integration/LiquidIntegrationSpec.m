@@ -36,7 +36,7 @@ describe(@"Liquid", ^{
         });
 
         context(@"given a Liquid instance with an anonymous user", ^{
-            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"]; });
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"liquid_tests"]; });
 
             beforeEach(^{
                 [liquid stub:@selector(flush) andReturn:nil];
@@ -79,14 +79,14 @@ describe(@"Liquid", ^{
         });
 
         context(@"given a Liquid Package with an identified user", ^{
-            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"]; });
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"liquid_tests"]; });
 
             beforeEach(^{
                 [liquid stub:@selector(flush) andReturn:nil];
             });
 
             beforeAll(^{
-                liquid = [[Liquid alloc] initWithToken:@"abcdef123456"];
+                liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];

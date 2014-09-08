@@ -45,7 +45,7 @@ describe(@"Liquid", ^{
 
     describe(@"aliasUser", ^{
         context(@"given a Liquid instance", ^{
-            __block Liquid *liquid = [[Liquid alloc] initWithToken:@"123"];
+            __block Liquid *liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
 
             context(@"given identifying anonymously", ^{
                 beforeEach(^{
@@ -65,7 +65,7 @@ describe(@"Liquid", ^{
             __block Liquid *liquid;
 
             beforeEach(^{
-                liquid = [[Liquid alloc] initWithToken:@"abcdef"];
+                liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
                 [liquid stub:@selector(saveCurrentUserToDisk) andReturn:nil];
                 [LQUser stub:@selector(loadFromDiskForToken:) andReturn:nil];
             });
@@ -95,7 +95,7 @@ describe(@"Liquid", ^{
             __block Liquid *liquid;
 
             beforeAll(^{
-                liquid = [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"];
+                liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
                 [liquid identifyUser];
                 [liquid setSessionTimeout:1.5f];
                 [liquid stub:@selector(flush) andReturn:nil];
@@ -149,7 +149,7 @@ describe(@"Liquid", ^{
 
     describe(@"track:", ^{
         it(@"should identify User (anonymous) with the automatically generated identifier", ^{
-            Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+            Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
             [liquidInstance stub:@selector(flush)];
             [liquidInstance track:@"openApplication"];
@@ -159,7 +159,7 @@ describe(@"Liquid", ^{
 
     describe(@"identifyUserWithIdentifier:", ^{
         it(@"should identify User with the correct identifier", ^{
-            Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+            Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
             [liquidInstance stub:@selector(flush)];
             [liquidInstance identifyUserWithIdentifier:@"john"];
@@ -167,7 +167,7 @@ describe(@"Liquid", ^{
         });
 
         it(@"should keep the correct identifier after 1 second", ^{
-            Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"abcdef123456"];
+            Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
             [liquidInstance stub:@selector(flush) andReturn:nil];
             [liquidInstance stub:@selector(flush)];
             [liquidInstance identifyUserWithIdentifier:@"john"];
@@ -184,7 +184,7 @@ describe(@"Liquid", ^{
 
             beforeEach(^{
                 [Liquid softReset];
-                liquidInstance = [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"];
+                liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
                 [liquidInstance stub:@selector(flush)];
                 [liquidInstance identifyUserWithIdentifier:@"123"];
             });
@@ -192,7 +192,7 @@ describe(@"Liquid", ^{
             context(@"given reiniting Liquid instance", ^{
                 beforeEach(^{
                     [NSThread sleepForTimeInterval:0.5f]; // Wait to save last user cache to disk
-                    liquidInstance = [[Liquid alloc] initWithToken:@"12345678901234567890abcdef"];
+                    liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
                     [liquidInstance stub:@selector(flush)];
                     userId = [[liquidInstance userIdentifier] copy];
                     sessionId = [[liquidInstance sessionIdentifier] copy];
@@ -261,7 +261,7 @@ describe(@"Liquid", ^{
         });
 
         context(@"given a Liquid instance", ^{
-            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"abcdef"]; });
+            let(liquid, ^id{ return [[Liquid alloc] initWithToken:@"liquid_tests"]; });
 
             it(@"should not create an identified user with if the ID is an auto generated ID", ^{
                 dispatch_queue_t queue1 = dispatch_queue_create([@"chaos" UTF8String], DISPATCH_QUEUE_CONCURRENT);
