@@ -223,6 +223,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     }
     @catch (NSException *exception) {
         LQLog(kLQLogLevelError, @"<Liquid> %@: Found invalid queue on cache. Destroying it...", [exception name]);
+        [LQNetworking deleteFileIfExists:filePath error:nil];
         plistArray = nil;
     }
     if(plistArray == nil) {
