@@ -205,8 +205,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     self.enterBackgroundTime = [LQDate uniqueNow];
     [_networking stopFlushTimer];
     [_networking flush];
-    [self requestNewLiquidPackageSynced];
     dispatch_async(self.queue, ^{
+        [self requestNewLiquidPackageSynced];
         [self endBackgroundUpdateTask];
     });
 }
