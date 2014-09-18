@@ -1,8 +1,16 @@
 # Liquid iOS SDK Change Log
 
-## 0.9.2-beta: Fix a crash on iOS 6 when going into background
+## 0.9.3-beta: Stability and speed improvements
 
-* **[bugfix]** Fix a crash that occurs when an app running on iOS 6 goes into background.
+* **[enhancement]** Lots of speed and stability improvements
+* **[enhancement]** Improvements on log messages
+* **[bugfix]** When the app goes on background and foreground again, the request of a Liquid Package could be locking the main thread. Thanks @CristianoCastroNabia for the bug report.
+* **[bugfix]** Some events were not reaching the server on rare occasions.
+* **[bugfix]** When an anonymous user was aliased with an identified user, some events could still be tracked as having been done by the previous user.
+
+## 0.9.2-beta: Improvements on iOS 6 support
+
+* **[bugfix]** Fixes a situation that could cause a crash when an app on iOS 6 goes into background.
 
 ## 0.9.1-beta: Avoid an infinite loop when User Alias is disabled
 
