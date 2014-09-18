@@ -1,3 +1,5 @@
+![pod badge](http://img.shields.io/cocoapods/v/Liquid.svg?style=flat)
+
 # Quick Start to Liquid SDK for iOS
 
 This document is just a quick start introduction to Liquid SDK for iOS. You can read the full documentation at [https://www.lqd.io/documentation/ios/](https://www.lqd.io/documentation/ios/).
