@@ -23,7 +23,7 @@
     NSAssert(assert, @"%@'s %@ attribute type must be NSString, NSNumber, NSDate, UIColor or NSNull. Got: %@ %@",
              self, [self class], [attribute class], attribute);
     if (!assert) {
-        LQLog(kLQLogLevelAssert, @"<Liquid> Ignoring %@ attribute because its type is not valid (%@). Accepted types are NSString, NSNumber, NSDate, UIColor and NSNull.", [self class], [attribute class]);
+        LQLog(kLQLogLevelError, @"<Liquid> Ignoring %@ attribute because its type is not valid (%@). Accepted types are NSString, NSNumber, NSDate, UIColor and NSNull.", [self class], [attribute class]);
     }
     return assert;
 }
@@ -33,7 +33,7 @@
     BOOL assert = [key rangeOfCharacterFromSet:notAllowedCharacters].location == NSNotFound;
     NSAssert(assert, @"%@ attribute keys cannot include dollar ($), dot (.) or null (\\0) characters. Got %@", [self class], key);
     if (!assert) {
-        LQLog(kLQLogLevelAssert, @"<Liquid> Ignoring attribute key %@ because includes an invalid character ($, . or \\0).", [self class]);
+        LQLog(kLQLogLevelError, @"<Liquid> Ignoring attribute key %@ because includes an invalid character ($, . or \\0).", [self class]);
     }
     return assert;
 }
@@ -64,7 +64,7 @@
         BOOL assertAttributeAndKey = [[self class] assertAttributeType:[attributes objectForKey:k] andKey:k];
         [[self class] assertReservedAttributeKey:k];
         if (!assertKeyClass || !assertAttributeAndKey) {
-            if (!assertKeyClass) LQLog(kLQLogLevelAssert, @"<Liquid> %@ attribute keys must be an NSString. Got: %@", self, [k class]);
+            if (!assertKeyClass) LQLog(kLQLogLevelError, @"<Liquid> %@ attribute keys must be an NSString. Got: %@", self, [k class]);
             [newDict removeObjectForKey:k];
         }
     }

@@ -16,20 +16,20 @@
 #define kLQNotificationLQDidIdentifyUser @"io.lqd.ios.Notifications:DidIdentifyUser"
 #define kLQBackgroundTaskName @"io.lqd.ios.BackgroundTask"
 
-#define kLQLogLevelPaths       8
-#define kLQLogLevelHttp        7
-#define kLQLogLevelData        6
-#define kLQLogLevelInfoVerbose 5
-#define kLQLogLevelWarning     4
-#define kLQLogLevelInfo        3
-#define kLQLogLevelError       2
-#define kLQLogLevelAssert      1
+#define kLQLogLevelPaths       9
+#define kLQLogLevelHttpData    8
+#define kLQLogLevelData        7
+#define kLQLogLevelInfoVerbose 6
+#define kLQLogLevelHttpError   5
+#define kLQLogLevelInfo        4
+#define kLQLogLevelError       3
+#define kLQLogLevelWarning     2
 #define kLQLogLevelNone        0
 
 #ifdef DEBUG
 #    define kLQLogLevel kLQLogLevelError
 #else
-#    define kLQLogLevel kLQLogLevelAssert
+#    define kLQLogLevel kLQLogLevelNone
 #endif
 
 #define kLQDefaultSessionTimeout 30 //seconds

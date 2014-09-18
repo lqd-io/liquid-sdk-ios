@@ -144,13 +144,13 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 - (void)flushSynced {
     if (![[LQDevice sharedInstance] reachesInternet]) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> There's no Internet connection. Will try to deliver data points later.");
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> There's no Internet connection. Will try to deliver data points later.");
     } else {
         NSMutableArray *failedQueue = [NSMutableArray new];
         while (self.httpQueue.count > 0) {
             LQRequest *queuedHttp = [self.httpQueue firstObject];
             if ([[NSDate new] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
-                LQLog(kLQLogLevelHttp, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
+                LQLog(kLQLogLevelHttpData, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
                 NSInteger res = [self sendData:queuedHttp.json
                                     toEndpoint:queuedHttp.url
                                    usingMethod:queuedHttp.httpMethod];
@@ -190,9 +190,9 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 - (void)addToHttpQueue:(NSData *)jsonData endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod {
     LQRequest *queuedData = [[LQRequest alloc] initWithUrl:endPoint withHttpMethod:httpMethod withJSON:jsonData];
-    LQLog(kLQLogLevelHttp, @"Adding a HTTP request to the queue, for the endpoint %@ %@ ", httpMethod, endPoint);
+    LQLog(kLQLogLevelHttpData, @"Adding a HTTP request to the queue, for the endpoint %@ %@ ", httpMethod, endPoint);
     if (self.httpQueue.count >= self.queueSizeLimit) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Queue exceeded its limit size (%ld). Removing oldest event from queue.", (long) self.queueSizeLimit);
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Queue exceeded its limit size (%ld). Removing oldest event from queue.", (long) self.queueSizeLimit);
         [self.httpQueue removeObjectAtIndex:0];
     }
     [self.httpQueue addObject:queuedData];
@@ -273,21 +273,21 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
             return LQQueueStatusUnreachable;
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
             return LQQueueStatusUnauthorized;
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
             return LQQueueStatusRejected;
         }
     } else {
-        LQLog(kLQLogLevelHttp, @"<Liquid> Response from server: %@", responseString);
+        LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server: %@", responseString);
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return LQQueueStatusOk;
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)httpResponse.statusCode);
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)httpResponse.statusCode);
             return LQQueueStatusRejected;
         }
     }
@@ -312,19 +312,19 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if (error) {
         if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", (long) error.code);
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", (long) error.code);
         } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
             LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Unauthorized (check App Token)", (long) error.code);
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server error", (long) error.code);
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while getting data from server: Server error", (long) error.code);
         }
         return nil;
     } else {
-        LQLog(kLQLogLevelHttp, @"<Liquid> Response from server: %@", responseString);
+        LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server: %@", responseString);
         if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
             return responseData;
         } else {
-            LQLog(kLQLogLevelWarning, @"<Liquid> Error (%ld) while getting data from server: Server error", (long) httpResponse.statusCode);
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while getting data from server: Server error", (long) httpResponse.statusCode);
             return nil;
         }
     }

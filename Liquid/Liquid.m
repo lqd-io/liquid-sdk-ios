@@ -241,7 +241,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         return;
     }
     if (identifier && identifier.length == 0) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error (%@): User identifier cannot be an empty string", self);
+        LQLog(kLQLogLevelError, @"<Liquid> Error: User identifier cannot be an empty string.");
         return;
     }
     LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
@@ -385,11 +385,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     LQUser *currentUser = self.currentUser;
     LQUser *previousUser = self.previousUser;
     if ([previousUser isIdentified]) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error: Previous user is an identified user. You can only alias anonymous (non-identified) with identified users.");
+        LQLog(kLQLogLevelWarning, @"<Liquid> Error: Previous user is an identified user. You can only alias anonymous (non-identified) with identified users.");
         return;
     }
     if ([currentUser isAnonymous]) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error: Current user is an anonymous user. You can only alias anonymous (non-identified) with identified users.");
+        LQLog(kLQLogLevelWarning, @"<Liquid> Error: Current user is an anonymous user. You can only alias anonymous (non-identified) with identified users.");
         return;
     }
     [self aliasUser:previousUser withIdentifier:currentUser.identifier];
@@ -399,7 +399,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     LQUser *anonymousUser = [user copy];
     NSString *newUserIdentifier = [newIdentifier copy];
     if ([anonymousUser isIdentified]) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify non identified users", anonymousUser.identifier);
+        LQLog(kLQLogLevelWarning, @"<Liquid> Error: You're trying to reidentify an already identified user %@. It is only possible to reidentify non identified users", anonymousUser.identifier);
         return;
     }
     LQLog(kLQLogLevelInfo, @"<Liquid> Reidentifying anonymous user (%@) with a new identifier (%@)", anonymousUser.identifier, newUserIdentifier);
@@ -489,7 +489,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
         NSAssert(false, @"<Liquid> Event names cannot start with _");
-        LQLog(kLQLogLevelAssert, @"<Liquid> Event names cannot start with _");
+        LQLog(kLQLogLevelError, @"<Liquid> Event names cannot start with _");
         return;
     }
 
@@ -636,7 +636,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             NSInteger res = [_networking sendData:json
                                        toEndpoint:@"variables"
                                       usingMethod:@"POST"];
-            if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttp, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+            if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttpData, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
         }
     });
 }
@@ -709,7 +709,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                 return fallbackValue;
             }
             @catch (NSException *exception) {
-                LQLog(kLQLogLevelError, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
+                LQLog(kLQLogLevelWarning, @"<Liquid> Variable '%@' value cannot be converted to a color: <%@> %@", variableName, exception.name, exception.reason);
                 [self invalidateTargetThatIncludesVariable:variableName];
                 return fallbackValue;
             }
