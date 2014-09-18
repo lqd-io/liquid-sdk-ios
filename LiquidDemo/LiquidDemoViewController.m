@@ -61,6 +61,9 @@ BOOL const defaultShowAds = YES;
         [self.userSelectorSegmentedControl setSelectedSegmentIndex:2];
     } else if ([currentUserIdentifier isEqualToString:@"103"]) {
         [self.userSelectorSegmentedControl setSelectedSegmentIndex:3];
+    } else {
+        self.anonymousUserButton.selected = YES;
+        [self.userSelectorSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
     }
 
     // Being notified about Liquid events (alternative 1):
@@ -137,7 +140,6 @@ BOOL const defaultShowAds = YES;
 
 - (IBAction)trackEvent3:(id)sender {
     [[Liquid sharedInstance] track:self.customEventNameTextField.text];
-    
     NSLog(@"Track '%@' event", self.customEventNameTextField.text);
 }
 
@@ -181,11 +183,14 @@ BOOL const defaultShowAds = YES;
     NSLog(@"discount: %f", discount);
     NSLog(@"showAds: %@", (showAds ? @"yes" : @"no"));
 }
+
 - (IBAction)IdentifyAnonymousButton:(UIButton *)sender {
     [[Liquid sharedInstance] resetUser];
     [sender setSelected:YES];
     // Unselect all Segmented Control buttons
     [self.userSelectorSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+    self.selectedUserProfile = [[Liquid sharedInstance] userIdentifier];
+    self.userUniqueId.text = [[Liquid sharedInstance] userIdentifier];
 }
 
 - (void)setCurrentUserWithIdentifier:(NSString *)userIdentifier {
@@ -193,7 +198,7 @@ BOOL const defaultShowAds = YES;
     [[Liquid sharedInstance] identifyUserWithIdentifier:userIdentifier attributes:userAttributes];
 
     // Update interface:
-    self.anonymousUserButton.selected = false;
+    self.anonymousUserButton.selected = NO;
     self.selectedUserProfile = userIdentifier;
     self.userUniqueId.text = [[Liquid sharedInstance] userIdentifier];
 }
