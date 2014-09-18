@@ -236,6 +236,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
     NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
+    if ((!identifier || identifier.length == 0) && [self.currentUser isAnonymous]) {
+        LQLog(kLQLogLevelWarning, @"<Liquid> Trying to anonymously identify an user that is already anonymous.");
+        return;
+    }
     if (identifier && identifier.length == 0) {
         LQLog(kLQLogLevelError, @"<Liquid> Error (%@): User identifier cannot be an empty string", self);
         return;
@@ -306,7 +310,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)resetUser {
-    [self identifyUserWithIdentifier:nil attributes:nil alias:NO];
+    LQUser *user = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
+    [self identifyUserSynced:user alias:NO];
 }
 
 - (void)identifyUserWithIdentifier:(NSString *)identifier {

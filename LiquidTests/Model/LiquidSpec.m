@@ -175,6 +175,67 @@ describe(@"Liquid", ^{
         });
     });
 
+    describe(@"identifyUserWithIdentifier:", ^{
+        context(@"given a Liquid instance with an identified user", ^{
+            __block Liquid *liquidInstance;
+
+            beforeEach(^{
+                liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
+                [liquidInstance identifyUserWithIdentifier:@"123" attributes:nil];
+            });
+
+            it(@"should set the correct user identifier", ^{
+                [[liquidInstance.currentUser.identifier should] equal:@"123"];
+            });
+
+            it(@"should call identifyUserSynced:", ^{
+                [[liquidInstance should] receive:@selector(identifyUserSynced:alias:)];
+                [liquidInstance identifyUserWithIdentifier:nil attributes:nil];
+            });
+
+            context(@"given identifying the user with a nil identifier", ^{
+                beforeEach(^{
+                    [liquidInstance identifyUserWithIdentifier:nil attributes:nil];
+                });
+
+                it(@"should change the identifier", ^{
+                    [[liquidInstance.currentUser.identifier shouldNot] equal:@"123"];
+                });
+
+                it(@"should not call identifyUserSynced: if called multiple times", ^{
+                    [[liquidInstance shouldNot] receive:@selector(identifyUserSynced:alias:)];
+                    [liquidInstance identifyUserWithIdentifier:nil attributes:nil];
+                });
+            });
+        });
+    });
+
+    describe(@"resetUser:", ^{
+        context(@"given a Liquid instance with an identified user", ^{
+            __block Liquid *liquidInstance;
+
+            beforeEach(^{
+                liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
+                [liquidInstance identifyUserWithIdentifier:@"123" attributes:nil];
+            });
+
+            it(@"should call identifyUserSynced:", ^{
+                [[liquidInstance should] receive:@selector(identifyUserSynced:alias:)];
+                [liquidInstance resetUser];
+            });
+
+            it(@"should call identifyUserSynced: if called multiple times", ^{
+                [[liquidInstance should] receive:@selector(identifyUserSynced:alias:)];
+                [liquidInstance resetUser];
+            });
+
+            it(@"should not call aliasUser method", ^{
+                [[liquidInstance shouldNot] receive:@selector(aliasUser)];
+                [liquidInstance resetUser];
+            });
+        });
+    });
+
     describe(@"identifyUserSynced:alias:", ^{
         context(@"given a Liquid singleton", ^{
             __block __strong Liquid *liquidInstance;
