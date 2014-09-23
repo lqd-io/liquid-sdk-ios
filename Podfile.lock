@@ -1,19 +1,20 @@
 PODS:
-  - Kiwi/ARC (2.2.4)
-  - Kiwi/NonARC (2.2.4)
-  - Kiwi/XCTest (2.2.4):
-    - Kiwi/ARC
-    - Kiwi/NonARC
+  - Kiwi (2.3.0)
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.2)
 
 DEPENDENCIES:
-  - Kiwi/XCTest (~> 2.2.4)
+  - Kiwi (from `https://github.com/kiwi-bdd/Kiwi.git`, tag `2.3.0`)
   - OCMock (~> 2.2.4)
   - OHHTTPStubs (~> 3.1.2)
 
+EXTERNAL SOURCES:
+  Kiwi:
+    :git: https://github.com/kiwi-bdd/Kiwi.git
+    :tag: 2.3.0
+
 SPEC CHECKSUMS:
-  Kiwi: c73667f2b84cbf36f1a3830267c5a4ae8dcbd8ba
+  Kiwi: 5729ed4241c40195f35a597c834e6a48e88a465f
   OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
   OHHTTPStubs: c1c2007839687eaf9b80f061ce84440515080ebb
 
