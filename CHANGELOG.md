@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 1.0.0: First iOS stable release
+
+* After several improvements, guaranteeing that all the data points are correctly created and tracked, and that the plaform is stable, we're proud to announce Liquid first stable release of the iOS SDK. Thank you very much to everyone that contributed to this release, with pull requests, tracking of issues and suggestions.
+
 ## 0.9.4-beta: Fix incorrect date serialization in some regions
 
 * **[bugfix]** Fix an issue that could cause some dates to be incorrectly serialized (to JSON) to the ISO8601 format in some system locales/regions.
