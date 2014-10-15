@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define kLQVersion @"0.9.3-beta"
+#define kLQVersion @"0.9.4-beta"
 #define kLQBundle @"io.lqd.ios"
 #define kLQDevicePlatform @"iOS"
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"

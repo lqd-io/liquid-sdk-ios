@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 0.9.4-beta: Fix incorrect date serialization in some regions
+
+* **[bugfix]** Fix an issue that could cause some dates to be incorrectly serialized (to JSON) to the ISO8601 format in some system locales/regions.
+
 ## 0.9.3-beta: Stability and speed improvements
 
 * **[enhancement]** Lots of speed and stability improvements
