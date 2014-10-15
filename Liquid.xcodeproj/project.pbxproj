@@ -18,6 +18,7 @@
 		A95E659C194543180075161E /* liquid_package_correct_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */; };
 		A95E659E194566600075161E /* LiquidTargetsInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */; };
 		A95E65A0194566D90075161E /* LiquidValuesInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */; };
+		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
 		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
 		A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -109,6 +110,7 @@
 		A9509876194F104E0048106A /* LiquidSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidSpec.m; path = Model/LiquidSpec.m; sourceTree = "<group>"; };
 		A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidTargetsInvalidationSpec.m; sourceTree = "<group>"; };
 		A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidValuesInvalidationSpec.m; sourceTree = "<group>"; };
+		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
 		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98CF0071949C7A3003DF949 /* LiquidDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidDemo-Info.plist"; sourceTree = "<group>"; };
 		A98CF0091949C7A3003DF949 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */,
 				A9509876194F104E0048106A /* LiquidSpec.m */,
 				A9A58B2A19736B27007085C9 /* LQUserSpec.m */,
+				A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */,
 				A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */,
 				A9509877194F104E0048106A /* LiquidSpec.m in Sources */,
+				A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */,
 				A99BFF3419BB471A00C2C2A2 /* LQNetworkingSpec.m in Sources */,
 				A95E65A0194566D90075161E /* LiquidValuesInvalidationSpec.m in Sources */,
 				A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */,

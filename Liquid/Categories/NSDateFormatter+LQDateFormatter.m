@@ -18,10 +18,10 @@
 @implementation NSDateFormatter (LQDateFormatter)
 
 + (NSDateFormatter *)iso8601DateFormatterWithFormat:(NSString *)format {
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:format];
-    [formatter setCalendar:gregorianCalendar];
+    [formatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]];
+    [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
     return formatter;
 }
 
