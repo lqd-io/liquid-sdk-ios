@@ -2,7 +2,7 @@
 
 ## 1.0.0: First iOS stable release
 
-* After several improvements, guaranteeing that all the data points are correctly created and tracked, and that the plaform is stable, we're proud to announce Liquid first stable release of the iOS SDK. Thank you very much to everyone that contributed to this release, with pull requests, tracking of issues and suggestions.
+We're proud to announce Liquid v1.0 of the iOS SDK. We’ve been improving it with more functionalities, guaranteeing in all versions that all the data points are correctly created and tracked. We want to thank to everyone that contributed to this release, with pull requests, tracking of issues and suggestions.
 
 ## 0.9.4-beta: Fix incorrect date serialization in some regions
 
