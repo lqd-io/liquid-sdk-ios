@@ -87,21 +87,6 @@ extern NSString * const LQDidIdentifyUser;
  @property
  
  @abstract
- Control whether data should be flushed (or not) when the application
- enters background.
- 
- @discussion
- Defaults to YES.
- */
-
-@property (nonatomic, assign) BOOL flushOnBackground
-__deprecated_msg("This method is not used anymore. Whe the app goes on background, flush is always perfromed");
-
-
-/*!
- @property
- 
- @abstract
  Control whether variable fallback values should be send to Liquid dashboard
  in development mode, thus assumed as default values. This is not mandatory
  for Liquid to work. It just eases and speeds up development process.
@@ -256,21 +241,6 @@ __deprecated_msg("This method is not used anymore. Whe the app goes on backgroun
  @method
  
  @abstract
- Automatically identifies the user on to the Liquid API.
- 
- @discussion
- This will identify the user either by the advertising identifier or
- the uuid of the device.
- */
-
--(void)identifyUser
-  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be an anonymous user, you can reset the user with [Liquid resetUser].");
-
-
-/*!
- @method
- 
- @abstract
  Identifies the user on to the Liquid API with a given identifier.
  
  @discussion
@@ -297,23 +267,6 @@ __deprecated_msg("This method is not used anymore. Whe the app goes on backgroun
 
 -(void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias;
 
-
-/*!
- @method
- 
- @abstract
- Identifies the user on to the Liquid API with an anonymous user and some
- attributes.
- 
- @discussion
- This will identify the user with the given identifier string and a
- dictionary of attributes to better classify the user.
- 
- @param attributes        dictionary of user attributes
- */
-
--(void)identifyUserWithAttributes:(NSDictionary *)attributes
-  __deprecated_msg("This method is not needed anymore. However, if you really want to force an user to be an anonymous user, you can reset the user with [Liquid resetUser].");
 
 /*!
  @method
@@ -372,29 +325,6 @@ __deprecated_msg("This method is not used anymore. Whe the app goes on backgroun
  @method
  
  @abstract
- Identifies the user on to the Liquid API with a given identifier, some
- attributes and a user location.
- 
- @discussion
- This will identify the user with the given identifier string, a
- dictionary of attributes to better classify the user and a CLLocation
- to better pin point where the user is using the application. This is never
- calculated automatically and must be explicity provided by the developer
- through other methods of obtaining the user location.
- 
- @param identifier        unique name identifying the user
- @param attributes        dictionary of user attributes
- @param location          user location
- */
-
--(void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location
-  __deprecated_msg("Use identifyUserWithIdentifier:attributes: instead, and setCurrentLocation: in separate methods.");
-
-
-/*!
- @method
- 
- @abstract
  Sets a user attribute for a given key.
  
  @discussion
@@ -406,24 +336,6 @@ __deprecated_msg("This method is not used anymore. Whe the app goes on backgroun
  */
 
 -(void)setUserAttribute:(id)attribute forKey:(NSString *)key;
-
-
-/*!
- @method
- 
- @abstract
- Set the user location
- 
- @discussion
- This will associate GPS coordinates to the user. This is never
- set automatically and must be explicity provided by the developer
- through other methods of obtaining the user location.
- 
- @param location          the user location
- */
-
--(void)setUserLocation:(CLLocation *)location
-  __deprecated_msg("Use setCurrentLocation: instead");
 
 
 /*!

@@ -280,24 +280,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - User identifying methods (alias methods)
 
-// Deprecated:
-- (void)identifyUser {
-    [self resetUser];
-}
-
-// Deprecated:
-- (void)identifyUserWithAttributes:(NSDictionary *)attributes {
-    [self identifyUserWithIdentifier:nil attributes:[LQUser assertAttributesTypesAndKeys:attributes] alias:NO];
-}
-
-// Deprecated:
-- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes location:(CLLocation *)location {
-    [self identifyUserWithIdentifier:identifier attributes:attributes alias:YES];
-    dispatch_async(self.queue, ^{
-        [self setCurrentLocation:location];
-    });
-}
-
 - (void)autoIdentifyUser {
     if (self.previousUser) {
         [self identifyUserSynced:_previousUser alias:NO];
@@ -355,11 +337,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                 forKey:key];
         [self saveCurrentUserToDisk];
     });
-}
-
-// Deprecated:
-- (void)setUserLocation:(CLLocation *)location {
-    [self setCurrentLocation:location];
 }
 
 - (void)setCurrentLocation:(CLLocation *)location {
