@@ -248,10 +248,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self identifyUserSynced:newUser alias:alias];
 }
 
--(void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
+- (void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
     self.previousUser = [self.currentUser copy];
     LQUser *currentUser = self.currentUser;
     LQUser *newUser = [user copy];
+    BOOL needToAlias = alias && ![newUser.identifier isEqualToString:currentUser.identifier];
+
     if (currentUser && [newUser.identifier isEqualToString:currentUser.identifier]) {
         self.currentUser.attributes = newUser.attributes; // just updating current user attributes
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
@@ -273,7 +275,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                      waitUntilDone:NO];
     }
 
-    if (alias && ![newUser.identifier isEqualToString:currentUser.identifier]) {
+    if (needToAlias) {
         [self aliasUser];
     }
 }
