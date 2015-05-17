@@ -258,9 +258,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.currentUser.attributes = newUser.attributes; // just updating current user attributes
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Already identified with user %@. Not identifying again.", user.identifier);
     } else {
-        [self endSessionNowBy:@"Identify" with:currentUser.identifier];
         self.currentUser = newUser;
-        [self startSessionBy:@"Identify" with:newUser.identifier];
         LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
     }
     [self saveCurrentUserToDisk];

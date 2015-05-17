@@ -280,8 +280,8 @@ describe(@"Liquid", ^{
                         [[[liquidInstance userIdentifier] should] equal:@"124"];
                     });
 
-                    it(@"should create a new session identifier", ^{
-                        [[[liquidInstance sessionIdentifier] shouldNot] equal:sessionId];
+                    it(@"should not create a new session identifier", ^{
+                        [[[liquidInstance sessionIdentifier] should] equal:sessionId];
                     });
                 });
             });
