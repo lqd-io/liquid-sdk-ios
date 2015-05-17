@@ -99,7 +99,7 @@ extern NSString * const LQDidIdentifyUser;
 - (void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias;
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes;
 - (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias;
-- (void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias;
+- (void)identifyUser:(LQUser *)user alias:(BOOL)alias;
 - (void)aliasUser;
 - (void)aliasUser:(LQUser *)user withIdentifier:(NSString *)newIdentifier;
 

@@ -187,8 +187,8 @@ describe(@"Liquid", ^{
                 [[liquidInstance.currentUser.identifier should] equal:@"123"];
             });
 
-            it(@"should call identifyUserSynced:", ^{
-                [[liquidInstance should] receive:@selector(identifyUserSynced:alias:)];
+            it(@"should call identifyUser:", ^{
+                [[liquidInstance should] receive:@selector(identifyUser:alias:)];
                 [liquidInstance identifyUserWithIdentifier:nil attributes:nil];
             });
 
@@ -201,8 +201,8 @@ describe(@"Liquid", ^{
                     [[liquidInstance.currentUser.identifier shouldNot] equal:@"123"];
                 });
 
-                it(@"should not call identifyUserSynced: if called multiple times", ^{
-                    [[liquidInstance shouldNot] receive:@selector(identifyUserSynced:alias:)];
+                it(@"should not call identifyUser: if called multiple times", ^{
+                    [[liquidInstance shouldNot] receive:@selector(identifyUser:alias:)];
                     [liquidInstance identifyUserWithIdentifier:nil attributes:nil];
                 });
             });
@@ -218,13 +218,13 @@ describe(@"Liquid", ^{
                 [liquidInstance identifyUserWithIdentifier:@"123" attributes:nil];
             });
 
-            it(@"should call identifyUserSynced:", ^{
-                [[liquidInstance should] receive:@selector(identifyUserSynced:alias:)];
+            it(@"should call identifyUser:", ^{
+                [[liquidInstance should] receive:@selector(identifyUser:alias:)];
                 [liquidInstance resetUser];
             });
 
-            it(@"should call identifyUserSynced: if called multiple times", ^{
-                [[liquidInstance should] receive:@selector(identifyUserSynced:alias:)];
+            it(@"should call identifyUser: if called multiple times", ^{
+                [[liquidInstance should] receive:@selector(identifyUser:alias:)];
                 [liquidInstance resetUser];
             });
 
@@ -235,7 +235,7 @@ describe(@"Liquid", ^{
         });
     });
 
-    describe(@"identifyUserSynced:alias:", ^{
+    describe(@"identifyUser:alias:", ^{
         context(@"given a Liquid singleton", ^{
             __block __strong Liquid *liquidInstance;
             __block NSString *userId;
@@ -329,7 +329,7 @@ describe(@"Liquid", ^{
                     dispatch_async(queue, ^{
                         Liquid *liquidInstance = liquid;
                         LQUser *user = [[LQUser alloc] initWithIdentifier:@"123" attributes:@{ @"age": @32 }];
-                        [liquidInstance identifyUserSynced:user alias:NO];
+                        [liquidInstance identifyUser:user alias:NO];
                         if ([liquidInstance.currentUser isAnonymous]) {
                             @synchronized(failed) {
                                 failed = @YES;

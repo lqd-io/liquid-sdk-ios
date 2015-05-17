@@ -245,10 +245,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         return;
     }
     LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
-    [self identifyUserSynced:newUser alias:alias];
+    [self identifyUser:newUser alias:alias];
 }
 
-- (void)identifyUserSynced:(LQUser *)user alias:(BOOL)alias {
+- (void)identifyUser:(LQUser *)user alias:(BOOL)alias {
     self.previousUser = [self.currentUser copy];
     LQUser *currentUser = self.currentUser;
     LQUser *newUser = [user copy];
@@ -284,18 +284,18 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)autoIdentifyUser {
     if (self.previousUser) {
-        [self identifyUserSynced:_previousUser alias:NO];
+        [self identifyUser:_previousUser alias:NO];
         LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user (using cached user: %@)", _previousUser.identifier);
     } else {
         LQUser *anonymousUser = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
-        [self identifyUserSynced:anonymousUser alias:NO];
+        [self identifyUser:anonymousUser alias:NO];
         LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously: creating a new anonymous user (%@)", _currentUser.identifier);
     }
 }
 
 - (void)resetUser {
     LQUser *user = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
-    [self identifyUserSynced:user alias:NO];
+    [self identifyUser:user alias:NO];
 }
 
 - (void)identifyUserWithIdentifier:(NSString *)identifier {
@@ -310,8 +310,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self identifyUserWithIdentifier:identifier attributes:nil alias:alias];
 }
 
-- (void)identifyUserSynced:(LQUser *)user {
-    [self identifyUserSynced:user alias:YES];
+- (void)identifyUser:(LQUser *)user {
+    [self identifyUser:user alias:YES];
 }
 
 #pragma mark - User related stuff
