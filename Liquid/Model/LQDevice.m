@@ -9,6 +9,7 @@
 #import "LQDefaults.h"
 #import "LQDevice.h"
 #import "NSString+LQString.h"
+#import "LQStorage.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #include <sys/sysctl.h>
@@ -379,6 +380,45 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     [aCoder encodeObject:_internetConnectivity forKey:@"internetConnectivity"];
     [aCoder encodeObject:_apnsToken forKey:@"apnsToken"];
     [aCoder encodeObject:_attributes forKey:@"attributes"];
+}
+
+#pragma mark - Archive to/from disk
+
++ (BOOL)archiveUniqueId:(NSString *)uniqueId allowUpdate:(BOOL)allowUpdate {
+    if (!allowUpdate && [LQStorage fileExists:[self uniqueIdFile]]) {
+        return NO;
+    }
+    LQLog(kLQLogLevelData, @"<Liquid> Saving Device UniqueId to disk");
+    return [NSKeyedArchiver archiveRootObject:uniqueId toFile:[LQDevice uniqueIdFile]];
+}
+
++ (NSString *)unarchiveUniqueId {
+    NSString *filePath = [LQDevice uniqueIdFile];
+    NSString *uniqueId = nil;
+    @try {
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        uniqueId = [object isKindOfClass:[NSString class]] ? object : nil;
+        LQLog(kLQLogLevelData, @"<Liquid> Loaded Device UID from disk");
+    }
+    @catch (NSException *exception) {
+        LQLog(kLQLogLevelError, @"<Liquid> %@: Found invalid Device UID on cache. Destroying it...", [exception name]);
+        [LQStorage deleteFileIfExists:filePath error:nil];
+    }
+    return uniqueId;
+}
+
++ (NSString *)uniqueIdFile {
+    return [LQStorage filePathForAllTokensWithExtension:@"device.unique_id"];
+}
+
++ (void)deleteUniqueId {
+    NSString *filePath = [LQDevice uniqueIdFile];
+    LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached Device UID");
+    NSError *error;
+    [LQStorage deleteFileIfExists:filePath error:&error];
+    if (error) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error deleting cached Device UID");
+    }
 }
 
 @end
