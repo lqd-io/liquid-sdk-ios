@@ -15,6 +15,7 @@
 - (id)initWithIdentifier:(NSString*)identifier attributes:(NSDictionary*)attributes;
 - (void)setAttribute:(id<NSCoding>)attribute forKey:(NSString*)key;
 - (id)attributeForKey:(NSString*)key;
+- (void)resetAttributes;
 - (NSDictionary*)jsonDictionary;
 - (BOOL)isIdentified;
 - (BOOL)isAnonymous;

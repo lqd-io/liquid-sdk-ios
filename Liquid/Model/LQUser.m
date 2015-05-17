@@ -72,6 +72,10 @@
     return [_attributes objectForKey:key];
 }
 
+- (void)resetAttributes {
+    _attributes = [NSDictionary new];
+}
+
 + (NSDictionary *)reservedAttributes {
     return [NSDictionary dictionaryWithObjectsAndKeys:
             @YES, @"_id",

@@ -48,7 +48,7 @@ describe(@"Liquid", ^{
 
             context(@"given identifying anonymously", ^{
                 beforeEach(^{
-                    [liquid identifyUserWithIdentifier:nil attributes:nil alias:NO];
+                    [liquid resetUser];
                 });
 
                 it(@"should not alias user", ^{
@@ -187,8 +187,8 @@ describe(@"Liquid", ^{
                 [[liquidInstance.currentUser.identifier should] equal:@"123"];
             });
 
-            it(@"should call identifyUser:", ^{
-                [[liquidInstance should] receive:@selector(identifyUser:alias:)];
+            it(@"should not call identifyUser:", ^{
+                [[liquidInstance shouldNot] receive:@selector(identifyUser:alias:)];
                 [liquidInstance identifyUserWithIdentifier:nil attributes:nil];
             });
 
@@ -197,8 +197,8 @@ describe(@"Liquid", ^{
                     [liquidInstance identifyUserWithIdentifier:nil attributes:nil];
                 });
 
-                it(@"should change the identifier", ^{
-                    [[liquidInstance.currentUser.identifier shouldNot] equal:@"123"];
+                it(@"should not change the identifier (an error in logs is given)", ^{
+                    [[liquidInstance.currentUser.identifier should] equal:@"123"];
                 });
 
                 it(@"should not call identifyUser: if called multiple times", ^{
@@ -213,9 +213,13 @@ describe(@"Liquid", ^{
         context(@"given a Liquid instance with an identified user", ^{
             __block Liquid *liquidInstance;
 
+            let(identifiedUserUniqueId, ^id{
+                return @"123";
+            });
+
             beforeEach(^{
                 liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
-                [liquidInstance identifyUserWithIdentifier:@"123" attributes:nil];
+                [liquidInstance identifyUserWithIdentifier:identifiedUserUniqueId attributes:nil];
             });
 
             it(@"should call identifyUser:", ^{
@@ -223,9 +227,21 @@ describe(@"Liquid", ^{
                 [liquidInstance resetUser];
             });
 
-            it(@"should call identifyUser: if called multiple times", ^{
-                [[liquidInstance should] receive:@selector(identifyUser:alias:)];
+            it(@"should change the user identifier to a new one", ^{
                 [liquidInstance resetUser];
+                [[[liquidInstance userIdentifier] shouldNot] equal:identifiedUserUniqueId];
+            });
+
+            it(@"should change the user identifier to an anonymous one", ^{
+                [liquidInstance resetUser];
+                [[theValue([[liquidInstance currentUser] isAnonymous]) should] beYes];
+            });
+
+            it(@"should not create another anonymous user uniqueId if called multiple times", ^{
+                [liquidInstance resetUser];
+                NSString *anonymousUserIdentifier = [[liquidInstance userIdentifier] copy];
+                [liquidInstance resetUser];
+                [[[liquidInstance userIdentifier] should] equal:anonymousUserIdentifier];
             });
 
             it(@"should not call aliasUser method", ^{

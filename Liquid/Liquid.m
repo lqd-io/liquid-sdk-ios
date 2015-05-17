@@ -134,13 +134,20 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             self.backgroundUpdateTask = UIBackgroundTaskInvalid;
         }
 
+        // Load Liquid Package from previous launch:
         if(!_loadedLiquidPackage) {
             [self loadLiquidPackageSynced:YES];
         }
 
         // Load user from previous launch:
         _previousUser = [LQUser unarchiveUserForToken:_apiToken];
-        [self autoIdentifyUser];
+        if (_previousUser) {
+            [self identifyUser:_previousUser alias:NO];
+            LQLog(kLQLogLevelInfo, @"<Liquid> Found a cached user (%@). Identified using it.", _previousUser.identifier);
+        } else {
+            [self resetUser];
+            LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", _currentUser.identifier);
+        }
         if (!self.currentSession) {
             [self startSessionBy:@"Identify" with:self.currentUser.identifier];
         }
@@ -232,21 +239,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 }
 
-#pragma mark - User identifying methods (real methods)
-
-- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
-    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
-    if ((!identifier || identifier.length == 0) && [self.currentUser isAnonymous]) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Trying to anonymously identify an user that is already anonymous.");
-        return;
-    }
-    if (identifier && identifier.length == 0) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error: User identifier cannot be an empty string.");
-        return;
-    }
-    LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
-    [self identifyUser:newUser alias:alias];
-}
+#pragma mark - User identification
 
 - (void)identifyUser:(LQUser *)user alias:(BOOL)alias {
     self.previousUser = [self.currentUser copy];
@@ -280,22 +273,26 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 }
 
-#pragma mark - User identifying methods (alias methods)
+#pragma mark - User identification (Public methods)
 
-- (void)autoIdentifyUser {
-    if (self.previousUser) {
-        [self identifyUser:_previousUser alias:NO];
-        LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user (using cached user: %@)", _previousUser.identifier);
+- (void)resetUser {
+    if ([self.currentUser isAnonymous]) {
+        [self.currentUser resetAttributes];
+        [self saveCurrentUserToDisk];
     } else {
-        LQUser *anonymousUser = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
-        [self identifyUser:anonymousUser alias:NO];
-        LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously: creating a new anonymous user (%@)", _currentUser.identifier);
+        LQUser *user = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
+        [self identifyUser:user alias:NO];
     }
 }
 
-- (void)resetUser {
-    LQUser *user = [[LQUser alloc] initWithIdentifier:nil attributes:nil];
-    [self identifyUser:user alias:NO];
+- (void)identifyUserWithIdentifier:(NSString *)identifier attributes:(NSDictionary *)attributes alias:(BOOL)alias {
+    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
+    if (!identifier || identifier.length == 0) {
+        LQLog(kLQLogLevelWarning, @"<Liquid> Error: User identifier cannot be nil or an empty string.");
+        return;
+    }
+    LQUser *newUser = [[LQUser alloc] initWithIdentifier:[identifier copy] attributes:[validAttributes copy]];
+    [self identifyUser:newUser alias:alias];
 }
 
 - (void)identifyUserWithIdentifier:(NSString *)identifier {
@@ -308,10 +305,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)identifyUserWithIdentifier:(NSString *)identifier alias:(BOOL)alias {
     [self identifyUserWithIdentifier:identifier attributes:nil alias:alias];
-}
-
-- (void)identifyUser:(LQUser *)user {
-    [self identifyUser:user alias:YES];
 }
 
 #pragma mark - User related stuff
