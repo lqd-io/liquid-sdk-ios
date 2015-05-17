@@ -10,13 +10,12 @@
 
 @interface LQStorage : NSObject
 
-+ (void)setObject:(id)object forKey:(NSString *)key;
-+ (id)objectForKey:(NSString *)key;
-
 + (BOOL)deleteAllLiquidFiles;
 + (BOOL)deleteFileIfExists:(NSString *)fileName error:(NSError **)err;
 + (NSString *)liquidDirectory;
-+ (NSString*)filePathWithExtension:(NSString *)extesion forToken:(NSString *)apiToken;
-+ (NSArray *)filesInDirectory:(NSString *)directoryPath;
++ (BOOL)fileExists:(NSString *)fileName;
++ (NSArray *)filesInDirectory:(NSString *)directoryPath;;
++ (NSString *)filePathWithExtension:(NSString *)extesion forToken:(NSString *)apiToken;
++ (NSString *)filePathForAllTokensWithExtension:(NSString *)extesion;
 
 @end
