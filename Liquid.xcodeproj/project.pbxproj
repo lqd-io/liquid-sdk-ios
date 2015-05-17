@@ -62,6 +62,7 @@
 		A9F3264419527046005731BD /* liquid_package_targets.json in Resources */ = {isa = PBXBuildFile; fileRef = A9F3264319527046005731BD /* liquid_package_targets.json */; };
 		A9FBA7AA1B03981200900AAC /* LQKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA7A91B03981200900AAC /* LQKeychain.m */; };
 		A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */; };
+		A9FBA7B61B090BD300900AAC /* LQUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */; };
 		A9FF7A9319350C7F00DB73C7 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F121935077600D0E0A1 /* CoreTelephony.framework */; };
 		A9FF7A9419350C8400DB73C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
 		A9FF7A9519350C8800DB73C7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */; };
@@ -180,6 +181,8 @@
 		A9FBA7A91B03981200900AAC /* LQKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychain.m; sourceTree = "<group>"; };
 		A9FBA7AB1B03B0E200900AAC /* LQKeychainItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQKeychainItem.h; sourceTree = "<group>"; };
 		A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychainItem.m; sourceTree = "<group>"; };
+		A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserDefaults.h; sourceTree = "<group>"; };
+		A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUserDefaults.m; sourceTree = "<group>"; };
 		A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.xcconfig"; path = "Pods/Pods-LiquidTests.xcconfig"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,6 +418,8 @@
 				A9FBA7A91B03981200900AAC /* LQKeychain.m */,
 				A9E789E519BFBBC0006CA1D8 /* LQStorage.h */,
 				A9E789E619BFBBC0006CA1D8 /* LQStorage.m */,
+				A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */,
+				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
 				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
 				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
@@ -621,6 +626,7 @@
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */,
 				A99EB500192447FA0060E484 /* LQUser.m in Sources */,
+				A9FBA7B61B090BD300900AAC /* LQUserDefaults.m in Sources */,
 				A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */,
 				A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */,
 			);
