@@ -22,7 +22,7 @@ describe(@"Liquid", ^{
     });
 
     let(deviceId, ^id{
-        return [LQDevice uid];
+        return [[LQDevice sharedInstance] uid];
     });
 
     beforeAll(^{
@@ -31,6 +31,7 @@ describe(@"Liquid", ^{
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
         [LQDevice stub:@selector(appVersion) andReturn:@"9.9"];
         [LQDevice stub:@selector(releaseVersion) andReturn:@"9.8"];
+        [LQDevice stub:@selector(uniqueId) andReturn:deviceId];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return [request.URL.path hasPrefix:@"/collect/users/"] && [request.URL.path hasSuffix:[NSString stringWithFormat:@"/devices/%@/liquid_package", deviceId]];

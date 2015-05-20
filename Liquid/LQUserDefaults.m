@@ -24,6 +24,12 @@
     return [[NSUserDefaults standardUserDefaults] objectForKey:[LQUserDefaults liquidPrefixedKey:key]];
 }
 
++ (void)removeObjectForKey:(NSString *)key {
+    LQLog(kLQLogLevelData, @"Removing NSUserDefaults key '%@'", key);
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[LQUserDefaults liquidPrefixedKey:key]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 + (NSString *)liquidPrefixedKey:(NSString *)key {
     return [NSString stringWithFormat:@"%@.%@", kLQBundle, key];
 }

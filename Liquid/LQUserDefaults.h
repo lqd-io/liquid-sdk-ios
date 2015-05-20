@@ -12,5 +12,6 @@
 
 + (BOOL)setObject:(id)object forKey:(NSString *)key allowUpdate:(BOOL)allowUpdate;
 + (id)objectForKey:(NSString *)key;
++ (void)removeObjectForKey:(NSString *)key;
 
 @end

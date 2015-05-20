@@ -462,7 +462,7 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     return [LQStorage filePathForAllTokensWithExtension:@"device.unique_id"];
 }
 
-+ (void)deleteUniqueId {
++ (void)deleteUniqueIdFile {
     NSString *filePath = [LQDevice uniqueIdFile];
     LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached Device UID");
     NSError *error;

@@ -18,6 +18,8 @@
 		A95E659C194543180075161E /* liquid_package_correct_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */; };
 		A95E659E194566600075161E /* LiquidTargetsInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */; };
 		A95E65A0194566D90075161E /* LiquidValuesInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */; };
+		A95EC5A61B0DEA2900407D03 /* LQDeviceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A51B0DEA2900407D03 /* LQDeviceSpec.m */; };
+		A95EC5A91B0DFE2000407D03 /* LQKeychainSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */; };
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
 		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
@@ -113,6 +115,10 @@
 		A9509876194F104E0048106A /* LiquidSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidSpec.m; path = Model/LiquidSpec.m; sourceTree = "<group>"; };
 		A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidTargetsInvalidationSpec.m; sourceTree = "<group>"; };
 		A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidValuesInvalidationSpec.m; sourceTree = "<group>"; };
+		A95EC5A51B0DEA2900407D03 /* LQDeviceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDeviceSpec.m; path = Model/LQDeviceSpec.m; sourceTree = "<group>"; };
+		A95EC5A71B0DF11300407D03 /* LQDevicePrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQDevicePrivates.h; sourceTree = "<group>"; };
+		A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychainSpec.m; sourceTree = "<group>"; };
+		A95EC5AA1B0DFEBB00407D03 /* LQKeychainPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQKeychainPrivates.h; sourceTree = "<group>"; };
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
 		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98CF0071949C7A3003DF949 /* LiquidDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidDemo-Info.plist"; sourceTree = "<group>"; };
@@ -264,8 +270,8 @@
 				A92A75EE193E2C040013F66C /* LQDataPointSpec.m */,
 				A99BFF3319BB471A00C2C2A2 /* LQNetworkingSpec.m */,
 				A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */,
-				A9509876194F104E0048106A /* LiquidSpec.m */,
 				A9A58B2A19736B27007085C9 /* LQUserSpec.m */,
+				A95EC5A51B0DEA2900407D03 /* LQDeviceSpec.m */,
 				A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */,
 			);
 			name = Model;
@@ -352,6 +358,8 @@
 				A9E98056193E257C0055D1E7 /* Supporting Files */,
 				A9253F51193F5CFE00B70A43 /* Integration */,
 				A92A75EC193E2BC60013F66C /* Model */,
+				A9509876194F104E0048106A /* LiquidSpec.m */,
+				A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */,
 			);
 			path = LiquidTests;
 			sourceTree = "<group>";
@@ -361,7 +369,9 @@
 			children = (
 				A9253F55193F5D8400B70A43 /* LiquidPrivates.h */,
 				A91B4E2019737401005CF827 /* LQUserPrivates.h */,
+				A95EC5A71B0DF11300407D03 /* LQDevicePrivates.h */,
 				A99BFF3219BB461E00C2C2A2 /* LQNetworkingPrivates.h */,
+				A95EC5AA1B0DFEBB00407D03 /* LQKeychainPrivates.h */,
 				A9E9805D193E257C0055D1E7 /* LiquidTests-Prefix.pch */,
 				A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */,
 				A9E98058193E257C0055D1E7 /* InfoPlist.strings */,
@@ -593,12 +603,14 @@
 				A95E659E194566600075161E /* LiquidTargetsInvalidationSpec.m in Sources */,
 				A9A3FC3D199298830094A2B6 /* LQLiquidPackageSpec.m in Sources */,
 				A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */,
+				A95EC5A91B0DFE2000407D03 /* LQKeychainSpec.m in Sources */,
 				A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */,
 				A9509877194F104E0048106A /* LiquidSpec.m in Sources */,
 				A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */,
 				A99BFF3419BB471A00C2C2A2 /* LQNetworkingSpec.m in Sources */,
 				A95E65A0194566D90075161E /* LiquidValuesInvalidationSpec.m in Sources */,
 				A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */,
+				A95EC5A61B0DEA2900407D03 /* LQDeviceSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
