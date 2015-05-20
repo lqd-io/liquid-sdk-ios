@@ -95,7 +95,6 @@ describe(@"Liquid", ^{
 
             beforeAll(^{
                 liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
-                [liquid identifyUser];
                 [liquid setSessionTimeout:1.5f];
                 [liquid stub:@selector(flush) andReturn:nil];
                 [liquid stub:@selector(flush)];
