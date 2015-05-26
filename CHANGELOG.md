@@ -1,5 +1,11 @@
 # Liquid iOS SDK Change Log
 
+## 1.1.0: Persistent Device ID + Session handling & Anonymous user improvements
+
+* **[feature]** Identifying a user no longer starts a new session.
+* **[feature]** Calling `resetUser:` on a nonymous user no longer creates a new Unique ID, to avoid creating more anonymous users than desired.
+* **[feature]** Device Unique ID is now stored in Keychain also, to remain the same when the app is uninstalled and reinstalled again. Furthermore, if `NSUserDefaults` are reset, device ID remains the same.
+
 ## 1.0.0: First iOS stable release
 
 We're proud to announce Liquid v1.0 of the iOS SDK. We’ve been improving it with more functionalities, guaranteeing in all versions that all the data points are correctly created and tracked. We want to thank to everyone that contributed to this release, with pull requests, tracking of issues and suggestions.
