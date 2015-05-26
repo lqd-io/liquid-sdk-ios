@@ -22,6 +22,16 @@
 - (NSDictionary *)jsonDictionary;
 - (BOOL)reachesInternet;
 
++ (NSString *)uniqueIdFromKeychain;
++ (NSString *)uniqueIdFromNSUserDefaults;
++ (NSString *)uniqueIdFromArchive;
+
++ (NSString *)generateDeviceUID;
++ (BOOL)archiveUniqueId:(NSString *)uniqueId allowUpdate:(BOOL)allowUpdate;
++ (NSString *)unarchiveUniqueId;
++ (NSString *)uniqueIdFile;
++ (void)deleteUniqueIdFile;
+
 @property(nonatomic, strong, readonly) NSString *vendor;
 @property(nonatomic, strong, readonly) NSString *deviceModel;
 @property(nonatomic, strong, readonly) NSString *systemVersion;

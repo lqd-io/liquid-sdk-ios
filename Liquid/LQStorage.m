@@ -14,17 +14,6 @@
 
 @implementation LQStorage
 
-#pragma mark - NSUserDefaults
-
-+ (void)setObject:(id)object forKey:(NSString *)key {
-    [[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-+ (id)objectForKey:(NSString *)key {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:key];
-}
-
 #pragma mark - File Handling
 
 + (BOOL)deleteAllLiquidFiles {
@@ -36,11 +25,17 @@
     return status;
 }
 
++ (BOOL)fileExists:(NSString *)fileName {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    return [fm fileExistsAtPath:fileName];
+}
+
 + (BOOL)deleteFileIfExists:(NSString *)fileName error:(NSError **)err {
     NSFileManager *fm = [NSFileManager defaultManager];
-    BOOL exists = [fm fileExistsAtPath:fileName];
-    if (exists == YES) return [fm removeItemAtPath:fileName error:err];
-    return exists;
+    if ([LQStorage fileExists:fileName]) {
+        return [fm removeItemAtPath:fileName error:err];
+    }
+    return NO;
 }
 
 + (NSString *)liquidDirectory {
@@ -55,7 +50,7 @@
     return files;
 }
 
-#pragma mark - 
+#pragma mark - File paths
 
 + (NSString*)filePathWithExtension:(NSString *)extesion forToken:(NSString *)apiToken {
     NSString *liquidDirectory = [LQStorage liquidDirectory];
@@ -67,6 +62,10 @@
     NSString *liquidFile = [liquidDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", md5apiToken, extesion]];
     LQLog(kLQLogLevelPaths,@"<Liquid> File location %@",liquidFile);
     return liquidFile;
+}
+
++ (NSString*)filePathForAllTokensWithExtension:(NSString *)extesion {
+    return [[self class] filePathWithExtension:extesion forToken:@"all_tokens"];
 }
 
 @end

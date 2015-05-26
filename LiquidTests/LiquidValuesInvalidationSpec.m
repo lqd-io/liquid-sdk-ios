@@ -14,7 +14,7 @@ describe(@"Liquid", ^{
     });
 
     let(deviceId, ^id{
-        return [LQDevice uid];
+        return [[LQDevice sharedInstance] uid];
     });
     
     let(userId, ^id{

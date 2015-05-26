@@ -15,7 +15,7 @@ describe(@"Liquid", ^{
     });
 
     let(deviceId, ^id{
-        return [LQDevice uid];
+        return [[LQDevice sharedInstance] uid];
     });
 
     context(@"given a Liquid Package with 2 variables", ^{
@@ -25,6 +25,7 @@ describe(@"Liquid", ^{
             [LQDevice stub:@selector(appBundle) andReturn:[kLQBundle copy]];
             [LQDevice stub:@selector(appVersion) andReturn:[@"9.9" copy]];
             [LQDevice stub:@selector(releaseVersion) andReturn:[@"9.8" copy]];
+            [LQDevice stub:@selector(uniqueId) andReturn:deviceId];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return [request.URL.path hasPrefix:@"/collect/users/"] && [request.URL.path hasSuffix:[NSString stringWithFormat:@"/devices/%@/liquid_package", deviceId]];

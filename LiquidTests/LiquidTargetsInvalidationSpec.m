@@ -15,7 +15,7 @@ describe(@"Liquid", ^{
     });
 
     let(deviceId, ^id{
-        return [LQDevice uid];
+        return [[LQDevice sharedInstance] uid];
     });
     
     beforeAll(^{
@@ -24,6 +24,7 @@ describe(@"Liquid", ^{
         [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
         [LQDevice stub:@selector(appVersion) andReturn:@"9.9"];
         [LQDevice stub:@selector(releaseVersion) andReturn:@"9.8"];
+        [LQDevice stub:@selector(uniqueId) andReturn:deviceId];
     });
     
     context(@"given a Liquid Package with 6 variables received from Liquid dashboard/server (user covered by one Target)", ^{

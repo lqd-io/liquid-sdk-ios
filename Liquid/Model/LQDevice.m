@@ -9,6 +9,9 @@
 #import "LQDefaults.h"
 #import "LQDevice.h"
 #import "NSString+LQString.h"
+#import "LQKeychain.h"
+#import "LQStorage.h"
+#import "LQUserDefaults.h"
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #include <sys/sysctl.h>
@@ -37,6 +40,8 @@ static LQDevice *sharedInstance = nil;
 
 @implementation LQDevice
 
+@synthesize uid = _uid;
+
 #pragma mark - Singleton
 
 + (LQDevice *)sharedInstance {
@@ -64,12 +69,15 @@ static LQDevice *sharedInstance = nil;
         _deviceName = [LQDevice deviceName];
         _carrier = [LQDevice carrier];
         _screenSize = [LQDevice screenSize];
-        _uid = [LQDevice uid];
+        _uid = [self uid];
         _appBundle = [LQDevice appBundle];
         _appName = [LQDevice appName];
         _appVersion = [LQDevice appVersion];
         _releaseVersion = [LQDevice releaseVersion];
         _liquidVersion = [LQDevice liquidVersion];
+
+        _uid = [LQDevice uniqueId];
+        [self storeUniqueId];
 
         NSString *apnsTokenCacheKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"APNSToken"];
         _apnsToken = [[NSUserDefaults standardUserDefaults] objectForKey:apnsTokenCacheKey];
@@ -221,6 +229,57 @@ static LQDevice *sharedInstance = nil;
     return [[UIDevice currentDevice] name];
 }
 
+#pragma mark - Device Unique ID
+
+/*! Stores the UniqueId in Keychain (1), so it can be persisted between different installations.
+ *  A backup of this UniqueId is also created on disk (2) to avoid generating
+ *  a new ID if keychain access is lost by a new provisioning profile, and also in  NSUserDefaults (3)
+ *  if Liquid cache files are reset with [softReset] or [hardReset] methods.
+ */
+- (void)storeUniqueId {
+    [LQKeychain setValue:_uid forKey:@"device.unique_id" allowUpdate:NO]; // 1.
+    [LQDevice archiveUniqueId:_uid allowUpdate:NO]; // 2.
+    [LQUserDefaults setObject:_uid forKey:@"UUID" allowUpdate:NO]; // 3.
+}
+
+/*! Retrieves the device UniqueId, by its order of veracity:
+ *  1. Keychain
+ *  2. File
+ *  3. Standard NSUserDefaults (retro compatibility)
+ *  4. Generate a new ID
+ */
++ (NSString*)uniqueId {
+    NSString *uniqueId;
+    if ((uniqueId = [LQDevice uniqueIdFromKeychain])) { // 1.
+        LQLog(kLQLogLevelData, @"Retrieved Device UniqueId from Keychain: %@", uniqueId);
+        return uniqueId;
+    }
+    if ((uniqueId = [LQDevice uniqueIdFromArchive])) { // 2.
+        LQLog(kLQLogLevelData, @"Retrieved Device UniqueId from file: %@", uniqueId);
+        return uniqueId;
+    }
+    if ((uniqueId = [LQDevice uniqueIdFromNSUserDefaults])) { // 3.
+        LQLog(kLQLogLevelData, @"Retrieved Device UniqueId from NSUserDefaults: %@", uniqueId);
+        return uniqueId;
+    }
+    uniqueId = [LQDevice generateDeviceUID]; // 4.
+    LQLog(kLQLogLevelData, @"No Device UniqueId found in cache (Keychain, file or NSUserDefaults). Generating a new one: %@", uniqueId);
+    return uniqueId;
+}
+
++ (NSString *)uniqueIdFromKeychain {
+    return [LQKeychain valueForKey:@"device.unique_id"];
+}
+
++ (NSString *)uniqueIdFromNSUserDefaults {
+    NSString *liquidUUIDKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"UUID"];
+    return [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
+}
+
++ (NSString *)uniqueIdFromArchive {
+    return [LQDevice unarchiveUniqueId];
+}
+
 + (NSString *)appleIFA {
     NSString *ifa = nil;
 #ifndef LIQUID_NO_IFA
@@ -246,22 +305,15 @@ static LQDevice *sharedInstance = nil;
     return ifv;
 }
 
-+ (NSString *)generateRandomDeviceIdentifier {
-    return [NSString generateRandomUUID];
-}
-
-+ (NSString*)uid {
-    NSString *liquidUUIDKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"UUID"];
-    NSString *uid = [[NSUserDefaults standardUserDefaults]objectForKey:liquidUUIDKey];
-    if(uid == nil) {
-        NSString *newUid = [LQDevice appleIFA];
-        if (newUid == nil) newUid = [LQDevice appleIFV];
-        if (newUid == nil) newUid = [LQDevice generateRandomDeviceIdentifier];
-        [[NSUserDefaults standardUserDefaults]setObject:newUid forKey:liquidUUIDKey];
-        [[NSUserDefaults standardUserDefaults]synchronize];
-        uid = newUid;
++ (NSString *)generateDeviceUID {
+    NSString *newUid;
+    if ((newUid = [LQDevice appleIFA])) {
+        return newUid;
     }
-    return uid;
+    if ((newUid = [LQDevice appleIFV])) {
+        return newUid;
+    }
+    return [NSString generateRandomUUID];
 }
 
 #pragma mark - Application Info
@@ -379,6 +431,45 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     [aCoder encodeObject:_internetConnectivity forKey:@"internetConnectivity"];
     [aCoder encodeObject:_apnsToken forKey:@"apnsToken"];
     [aCoder encodeObject:_attributes forKey:@"attributes"];
+}
+
+#pragma mark - Archive to/from disk
+
++ (BOOL)archiveUniqueId:(NSString *)uniqueId allowUpdate:(BOOL)allowUpdate {
+    if (!allowUpdate && [LQStorage fileExists:[self uniqueIdFile]]) {
+        return NO;
+    }
+    LQLog(kLQLogLevelData, @"<Liquid> Saving Device UniqueId to disk");
+    return [NSKeyedArchiver archiveRootObject:uniqueId toFile:[LQDevice uniqueIdFile]];
+}
+
++ (NSString *)unarchiveUniqueId {
+    NSString *filePath = [LQDevice uniqueIdFile];
+    NSString *uniqueId = nil;
+    @try {
+        id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        uniqueId = [object isKindOfClass:[NSString class]] ? object : nil;
+        LQLog(kLQLogLevelData, @"<Liquid> Loaded Device UID from disk");
+    }
+    @catch (NSException *exception) {
+        LQLog(kLQLogLevelError, @"<Liquid> %@: Found invalid Device UID on cache. Destroying it...", [exception name]);
+        [LQStorage deleteFileIfExists:filePath error:nil];
+    }
+    return uniqueId;
+}
+
++ (NSString *)uniqueIdFile {
+    return [LQStorage filePathForAllTokensWithExtension:@"device.unique_id"];
+}
+
++ (void)deleteUniqueIdFile {
+    NSString *filePath = [LQDevice uniqueIdFile];
+    LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached Device UID");
+    NSError *error;
+    [LQStorage deleteFileIfExists:filePath error:&error];
+    if (error) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error deleting cached Device UID");
+    }
 }
 
 @end
