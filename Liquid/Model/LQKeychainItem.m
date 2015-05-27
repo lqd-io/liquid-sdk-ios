@@ -62,7 +62,7 @@
 }
 
 - (OSStatus)reload {
-    OSStatus status;
+    OSStatus status = noErr;
     _value = [LQKeychainItem valueFromKeychainItem:_keychainItem statusCode:status];
     return status;
 }
