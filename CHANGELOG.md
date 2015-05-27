@@ -4,7 +4,7 @@
 
 * **[feature]** Identifying a user no longer starts a new session.
 * **[feature]** Calling `resetUser:` on a nonymous user no longer creates a new Unique ID, to avoid creating more anonymous users than desired.
-* **[feature]** Device Unique ID is now stored in Keychain also, to remain the same when the app is uninstalled and reinstalled again. Furthermore, if `NSUserDefaults` are reset, device ID remains the same.
+* **[feature]** Device Unique ID is now stored in Keychain also, to remain the same when the app is uninstalled and reinstalled again. Furthermore, if `NSUserDefaults` are reset, device ID remains the same. Detailed explanation [at this blog post](https://blog.onliquid.com/persistent-device-unique-identifier-ios-keychain/).
 
 ## 1.0.0: First iOS stable release
 
