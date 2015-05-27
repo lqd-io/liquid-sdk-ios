@@ -2,7 +2,7 @@
 
 # Quick Start to Liquid SDK for iOS
 
-This document is just a quick start introduction to Liquid SDK for iOS. You can read the full documentation at [https://www.lqd.io/documentation/ios/](https://www.lqd.io/documentation/ios/).
+This document is just a quick start introduction to Liquid SDK for iOS. You can read the full documentation at [https://www.onliquid.com/documentation/ios/](https://www.onliquid.com/documentation/ios/).
 
 To integrate Liquid in your app, just follow the 4 simple steps below.
 
@@ -73,7 +73,7 @@ NSString *text = [[Liquid sharedInstance] stringForKey:@"welcomeText"
 
 ### Full documentation
 
-We recommend you to read the full documentation at [https://www.lqd.io/documentation/ios/](https://www.lqd.io/documentation/ios/).
+We recommend you to read the full documentation at [https://www.onliquid.com/documentation/ios/](https://www.onliquid.com/documentation/ios/).
 
 
 # Author
