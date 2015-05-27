@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license           = 'Apache, Version 2.0'
   s.author            = { "Liquid Data Intelligence S.A." => "support@lqd.io" }
   s.source            = { :git => "https://github.com/lqd-io/liquid-sdk-ios.git", :tag => "v#{s.version}" }
-  s.social_media_url  = 'https://twitter.com/lqd_io'
+  s.social_media_url  = 'https://twitter.com/onliquid'
   s.documentation_url = "https://lqd.io/documentation/ios"
 
   s.platform     = :ios, '5.0'
