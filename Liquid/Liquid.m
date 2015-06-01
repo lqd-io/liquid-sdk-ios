@@ -762,25 +762,21 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - Resetting
 
-+ (void)destroySingleton {
-    sharedInstance.currentUser = nil;
-    sharedInstance.currentSession = nil;
-    sharedInstance.enterBackgroundTime = nil;
-    sharedInstance.loadedLiquidPackage = nil;
-}
-
 + (void)softReset {
     [LQStorage deleteAllLiquidFiles];
-    [Liquid destroySingleton];
+    [sharedInstance resetUser];
+    [sharedInstance startSessionBy:@"resetSDK" with:sharedInstance.currentUser.identifier];
+    sharedInstance.enterBackgroundTime = nil;
+    sharedInstance.loadedLiquidPackage = nil;
     [LQDate resetUniqueNow];
     [NSThread sleepForTimeInterval:0.2f];
-    LQLog(kLQLogLevelInfo, @"<Liquid> Soft reset Liquid");
+    LQLog(kLQLogLevelWarning, @"<Liquid> Soft reset Liquid");
 }
 
 + (void)hardResetForApiToken:(NSString *)token {
     [self softReset];
     [LQNetworking deleteHttpQueueFileForToken:token];
-    LQLog(kLQLogLevelInfo, @"<Liquid> Hard reset Liquid");
+    LQLog(kLQLogLevelWarning, @"<Liquid> Hard reset Liquid");
 }
 
 - (void)softReset {

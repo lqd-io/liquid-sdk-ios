@@ -358,6 +358,24 @@ describe(@"Liquid", ^{
             });
         });
     });
+
+    describe(@"softReset:", ^{
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
+
+            it(@"should change the User Unqiue ID to a new one", ^{
+                [liquid identifyUserWithIdentifier:@"previous-unique-id"];
+                [Liquid softReset];
+                [[[liquid userIdentifier] shouldNot] equal:@"previous-unique-id"];
+            });
+
+            it(@"should change the User Unqiue ID to a new one", ^{
+                NSString *previousSessionId = [liquid sessionIdentifier];
+                [Liquid softReset];
+                [[[liquid userIdentifier] shouldNot] equal:previousSessionId];
+            });
+        });
+    });
 });
 
 SPEC_END
