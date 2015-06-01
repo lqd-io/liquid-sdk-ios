@@ -342,6 +342,22 @@ extern NSString * const LQDidIdentifyUser;
  @method
  
  @abstract
+ Sets one or more user attributes (NSDictionary)
+ 
+ @discussion
+ This will set one or more attributes to better classify the user on the
+ Liquid analytics.
+ 
+ @param attributes        user attributes
+ */
+
+- (void)setUserAttributes:(NSDictionary *)attributes;
+
+
+/*!
+ @method
+ 
+ @abstract
  Set the current device location
  
  @discussion

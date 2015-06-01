@@ -332,6 +332,15 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     });
 }
 
+- (void)setUserAttributes:(NSDictionary *)attributes {
+    NSDictionary *validAttributes = [LQUser assertAttributesTypesAndKeys:attributes];
+    NSMutableDictionary *newAttributes = [[NSMutableDictionary alloc] init];
+    [newAttributes addEntriesFromDictionary:[self.currentUser.attributes copy]];
+    [newAttributes addEntriesFromDictionary:validAttributes];
+    self.currentUser.attributes = newAttributes;
+    [self saveCurrentUserToDisk];
+}
+
 - (void)setCurrentLocation:(CLLocation *)location {
     dispatch_async(self.queue, ^{
         if(self.currentUser == nil) {

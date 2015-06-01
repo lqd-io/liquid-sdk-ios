@@ -107,6 +107,7 @@ extern NSString * const LQDidIdentifyUser;
 - (NSString *)deviceIdentifier;
 - (NSString *)sessionIdentifier;
 - (void)setUserAttribute:(id)attribute forKey:(NSString *)key;
+- (void)setUserAttributes:(NSDictionary *)attributes;
 - (void)setUserLocation:(CLLocation *)location;
 + (void)assertUserAttributeType:(id)attribute;
 + (void)assertUserAttributesTypes:(NSDictionary *)attributes;

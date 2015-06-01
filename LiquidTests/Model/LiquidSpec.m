@@ -376,6 +376,39 @@ describe(@"Liquid", ^{
             });
         });
     });
+
+    describe(@"setUserAttributes:", ^{
+        context(@"given a Liquid instance", ^{
+            __block Liquid *liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
+
+            it(@"should keep the same User Unique ID", ^{
+                [liquid identifyUserWithIdentifier:@"previous-unique-id"];
+                [liquid setUserAttributes:@{ @"new-attribute": @123 }];
+                [[[liquid userIdentifier] should] equal:@"previous-unique-id"];
+            });
+
+            context(@"given a user with an attribute", ^{
+                beforeEach(^{
+                    liquid.currentUser.attributes = @{ @"age": @10 };
+                });
+
+                it(@"should add the new user attribute", ^{
+                    [liquid setUserAttributes:@{ @"country": @"france" }];
+                    [[[liquid.currentUser.attributes objectForKey:@"country"] should] equal:@"france"];
+                });
+
+                it(@"should keep the other attributes", ^{
+                    [liquid setUserAttributes:@{ @"country": @"france" }];
+                    [[[liquid.currentUser.attributes objectForKey:@"age"] should] equal:@10];
+                });
+
+                it(@"should override an existing attribute", ^{
+                    [liquid setUserAttributes:@{ @"age": @30 }];
+                    [[[liquid.currentUser.attributes objectForKey:@"age"] should] equal:@30];
+                });
+            });
+        });
+    });
 });
 
 SPEC_END
