@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 1.1.1: Small fix to "soft reset" method
+
+* **[bugfix]** Fix `softReset:` and `hardReset:` methods (reset SDK state) that were not creating a new session.
+
 ## 1.1.0: Persistent Device ID + Session handling & Anonymous user improvements
 
 * **[feature]** Identifying a user no longer starts a new session.
