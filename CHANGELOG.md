@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 1.2.0: New method to set multiple user attributes
+
+* **[enhancement]** New method `setUserAttributes:` to set multiple user attributes at a time.
+
 ## 1.1.1: Small fix to "soft reset" method
 
 * **[bugfix]** Fix `softReset:` and `hardReset:` methods (reset SDK state) that were not creating a new session.
