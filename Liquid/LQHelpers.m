@@ -13,13 +13,7 @@
 @implementation LQHelpers
 
 + (NSUInteger)randomInt:(NSUInteger)max {
-    int r = 0;
-    if (arc4random_uniform != NULL) {
-        r = arc4random_uniform ((int) max);
-    } else {
-        r = (arc4random() % max);
-    }
-    return (int) r;
+    return (int) arc4random_uniform ((int) max);
 }
 
 + (NSDictionary *)normalizeDataTypes:(NSDictionary *)dictionary {
