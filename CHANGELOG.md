@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 1.2.1: Fix compiler warnings
+* **[fix warning]** Change deprecated `NSGregorianCalendar` to `NSCalendarIdentifierGregorian`.
+* **[fix warning]** Always use `arc4random_uniform` (instead of `arc4random`) to generate random values.
+
 ## 1.2.0: New method to set multiple user attributes
 
 * **[enhancement]** New method `setUserAttributes:` to set multiple user attributes at a time.
