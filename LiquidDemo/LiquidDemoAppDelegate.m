@@ -20,9 +20,14 @@
 #if TARGET_IPHONE_SIMULATOR
     NSLog(@"Push Notifications only work on real devices, not on iPhone Simulator.");
 #else
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
-                                                                           UIRemoteNotificationTypeBadge |
-                                                                           UIRemoteNotificationTypeSound)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    } else {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
+                                                                               UIRemoteNotificationTypeBadge |
+                                                                               UIRemoteNotificationTypeSound)];
+    }
 #endif
     return YES;
 }
@@ -43,7 +48,7 @@
     [[Liquid sharedInstance] setCurrentLocation:newLocation];
 }
 
-#pragma mark - Push Notifications
+#pragma mark - Push Notifications < iOS 8
 
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[Liquid sharedInstance] setApplePushNotificationToken:deviceToken];
