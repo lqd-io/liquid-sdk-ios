@@ -571,7 +571,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (cachedLiquidPackage) {
         return cachedLiquidPackage;
     }
-    return [[LQLiquidPackage alloc] initWithValues:[[NSArray alloc] initWithObjects:nil]];
+    return [[LQLiquidPackage alloc] initWithValues:[NSArray new]];
 }
 
 - (void)loadLiquidPackageSynced:(BOOL)synced {

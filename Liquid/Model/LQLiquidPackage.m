@@ -33,7 +33,7 @@
 -(id)initFromDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        NSMutableArray *values = [[NSMutableArray alloc] initWithObjects:nil];
+        NSMutableArray *values = [[NSMutableArray alloc] init];
         for (NSDictionary *value in [dict objectForKey:@"values"]) {
             [values addObject:[[LQValue alloc] initFromDictionary:value]];
         }
