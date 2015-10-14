@@ -48,11 +48,15 @@
 }
 
 + (NSString *)iso8601StringFromDate:(NSDate *)date {
+#ifdef TARGET_OS_WATCH
+    return [NSDateFormatter iso8601StringFromDateIOS6:date];
+#else
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         return [NSDateFormatter iso8601StringFromDateIOS6:date];
     } else {
         return [NSDateFormatter iso8601StringFromDateIOS5:date];
     }
+#endif
 }
 
 #pragma mark - NSString to NSDate
@@ -95,11 +99,15 @@
 
 + (NSDate *)dateFromISO8601String:(NSString *)string {
     if (!string) return nil;
+#ifdef TARGET_OS_WATCH
+    return [[self class] dateFromISO8601StringIOS6:string];
+#else
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         return [[self class] dateFromISO8601StringIOS6:string];
     } else {
         return [[self class] dateFromISO8601StringIOS5:string];
     }
+#endif
 }
 
 @end
