@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		92E71585BB5944A394C1AC93 /* libPods-LiquidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */; };
 		A9035321193FA0C8005110DF /* liquid_package1.json in Resources */ = {isa = PBXBuildFile; fileRef = A9035320193FA0C8005110DF /* liquid_package1.json */; };
+		A920168E1BCF0B5500859450 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A920168C1BCF0B5500859450 /* Interface.storyboard */; };
+		A92016901BCF0B5500859450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A920168F1BCF0B5500859450 /* Assets.xcassets */; };
+		A92016971BCF0B5500859450 /* LiquidWatchDemo Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A92016961BCF0B5500859450 /* LiquidWatchDemo Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A920169F1BCF0B5500859450 /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = A920169E1BCF0B5500859450 /* InterfaceController.m */; };
+		A92016A21BCF0B5500859450 /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A92016A11BCF0B5500859450 /* ExtensionDelegate.m */; };
+		A92016A51BCF0B5500859450 /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A92016A41BCF0B5500859450 /* NotificationController.m */; };
+		A92016A71BCF0B5500859450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A92016A61BCF0B5500859450 /* Assets.xcassets */; };
+		A92016AB1BCF0B5500859450 /* LiquidWatchDemo.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A920168A1BCF0B5400859450 /* LiquidWatchDemo.app */; };
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
@@ -74,6 +82,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A92016981BCF0B5500859450 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A92016951BCF0B5500859450;
+			remoteInfo = "LiquidWatchDemo Extension";
+		};
+		A92016A91BCF0B5500859450 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A92016891BCF0B5400859450;
+			remoteInfo = LiquidWatchDemo;
+		};
+		A92016B31BCF0C8400859450 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A98CF0001949C7A3003DF949;
+			remoteInfo = LiquidDemo;
+		};
 		A98CF0351949F64C003DF949 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
@@ -91,6 +120,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A92016AF1BCF0B5500859450 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A92016971BCF0B5500859450 /* LiquidWatchDemo Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A949FB851BCE75ED00F7C48E /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				A92016AB1BCF0B5500859450 /* LiquidWatchDemo.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C73E4ADD1923C61D001EF2E6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -104,14 +155,45 @@
 
 /* Begin PBXFileReference section */
 		378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiquidTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EE274BAFA779A0863EAB159 /* Pods-LiquidTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.release.xcconfig"; sourceTree = "<group>"; };
 		A9035320193FA0C8005110DF /* liquid_package1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package1.json; path = HTTPStubs/liquid_package1.json; sourceTree = "<group>"; };
 		A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_incorrect_data_types.json; path = HTTPStubs/liquid_package_incorrect_data_types.json; sourceTree = "<group>"; };
 		A91B4E2019737401005CF827 /* LQUserPrivates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserPrivates.h; sourceTree = "<group>"; };
+		A920168A1BCF0B5400859450 /* LiquidWatchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidWatchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A920168D1BCF0B5500859450 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		A920168F1BCF0B5500859450 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A92016911BCF0B5500859450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A92016961BCF0B5500859450 /* LiquidWatchDemo Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "LiquidWatchDemo Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A920169C1BCF0B5500859450 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		A920169D1BCF0B5500859450 /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
+		A920169E1BCF0B5500859450 /* InterfaceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InterfaceController.m; sourceTree = "<group>"; };
+		A92016A01BCF0B5500859450 /* ExtensionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtensionDelegate.h; sourceTree = "<group>"; };
+		A92016A11BCF0B5500859450 /* ExtensionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtensionDelegate.m; sourceTree = "<group>"; };
+		A92016A31BCF0B5500859450 /* NotificationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
+		A92016A41BCF0B5500859450 /* NotificationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
+		A92016A61BCF0B5500859450 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A92016A81BCF0B5500859450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidIntegrationSpec.m; path = Integration/LiquidIntegrationSpec.m; sourceTree = "<group>"; };
 		A9253F55193F5D8400B70A43 /* LiquidPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidPrivates.h; sourceTree = "<group>"; };
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
 		A93AF9CE19316FCA0035E811 /* LQEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEntity.h; sourceTree = "<group>"; };
 		A93AF9CF19316FCA0035E811 /* LQEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEntity.m; sourceTree = "<group>"; };
+		A949FB591BCE75ED00F7C48E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		A949FB5B1BCE75ED00F7C48E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A949FB5D1BCE75ED00F7C48E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A949FB681BCE75ED00F7C48E /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		A949FB691BCE75ED00F7C48E /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
+		A949FB6A1BCE75ED00F7C48E /* InterfaceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InterfaceController.m; sourceTree = "<group>"; };
+		A949FB6C1BCE75ED00F7C48E /* ExtensionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtensionDelegate.h; sourceTree = "<group>"; };
+		A949FB6D1BCE75ED00F7C48E /* ExtensionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtensionDelegate.m; sourceTree = "<group>"; };
+		A949FB6F1BCE75ED00F7C48E /* NotificationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
+		A949FB701BCE75ED00F7C48E /* NotificationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
+		A949FB721BCE75ED00F7C48E /* GlanceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlanceController.h; sourceTree = "<group>"; };
+		A949FB731BCE75ED00F7C48E /* GlanceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlanceController.m; sourceTree = "<group>"; };
+		A949FB751BCE75ED00F7C48E /* ComplicationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComplicationController.h; sourceTree = "<group>"; };
+		A949FB761BCE75ED00F7C48E /* ComplicationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComplicationController.m; sourceTree = "<group>"; };
+		A949FB781BCE75ED00F7C48E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A949FB7A1BCE75ED00F7C48E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9509876194F104E0048106A /* LiquidSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidSpec.m; path = Model/LiquidSpec.m; sourceTree = "<group>"; };
 		A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidTargetsInvalidationSpec.m; sourceTree = "<group>"; };
 		A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidValuesInvalidationSpec.m; sourceTree = "<group>"; };
@@ -190,16 +272,23 @@
 		A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserDefaults.h; sourceTree = "<group>"; };
 		A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUserDefaults.m; sourceTree = "<group>"; };
 		A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.xcconfig"; path = "Pods/Pods-LiquidTests.xcconfig"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C7DB3A811924FE4200CC5D64 /* NSData+LQData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+LQData.h"; sourceTree = "<group>"; };
 		C7DB3A821924FE4200CC5D64 /* NSData+LQData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+LQData.m"; sourceTree = "<group>"; };
 		C7DB3A841924FF0B00CC5D64 /* NSString+LQString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+LQString.h"; sourceTree = "<group>"; };
 		C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+LQString.m"; sourceTree = "<group>"; };
+		EF2701CFCA81FCA5879006D6 /* Pods-LiquidTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A92016931BCF0B5500859450 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A98CEFFE1949C7A3003DF949 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -242,6 +331,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0298BC9E82290C39E2949BB8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EF2701CFCA81FCA5879006D6 /* Pods-LiquidTests.debug.xcconfig */,
+				6EE274BAFA779A0863EAB159 /* Pods-LiquidTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A903531F193FA06F005110DF /* HTTPStubs */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +350,40 @@
 				A99B83591940B9E1005AB709 /* data_point1.json */,
 			);
 			name = HTTPStubs;
+			sourceTree = "<group>";
+		};
+		A920168B1BCF0B5500859450 /* LiquidWatchDemo */ = {
+			isa = PBXGroup;
+			children = (
+				A920168C1BCF0B5500859450 /* Interface.storyboard */,
+				A920168F1BCF0B5500859450 /* Assets.xcassets */,
+				A92016911BCF0B5500859450 /* Info.plist */,
+			);
+			path = LiquidWatchDemo;
+			sourceTree = "<group>";
+		};
+		A920169A1BCF0B5500859450 /* LiquidWatchDemo Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A920169D1BCF0B5500859450 /* InterfaceController.h */,
+				A920169E1BCF0B5500859450 /* InterfaceController.m */,
+				A92016A01BCF0B5500859450 /* ExtensionDelegate.h */,
+				A92016A11BCF0B5500859450 /* ExtensionDelegate.m */,
+				A92016A31BCF0B5500859450 /* NotificationController.h */,
+				A92016A41BCF0B5500859450 /* NotificationController.m */,
+				A92016A61BCF0B5500859450 /* Assets.xcassets */,
+				A92016A81BCF0B5500859450 /* Info.plist */,
+				A920169B1BCF0B5500859450 /* Supporting Files */,
+			);
+			path = "LiquidWatchDemo Extension";
+			sourceTree = "<group>";
+		};
+		A920169B1BCF0B5500859450 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A920169C1BCF0B5500859450 /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		A9253F51193F5CFE00B70A43 /* Integration */ = {
@@ -275,6 +407,44 @@
 				A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		A949FB571BCE75ED00F7C48E /* LiquidWatchDemo */ = {
+			isa = PBXGroup;
+			children = (
+				A949FB581BCE75ED00F7C48E /* Interface.storyboard */,
+				A949FB5B1BCE75ED00F7C48E /* Assets.xcassets */,
+				A949FB5D1BCE75ED00F7C48E /* Info.plist */,
+			);
+			path = LiquidWatchDemo;
+			sourceTree = "<group>";
+		};
+		A949FB661BCE75ED00F7C48E /* LiquidWatchDemo Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A949FB691BCE75ED00F7C48E /* InterfaceController.h */,
+				A949FB6A1BCE75ED00F7C48E /* InterfaceController.m */,
+				A949FB6C1BCE75ED00F7C48E /* ExtensionDelegate.h */,
+				A949FB6D1BCE75ED00F7C48E /* ExtensionDelegate.m */,
+				A949FB6F1BCE75ED00F7C48E /* NotificationController.h */,
+				A949FB701BCE75ED00F7C48E /* NotificationController.m */,
+				A949FB721BCE75ED00F7C48E /* GlanceController.h */,
+				A949FB731BCE75ED00F7C48E /* GlanceController.m */,
+				A949FB751BCE75ED00F7C48E /* ComplicationController.h */,
+				A949FB761BCE75ED00F7C48E /* ComplicationController.m */,
+				A949FB781BCE75ED00F7C48E /* Assets.xcassets */,
+				A949FB7A1BCE75ED00F7C48E /* Info.plist */,
+				A949FB671BCE75ED00F7C48E /* Supporting Files */,
+			);
+			path = "LiquidWatchDemo Extension";
+			sourceTree = "<group>";
+		};
+		A949FB671BCE75ED00F7C48E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A949FB681BCE75ED00F7C48E /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		A98CF0051949C7A3003DF949 /* LiquidDemo */ = {
@@ -385,9 +555,13 @@
 				C73E4AE41923C61D001EF2E6 /* Liquid */,
 				A9E98055193E257C0055D1E7 /* LiquidTests */,
 				A98CF0051949C7A3003DF949 /* LiquidDemo */,
+				A949FB571BCE75ED00F7C48E /* LiquidWatchDemo */,
+				A949FB661BCE75ED00F7C48E /* LiquidWatchDemo Extension */,
+				A920168B1BCF0B5500859450 /* LiquidWatchDemo */,
+				A920169A1BCF0B5500859450 /* LiquidWatchDemo Extension */,
 				C73E4AE11923C61D001EF2E6 /* Frameworks */,
 				C73E4AE01923C61D001EF2E6 /* Products */,
-				BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */,
+				0298BC9E82290C39E2949BB8 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -397,6 +571,8 @@
 				C73E4ADF1923C61D001EF2E6 /* libLiquid.a */,
 				A9E98050193E257C0055D1E7 /* LiquidTests.xctest */,
 				A98CF0011949C7A3003DF949 /* LiquidDemo.app */,
+				A920168A1BCF0B5400859450 /* LiquidWatchDemo.app */,
+				A92016961BCF0B5500859450 /* LiquidWatchDemo Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -442,6 +618,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A92016891BCF0B5400859450 /* LiquidWatchDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A92016B01BCF0B5500859450 /* Build configuration list for PBXNativeTarget "LiquidWatchDemo" */;
+			buildPhases = (
+				A92016881BCF0B5400859450 /* Resources */,
+				A92016AF1BCF0B5500859450 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A92016991BCF0B5500859450 /* PBXTargetDependency */,
+			);
+			name = LiquidWatchDemo;
+			productName = LiquidWatchDemo;
+			productReference = A920168A1BCF0B5400859450 /* LiquidWatchDemo.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		A92016951BCF0B5500859450 /* LiquidWatchDemo Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A92016AC1BCF0B5500859450 /* Build configuration list for PBXNativeTarget "LiquidWatchDemo Extension" */;
+			buildPhases = (
+				A92016921BCF0B5500859450 /* Sources */,
+				A92016931BCF0B5500859450 /* Frameworks */,
+				A92016941BCF0B5500859450 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LiquidWatchDemo Extension";
+			productName = "LiquidWatchDemo Extension";
+			productReference = A92016961BCF0B5500859450 /* LiquidWatchDemo Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		A98CF0001949C7A3003DF949 /* LiquidDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A98CF02F1949C7A4003DF949 /* Build configuration list for PBXNativeTarget "LiquidDemo" */;
@@ -449,11 +659,13 @@
 				A98CEFFD1949C7A3003DF949 /* Sources */,
 				A98CEFFE1949C7A3003DF949 /* Frameworks */,
 				A98CEFFF1949C7A3003DF949 /* Resources */,
+				A949FB851BCE75ED00F7C48E /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				A98CF0361949F64C003DF949 /* PBXTargetDependency */,
+				A92016AA1BCF0B5500859450 /* PBXTargetDependency */,
 			);
 			name = LiquidDemo;
 			productName = LiquidDemo;
@@ -469,11 +681,13 @@
 				A9E9804D193E257B0055D1E7 /* Frameworks */,
 				A9E9804E193E257B0055D1E7 /* Resources */,
 				D25B45D22FDD4BD4BD94B5C4 /* Copy Pods Resources */,
+				B4BDBE5490AE2A97587311AC /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				A9E9805F193E257C0055D1E7 /* PBXTargetDependency */,
+				A92016B41BCF0C8400859450 /* PBXTargetDependency */,
 			);
 			name = LiquidTests;
 			productName = LiquidTests;
@@ -503,8 +717,16 @@
 		C73E4AD71923C61D001EF2E6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Liquid;
+				TargetAttributes = {
+					A92016891BCF0B5400859450 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+					A92016951BCF0B5500859450 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+				};
 			};
 			buildConfigurationList = C73E4ADA1923C61D001EF2E6 /* Build configuration list for PBXProject "Liquid" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -522,11 +744,30 @@
 				C73E4ADE1923C61D001EF2E6 /* Liquid */,
 				A9E9804F193E257B0055D1E7 /* LiquidTests */,
 				A98CF0001949C7A3003DF949 /* LiquidDemo */,
+				A92016891BCF0B5400859450 /* LiquidWatchDemo */,
+				A92016951BCF0B5500859450 /* LiquidWatchDemo Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A92016881BCF0B5400859450 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A92016901BCF0B5500859450 /* Assets.xcassets in Resources */,
+				A920168E1BCF0B5500859450 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A92016941BCF0B5500859450 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A92016A71BCF0B5500859450 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A98CEFFF1949C7A3003DF949 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -553,6 +794,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		B4BDBE5490AE2A97587311AC /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D25B45D22FDD4BD4BD94B5C4 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -565,7 +821,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-LiquidTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FE6C6D3BBB0542DCB80EA44D /* Check Pods Manifest.lock */ = {
@@ -586,6 +842,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A92016921BCF0B5500859450 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A92016A21BCF0B5500859450 /* ExtensionDelegate.m in Sources */,
+				A920169F1BCF0B5500859450 /* InterfaceController.m in Sources */,
+				A92016A51BCF0B5500859450 /* NotificationController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A98CEFFD1949C7A3003DF949 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -647,6 +913,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A92016991BCF0B5500859450 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A92016951BCF0B5500859450 /* LiquidWatchDemo Extension */;
+			targetProxy = A92016981BCF0B5500859450 /* PBXContainerItemProxy */;
+		};
+		A92016AA1BCF0B5500859450 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A92016891BCF0B5400859450 /* LiquidWatchDemo */;
+			targetProxy = A92016A91BCF0B5500859450 /* PBXContainerItemProxy */;
+		};
+		A92016B41BCF0C8400859450 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A98CF0001949C7A3003DF949 /* LiquidDemo */;
+			targetProxy = A92016B31BCF0C8400859450 /* PBXContainerItemProxy */;
+		};
 		A98CF0361949F64C003DF949 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C73E4ADE1923C61D001EF2E6 /* Liquid */;
@@ -660,6 +941,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A920168C1BCF0B5500859450 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A920168D1BCF0B5500859450 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		A949FB581BCE75ED00F7C48E /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A949FB591BCE75ED00F7C48E /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
 		A98CF0081949C7A3003DF949 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -687,11 +984,96 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A92016AD1BCF0B5500859450 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "LiquidWatchDemo Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		A92016AE1BCF0B5500859450 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "LiquidWatchDemo Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		A92016B11BCF0B5500859450 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IBSC_MODULE = LiquidWatchDemo_Extension;
+				INFOPLIST_FILE = LiquidWatchDemo/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		A92016B21BCF0B5500859450 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IBSC_MODULE = LiquidWatchDemo_Extension;
+				INFOPLIST_FILE = LiquidWatchDemo/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 		A98CF02B1949C7A4003DF949 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LiquidDemo/LiquidDemo-Prefix.pch";
@@ -701,8 +1083,10 @@
 				);
 				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lqd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/liquid-sdk-ios/Liquid/**";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -712,20 +1096,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LiquidDemo/LiquidDemo-Prefix.pch";
 				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lqd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/liquid-sdk-ios/Liquid/**";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
 		A9E98061193E257C0055D1E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
+			baseConfigurationReference = EF2701CFCA81FCA5879006D6 /* Pods-LiquidTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -740,6 +1127,7 @@
 				);
 				INFOPLIST_FILE = "LiquidTests/LiquidTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "Liquid.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -747,7 +1135,7 @@
 		};
 		A9E98062193E257C0055D1E7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
+			baseConfigurationReference = 6EE274BAFA779A0863EAB159 /* Pods-LiquidTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -758,6 +1146,7 @@
 				GCC_PREFIX_HEADER = "LiquidTests/LiquidTests-Prefix.pch";
 				INFOPLIST_FILE = "LiquidTests/LiquidTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "Liquid.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -780,6 +1169,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -844,8 +1234,9 @@
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos9.0;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -860,14 +1251,31 @@
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos9.0;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A92016AC1BCF0B5500859450 /* Build configuration list for PBXNativeTarget "LiquidWatchDemo Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A92016AD1BCF0B5500859450 /* Debug */,
+				A92016AE1BCF0B5500859450 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A92016B01BCF0B5500859450 /* Build configuration list for PBXNativeTarget "LiquidWatchDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A92016B11BCF0B5500859450 /* Debug */,
+				A92016B21BCF0B5500859450 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		A98CF02F1949C7A4003DF949 /* Build configuration list for PBXNativeTarget "LiquidDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

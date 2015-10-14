@@ -21,4 +21,6 @@ Pod::Spec.new do |s|
   }
   s.source_files = 'Liquid/**/*.{m,h}'
   s.public_header_files = 'Liquid/**/*.h'
+
+  s.watchos.deployment_target = '2.0'
 end

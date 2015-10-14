@@ -6,4 +6,3 @@ target :LiquidTests, exclusive: true do
   pod 'OHHTTPStubs', '~> 3.1.2'
 end
 
-
