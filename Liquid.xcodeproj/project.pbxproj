@@ -40,6 +40,8 @@
 		A92016D91BCF101600859450 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F5192447FA0060E484 /* LQValue.m */; };
 		A92016DA1BCF101600859450 /* LQVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F7192447FA0060E484 /* LQVariable.m */; };
 		A92016DB1BCF101600859450 /* LQKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */; };
+		A92016DE1BCF169F00859450 /* Liquid+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A92016DD1BCF169F00859450 /* Liquid+iOS.m */; settings = {ASSET_TAGS = (); }; };
+		A92016E41BCF1C3200859450 /* Liquid+watchOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A92016E31BCF1C3200859450 /* Liquid+watchOS.m */; settings = {ASSET_TAGS = (); }; };
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
@@ -206,6 +208,10 @@
 		A92016A61BCF0B5500859450 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A92016A81BCF0B5500859450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A92016BC1BCF0FB900859450 /* libLiquidWatch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquidWatch.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A92016DC1BCF169F00859450 /* Liquid+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid+iOS.h"; sourceTree = "<group>"; };
+		A92016DD1BCF169F00859450 /* Liquid+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Liquid+iOS.m"; sourceTree = "<group>"; };
+		A92016E21BCF1C3200859450 /* Liquid+watchOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid+watchOS.h"; sourceTree = "<group>"; };
+		A92016E31BCF1C3200859450 /* Liquid+watchOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Liquid+watchOS.m"; sourceTree = "<group>"; };
 		A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidIntegrationSpec.m; path = Integration/LiquidIntegrationSpec.m; sourceTree = "<group>"; };
 		A9253F55193F5D8400B70A43 /* LiquidPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidPrivates.h; sourceTree = "<group>"; };
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
@@ -548,6 +554,10 @@
 		A99EB54F1924DB730060E484 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				A92016DC1BCF169F00859450 /* Liquid+iOS.h */,
+				A92016DD1BCF169F00859450 /* Liquid+iOS.m */,
+				A92016E21BCF1C3200859450 /* Liquid+watchOS.h */,
+				A92016E31BCF1C3200859450 /* Liquid+watchOS.m */,
 				A99EB5501924DB730060E484 /* NSDateFormatter+LQDateFormatter.h */,
 				A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */,
 				A99EB5521924DB730060E484 /* UIColor+LQColor.h */,
@@ -941,6 +951,7 @@
 				A92016D91BCF101600859450 /* LQValue.m in Sources */,
 				A92016DA1BCF101600859450 /* LQVariable.m in Sources */,
 				A92016DB1BCF101600859450 /* LQKeychainItem.m in Sources */,
+				A92016E41BCF1C3200859450 /* Liquid+watchOS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -989,6 +1000,7 @@
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A9FBA7AA1B03981200900AAC /* LQKeychain.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
+				A92016DE1BCF169F00859450 /* Liquid+iOS.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,

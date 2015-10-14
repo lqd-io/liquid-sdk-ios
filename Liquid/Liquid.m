@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import "Liquid.h"
-
-#import <UIKit/UIApplication.h>
+#ifdef TARGET_OS_WATCH
+#import "Liquid+watchOS.h"
+#else
+#import "Liquid+iOS.h"
+#endif
 
 #import "LQEvent.h"
 #import "LQSession.h"
@@ -42,7 +44,6 @@
 @property(atomic, strong) LQDevice *device;
 @property(atomic, strong) LQSession *currentSession;
 @property(nonatomic, strong) NSDate *enterBackgroundTime;
-@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @property(atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property(nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property(atomic, strong) LQNetworking *networking;
@@ -130,9 +131,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            self.backgroundUpdateTask = UIBackgroundTaskInvalid;
-        }
+#ifndef TARGET_OS_WATCH
+        [self initializeBackgroundTaskIdentifier];
+#endif
 
         // Load Liquid Package from previous launch:
         if(!_loadedLiquidPackage) {
@@ -155,20 +156,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         // Start auto flush timer
         [_networking startFlushTimer];
 
-        // Bind notifications:
-        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self
-                               selector:@selector(applicationWillEnterForeground:)
-                                   name:UIApplicationWillEnterForegroundNotification
-                                 object:nil];
-        [notificationCenter addObserver:self
-                               selector:@selector(applicationDidEnterBackground:)
-                                   name:UIApplicationDidEnterBackgroundNotification
-                                 object:nil];
-        [notificationCenter addObserver:self
-                               selector:@selector(applicationWillTerminate:)
-                                   name:UIApplicationWillTerminateNotification
-                                 object:nil];
+        [self bindNotifications];
 
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }
@@ -209,34 +197,23 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
     NSDate *date = [LQDate uniqueNow];
+#ifndef TARGET_OS_WATCH
     [self beginBackgroundUpdateTask];
+#endif
     [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
     self.enterBackgroundTime = [LQDate uniqueNow];
     [_networking stopFlushTimer];
     [_networking flush];
     dispatch_async(self.queue, ^{
         [self requestNewLiquidPackageSynced];
+#ifndef TARGET_OS_WATCH
         [self endBackgroundUpdateTask];
+#endif
     });
 }
 
 - (void)applicationWillTerminate:(NSNotificationCenter *)notification {
     [self endSessionNowBy:@"App Terminate" with:nil];
-}
-
-- (void)beginBackgroundUpdateTask {
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) return;
-    self.backgroundUpdateTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:kLQBackgroundTaskName expirationHandler:^{
-        [self endBackgroundUpdateTask];
-    }];
-}
-
-- (void)endBackgroundUpdateTask {
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) return;
-    if (self.backgroundUpdateTask != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundUpdateTask];
-        self.backgroundUpdateTask = UIBackgroundTaskInvalid;
-    }
 }
 
 #pragma mark - User identification
