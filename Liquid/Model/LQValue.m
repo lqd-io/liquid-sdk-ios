@@ -107,7 +107,7 @@
 }
 
 +(NSDictionary *)dictionaryFromArrayOfValues:(NSArray *)values {
-    NSMutableDictionary *dictOfValues = [[NSMutableDictionary alloc] initWithObjectsAndKeys:nil];
+    NSMutableDictionary *dictOfValues = [NSMutableDictionary new];
     for(LQValue *value in values) {
         if (value.value) { // If nominal value is present, use it
             if (value.variable.name)
