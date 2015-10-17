@@ -28,7 +28,7 @@
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "NSString+LQString.h"
 #import "NSData+LQData.h"
-#import "LQNetworking.h"
+#import "LQNetworkingFactory.h"
 #import "LQStorage.h"
 
 #if !__has_feature(objc_arc)
@@ -127,7 +127,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.apiToken = apiToken;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
-        self.networking = [[LQNetworking alloc] initFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
+        self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
         self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;

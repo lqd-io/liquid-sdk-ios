@@ -8,8 +8,7 @@
 
 #import <Foundation/NSKeyedArchiver.h>
 #import "LQNetworking.h"
-#import "LQDefaults.h"
-#import "LQRequest.h"
+#import "LQNetworkingProtected.h"
 #import "NSString+LQString.h"
 #import "NSData+LQData.h"
 #import "LQDevice.h"
@@ -32,24 +31,17 @@
 
 @interface LQNetworking ()
 
-@property(atomic, strong) NSMutableArray *httpQueue;
 @property(nonatomic, strong) NSTimer *timer;
-@property(nonatomic, strong) NSString *appToken;
-@property(nonatomic, strong, readonly) NSString *liquidUserAgent;
-#if OS_OBJECT_USE_OBJC
-@property(atomic, strong) dispatch_queue_t queue;
-#else
-@property(atomic, assign) dispatch_queue_t queue;
-#endif
 
 @end
 
 @implementation LQNetworking
 
+@synthesize appToken = _appToken;
 @synthesize liquidUserAgent = _liquidUserAgent;
 @synthesize httpQueue = _httpQueue;
 
-NSString const *serverUrl = kLQServerUrl;
+NSString * const serverUrl = kLQServerUrl;
 NSUInteger const minFlushInterval = kLQMinFlushInterval;
 NSUInteger const timeUnreachableWait = kLQHttpUnreachableWait;
 NSUInteger const timeRejectedWait = kLQHttpRejectedWait;
@@ -58,7 +50,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 #pragma mark - Initializers
 
 - (instancetype)initWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue {
-    if ([self isMemberOfClass:[LQNetworking class]]) {
+    if ([self isKindOfClass:[LQNetworking class]]) {
         _httpQueue = [NSMutableArray new];
         _appToken = apiToken;
         _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
@@ -69,7 +61,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 }
 
 - (instancetype)initFromDiskWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue {
-    if ([self isMemberOfClass:[LQNetworking class]]) {
+    if ([self isKindOfClass:[LQNetworking class]]) {
         _httpQueue = [LQNetworking unarchiveHttpQueueForToken:apiToken];
         _appToken = apiToken;
         _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
@@ -204,9 +196,9 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 - (BOOL)archiveHttpQueue {
     if (_httpQueue.count > 0) {
         LQLog(kLQLogLevelData, @"<Liquid> Saving queue with %ld items to disk", (unsigned long) _httpQueue.count);
-        return [NSKeyedArchiver archiveRootObject:_httpQueue toFile:[LQNetworking liquidHttpQueueFileForToken:_appToken]];
+        return [NSKeyedArchiver archiveRootObject:_httpQueue toFile:[LQNetworking liquidHttpQueueFileForToken:self.appToken]];
     } else {
-        [LQStorage deleteFileIfExists:[LQNetworking liquidHttpQueueFileForToken:_appToken] error:nil];
+        [LQStorage deleteFileIfExists:[LQNetworking liquidHttpQueueFileForToken:self.appToken] error:nil];
         return FALSE;
     }
 }
@@ -245,89 +237,16 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     }
 }
 
-#pragma mark - Networking
-
 - (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method {
-    NSString *fullUrl = [NSString stringWithFormat:@"%@%@", serverUrl, endpoint];
-    NSURL *url = [NSURL URLWithString:fullUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:10.0f];
-    [request setHTTPMethod:method];
-    [request setValue:[NSString stringWithFormat:@"Token %@", _appToken] forHTTPHeaderField:@"Authorization"];
-    [request setValue:self.liquidUserAgent forHTTPHeaderField:@"User-Agent"];
-    [request setValue:@"application/vnd.lqd.v1+json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:data];
-
-    NSURLResponse *response;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                                 returningResponse:&response
-                                                             error:&error];
-    NSString __unused *responseString = [[NSString alloc] initWithData:responseData
-                                                              encoding:NSUTF8StringEncoding];
-
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    if (error) {
-        if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
-            return LQQueueStatusUnreachable;
-        } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
-            return LQQueueStatusUnauthorized;
-        } else {
-            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
-            return LQQueueStatusRejected;
-        }
-    } else {
-        LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server: %@", responseString);
-        if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
-            return LQQueueStatusOk;
-        } else {
-            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)httpResponse.statusCode);
-            return LQQueueStatusRejected;
-        }
-    }
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 - (NSData *)getDataFromEndpoint:(NSString *)endpoint {
-    NSString *fullUrl = [NSString stringWithFormat:@"%@%@", serverUrl, endpoint];
-    NSURL *url = [NSURL URLWithString:fullUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"GET"];
-    [request setValue:[NSString stringWithFormat:@"Token %@", _appToken] forHTTPHeaderField:@"Authorization"];
-    [request setValue:self.liquidUserAgent forHTTPHeaderField:@"User-Agent"];
-    [request setValue:@"application/vnd.lqd.v1+json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    
-    NSURLResponse *response;
-    NSError *error = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    NSString __unused *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-    
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    if (error) {
-        if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while getting data from server: Server is unreachable", (long) error.code);
-        } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while getting data from server: Unauthorized (check App Token)", (long) error.code);
-        } else {
-            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while getting data from server: Server error", (long) error.code);
-        }
-        return nil;
-    } else {
-        LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server: %@", responseString);
-        if(httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
-            return responseData;
-        } else {
-            LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while getting data from server: Server error", (long) httpResponse.statusCode);
-            return nil;
-        }
-    }
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 @end
