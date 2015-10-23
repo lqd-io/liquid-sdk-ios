@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LQModalMessageView">
+            <rect key="frame" x="0.0" y="0.0" width="246" height="267"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit er elit lamet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FyM-iY-j50">
+                    <rect key="frame" x="15" y="40" width="216" height="22"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUL-dm-gwa">
+                    <rect key="frame" x="15" y="222" width="93" height="30"/>
+                    <state key="normal" title="CTA 1"/>
+                    <connections>
+                        <action selector="cta1ButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="slb-tV-emI"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yOL-hW-cYh">
+                    <rect key="frame" x="138" y="222" width="93" height="30"/>
+                    <state key="normal" title="CTA 2"/>
+                    <connections>
+                        <action selector="cta2ButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="XQh-bl-DzK"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwY-7J-2z1">
+                    <rect key="frame" x="201" y="15" width="30" height="30"/>
+                    <state key="normal" title="x"/>
+                    <connections>
+                        <action selector="dismissButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="fPp-4J-lrR"/>
+                    </connections>
+                </button>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="quG-oW-QRD">
+                    <rect key="frame" x="15" y="77" width="216" height="131"/>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="quG-oW-QRD" firstAttribute="top" secondItem="FyM-iY-j50" secondAttribute="bottom" constant="15" id="0fT-Eu-OzV"/>
+                <constraint firstItem="FyM-iY-j50" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="BPR-05-FQ4"/>
+                <constraint firstAttribute="trailing" secondItem="FyM-iY-j50" secondAttribute="trailing" constant="30" id="CUu-8h-zlW"/>
+                <constraint firstItem="rUL-dm-gwa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="DjT-fX-VYa"/>
+                <constraint firstItem="FyM-iY-j50" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="FOI-DG-AkA"/>
+                <constraint firstItem="rUL-dm-gwa" firstAttribute="width" secondItem="yOL-hW-cYh" secondAttribute="width" id="IUb-N7-Fgv"/>
+                <constraint firstItem="FyM-iY-j50" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Lfh-dz-B07"/>
+                <constraint firstAttribute="trailing" secondItem="yOL-hW-cYh" secondAttribute="trailing" constant="15" id="Lkh-dY-CAB"/>
+                <constraint firstItem="quG-oW-QRD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="TkA-rP-pVr"/>
+                <constraint firstAttribute="trailing" secondItem="UwY-7J-2z1" secondAttribute="trailing" constant="15" id="VB8-Qk-DMm"/>
+                <constraint firstItem="rUL-dm-gwa" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" constant="-30" id="YCE-Oi-9oo"/>
+                <constraint firstItem="UwY-7J-2z1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="dGu-O9-6Sb"/>
+                <constraint firstItem="FyM-iY-j50" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" constant="-30" id="dPQ-KV-v9l"/>
+                <constraint firstItem="rUL-dm-gwa" firstAttribute="top" secondItem="quG-oW-QRD" secondAttribute="bottom" constant="15" id="hCD-KA-zwQ"/>
+                <constraint firstItem="quG-oW-QRD" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" constant="-30" id="iWF-Sc-vIb"/>
+                <constraint firstItem="yOL-hW-cYh" firstAttribute="width" secondItem="rUL-dm-gwa" secondAttribute="width" id="qSk-jP-nnf"/>
+                <constraint firstItem="rUL-dm-gwa" firstAttribute="height" secondItem="yOL-hW-cYh" secondAttribute="height" id="rNu-d3-faS"/>
+                <constraint firstAttribute="bottom" secondItem="rUL-dm-gwa" secondAttribute="bottom" constant="15" id="rpH-ld-qus"/>
+                <constraint firstAttribute="bottom" secondItem="yOL-hW-cYh" secondAttribute="bottom" constant="15" id="wEm-xp-2Lf"/>
+                <constraint firstItem="FyM-iY-j50" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="yW6-WO-tfW"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="BPR-05-FQ4"/>
+                    <exclude reference="CUu-8h-zlW"/>
+                    <exclude reference="yW6-WO-tfW"/>
+                    <exclude reference="IUb-N7-Fgv"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="cta1Button" destination="rUL-dm-gwa" id="ecW-Eu-2jc"/>
+                <outlet property="cta2Button" destination="yOL-hW-cYh" id="CVf-cr-5pR"/>
+                <outlet property="messageView" destination="quG-oW-QRD" id="dyo-K2-H5b"/>
+                <outlet property="titleLabel" destination="FyM-iY-j50" id="Mix-6h-oMU"/>
+                <outlet property="xButton" destination="UwY-7J-2z1" id="loQ-gb-b4q"/>
+            </connections>
+            <point key="canvasLocation" x="-123" y="-126.5"/>
+        </view>
+    </objects>
+</document>
