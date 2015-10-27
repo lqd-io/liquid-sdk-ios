@@ -59,11 +59,11 @@
     self = [super init];
     if(self) {
         _inAppMessage = inAppMessage;
-        // Build message view
         if([[NSBundle mainBundle] pathForResource:@"LQModalMessage" ofType:@"nib"]) {
             LQModalMessageView *messageView = [[[NSBundle mainBundle] loadNibNamed:@"LQModalMessage" owner:self options:nil] lastObject];
             messageView.delegate = self;
-            [messageView updateLayoutWithInAppMessage:inAppMessage];
+            messageView.inAppMessage = inAppMessage;
+            [messageView updateLayoutFromInAppMessage];
             // Put the message view inside modal view and present it
             self.modalView = [LQModalView modalWithContentView:messageView];
         } else {
@@ -77,15 +77,8 @@
     [self.modalView dismissModal];
 }
 
-- (void)modalMessageCTA1 {
-    NSLog(@"CTA 1");
-    //LQInAppMessageModal *inAppMessage = (LQInAppMessageModal *)_inAppMessage;
-    //[[Liquid sharedInstance] track:[inAppMessage.callsToAction objectAtIndex:0]];
-    [self.modalView dismissModal];
-}
-
-- (void)modalMessageCTA2 {
-    NSLog(@"CTA 2");
+- (void)modalMessageCTA:(LQCallToAction *)cta {
+    [[Liquid sharedInstance] track:[cta eventName] attributes:[cta eventAttributes]];
     [self.modalView dismissModal];
 }
 

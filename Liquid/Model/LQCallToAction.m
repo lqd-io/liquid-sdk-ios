@@ -23,9 +23,16 @@
         _titleColor = [UIColor colorFromHexadecimalString:[dict objectForKey:@"title_color"]];
         _backgroundColor = [UIColor colorFromHexadecimalString:[dict objectForKey:@"bg_color"]];
         _eventName = [dict objectForKey:@"event_name"];
-        _eventAttributes = [dict objectForKey:@"cta_attributes"];
+        _eventAttributes = [[self class] fixCTAAttributes:[dict objectForKey:@"cta_attributes"]];
     }
     return self;
+}
+
++ (NSDictionary *)fixCTAAttributes:(NSDictionary *)attributes {
+    NSMutableDictionary *fixedCTAAttributes = [[NSMutableDictionary alloc] initWithDictionary:attributes];
+    fixedCTAAttributes[@"cta_id"] = attributes[@"id"];
+    [fixedCTAAttributes removeObjectForKey:@"id"];
+    return fixedCTAAttributes;
 }
 
 @end

@@ -8,25 +8,26 @@
 
 #import <UIKit/UIKit.h>
 #import "LQInAppMessageModal.h"
+#import "LQCallToAction.h"
 
 @protocol LQModalMessageViewDelegate <NSObject>
 
 @optional
 - (void)modalMessageDismiss;
-- (void)modalMessageCTA1;
-- (void)modalMessageCTA2;
+- (void)modalMessageCTA:(LQCallToAction *)cta;
 @end
 
 @interface LQModalMessageView : UIView
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UITextView *messageView;
-@property (strong, nonatomic) IBOutlet UIButton *cta1Button;
-@property (strong, nonatomic) IBOutlet UIButton *cta2Button;
 @property (strong, nonatomic) IBOutlet UIButton *dismissButton;
+
+@property (nonatomic, strong, readonly) NSMutableArray *callsToActionButtons;
+@property (nonatomic, strong) LQInAppMessageModal *inAppMessage;
 
 @property (nonatomic, strong) NSObject <LQModalMessageViewDelegate> *delegate;
 
-- (void)updateLayoutWithInAppMessage:(LQInAppMessageModal *)inAppMessage;
+- (void)updateLayoutFromInAppMessage;
 
 @end
