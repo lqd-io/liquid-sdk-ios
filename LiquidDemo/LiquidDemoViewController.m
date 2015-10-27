@@ -11,6 +11,8 @@
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "UIColor+LQColor.h"
 
+#import "LQInAppMessagePresenter.h"
+
 @interface LiquidDemoViewController ()
 
 @property (nonatomic, strong, readonly) NSDictionary *userProfiles;

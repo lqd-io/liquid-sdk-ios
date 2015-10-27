@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LQInAppMessageModal.h"
 
 @protocol LQModalMessageViewDelegate <NSObject>
 
@@ -22,8 +23,10 @@
 @property (strong, nonatomic) IBOutlet UITextView *messageView;
 @property (strong, nonatomic) IBOutlet UIButton *cta1Button;
 @property (strong, nonatomic) IBOutlet UIButton *cta2Button;
-@property (strong, nonatomic) IBOutlet UIButton *xButton;
+@property (strong, nonatomic) IBOutlet UIButton *dismissButton;
 
 @property (nonatomic, strong) NSObject <LQModalMessageViewDelegate> *delegate;
+
+- (void)updateLayoutWithInAppMessage:(LQInAppMessageModal *)inAppMessage;
 
 @end

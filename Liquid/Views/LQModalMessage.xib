@@ -21,14 +21,14 @@
                     <rect key="frame" x="15" y="222" width="93" height="30"/>
                     <state key="normal" title="CTA 1"/>
                     <connections>
-                        <action selector="cta1ButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="slb-tV-emI"/>
+                        <action selector="ctaButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="lfN-bw-asT"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yOL-hW-cYh">
                     <rect key="frame" x="138" y="222" width="93" height="30"/>
                     <state key="normal" title="CTA 2"/>
                     <connections>
-                        <action selector="cta2ButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="XQh-bl-DzK"/>
+                        <action selector="ctaButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="aNM-gA-pg8"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwY-7J-2z1">
@@ -84,9 +84,9 @@
             <connections>
                 <outlet property="cta1Button" destination="rUL-dm-gwa" id="ecW-Eu-2jc"/>
                 <outlet property="cta2Button" destination="yOL-hW-cYh" id="CVf-cr-5pR"/>
+                <outlet property="dismissButton" destination="UwY-7J-2z1" id="GuQ-1T-Hhd"/>
                 <outlet property="messageView" destination="quG-oW-QRD" id="dyo-K2-H5b"/>
                 <outlet property="titleLabel" destination="FyM-iY-j50" id="Mix-6h-oMU"/>
-                <outlet property="xButton" destination="UwY-7J-2z1" id="loQ-gb-b4q"/>
             </connections>
             <point key="canvasLocation" x="-123" y="-126.5"/>
         </view>

@@ -28,6 +28,7 @@
 #import "NSData+LQData.h"
 #import "LQNetworking.h"
 #import "LQStorage.h"
+#import "LQInAppMessages.h"
 
 #if !__has_feature(objc_arc)
 #  error Compile me with ARC, please!
@@ -35,21 +36,22 @@
 
 @interface Liquid ()
 
-@property(nonatomic, strong) NSString *apiToken;
-@property(nonatomic, assign) BOOL developmentMode;
-@property(atomic, strong) LQUser *currentUser;
-@property(atomic, strong) LQUser *previousUser;
-@property(atomic, strong) LQDevice *device;
-@property(atomic, strong) LQSession *currentSession;
-@property(nonatomic, strong) NSDate *enterBackgroundTime;
-@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
-@property(atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
-@property(nonatomic, strong) NSMutableArray *valuesSentToServer;
-@property(atomic, strong) LQNetworking *networking;
+@property (nonatomic, strong) NSString *apiToken;
+@property (nonatomic, assign) BOOL developmentMode;
+@property (atomic, strong) LQUser *currentUser;
+@property (atomic, strong) LQUser *previousUser;
+@property (atomic, strong) LQDevice *device;
+@property (atomic, strong) LQSession *currentSession;
+@property (nonatomic, strong) NSDate *enterBackgroundTime;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
+@property (atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
+@property (nonatomic, strong) NSMutableArray *valuesSentToServer;
+@property (atomic, strong) LQNetworking *networking;
+@property (nonatomic, strong) LQInAppMessages *inAppMessages;
 #if OS_OBJECT_USE_OBJC
-@property(atomic, strong) dispatch_queue_t queue;
+@property (atomic, strong) dispatch_queue_t queue;
 #else
-@property(atomic, assign) dispatch_queue_t queue;
+@property (atomic, assign) dispatch_queue_t queue;
 #endif
 
 @end
@@ -127,6 +129,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.networking = [[LQNetworking alloc] initFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
+        self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking];
         self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
@@ -169,6 +172,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                selector:@selector(applicationWillTerminate:)
                                    name:UIApplicationWillTerminateNotification
                                  object:nil];
+
+        // Request and present In-App Messages
+        [self.inAppMessages requestAndShowInAppMessages];
 
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }
@@ -254,6 +260,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.currentUser = newUser;
         LQLog(kLQLogLevelInfo, @"<Liquid> From now on, we're identifying the User by identifier '%@'", newUser.identifier);
     }
+    self.inAppMessages.currentUser = self.currentUser;
     [self saveCurrentUserToDisk];
     [self requestNewLiquidPackage];
 

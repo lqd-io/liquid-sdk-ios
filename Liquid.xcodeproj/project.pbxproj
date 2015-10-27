@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		92E71585BB5944A394C1AC93 /* libPods-LiquidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */; };
 		A9035321193FA0C8005110DF /* liquid_package1.json in Resources */ = {isa = PBXBuildFile; fileRef = A9035320193FA0C8005110DF /* liquid_package1.json */; };
-		A91CC7E31BDAAEF0007363F3 /* LQInAppMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E21BDAAEF0007363F3 /* LQInAppMessage.m */; settings = {ASSET_TAGS = (); }; };
+		A91CC7E31BDAAEF0007363F3 /* LQInAppMessagePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E21BDAAEF0007363F3 /* LQInAppMessagePresenter.m */; settings = {ASSET_TAGS = (); }; };
 		A91CC7EA1BDAAF06007363F3 /* LQModalMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */; settings = {ASSET_TAGS = (); }; };
 		A91CC7EB1BDAAF06007363F3 /* LQModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E91BDAAF06007363F3 /* LQModalView.m */; settings = {ASSET_TAGS = (); }; };
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
+		A93E44C71BDFC73B00734DE7 /* LQInAppMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */; settings = {ASSET_TAGS = (); }; };
 		A94B6A9D1954BC1D00AB4B04 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
 		A9509877194F104E0048106A /* LiquidSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9509876194F104E0048106A /* LiquidSpec.m */; };
 		A95E659B194543140075161E /* liquid_package_incorrect_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */; };
@@ -64,6 +65,11 @@
 		A9E9805A193E257C0055D1E7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9E98058193E257C0055D1E7 /* InfoPlist.strings */; };
 		A9EB204419352FBA00191F7E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */; };
 		A9EB204619353CD200191F7E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
+		A9EB82E21BDAB28900BA8176 /* LQInAppMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EB82E11BDAB28900BA8176 /* LQInAppMessage.m */; settings = {ASSET_TAGS = (); }; };
+		A9EB82E51BDAB99500BA8176 /* LQCallToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EB82E41BDAB99500BA8176 /* LQCallToAction.m */; settings = {ASSET_TAGS = (); }; };
+		A9EB82EC1BDABCCE00BA8176 /* LQInAppMessageModal.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EB82EB1BDABCCE00BA8176 /* LQInAppMessageModal.m */; settings = {ASSET_TAGS = (); }; };
+		A9EB82ED1BDE860E00BA8176 /* LQModalMessage.xib in CopyFiles */ = {isa = PBXBuildFile; fileRef = A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */; };
+		A9EB82EE1BDE864700BA8176 /* LQModalMessage.xib in Resources */ = {isa = PBXBuildFile; fileRef = A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */; };
 		A9F3264419527046005731BD /* liquid_package_targets.json in Resources */ = {isa = PBXBuildFile; fileRef = A9F3264319527046005731BD /* liquid_package_targets.json */; };
 		A9FBA7AA1B03981200900AAC /* LQKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA7A91B03981200900AAC /* LQKeychain.m */; };
 		A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */; };
@@ -100,18 +106,21 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				A9EB82ED1BDE860E00BA8176 /* LQModalMessage.xib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08EA5B44F9FF83286DAF6E55 /* Pods-LiquidTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.release.xcconfig"; sourceTree = "<group>"; };
 		378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiquidTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CCE3F2394498DFDD3B9B293 /* Pods-LiquidTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A9035320193FA0C8005110DF /* liquid_package1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package1.json; path = HTTPStubs/liquid_package1.json; sourceTree = "<group>"; };
 		A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_incorrect_data_types.json; path = HTTPStubs/liquid_package_incorrect_data_types.json; sourceTree = "<group>"; };
 		A91B4E2019737401005CF827 /* LQUserPrivates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserPrivates.h; sourceTree = "<group>"; };
-		A91CC7E11BDAAEF0007363F3 /* LQInAppMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessage.h; sourceTree = "<group>"; };
-		A91CC7E21BDAAEF0007363F3 /* LQInAppMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessage.m; sourceTree = "<group>"; };
+		A91CC7E11BDAAEF0007363F3 /* LQInAppMessagePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessagePresenter.h; sourceTree = "<group>"; };
+		A91CC7E21BDAAEF0007363F3 /* LQInAppMessagePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessagePresenter.m; sourceTree = "<group>"; };
 		A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LQModalMessage.xib; sourceTree = "<group>"; };
 		A91CC7E61BDAAF06007363F3 /* LQModalMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQModalMessageView.h; sourceTree = "<group>"; };
 		A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQModalMessageView.m; sourceTree = "<group>"; };
@@ -122,6 +131,8 @@
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
 		A93AF9CE19316FCA0035E811 /* LQEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEntity.h; sourceTree = "<group>"; };
 		A93AF9CF19316FCA0035E811 /* LQEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEntity.m; sourceTree = "<group>"; };
+		A93E44C51BDFC73B00734DE7 /* LQInAppMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessages.h; sourceTree = "<group>"; };
+		A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessages.m; sourceTree = "<group>"; };
 		A9509876194F104E0048106A /* LiquidSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidSpec.m; path = Model/LiquidSpec.m; sourceTree = "<group>"; };
 		A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidTargetsInvalidationSpec.m; sourceTree = "<group>"; };
 		A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidValuesInvalidationSpec.m; sourceTree = "<group>"; };
@@ -192,6 +203,12 @@
 		A9E98059193E257C0055D1E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A9E9805D193E257C0055D1E7 /* LiquidTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LiquidTests-Prefix.pch"; sourceTree = "<group>"; };
 		A9EB204519353CD200191F7E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A9EB82E01BDAB28900BA8176 /* LQInAppMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessage.h; sourceTree = "<group>"; };
+		A9EB82E11BDAB28900BA8176 /* LQInAppMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessage.m; sourceTree = "<group>"; };
+		A9EB82E31BDAB99500BA8176 /* LQCallToAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQCallToAction.h; sourceTree = "<group>"; };
+		A9EB82E41BDAB99500BA8176 /* LQCallToAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQCallToAction.m; sourceTree = "<group>"; };
+		A9EB82EA1BDABCCE00BA8176 /* LQInAppMessageModal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessageModal.h; sourceTree = "<group>"; };
+		A9EB82EB1BDABCCE00BA8176 /* LQInAppMessageModal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessageModal.m; sourceTree = "<group>"; };
 		A9F3264319527046005731BD /* liquid_package_targets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_targets.json; path = HTTPStubs/liquid_package_targets.json; sourceTree = "<group>"; };
 		A9FBA7A81B03981200900AAC /* LQKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQKeychain.h; sourceTree = "<group>"; };
 		A9FBA7A91B03981200900AAC /* LQKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychain.m; sourceTree = "<group>"; };
@@ -200,7 +217,6 @@
 		A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserDefaults.h; sourceTree = "<group>"; };
 		A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUserDefaults.m; sourceTree = "<group>"; };
 		A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.xcconfig"; path = "Pods/Pods-LiquidTests.xcconfig"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C7DB3A811924FE4200CC5D64 /* NSData+LQData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+LQData.h"; sourceTree = "<group>"; };
@@ -252,6 +268,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		314231834640CAF365F592FB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4CCE3F2394498DFDD3B9B293 /* Pods-LiquidTests.debug.xcconfig */,
+				08EA5B44F9FF83286DAF6E55 /* Pods-LiquidTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A903531F193FA06F005110DF /* HTTPStubs */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,11 +292,11 @@
 		A91CC7E41BDAAF06007363F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A91CC7E81BDAAF06007363F3 /* LQModalView.h */,
+				A91CC7E91BDAAF06007363F3 /* LQModalView.m */,
 				A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */,
 				A91CC7E61BDAAF06007363F3 /* LQModalMessageView.h */,
 				A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */,
-				A91CC7E81BDAAF06007363F3 /* LQModalView.h */,
-				A91CC7E91BDAAF06007363F3 /* LQModalView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -297,6 +322,34 @@
 				A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		A93E44C81BDFC74D00734DE7 /* Liquid Modules */ = {
+			isa = PBXGroup;
+			children = (
+				A93E44C51BDFC73B00734DE7 /* LQInAppMessages.h */,
+				A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */,
+			);
+			name = "Liquid Modules";
+			sourceTree = "<group>";
+		};
+		A93E44C91BDFC8DA00734DE7 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				A91CC7E11BDAAEF0007363F3 /* LQInAppMessagePresenter.h */,
+				A91CC7E21BDAAEF0007363F3 /* LQInAppMessagePresenter.m */,
+				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
+				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
+				A9FBA7A81B03981200900AAC /* LQKeychain.h */,
+				A9FBA7A91B03981200900AAC /* LQKeychain.m */,
+				A9E789E519BFBBC0006CA1D8 /* LQStorage.h */,
+				A9E789E619BFBBC0006CA1D8 /* LQStorage.m */,
+				A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */,
+				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
+				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
+				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
+			);
+			name = Lib;
 			sourceTree = "<group>";
 		};
 		A98CF0051949C7A3003DF949 /* LiquidDemo */ = {
@@ -327,30 +380,12 @@
 		A99EB4E3192447FA0060E484 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A9EB82E61BDABA0500BA8176 /* In-App Messages */,
+				A9EB82E71BDABA1400BA8176 /* Networking */,
+				A9EB82E81BDABA2B00BA8176 /* Data Points */,
+				A9EB82E91BDABA5F00BA8176 /* Personalization */,
 				A9BA7D2819AA698700E1F0F2 /* LQDate.h */,
 				A9BA7D2919AA698700E1F0F2 /* LQDate.m */,
-				A99EB4EC192447FA0060E484 /* LQRequest.h */,
-				A99EB4ED192447FA0060E484 /* LQRequest.m */,
-				A99EB4E4192447FA0060E484 /* LQDataPoint.h */,
-				A99EB4E5192447FA0060E484 /* LQDataPoint.m */,
-				A93AF9CE19316FCA0035E811 /* LQEntity.h */,
-				A93AF9CF19316FCA0035E811 /* LQEntity.m */,
-				A99EB4F2192447FA0060E484 /* LQUser.h */,
-				A99EB4F3192447FA0060E484 /* LQUser.m */,
-				A99EB4E6192447FA0060E484 /* LQDevice.h */,
-				A99EB4E7192447FA0060E484 /* LQDevice.m */,
-				A99EB4EE192447FA0060E484 /* LQSession.h */,
-				A99EB4EF192447FA0060E484 /* LQSession.m */,
-				A99EB4E8192447FA0060E484 /* LQEvent.h */,
-				A99EB4E9192447FA0060E484 /* LQEvent.m */,
-				A99EB4EA192447FA0060E484 /* LQLiquidPackage.h */,
-				A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */,
-				A99EB4F0192447FA0060E484 /* LQTarget.h */,
-				A99EB4F1192447FA0060E484 /* LQTarget.m */,
-				A99EB4F4192447FA0060E484 /* LQValue.h */,
-				A99EB4F5192447FA0060E484 /* LQValue.m */,
-				A99EB4F6192447FA0060E484 /* LQVariable.h */,
-				A99EB4F7192447FA0060E484 /* LQVariable.m */,
 				A9FBA7AB1B03B0E200900AAC /* LQKeychainItem.h */,
 				A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */,
 			);
@@ -401,6 +436,62 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A9EB82E61BDABA0500BA8176 /* In-App Messages */ = {
+			isa = PBXGroup;
+			children = (
+				A9EB82E01BDAB28900BA8176 /* LQInAppMessage.h */,
+				A9EB82E11BDAB28900BA8176 /* LQInAppMessage.m */,
+				A9EB82EA1BDABCCE00BA8176 /* LQInAppMessageModal.h */,
+				A9EB82EB1BDABCCE00BA8176 /* LQInAppMessageModal.m */,
+				A9EB82E31BDAB99500BA8176 /* LQCallToAction.h */,
+				A9EB82E41BDAB99500BA8176 /* LQCallToAction.m */,
+			);
+			name = "In-App Messages";
+			sourceTree = "<group>";
+		};
+		A9EB82E71BDABA1400BA8176 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				A99EB4EC192447FA0060E484 /* LQRequest.h */,
+				A99EB4ED192447FA0060E484 /* LQRequest.m */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
+		A9EB82E81BDABA2B00BA8176 /* Data Points */ = {
+			isa = PBXGroup;
+			children = (
+				A99EB4E4192447FA0060E484 /* LQDataPoint.h */,
+				A99EB4E5192447FA0060E484 /* LQDataPoint.m */,
+				A93AF9CE19316FCA0035E811 /* LQEntity.h */,
+				A93AF9CF19316FCA0035E811 /* LQEntity.m */,
+				A99EB4F2192447FA0060E484 /* LQUser.h */,
+				A99EB4F3192447FA0060E484 /* LQUser.m */,
+				A99EB4E6192447FA0060E484 /* LQDevice.h */,
+				A99EB4E7192447FA0060E484 /* LQDevice.m */,
+				A99EB4EE192447FA0060E484 /* LQSession.h */,
+				A99EB4EF192447FA0060E484 /* LQSession.m */,
+				A99EB4E8192447FA0060E484 /* LQEvent.h */,
+				A99EB4E9192447FA0060E484 /* LQEvent.m */,
+			);
+			name = "Data Points";
+			sourceTree = "<group>";
+		};
+		A9EB82E91BDABA5F00BA8176 /* Personalization */ = {
+			isa = PBXGroup;
+			children = (
+				A99EB4EA192447FA0060E484 /* LQLiquidPackage.h */,
+				A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */,
+				A99EB4F0192447FA0060E484 /* LQTarget.h */,
+				A99EB4F1192447FA0060E484 /* LQTarget.m */,
+				A99EB4F4192447FA0060E484 /* LQValue.h */,
+				A99EB4F5192447FA0060E484 /* LQValue.m */,
+				A99EB4F6192447FA0060E484 /* LQVariable.h */,
+				A99EB4F7192447FA0060E484 /* LQVariable.m */,
+			);
+			name = Personalization;
+			sourceTree = "<group>";
+		};
 		C73E4AD61923C61D001EF2E6 = {
 			isa = PBXGroup;
 			children = (
@@ -409,7 +500,7 @@
 				A98CF0051949C7A3003DF949 /* LiquidDemo */,
 				C73E4AE11923C61D001EF2E6 /* Frameworks */,
 				C73E4AE01923C61D001EF2E6 /* Products */,
-				BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */,
+				314231834640CAF365F592FB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -444,18 +535,8 @@
 				A99EB4E0192447FA0060E484 /* Liquid.h */,
 				A99EB4E1192447FA0060E484 /* Liquid.m */,
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
-				A91CC7E11BDAAEF0007363F3 /* LQInAppMessage.h */,
-				A91CC7E21BDAAEF0007363F3 /* LQInAppMessage.m */,
-				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
-				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
-				A9FBA7A81B03981200900AAC /* LQKeychain.h */,
-				A9FBA7A91B03981200900AAC /* LQKeychain.m */,
-				A9E789E519BFBBC0006CA1D8 /* LQStorage.h */,
-				A9E789E619BFBBC0006CA1D8 /* LQStorage.m */,
-				A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */,
-				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
-				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
-				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
+				A93E44C81BDFC74D00734DE7 /* Liquid Modules */,
+				A93E44C91BDFC8DA00734DE7 /* Lib */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
 				A99EB54F1924DB730060E484 /* Categories */,
 				A99EB4E3192447FA0060E484 /* Model */,
@@ -494,6 +575,7 @@
 				A9E9804D193E257B0055D1E7 /* Frameworks */,
 				A9E9804E193E257B0055D1E7 /* Resources */,
 				D25B45D22FDD4BD4BD94B5C4 /* Copy Pods Resources */,
+				242B4BC712A68087D391255C /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -559,6 +641,7 @@
 				A98CF0181949C7A3003DF949 /* Images.xcassets in Resources */,
 				A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */,
 				A98CF0131949C7A3003DF949 /* LiquidDemo.storyboard in Resources */,
+				A9EB82EE1BDE864700BA8176 /* LQModalMessage.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,6 +661,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		242B4BC712A68087D391255C /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D25B45D22FDD4BD4BD94B5C4 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -590,7 +688,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-LiquidTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FE6C6D3BBB0542DCB80EA44D /* Check Pods Manifest.lock */ = {
@@ -648,13 +746,16 @@
 				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
 				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
-				A91CC7E31BDAAEF0007363F3 /* LQInAppMessage.m in Sources */,
+				A91CC7E31BDAAEF0007363F3 /* LQInAppMessagePresenter.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */,
+				A93E44C71BDFC73B00734DE7 /* LQInAppMessages.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */,
+				A9EB82E21BDAB28900BA8176 /* LQInAppMessage.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
+				A9EB82EC1BDABCCE00BA8176 /* LQInAppMessageModal.m in Sources */,
 				A9FBA7AA1B03981200900AAC /* LQKeychain.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
@@ -663,6 +764,7 @@
 				A91CC7EA1BDAAF06007363F3 /* LQModalMessageView.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A91CC7EB1BDAAF06007363F3 /* LQModalView.m in Sources */,
+				A9EB82E51BDAB99500BA8176 /* LQCallToAction.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */,
 				A99EB500192447FA0060E484 /* LQUser.m in Sources */,
@@ -753,7 +855,7 @@
 		};
 		A9E98061193E257C0055D1E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
+			baseConfigurationReference = 4CCE3F2394498DFDD3B9B293 /* Pods-LiquidTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -775,7 +877,7 @@
 		};
 		A9E98062193E257C0055D1E7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
+			baseConfigurationReference = 08EA5B44F9FF83286DAF6E55 /* Pods-LiquidTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
