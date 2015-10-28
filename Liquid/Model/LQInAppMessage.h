@@ -17,14 +17,12 @@ typedef NS_ENUM(NSInteger, LQInAppMessageLayout) {
 };
 
 @interface LQInAppMessage : NSObject {
-    //LQInAppMessageLayout _layout;
     NSString *_message;
     UIColor *_backgroundColor;
     UIColor *_messageColor;
     NSString *_dismissEventName;
 }
 
-//@property (nonatomic, assign, readonly) LQInAppMessageLayout layout;
 @property (nonatomic, strong, readonly) NSString *message;
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIColor *messageColor;
