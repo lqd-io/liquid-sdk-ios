@@ -20,7 +20,7 @@
                     <rect key="frame" x="201" y="15" width="30" height="30"/>
                     <state key="normal" title="x"/>
                     <connections>
-                        <action selector="dismissButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="fPp-4J-lrR"/>
+                        <action selector="dismissButtonPressd:" destination="iN0-l3-epB" eventType="touchUpInside" id="tEU-0g-mbV"/>
                     </connections>
                 </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="quG-oW-QRD">

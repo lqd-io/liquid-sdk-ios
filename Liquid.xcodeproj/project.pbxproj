@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		92E71585BB5944A394C1AC93 /* libPods-LiquidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */; };
 		A9035321193FA0C8005110DF /* liquid_package1.json in Resources */ = {isa = PBXBuildFile; fileRef = A9035320193FA0C8005110DF /* liquid_package1.json */; };
-		A91CC7E31BDAAEF0007363F3 /* LQInAppMessagePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E21BDAAEF0007363F3 /* LQInAppMessagePresenter.m */; settings = {ASSET_TAGS = (); }; };
 		A91CC7EA1BDAAF06007363F3 /* LQModalMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */; settings = {ASSET_TAGS = (); }; };
 		A91CC7EB1BDAAF06007363F3 /* LQModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E91BDAAF06007363F3 /* LQModalView.m */; settings = {ASSET_TAGS = (); }; };
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
@@ -119,8 +118,6 @@
 		A9035320193FA0C8005110DF /* liquid_package1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package1.json; path = HTTPStubs/liquid_package1.json; sourceTree = "<group>"; };
 		A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_incorrect_data_types.json; path = HTTPStubs/liquid_package_incorrect_data_types.json; sourceTree = "<group>"; };
 		A91B4E2019737401005CF827 /* LQUserPrivates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserPrivates.h; sourceTree = "<group>"; };
-		A91CC7E11BDAAEF0007363F3 /* LQInAppMessagePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessagePresenter.h; sourceTree = "<group>"; };
-		A91CC7E21BDAAEF0007363F3 /* LQInAppMessagePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessagePresenter.m; sourceTree = "<group>"; };
 		A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LQModalMessage.xib; sourceTree = "<group>"; };
 		A91CC7E61BDAAF06007363F3 /* LQModalMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQModalMessageView.h; sourceTree = "<group>"; };
 		A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQModalMessageView.m; sourceTree = "<group>"; };
@@ -336,8 +333,6 @@
 		A93E44C91BDFC8DA00734DE7 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				A91CC7E11BDAAEF0007363F3 /* LQInAppMessagePresenter.h */,
-				A91CC7E21BDAAEF0007363F3 /* LQInAppMessagePresenter.m */,
 				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
 				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
 				A9FBA7A81B03981200900AAC /* LQKeychain.h */,
@@ -746,7 +741,6 @@
 				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
 				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
-				A91CC7E31BDAAEF0007363F3 /* LQInAppMessagePresenter.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */,

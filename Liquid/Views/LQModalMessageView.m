@@ -8,18 +8,22 @@
 
 #import "LQModalMessageView.h"
 
+@interface LQModalMessageView () {
+    ModalMessageDismissBlock _modalDismissBlock;
+    ModalMessageCTABlock _modalCTABlock;
+    BOOL _layoutIsDefined;
+}
+
+@end
+
 @implementation LQModalMessageView
 
 @synthesize inAppMessage = _inAppMessage;
-//@synthesize callsToAction = _callsToAction;
 @synthesize callsToActionButtons = _callsToActionButtons;
+@synthesize modalDismissBlock = _modalDismissBlock;
+@synthesize modalCTABlock = _modalCTABlock;
 
-//- (NSMutableArray *)callsToAction {
-//    if (!_callsToAction) {
-//        _callsToAction = [[NSMutableArray alloc] init];
-//    }
-//    return _callsToAction;
-//}
+#pragma mark - Lazy initialization
 
 - (NSMutableArray *)callsToActionButtons {
     if (!_callsToActionButtons) {
@@ -28,11 +32,22 @@
     return _callsToActionButtons;
 }
 
-- (void)updateLayoutFromInAppMessage {
-    if (!self.inAppMessage) {
-        [NSException raise:NSInvalidArgumentException format:@"No In-App Message was defined."];
+#pragma mark - Define layout
+
+- (void)defineLayoutWithInAppMessage {
+    if (_layoutIsDefined) {
+        [NSException raise:NSInternalInconsistencyException
+                    format:@"Layout has already been defined. You can do it only once"];
         return;
     }
+    if (!self.inAppMessage) {
+        [NSException raise:NSInvalidArgumentException
+                    format:@"No In-App Message was defined."];
+        return;
+    }
+    _layoutIsDefined = YES;
+    
+    // Define layout
     self.titleLabel.text = self.inAppMessage.title;
     self.messageView.text = self.inAppMessage.message;
     self.backgroundColor = self.inAppMessage.backgroundColor;
@@ -40,9 +55,9 @@
     self.messageView.textColor = self.inAppMessage.messageColor;
     [self.dismissButton setTitleColor:self.inAppMessage.titleColor forState:UIControlStateNormal];
 
+    // Define CTAs layout
     NSInteger index = 0;
     for (LQCallToAction *callToAction in self.inAppMessage.callsToAction) {
-        //[self.callsToAction addObject:callToAction];
         [self addCallToActionToView:callToAction index:index++];
         return;
     }
@@ -67,7 +82,7 @@
     [button addTarget:self action:@selector(ctaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     // Add button to view
-    [self.callsToActionButtons addObject:button];
+    [self.callsToActionButtons addObject:button]; // Respect the same order as CTAs in _inAppMessage
     [self addSubview:button];
 }
 
@@ -95,7 +110,7 @@
                                                     multiplier:1
                                                       constant:15]]; // 1
 
-    // Define width and Height
+    // Define width and height
     [self addConstraint:[NSLayoutConstraint constraintWithItem:button
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
@@ -107,12 +122,16 @@
 
 #pragma mark - Button actions
 
+- (IBAction)dismissButtonPressd:(UIButton *)sender {
+    if (self.modalDismissBlock) {
+        self.modalDismissBlock();
+    }
+}
+
 - (IBAction)ctaButtonPressed:(UIButton *)sender {
-    if([self.delegate respondsToSelector:@selector(modalMessageCTA:)]) {
+    if (self.modalCTABlock) {
         LQCallToAction *cta = [self.inAppMessage.callsToAction objectAtIndex:sender.tag];
-        [self.delegate performSelectorOnMainThread:@selector(modalMessageCTA:)
-                                        withObject:cta
-                                     waitUntilDone:NO];
+        self.modalCTABlock(cta);
     }
 }
 

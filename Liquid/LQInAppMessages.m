@@ -9,7 +9,8 @@
 #import "LQInAppMessages.h"
 #import "LQDefaults.h"
 #import "NSData+LQData.h"
-#import "LQInAppMessagePresenter.h"
+#import "LQModalView.h"
+#import "LQModalMessageView.h"
 
 @interface LQInAppMessages ()
 
@@ -69,9 +70,40 @@
         return;
     }
     if ([message isKindOfClass:[LQInAppMessageModal class]]) {
-        [[[LQInAppMessagePresenter alloc] initWithModal:message] present];
+        [self presentModalInAppMessage:message];
         [self.messagesQueue removeObjectAtIndex:0];
     }
+}
+
+#pragma mark - Present the different layouts of In-App Messages
+
+- (void)presentModalInAppMessage:(LQInAppMessageModal *)message {
+    if([message isInvalid]) {
+        LQLog(kLQLogLevelError, @"Could not present In-App Message because it is invalid");
+        return;
+    }
+    if(![[NSBundle mainBundle] pathForResource:@"LQModalMessage" ofType:@"nib"]) {
+        LQLog(kLQLogLevelError, @"Could not found LQModalMessage to show modal in-app message.");
+        return;
+    }
+
+    // Put ModalMessageView inside ModalView and present it
+    LQModalMessageView *messageView = [[[NSBundle mainBundle] loadNibNamed:@"LQModalMessage" owner:self options:nil] lastObject];
+    messageView.inAppMessage = message;
+    [messageView defineLayoutWithInAppMessage];
+    __block LQModalView *modalView = [LQModalView modalWithContentView:messageView];
+
+    // Define callbacks for CTAs and Dismiss
+    messageView.modalCTABlock = ^(LQCallToAction *cta) {
+        //[[Liquid sharedInstance] track:[cta eventName] attributes:[cta eventAttributes]];
+        [modalView dismissModal];
+    };
+    messageView.modalDismissBlock = ^{
+        [modalView dismissModal];
+    };
+
+    // Present view
+    [modalView presentModal];
 }
 
 @end
