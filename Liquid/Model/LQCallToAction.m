@@ -28,6 +28,16 @@
     return self;
 }
 
+- (BOOL)isValid {
+    if (!_title) return NO;
+    if (!_eventName) return NO;
+    return YES;
+}
+
+- (BOOL)isInvalid {
+    return ![self isValid];
+}
+
 + (NSDictionary *)fixCTAAttributes:(NSDictionary *)attributes {
     NSMutableDictionary *fixedCTAAttributes = [[NSMutableDictionary alloc] initWithDictionary:attributes];
     fixedCTAAttributes[@"cta_id"] = attributes[@"id"];

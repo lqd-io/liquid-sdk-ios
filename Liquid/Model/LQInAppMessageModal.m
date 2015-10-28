@@ -17,13 +17,16 @@
 @synthesize callsToAction = _callsToAction;
 
 - (BOOL)isValid {
-    if(!_title) return NO;
+    if (!_title) return NO;
+    for (LQCallToAction *cta in self.callsToAction) {
+        if ([cta isInvalid]) return NO;
+    }
     return [super isValid];
 }
 
 - (instancetype)initWithLayout:(LQInAppMessageLayout)layout title:(NSString *)title message:(NSString *)message options:(NSDictionary *)options {
     self = [super init];
-    if(self) {
+    if (self) {
         _title = title;
         _message = message;
     }

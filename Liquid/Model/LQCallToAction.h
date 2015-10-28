@@ -18,5 +18,7 @@
 @property (nonatomic, strong) NSDictionary *eventAttributes;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
+- (BOOL)isValid;
+- (BOOL)isInvalid;
 
 @end
