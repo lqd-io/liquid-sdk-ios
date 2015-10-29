@@ -141,7 +141,7 @@
 + (NSString *)constraintsFormatForNButtons:(NSInteger)count {
     NSMutableString *buttonsFormat = [[NSMutableString alloc] init];
     for (NSInteger i = 0; i < count ; i++) {
-        [buttonsFormat appendFormat:@"[button%d]-(==10)-", i];
+        [buttonsFormat appendFormat:@"[button%ld]-(==10)-", (long)i];
     }
     return [NSString stringWithFormat:@"H:|-(==10)-%@|", buttonsFormat];
 }
@@ -150,7 +150,7 @@
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     NSInteger index = 0;
     for (UIButton *button in buttons) {
-        [dict setObject:button forKey:[NSString stringWithFormat:@"button%d", index++]];
+        [dict setObject:button forKey:[NSString stringWithFormat:@"button%ld", (long)index++]];
     }
     return dict;
 }

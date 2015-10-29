@@ -264,8 +264,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self saveCurrentUserToDisk];
     [self requestNewLiquidPackage];
 
-    [self.inAppMessages requestAndShowInAppMessages];
-
     // Notifiy the outside world:
     NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:newUser, @"identifier", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:LQDidIdentifyUser object:nil userInfo:notificationUserInfo];
