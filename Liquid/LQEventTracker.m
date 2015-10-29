@@ -75,9 +75,11 @@
     }
 
     if ([eventName hasPrefix:@"_"]) {
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, [NSDateFormatter iso8601StringFromDate:now]);
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@) with attributes: %@",
+              eventName, [NSDateFormatter iso8601StringFromDate:now], attributes);
     } else {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [NSDateFormatter iso8601StringFromDate:now]);
+        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@) with attributes: %@",
+              eventName, [NSDateFormatter iso8601StringFromDate:now], attributes);
     }
     
     NSString *finalEventName = eventName;
