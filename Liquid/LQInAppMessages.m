@@ -11,6 +11,7 @@
 #import "NSData+LQData.h"
 #import "LQModalView.h"
 #import "LQModalMessageView.h"
+#import "LQRequest.h"
 
 @interface LQInAppMessages () {
     BOOL _presentingMessage;
@@ -64,9 +65,7 @@
                 }
             }
         }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self presentOldestMessageInQueue];
-        });
+        [self presentOldestMessageInQueue];
     });
 }
 
@@ -99,8 +98,25 @@
         [self.messagesQueue removeObjectAtIndex:0];
     }
     if ([message isKindOfClass:[LQInAppMessageModal class]]) {
-        [self presentModalInAppMessage:message];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentModalInAppMessage:message];
+        });
+        dispatch_async(self.queue, ^{
+            [self reportPresentedMessageToServer];
+        });
     }
+}
+
+#pragma mark - Reports
+
+- (void)reportPresentedMessageToServer {
+    NSDictionary *report = @{ @"id": @"123" };
+    NSData *json = [NSData toJSON:report];
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending In-App Message report to server: %@",
+          [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+    NSString *endpoint = [NSString stringWithFormat:@"formulas/%@/report", @123];
+    NSInteger res = [_networking sendData:json toEndpoint:endpoint usingMethod:@"POST"];
+    if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttpError, @"<Liquid> Could not send report to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
 }
 
 #pragma mark - Demos
