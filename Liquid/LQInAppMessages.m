@@ -58,6 +58,10 @@
 #pragma mark - Request and Present Messages
 
 - (void)requestAndPresentInAppMessages {
+    if (_presentingMessage) {
+        LQLog(kLQLogLevelInfo, @"<Liquid/InAppMessages> Will not request more In-App Messages while showing one.");
+        return;
+    }
     dispatch_async(self.queue, ^{
         [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
             NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
