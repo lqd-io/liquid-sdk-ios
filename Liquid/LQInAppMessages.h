@@ -18,5 +18,6 @@
 - (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue;
 - (void)requestAndPresentInAppMessages;
 - (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock;
+- (void)presentModalDemo;
 
 @end

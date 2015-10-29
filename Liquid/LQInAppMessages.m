@@ -32,6 +32,8 @@
 @synthesize messagesQueue = _messagesQueue;
 @synthesize currentUser = _currentUser;
 
+#pragma mark - Initializers
+
 - (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue {
     self = [super init];
     if (self) {
@@ -47,6 +49,8 @@
     }
     return _messagesQueue;
 }
+
+#pragma mark - Request and Present Messages
 
 - (void)requestAndPresentInAppMessages {
     dispatch_async(self.queue, ^{
@@ -97,6 +101,22 @@
     if ([message isKindOfClass:[LQInAppMessageModal class]]) {
         [self presentModalInAppMessage:message];
     }
+}
+
+#pragma mark - Demos
+
+- (void)presentModalDemo {
+    NSString *json = @"[{\"bg_color\":\"#123456\",\"layout\":\"modal\",\"message\":\"bla bla bla\",\"message_color\":\"#727272\",\"title\":\"lole\",\"title_color\":\"#ffffff\",\"type\":\"actions/inapp_message\",\"dismiss_event_name\":\"_iam_dismiss\",\"event_attributes\":{\"formula_id\":\"562902ce5269636507000000\",\"id\":\"562902ce5269636507000002\"},\"ctas\":[{\"bg_color\":\"#9f9f9f\",\"title\":\"cancel\",\"title_color\":\"#182454\",\"event_name\":\"_iam_cta_click\",\"cta_attributes\":{\"formula_id\":\"562902ce5269636507000000\",\"id\":\"562902ce5269636507000003\"}},{\"bg_color\":\"#1f3f4f\",\"title\":\"ok\",\"title_color\":\"#987463\",\"event_name\":\"_iam_cta_click\",\"cta_attributes\":{\"formula_id\":\"562902ce5269636507000000\",\"id\":\"562902ce5269636507000003\"}}]}]";
+    NSData *simulatedData = [json dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *inAppMessages = [NSData fromJSON:simulatedData];
+    for (NSDictionary *inAppMessageDict in inAppMessages) {
+        if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
+            @synchronized(self.messagesQueue) {
+                [self.messagesQueue addObject:[[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict]];
+            }
+        }
+    }
+    [self presentOldestMessageInQueue];
 }
 
 #pragma mark - Present the different layouts of In-App Messages
