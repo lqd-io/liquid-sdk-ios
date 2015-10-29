@@ -129,7 +129,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.networking = [[LQNetworking alloc] initFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
-        self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking];
+        self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
         self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
@@ -174,7 +174,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                  object:nil];
 
         // Request and present In-App Messages
-        [self.inAppMessages requestAndShowInAppMessages];
+        [self.inAppMessages requestAndPresentInAppMessages];
 
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }

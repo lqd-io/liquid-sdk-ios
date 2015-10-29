@@ -18,6 +18,11 @@
 
 @property (nonatomic, strong) LQNetworking *networking;
 @property (nonatomic, strong) NSMutableArray *messagesQueue;
+#if OS_OBJECT_USE_OBJC
+@property (atomic, strong) dispatch_queue_t queue;
+#else
+@property (atomic, assign) dispatch_queue_t queue;
+#endif
 
 @end
 
@@ -27,10 +32,11 @@
 @synthesize messagesQueue = _messagesQueue;
 @synthesize currentUser = _currentUser;
 
-- (instancetype)initWithNetworking:(LQNetworking *)networking {
+- (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue {
     self = [super init];
     if (self) {
         self.networking = networking;
+        self.queue = queue;
     }
     return self;
 }
@@ -42,18 +48,22 @@
     return _messagesQueue;
 }
 
-- (void)requestAndShowInAppMessages {
-    [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
-        NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
-        for (NSDictionary *inAppMessageDict in inAppMessages) {
-            if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
-                @synchronized(self.messagesQueue) {
-                    [self.messagesQueue addObject:[[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict]];
+- (void)requestAndPresentInAppMessages {
+    dispatch_async(self.queue, ^{
+        [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
+            NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
+            for (NSDictionary *inAppMessageDict in inAppMessages) {
+                if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
+                    @synchronized(self.messagesQueue) {
+                        [self.messagesQueue addObject:[[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict]];
+                    }
                 }
             }
-        }
-    }];
-    [self presentOldestMessageInQueue];
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentOldestMessageInQueue];
+        });
+    });
 }
 
 - (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock {

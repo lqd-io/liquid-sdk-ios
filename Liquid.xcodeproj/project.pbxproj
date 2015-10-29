@@ -326,6 +326,8 @@
 			children = (
 				A93E44C51BDFC73B00734DE7 /* LQInAppMessages.h */,
 				A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */,
+				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
+				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
 			);
 			name = "Liquid Modules";
 			sourceTree = "<group>";
@@ -333,8 +335,6 @@
 		A93E44C91BDFC8DA00734DE7 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
-				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
 				A9FBA7A81B03981200900AAC /* LQKeychain.h */,
 				A9FBA7A91B03981200900AAC /* LQKeychain.m */,
 				A9E789E519BFBBC0006CA1D8 /* LQStorage.h */,

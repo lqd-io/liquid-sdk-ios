@@ -15,8 +15,8 @@
 
 @property (nonatomic, strong) LQUser *currentUser;
 
-- (instancetype)initWithNetworking:(LQNetworking *)networking;
-- (void)requestAndShowInAppMessages;
+- (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue;
+- (void)requestAndPresentInAppMessages;
 - (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock;
 
 @end
