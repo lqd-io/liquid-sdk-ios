@@ -47,7 +47,7 @@
     }
     _layoutIsDefined = YES;
     
-    // Define layout
+    // Configure view elements
     self.titleLabel.text = self.inAppMessage.title;
     self.messageView.text = self.inAppMessage.message;
     self.backgroundColor = self.inAppMessage.backgroundColor;
@@ -55,12 +55,12 @@
     self.messageView.textColor = self.inAppMessage.messageColor;
     [self.dismissButton setTitleColor:self.inAppMessage.titleColor forState:UIControlStateNormal];
 
-    // Define CTAs layout
+    // Add CTAs to view
     NSInteger index = 0;
     for (LQCallToAction *callToAction in self.inAppMessage.callsToAction) {
         [self addCallToActionToView:callToAction index:index++];
-        return;
     }
+    [self defineHorizontalPositionConstraintsForButtons]; // define Horizontal positions + width in view for CTAs
 }
 
 - (void)addCallToActionToView:(LQCallToAction *)callToAction index:(NSInteger)index {
@@ -72,11 +72,17 @@
     [button setTitle:callToAction.title forState:UIControlStateNormal];
     [button setTitleColor:callToAction.titleColor forState:UIControlStateNormal];
     button.backgroundColor = callToAction.backgroundColor;
+    button.layer.cornerRadius = 4;
+    button.clipsToBounds = YES;
 
     // Define constraints
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self removeConstraints:button.constraints];
-    [self defineConstraintsForButton:button];
+    [self defineVerticalPositionConstraintsForButton:button]; // define Vertical position in view for CTA
+    if (index > 0) {
+        // Set size of all other buttons to the size of first button
+        [self defineSizeConstraintsForButton:button equalTo:[self.callsToActionButtons firstObject]];
+    }
 
     // Define action
     [button addTarget:self action:@selector(ctaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -86,38 +92,67 @@
     [self addSubview:button];
 }
 
-- (void)defineConstraintsForButton:(UIButton *)button {
-    // Define position in view
+#pragma mark - Constraints helpers
+
+- (void)defineSizeConstraintsForButton:(UIButton *)button equalTo:(UIButton *)referenceButton {
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:referenceButton
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:referenceButton
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:1
+                                                      constant:0]];
+}
+
+- (void)defineVerticalPositionConstraintsForButton:(UIButton *)button {
     [self addConstraint:[NSLayoutConstraint constraintWithItem:button
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self.messageView
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1
-                                                      constant:15]]; // 4
+                                                      constant:10]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:button
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1
-                                                      constant:15]]; // 3
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button
-                                                     attribute:NSLayoutAttributeLeading
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeLeading
-                                                    multiplier:1
-                                                      constant:15]]; // 1
+                                                      constant:10]];
+}
 
-    // Define width and height
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button
-                                                     attribute:NSLayoutAttributeWidth
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeWidth
-                                                    multiplier:(1.0/1)
-                                                      constant:-30]]; // 2
+- (void)defineHorizontalPositionConstraintsForButtons {
+    // Defines constraints for buttons, creating a dynamic format like e.g: "H:|-(==15)-[button1]-(==15)-[button2]-(==15)-|"
+    NSDictionary *viewsDictionary = [[self class] viewsDictionaryForButtons:self.callsToActionButtons];
+    NSString *format = [[self class] constraintsFormatForNButtons:[self.callsToActionButtons count]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:viewsDictionary]];
+}
+
++ (NSString *)constraintsFormatForNButtons:(NSInteger)count {
+    NSMutableString *buttonsFormat = [[NSMutableString alloc] init];
+    for (NSInteger i = 0; i < count ; i++) {
+        [buttonsFormat appendFormat:@"[button%d]-(==10)-", i];
+    }
+    return [NSString stringWithFormat:@"H:|-(==10)-%@|", buttonsFormat];
+}
+
++ (NSDictionary *)viewsDictionaryForButtons:(NSArray *)buttons {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSInteger index = 0;
+    for (UIButton *button in buttons) {
+        [dict setObject:button forKey:[NSString stringWithFormat:@"button%d", index++]];
+    }
+    return dict;
 }
 
 #pragma mark - Button actions
