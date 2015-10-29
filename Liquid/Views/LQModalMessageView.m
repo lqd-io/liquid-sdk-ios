@@ -68,6 +68,10 @@
     [button setTitle:@"CTA" forState:UIControlStateNormal];
     button.tag = index;
 
+    // Add button to view
+    [self.callsToActionButtons addObject:button]; // Respect the same order as CTAs in _inAppMessage
+    [self addSubview:button];
+
     // Define visual aspect
     [button setTitle:callToAction.title forState:UIControlStateNormal];
     [button setTitleColor:callToAction.titleColor forState:UIControlStateNormal];
@@ -86,10 +90,6 @@
 
     // Define action
     [button addTarget:self action:@selector(ctaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-
-    // Add button to view
-    [self.callsToActionButtons addObject:button]; // Respect the same order as CTAs in _inAppMessage
-    [self addSubview:button];
 }
 
 #pragma mark - Constraints helpers
