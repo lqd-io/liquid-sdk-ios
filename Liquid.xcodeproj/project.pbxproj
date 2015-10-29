@@ -24,6 +24,7 @@
 		A95EC5A61B0DEA2900407D03 /* LQDeviceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A51B0DEA2900407D03 /* LQDeviceSpec.m */; };
 		A95EC5A91B0DFE2000407D03 /* LQKeychainSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */; };
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
+		A98196641BE1BBB6003F75B9 /* LQEventTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = A98196631BE1BBB6003F75B9 /* LQEventTracker.m */; settings = {ASSET_TAGS = (); }; };
 		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
 		A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -138,6 +139,8 @@
 		A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychainSpec.m; sourceTree = "<group>"; };
 		A95EC5AA1B0DFEBB00407D03 /* LQKeychainPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQKeychainPrivates.h; sourceTree = "<group>"; };
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
+		A98196621BE1BBB6003F75B9 /* LQEventTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEventTracker.h; sourceTree = "<group>"; };
+		A98196631BE1BBB6003F75B9 /* LQEventTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEventTracker.m; sourceTree = "<group>"; };
 		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98CF0071949C7A3003DF949 /* LiquidDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidDemo-Info.plist"; sourceTree = "<group>"; };
 		A98CF0091949C7A3003DF949 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -328,6 +331,8 @@
 				A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */,
 				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
 				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
+				A98196621BE1BBB6003F75B9 /* LQEventTracker.h */,
+				A98196631BE1BBB6003F75B9 /* LQEventTracker.m */,
 			);
 			name = "Liquid Modules";
 			sourceTree = "<group>";
@@ -762,6 +767,7 @@
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */,
 				A99EB500192447FA0060E484 /* LQUser.m in Sources */,
+				A98196641BE1BBB6003F75B9 /* LQEventTracker.m in Sources */,
 				A9FBA7B61B090BD300900AAC /* LQUserDefaults.m in Sources */,
 				A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */,
 				A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */,
