@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, LQInAppMessageLayout) {
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIColor *messageColor;
 @property (nonatomic, strong) NSString *dismissEventName;
+@property (nonatomic, strong) NSDictionary *dismissEventAttributes;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
 - (BOOL)isValid;

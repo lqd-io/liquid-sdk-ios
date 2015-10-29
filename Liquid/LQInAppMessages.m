@@ -105,22 +105,24 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self presentModalInAppMessage:message];
         });
-        dispatch_async(self.queue, ^{
-            [self reportPresentedMessageToServer];
-        });
     }
 }
 
 #pragma mark - Reports
 
-- (void)reportPresentedMessageToServer {
-    NSDictionary *report = @{ @"id": @"123" };
-    NSData *json = [NSData toJSON:report];
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending In-App Message report to server: %@",
-          [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
-    NSString *endpoint = [NSString stringWithFormat:@"formulas/%@/report", @123];
-    NSInteger res = [_networking sendData:json toEndpoint:endpoint usingMethod:@"POST"];
-    if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttpError, @"<Liquid> Could not send report to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+- (void)reportPresentedMessageWithAttributes:(NSDictionary *)attributes {
+    __block NSData *json = [NSData toJSON:attributes];
+    dispatch_async(self.queue, ^{
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending In-App Message report to server: %@",
+              [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+        NSString *endpoint = [NSString stringWithFormat:@"users/%@/formulas/%@/report",
+                              self.currentUser.identifier, attributes[@"formula_id"]];
+        NSInteger res = [_networking sendData:json toEndpoint:endpoint usingMethod:@"POST"];
+        if(res != LQQueueStatusOk) {
+            LQLog(kLQLogLevelHttpError, @"<Liquid> Could not send report to server %@",
+                  [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+        }
+    });
 }
 
 #pragma mark - Demos
@@ -160,15 +162,24 @@
 
     // Define callbacks for CTAs and Dismiss
     messageView.modalCTABlock = ^(LQCallToAction *cta) {
-        [self.eventTracker track:[cta eventName] attributes:[cta eventAttributes] loadedValues:nil withDate:[LQDate uniqueNow]];
+        [self.eventTracker track:[cta eventName]
+                      attributes:[cta eventAttributes]
+                    loadedValues:nil
+                        withDate:[LQDate uniqueNow]];
         [modalView dismissModal];
         _presentingMessage = NO;
-        [self presentOldestMessageInQueue];
+        [self presentOldestMessageInQueue]; // present next CTA
+        [self reportPresentedMessageWithAttributes:cta.eventAttributes];
     };
     messageView.modalDismissBlock = ^{
+        [self.eventTracker track:message.dismissEventName
+                      attributes:message.dismissEventAttributes
+                    loadedValues:nil
+                        withDate:[LQDate uniqueNow]];
         [modalView dismissModal];
         _presentingMessage = NO;
-        [self presentOldestMessageInQueue];
+        [self presentOldestMessageInQueue]; // present next CTA
+        [self reportPresentedMessageWithAttributes:message.dismissEventAttributes];
     };
 
     // Present view

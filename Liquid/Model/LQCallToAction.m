@@ -31,11 +31,20 @@
 - (BOOL)isValid {
     if (!_title) return NO;
     if (!_eventName) return NO;
+    if (![_eventAttributes objectForKey:@"formula_id"]) return NO;
+    if (![_eventAttributes objectForKey:@"cta_id"]) return NO;
     return YES;
 }
 
 - (BOOL)isInvalid {
     return ![self isValid];
+}
+
+- (NSString *)formulaId {
+    if (![_eventAttributes objectForKey:@"formula_id"]) {
+        return nil;
+    }
+    return [_eventAttributes objectForKey:@"formula_id"];
 }
 
 + (NSDictionary *)fixCTAAttributes:(NSDictionary *)attributes {

@@ -238,6 +238,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     [_networking startFlushTimer];
     [self loadLiquidPackageSynced:YES];
+
+    // Request and present In-App Messages
+    [self.inAppMessages requestAndPresentInAppMessages];
 }
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {

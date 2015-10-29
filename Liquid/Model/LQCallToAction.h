@@ -20,5 +20,6 @@
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
 - (BOOL)isValid;
 - (BOOL)isInvalid;
+- (NSString *)formulaId;
 
 @end
