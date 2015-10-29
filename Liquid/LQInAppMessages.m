@@ -43,23 +43,7 @@
 }
 
 - (void)requestAndShowInAppMessages {
-    [self requestMessages];
-    [self presentOldestMessageInQueue];
-}
-
-- (void)requestMessages {
-    if (!self.currentUser) {
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid/InAppMessages> A user has not been identified yet.");
-        return;
-    }
-
-    //NSString *endPoint = [NSString stringWithFormat:@"users/%@/devices/%@/inapp_messages", self.currentUser.identifier, self.device.uid, nil];
-    //NSData *dataFromServer = [_networking getDataFromEndpoint:endPoint];
-
-    NSString *str = @"[{\"bg_color\":\"#123456\",\"layout\":\"modal\",\"message\":\"bla bla bla\",\"message_color\":\"#727272\",\"title\":\"lole\",\"title_color\":\"#ffffff\",\"type\":\"actions/inapp_message\",\"dismiss_event_name\":\"_iam_dismiss\",\"event_attributes\":{\"formula_id\":\"562902ce5269636507000000\",\"id\":\"562902ce5269636507000002\"},\"ctas\":[{\"bg_color\":\"#9f9f9f\",\"title\":\"cancel\",\"title_color\":\"#182454\",\"event_name\":\"_iam_cta_click\",\"cta_attributes\":{\"formula_id\":\"562902ce5269636507000000\",\"id\":\"562902ce5269636507000003\"}},{\"bg_color\":\"#1f3f4f\",\"title\":\"ok\",\"title_color\":\"#987463\",\"event_name\":\"_iam_cta_click\",\"cta_attributes\":{\"formula_id\":\"562902ce5269636507000000\",\"id\":\"562902ce5269636507000003\"}}]}]";
-    NSData *dataFromServer = [str dataUsingEncoding:NSUTF8StringEncoding];
-
-    if (dataFromServer != nil) {
+    [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
         NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
         for (NSDictionary *inAppMessageDict in inAppMessages) {
             if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
@@ -68,6 +52,19 @@
                 }
             }
         }
+    }];
+    [self presentOldestMessageInQueue];
+}
+
+- (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock {
+    if (!self.currentUser) {
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid/InAppMessages> A user has not been identified yet.");
+        return;
+    }
+    NSString *endPoint = [NSString stringWithFormat:@"users/%@/inapp_messages", self.currentUser.identifier, nil];
+    NSData *dataFromServer = [_networking getDataFromEndpoint:endPoint];
+    if (dataFromServer != nil) {
+        completionBlock(dataFromServer);
     }
 }
 

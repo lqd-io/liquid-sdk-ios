@@ -17,5 +17,6 @@
 
 - (instancetype)initWithNetworking:(LQNetworking *)networking;
 - (void)requestAndShowInAppMessages;
+- (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock;
 
 @end
