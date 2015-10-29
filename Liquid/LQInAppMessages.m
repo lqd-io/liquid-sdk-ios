@@ -12,12 +12,14 @@
 #import "LQModalView.h"
 #import "LQModalMessageView.h"
 #import "LQRequest.h"
+#import "LQDate.h"
 
 @interface LQInAppMessages () {
     BOOL _presentingMessage;
 }
 
 @property (nonatomic, strong) LQNetworking *networking;
+@property (nonatomic, strong) LQEventTracker *eventTracker;
 @property (nonatomic, strong) NSMutableArray *messagesQueue;
 #if OS_OBJECT_USE_OBJC
 @property (atomic, strong) dispatch_queue_t queue;
@@ -30,16 +32,18 @@
 @implementation LQInAppMessages
 
 @synthesize networking = _networking;
+@synthesize eventTracker = _eventTracker;
 @synthesize messagesQueue = _messagesQueue;
 @synthesize currentUser = _currentUser;
 
 #pragma mark - Initializers
 
-- (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue {
+- (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue eventTracker:(LQEventTracker *)eventTracker {
     self = [super init];
     if (self) {
         self.networking = networking;
         self.queue = queue;
+        self.eventTracker = eventTracker;
     }
     return self;
 }
@@ -156,7 +160,7 @@
 
     // Define callbacks for CTAs and Dismiss
     messageView.modalCTABlock = ^(LQCallToAction *cta) {
-        //[[Liquid sharedInstance] track:[cta eventName] attributes:[cta eventAttributes]];
+        [self.eventTracker track:[cta eventName] attributes:[cta eventAttributes] loadedValues:nil withDate:[LQDate uniqueNow]];
         [modalView dismissModal];
         _presentingMessage = NO;
         [self presentOldestMessageInQueue];
