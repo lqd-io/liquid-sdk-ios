@@ -104,6 +104,8 @@
 
 /* Begin PBXFileReference section */
 		378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiquidTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		40616F81E4722D2AA5FE8167 /* Pods-LiquidTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9F689058741F3A239C134EE5 /* Pods-LiquidTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.release.xcconfig"; sourceTree = "<group>"; };
 		A9035320193FA0C8005110DF /* liquid_package1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package1.json; path = HTTPStubs/liquid_package1.json; sourceTree = "<group>"; };
 		A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_incorrect_data_types.json; path = HTTPStubs/liquid_package_incorrect_data_types.json; sourceTree = "<group>"; };
 		A91B4E2019737401005CF827 /* LQUserPrivates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserPrivates.h; sourceTree = "<group>"; };
@@ -190,7 +192,6 @@
 		A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserDefaults.h; sourceTree = "<group>"; };
 		A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUserDefaults.m; sourceTree = "<group>"; };
 		A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.xcconfig"; path = "Pods/Pods-LiquidTests.xcconfig"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C7DB3A811924FE4200CC5D64 /* NSData+LQData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+LQData.h"; sourceTree = "<group>"; };
@@ -379,6 +380,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A9F6B8E30FE626AFAADC2B0B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				40616F81E4722D2AA5FE8167 /* Pods-LiquidTests.debug.xcconfig */,
+				9F689058741F3A239C134EE5 /* Pods-LiquidTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		C73E4AD61923C61D001EF2E6 = {
 			isa = PBXGroup;
 			children = (
@@ -387,7 +397,7 @@
 				A98CF0051949C7A3003DF949 /* LiquidDemo */,
 				C73E4AE11923C61D001EF2E6 /* Frameworks */,
 				C73E4AE01923C61D001EF2E6 /* Products */,
-				BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */,
+				A9F6B8E30FE626AFAADC2B0B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -469,6 +479,7 @@
 				A9E9804D193E257B0055D1E7 /* Frameworks */,
 				A9E9804E193E257B0055D1E7 /* Resources */,
 				D25B45D22FDD4BD4BD94B5C4 /* Copy Pods Resources */,
+				71612E6C62423234D19C7654 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -553,6 +564,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		71612E6C62423234D19C7654 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D25B45D22FDD4BD4BD94B5C4 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -565,7 +591,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-LiquidTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FE6C6D3BBB0542DCB80EA44D /* Check Pods Manifest.lock */ = {
@@ -725,7 +751,7 @@
 		};
 		A9E98061193E257C0055D1E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
+			baseConfigurationReference = 40616F81E4722D2AA5FE8167 /* Pods-LiquidTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -747,7 +773,7 @@
 		};
 		A9E98062193E257C0055D1E7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF9B0CDCA4FD4194A23FC356 /* Pods-LiquidTests.xcconfig */;
+			baseConfigurationReference = 9F689058741F3A239C134EE5 /* Pods-LiquidTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

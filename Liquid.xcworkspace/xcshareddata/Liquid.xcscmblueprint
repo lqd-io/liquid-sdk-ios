@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2A5340630BF92146BDDED6C4888369C0C209995A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "6B974EFCF74D984766DB81C26D9EDFA0CF68DFEE" : 0,
+    "2A5340630BF92146BDDED6C4888369C0C209995A" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F0A6D6C5-A093-4178-AC19-DC221B9F0075",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "6B974EFCF74D984766DB81C26D9EDFA0CF68DFEE" : "",
+    "2A5340630BF92146BDDED6C4888369C0C209995A" : "liquid-sdk-ios\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Liquid",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Liquid.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:lqd-io\/liquid-sdk-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2A5340630BF92146BDDED6C4888369C0C209995A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:withliquid\/liquid-ios-demo-app.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6B974EFCF74D984766DB81C26D9EDFA0CF68DFEE"
+    }
+  ]
+}
