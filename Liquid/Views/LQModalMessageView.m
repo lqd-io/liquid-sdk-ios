@@ -9,8 +9,8 @@
 #import "LQModalMessageView.h"
 
 @interface LQModalMessageView () {
-    ModalMessageDismissBlock _modalDismissBlock;
-    ModalMessageCTABlock _modalCTABlock;
+    MessageDismissBlock _modalDismissBlock;
+    MessageCTABlock _modalCTABlock;
     BOOL _layoutIsDefined;
 }
 
@@ -20,8 +20,8 @@
 
 @synthesize inAppMessage = _inAppMessage;
 @synthesize callsToActionButtons = _callsToActionButtons;
-@synthesize modalDismissBlock = _modalDismissBlock;
-@synthesize modalCTABlock = _modalCTABlock;
+@synthesize dismissBlock = _dismissBlock;
+@synthesize callToAcionBlock = _callToAcionBlock;
 
 #pragma mark - Lazy initialization
 
@@ -158,15 +158,15 @@
 #pragma mark - Button actions
 
 - (IBAction)dismissButtonPressd:(UIButton *)sender {
-    if (self.modalDismissBlock) {
-        self.modalDismissBlock();
+    if (self.dismissBlock) {
+        self.dismissBlock();
     }
 }
 
 - (IBAction)ctaButtonPressed:(UIButton *)sender {
-    if (self.modalCTABlock) {
+    if (self.callToAcionBlock) {
         LQCallToAction *cta = [self.inAppMessage.callsToAction objectAtIndex:sender.tag];
-        self.modalCTABlock(cta);
+        self.callToAcionBlock(cta);
     }
 }
 

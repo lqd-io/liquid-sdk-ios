@@ -19,6 +19,6 @@
 - (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue eventTracker:(LQEventTracker *)eventTracker;
 - (void)requestAndPresentInAppMessages;
 - (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock;
-- (void)presentModalDemo;
+- (void)presentInAppMessage:(id)message;
 
 @end

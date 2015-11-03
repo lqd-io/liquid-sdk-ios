@@ -102,16 +102,6 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
     return _containerView;
 }
 
-- (UIView *)contentView {
-    if(!_contentView) {
-        LQModalMessageView *messageView = [[[NSBundle mainBundle] loadNibNamed:@"LQModalMessage"
-                                                                         owner:self
-                                                                       options:nil] lastObject];
-        _contentView = messageView;
-    }
-    return _contentView;
-}
-
 #pragma mark - Helpers
 
 - (BOOL)modalCanBePresented {
@@ -124,18 +114,18 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 
 #pragma mark - Present Modal
 
-- (void)presentModal {
+- (void)presentInWindow:(UIWindow *)window {
     dispatch_async( dispatch_get_main_queue(), ^{
-        [self presentModalInThread];
+        [self presentInThreadInWindow:window];
     });
 }
 
-- (void)presentModalInThread {
+- (void)presentInThreadInWindow:(UIWindow *)window {
     if ([self modalCanBePresented]) {
         _isAnimating = YES;
         _isShowing = NO;
         
-        [self addToTopWindow];
+        [self addToWindow:window];
         
         // Make sure we're not hidden
         self.hidden = NO;
@@ -157,9 +147,8 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
     }
 }
 
-- (void)addToTopWindow {
-    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
-    UIView *topmostView = mainWindow.subviews[0];
+- (void)addToWindow:(UIWindow *)window {
+    UIView *topmostView = window.subviews[0];
     [topmostView addSubview:self];
 }
 
@@ -192,6 +181,9 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
         [self removeFromSuperview];
         _isAnimating = NO;
         _isShowing = NO;
+        if (self.hideAnimationCompletedBlock) {
+            self.hideAnimationCompletedBlock();
+        }
     };
     [UIView animateWithDuration:0.20 delay:0 options:kAnimationOptionCurveIOS7 animations:^{
         CGRect finalFrame = _containerView.frame;
@@ -240,6 +232,9 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
     } completion:^(BOOL finished) {
         _isAnimating = NO;
         _isShowing = YES;
+        if (self.showAnimationCompletedBlock) {
+            self.showAnimationCompletedBlock();
+        }
     }];
 }
 

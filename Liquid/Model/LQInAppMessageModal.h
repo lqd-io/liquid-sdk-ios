@@ -20,6 +20,6 @@
 @property (nonatomic, strong) UIColor *titleColor;
 @property (nonatomic, strong) NSArray *callsToAction;
 
-- (instancetype)initWithLayout:(LQInAppMessageLayout)layout title:(NSString *)title message:(NSString *)message options:(NSDictionary *)options;
+- (instancetype)initFromDictionary:(NSDictionary *)dict;
 
 @end

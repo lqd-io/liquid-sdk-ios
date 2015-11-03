@@ -11,8 +11,10 @@
 #import "NSData+LQData.h"
 #import "LQModalView.h"
 #import "LQModalMessageView.h"
+#import "LQInAppMessageModal.h"
 #import "LQRequest.h"
 #import "LQDate.h"
+#import "LQWindow.h"
 
 @interface LQInAppMessages () {
     BOOL _presentingMessage;
@@ -26,6 +28,7 @@
 #else
 @property (atomic, assign) dispatch_queue_t queue;
 #endif
+@property (strong, nonatomic) UIWindow *window;
 
 @end
 
@@ -66,14 +69,16 @@
         [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
             NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
             for (NSDictionary *inAppMessageDict in inAppMessages) {
+                id message;
                 if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
-                    @synchronized(self.messagesQueue) {
-                        [self.messagesQueue addObject:[[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict]];
-                    }
+                    message = [[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict];
+                }
+                @synchronized(self.messagesQueue) {
+                    [self.messagesQueue addObject:message];
                 }
             }
         }];
-        [self presentOldestMessageInQueue];
+        [self presentNextMessageInQueue];
     });
 }
 
@@ -89,7 +94,7 @@
     }
 }
 
-- (void)presentOldestMessageInQueue {
+- (void)presentNextMessageInQueue {
     if (_presentingMessage) {
         LQLog(kLQLogLevelInfoVerbose, @"Already preesnting a In-App Message.");
         return;
@@ -100,16 +105,14 @@
     }
 
     // Pop a Message from queue and present it
-    id message;
+    __block id message;
     @synchronized(self.messagesQueue) {
         message = [self.messagesQueue objectAtIndex:0];
         [self.messagesQueue removeObjectAtIndex:0];
     }
-    if ([message isKindOfClass:[LQInAppMessageModal class]]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self presentModalInAppMessage:message];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentInAppMessage:message];
+    });
 }
 
 #pragma mark - Reports
@@ -142,19 +145,25 @@
             }
         }
     }
-    [self presentOldestMessageInQueue];
+    [self presentNextMessageInQueue];
 }
 
 #pragma mark - Present the different layouts of In-App Messages
 
-- (void)presentModalInAppMessage:(LQInAppMessageModal *)message {
-    _presentingMessage = YES;
+- (void)presentInAppMessage:(id)message {
     if([message isInvalid]) {
         LQLog(kLQLogLevelError, @"Could not present In-App Message because it is invalid");
         return;
     }
+    if ([message isKindOfClass:[LQInAppMessageModal class]]) {
+        _presentingMessage = YES;
+        [self presentModalInAppMessage:message];
+    }
+}
+
+- (void)presentModalInAppMessage:(LQInAppMessageModal *)message {
     if(![[NSBundle mainBundle] pathForResource:@"LQModalMessage" ofType:@"nib"]) {
-        LQLog(kLQLogLevelError, @"Could not found LQModalMessage to show modal in-app message.");
+        LQLog(kLQLogLevelError, @"Could not find LQModalMessage XIB to show Modal In-App Message.");
         return;
     }
 
@@ -165,29 +174,33 @@
     __block LQModalView *modalView = [LQModalView modalWithContentView:messageView];
 
     // Define callbacks for CTAs and Dismiss
-    messageView.modalCTABlock = ^(LQCallToAction *cta) {
-        [self.eventTracker track:[cta eventName]
-                      attributes:[cta eventAttributes]
+    messageView.callToAcionBlock = ^(LQCallToAction *cta) {
+        [self.eventTracker track:cta.eventName
+                      attributes:cta.eventAttributes
                     loadedValues:nil
                         withDate:[LQDate uniqueNow]];
-        [modalView dismissModal];
-        _presentingMessage = NO;
-        [self presentOldestMessageInQueue]; // present next CTA
         [self reportPresentedMessageWithAttributes:cta.eventAttributes];
+        [modalView dismissModal];
     };
-    messageView.modalDismissBlock = ^{
+    messageView.dismissBlock = ^{
         [self.eventTracker track:message.dismissEventName
                       attributes:message.dismissEventAttributes
                     loadedValues:nil
                         withDate:[LQDate uniqueNow]];
-        [modalView dismissModal];
-        _presentingMessage = NO;
-        [self presentOldestMessageInQueue]; // present next CTA
         [self reportPresentedMessageWithAttributes:message.dismissEventAttributes];
+        [modalView dismissModal];
+    };
+    modalView.hideAnimationCompletedBlock = ^{
+        self.window = nil;
+        _presentingMessage = NO;
+        [self presentNextMessageInQueue];
     };
 
-    // Present view
-    [modalView presentModal];
+    // Create window and present message
+    UIWindow *window = [LQWindow fullscreenWindow];
+    [window makeKeyAndVisible];
+    self.window = window;
+    [modalView presentInWindow:self.window];
 }
 
 @end

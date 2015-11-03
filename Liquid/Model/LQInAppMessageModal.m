@@ -16,22 +16,7 @@
 @synthesize titleColor = _titleColor;
 @synthesize callsToAction = _callsToAction;
 
-- (BOOL)isValid {
-    if (!_title) return NO;
-    for (LQCallToAction *cta in self.callsToAction) {
-        if ([cta isInvalid]) return NO;
-    }
-    return [super isValid];
-}
-
-- (instancetype)initWithLayout:(LQInAppMessageLayout)layout title:(NSString *)title message:(NSString *)message options:(NSDictionary *)options {
-    self = [super init];
-    if (self) {
-        _title = title;
-        _message = message;
-    }
-    return self;
-}
+#pragma mark - Initializers
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict {
     self = [super initFromDictionary:dict];
@@ -45,6 +30,16 @@
         _callsToAction = ctas;
     }
     return self;
+}
+
+#pragma mark - Validations
+
+- (BOOL)isValid {
+    if (!_title) return NO;
+    for (LQCallToAction *cta in self.callsToAction) {
+        if ([cta isInvalid]) return NO;
+    }
+    return [super isValid];
 }
 
 @end

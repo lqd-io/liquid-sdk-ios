@@ -14,6 +14,7 @@
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
+		A93D5A341BE7B4EC0029CFD0 /* LQRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */; settings = {ASSET_TAGS = (); }; };
 		A93E44C71BDFC73B00734DE7 /* LQInAppMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */; settings = {ASSET_TAGS = (); }; };
 		A94B6A9D1954BC1D00AB4B04 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
 		A9509877194F104E0048106A /* LiquidSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9509876194F104E0048106A /* LiquidSpec.m */; };
@@ -24,6 +25,7 @@
 		A95EC5A61B0DEA2900407D03 /* LQDeviceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A51B0DEA2900407D03 /* LQDeviceSpec.m */; };
 		A95EC5A91B0DFE2000407D03 /* LQKeychainSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */; };
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
+		A97250EA1BE91C140001D764 /* LQWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A97250E91BE91C140001D764 /* LQWindow.m */; settings = {ASSET_TAGS = (); }; };
 		A98196641BE1BBB6003F75B9 /* LQEventTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = A98196631BE1BBB6003F75B9 /* LQEventTracker.m */; settings = {ASSET_TAGS = (); }; };
 		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
@@ -129,6 +131,8 @@
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
 		A93AF9CE19316FCA0035E811 /* LQEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEntity.h; sourceTree = "<group>"; };
 		A93AF9CF19316FCA0035E811 /* LQEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEntity.m; sourceTree = "<group>"; };
+		A93D5A321BE7B4EC0029CFD0 /* LQRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQRootViewController.h; path = Liquid/ViewControllers/LQRootViewController.h; sourceTree = "<group>"; };
+		A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQRootViewController.m; path = Liquid/ViewControllers/LQRootViewController.m; sourceTree = "<group>"; };
 		A93E44C51BDFC73B00734DE7 /* LQInAppMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessages.h; sourceTree = "<group>"; };
 		A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessages.m; sourceTree = "<group>"; };
 		A9509876194F104E0048106A /* LiquidSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidSpec.m; path = Model/LiquidSpec.m; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 		A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychainSpec.m; sourceTree = "<group>"; };
 		A95EC5AA1B0DFEBB00407D03 /* LQKeychainPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQKeychainPrivates.h; sourceTree = "<group>"; };
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
+		A97250E81BE91C140001D764 /* LQWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQWindow.h; path = Helpers/LQWindow.h; sourceTree = "<group>"; };
+		A97250E91BE91C140001D764 /* LQWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQWindow.m; path = Helpers/LQWindow.m; sourceTree = "<group>"; };
 		A98196621BE1BBB6003F75B9 /* LQEventTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEventTracker.h; sourceTree = "<group>"; };
 		A98196631BE1BBB6003F75B9 /* LQEventTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEventTracker.m; sourceTree = "<group>"; };
 		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -324,6 +330,16 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		A93D5A311BE7B4A50029CFD0 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A93D5A321BE7B4EC0029CFD0 /* LQRootViewController.h */,
+				A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */,
+			);
+			name = "View Controllers";
+			path = ..;
+			sourceTree = "<group>";
+		};
 		A93E44C81BDFC74D00734DE7 /* Liquid Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,7 +353,7 @@
 			name = "Liquid Modules";
 			sourceTree = "<group>";
 		};
-		A93E44C91BDFC8DA00734DE7 /* Lib */ = {
+		A93E44C91BDFC8DA00734DE7 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				A9FBA7A81B03981200900AAC /* LQKeychain.h */,
@@ -348,8 +364,10 @@
 				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
 				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
 				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
+				A97250E81BE91C140001D764 /* LQWindow.h */,
+				A97250E91BE91C140001D764 /* LQWindow.m */,
 			);
-			name = Lib;
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		A98CF0051949C7A3003DF949 /* LiquidDemo */ = {
@@ -536,11 +554,12 @@
 				A99EB4E1192447FA0060E484 /* Liquid.m */,
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
 				A93E44C81BDFC74D00734DE7 /* Liquid Modules */,
-				A93E44C91BDFC8DA00734DE7 /* Lib */,
+				A93E44C91BDFC8DA00734DE7 /* Helpers */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
 				A99EB54F1924DB730060E484 /* Categories */,
 				A99EB4E3192447FA0060E484 /* Model */,
 				A91CC7E41BDAAF06007363F3 /* Views */,
+				A93D5A311BE7B4A50029CFD0 /* View Controllers */,
 			);
 			path = Liquid;
 			sourceTree = "<group>";
@@ -743,6 +762,7 @@
 			files = (
 				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
+				A93D5A341BE7B4EC0029CFD0 /* LQRootViewController.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
 				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
@@ -752,6 +772,7 @@
 				A93E44C71BDFC73B00734DE7 /* LQInAppMessages.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */,
+				A97250EA1BE91C140001D764 /* LQWindow.m in Sources */,
 				A9EB82E21BDAB28900BA8176 /* LQInAppMessage.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A9EB82EC1BDABCCE00BA8176 /* LQInAppMessageModal.m in Sources */,

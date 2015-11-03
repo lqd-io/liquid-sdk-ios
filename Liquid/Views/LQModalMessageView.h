@@ -10,8 +10,8 @@
 #import "LQInAppMessageModal.h"
 #import "LQCallToAction.h"
 
-typedef void(^ModalMessageDismissBlock)(void);
-typedef void(^ModalMessageCTABlock)(LQCallToAction *);
+typedef void(^MessageDismissBlock)(void);
+typedef void(^MessageCTABlock)(LQCallToAction *);
 
 @interface LQModalMessageView : UIView
 
@@ -20,8 +20,8 @@ typedef void(^ModalMessageCTABlock)(LQCallToAction *);
 @property (strong, nonatomic) IBOutlet UIButton *dismissButton;
 @property (nonatomic, strong, readonly) NSMutableArray *callsToActionButtons;
 @property (nonatomic, strong) LQInAppMessageModal *inAppMessage;
-@property (nonatomic, copy) ModalMessageDismissBlock modalDismissBlock;
-@property (nonatomic, copy) ModalMessageCTABlock modalCTABlock;
+@property (nonatomic, copy) MessageDismissBlock dismissBlock;
+@property (nonatomic, copy) MessageCTABlock callToAcionBlock;
 
 - (void)defineLayoutWithInAppMessage;
 

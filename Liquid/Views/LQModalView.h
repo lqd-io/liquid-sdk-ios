@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^CompletionBlock)();
+
 @interface LQModalView : UIView
 
-- (void)presentModal;
+@property (nonatomic, copy) CompletionBlock showAnimationCompletedBlock;
+@property (nonatomic, copy) CompletionBlock hideAnimationCompletedBlock;
+
+- (void)presentInWindow:(UIWindow *)window;
 - (void)dismissModal;
-+ (LQModalView *)modalWithContentView:(UIView *)contentView;
++ (instancetype)modalWithContentView:(UIView *)contentView;
 
 @end
