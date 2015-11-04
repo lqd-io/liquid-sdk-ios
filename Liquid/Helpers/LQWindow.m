@@ -44,8 +44,8 @@
     LQRootViewController *viewController = [[LQRootViewController alloc] init];
 
     // Set orientatio to be the same os the current root view controller
-    UIViewController *currentRootViewController = [[UIApplication sharedApplication] keyWindow].rootViewController;
-    if (![currentRootViewController isKindOfClass:[LQRootViewController class]]) {
+    UIViewController *currentRootViewController = [[[UIApplication sharedApplication] windows] firstObject].rootViewController;
+    if (currentRootViewController && ![currentRootViewController isKindOfClass:[LQRootViewController class]]) {
         viewController.interfaceOrientationMask = currentRootViewController.supportedInterfaceOrientations;
     }
     return viewController;
