@@ -13,13 +13,15 @@
 
 @property (nonatomic, strong, readonly) NSString *title;
 @property (nonatomic, strong, readonly) UIColor *titleColor;
-@property (nonatomic, strong) UIColor *backgroundColor;
-@property (nonatomic, strong) NSString *eventName;
-@property (nonatomic, strong) NSDictionary *eventAttributes;
+@property (nonatomic, strong, readonly) UIColor *backgroundColor;
+@property (nonatomic, strong, readonly) NSString *eventName;
+@property (nonatomic, strong, readonly) NSDictionary *eventAttributes;
+@property (nonatomic, strong, readonly) NSString *url;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
 - (BOOL)isValid;
 - (BOOL)isInvalid;
 - (NSString *)formulaId;
+- (void)followURL;
 
 @end

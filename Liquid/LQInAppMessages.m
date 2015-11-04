@@ -166,6 +166,7 @@
                         withDate:[LQDate uniqueNow]];
         [self reportPresentedMessageWithAttributes:cta.eventAttributes];
         [modalView dismissModal];
+        [cta followURL];
     };
     messageView.dismissBlock = ^{
         [self.eventTracker track:message.dismissEventName

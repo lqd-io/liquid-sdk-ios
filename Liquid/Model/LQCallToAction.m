@@ -8,13 +8,15 @@
 
 #import "LQCallToAction.h"
 #import "UIColor+LQColor.h"
+#import "LQDefaults.h"
 
-@implementation LQCallToAction {
-    NSString *_title;
-    UIColor *_titleColor;
-    UIColor *_backgroundColor;
-    NSDictionary *_eventAttributes;
-}
+@implementation LQCallToAction
+
+@synthesize title = _title;
+@synthesize titleColor = _titleColor;
+@synthesize backgroundColor = _backgroundColor;
+@synthesize eventAttributes = _eventAttributes;
+@synthesize url = _url;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -24,6 +26,9 @@
         _backgroundColor = [UIColor colorFromHexadecimalString:[dict objectForKey:@"bg_color"]];
         _eventName = [dict objectForKey:@"event_name"];
         _eventAttributes = [[self class] fixCTAAttributes:[dict objectForKey:@"cta_attributes"]];
+        if ([dict objectForKey:@"ios_url"] != [NSNull null]) {
+            _url = [dict objectForKey:@"ios_url"];
+        }
     }
     return self;
 }
@@ -45,6 +50,19 @@
         return nil;
     }
     return [_eventAttributes objectForKey:@"formula_id"];
+}
+
+- (void)followURL {
+    if (!self.url) {
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid/InAppMessages> Call to Action doesn't have an URL to follow.");
+        return;
+    }
+    NSURL *url = [NSURL URLWithString:self.url];
+    if (![[UIApplication sharedApplication] canOpenURL:url]) {
+        LQLog(kLQLogLevelError, @"<Liquid/InAppMessages> Could not follow an invalid URL to follow.");
+        return;
+    }
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 + (NSDictionary *)fixCTAAttributes:(NSDictionary *)attributes {
