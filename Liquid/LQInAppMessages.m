@@ -139,6 +139,7 @@
         LQLog(kLQLogLevelError, @"Could not present In-App Message because it is invalid");
         return;
     }
+    [[self class] dismissKeyboard];
     if ([message isKindOfClass:[LQInAppMessageModal class]]) {
         _presentingMessage = YES;
         [self presentModalInAppMessage:message];
@@ -185,6 +186,12 @@
     [window makeKeyAndVisible];
     self.window = window;
     [modalView presentInWindow:self.window];
+}
+
+#pragma mark - Keyboard
+
++ (void)dismissKeyboard {
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
 
 @end
