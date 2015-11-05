@@ -14,11 +14,14 @@
 
 @interface LQUser()
 
-@property(nonatomic, strong, readonly) NSNumber *identified;
+@property(atomic, strong) NSString *identifier;
+@property(atomic, strong) NSNumber *identified;
 
 @end
 
-@implementation LQUser
+@implementation LQUser {
+    NSDictionary *_attributes;
+}
 
 #pragma mark - Initializer
 
@@ -40,40 +43,31 @@
     return self;
 }
 
-- (void)setIdentifier:(NSString *)identifier {
-    _identifier = identifier;
-}
-
 #pragma mark - JSON
 
--(NSDictionary *)jsonDictionary {
+- (NSDictionary *)jsonDictionary {
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
-    [dictionary addEntriesFromDictionary:_attributes];
-    [dictionary setObject:_identifier forKey:@"unique_id"];
-    [dictionary setObject:_identified forKey:@"identified"];
+    [dictionary addEntriesFromDictionary:self.attributes];
+    [dictionary setObject:self.identifier forKey:@"unique_id"];
+    [dictionary setObject:self.identified forKey:@"identified"];
     return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 #pragma mark - Attributes
 
--(void)setAttributes:(NSDictionary *)attributes {
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:attributes];
-    _attributes = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-}
-
--(void)setAttribute:(id <NSCoding>)attribute forKey:(NSString *)key {
+- (void)setAttribute:(id <NSCoding>)attribute forKey:(NSString *)key {
     if (![LQUser assertAttributeType:attribute andKey:key]) return;
-    NSMutableDictionary *mutableAttributes = [_attributes mutableCopy];
+    NSMutableDictionary *mutableAttributes = [self.attributes mutableCopy];
     [mutableAttributes setObject:attribute forKey:key];
-    _attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
+    self.attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
 }
 
--(id)attributeForKey:(NSString *)key {
-    return [_attributes objectForKey:key];
+- (id)attributeForKey:(NSString *)key {
+    return [self.attributes objectForKey:key];
 }
 
 - (void)resetAttributes {
-    _attributes = [NSDictionary new];
+    self.attributes = [NSDictionary new];
 }
 
 + (NSDictionary *)reservedAttributes {
@@ -93,7 +87,7 @@
 }
 
 - (BOOL)isIdentified {
-    return !![_identified boolValue];
+    return !![self.identified boolValue];
 }
 
 - (BOOL)isAnonymous {
@@ -145,17 +139,17 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if (self) {
-        _identifier = [aDecoder decodeObjectForKey:@"identifier"];
-        _attributes = [aDecoder decodeObjectForKey:@"attributes"];
-        _identified = [aDecoder decodeObjectForKey:@"identified"];
+        self.identifier = [aDecoder decodeObjectForKey:@"identifier"];
+        self.attributes = [aDecoder decodeObjectForKey:@"attributes"];
+        self.identified = [aDecoder decodeObjectForKey:@"identified"];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:_identifier forKey:@"identifier"];
-    [aCoder encodeObject:_attributes forKey:@"attributes"];
-    [aCoder encodeObject:_identified forKey:@"identified"];
+    [aCoder encodeObject:self.identifier forKey:@"identifier"];
+    [aCoder encodeObject:self.attributes forKey:@"attributes"];
+    [aCoder encodeObject:self.identified forKey:@"identified"];
 }
 
 @end

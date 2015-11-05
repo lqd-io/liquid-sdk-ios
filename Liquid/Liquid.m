@@ -355,17 +355,15 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)setUserAttribute:(id)attribute forKey:(NSString *)key {
-    if (![LQUser assertAttributeType:attribute andKey:key]) return;
-
-    dispatch_async(self.queue, ^{
-        if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
-            return;
-        }
-        [self.currentUser setAttribute:attribute
-                                forKey:key];
-        [self saveCurrentUserToDisk];
-    });
+    if (![LQUser assertAttributeType:attribute andKey:key]) {
+        return;
+    }
+    if(self.currentUser == nil) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
+        return;
+    }
+    [self.currentUser setAttribute:attribute forKey:key];
+    [self saveCurrentUserToDisk];
 }
 
 - (void)setUserAttributes:(NSDictionary *)attributes {
@@ -378,13 +376,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)setCurrentLocation:(CLLocation *)location {
-    dispatch_async(self.queue, ^{
-        if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
-            return;
-        }
-        [self.device setLocation:location];
-    });
+    if(self.currentUser == nil) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
+        return;
+    }
+    [self.device setLocation:location];
 }
 
 - (void)saveCurrentUserToDisk {
