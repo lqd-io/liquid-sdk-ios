@@ -72,9 +72,9 @@
                 id message;
                 if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
                     message = [[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict];
-                }
-                @synchronized(self.messagesQueue) {
-                    [self.messagesQueue addObject:message];
+                    @synchronized(self.messagesQueue) {
+                        [self.messagesQueue addObject:message];
+                    }
                 }
             }
         }];
