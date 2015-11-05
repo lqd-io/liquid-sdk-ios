@@ -17,8 +17,8 @@
 }
 
 @property (nonatomic, strong, readonly) NSString *title;
-@property (nonatomic, strong) UIColor *titleColor;
-@property (nonatomic, strong) NSArray *callsToAction;
+@property (nonatomic, strong, readonly) UIColor *titleColor;
+@property (nonatomic, strong, readonly) NSArray *callsToAction;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
 

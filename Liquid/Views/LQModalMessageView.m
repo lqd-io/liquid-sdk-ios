@@ -21,7 +21,7 @@
 @synthesize inAppMessage = _inAppMessage;
 @synthesize callsToActionButtons = _callsToActionButtons;
 @synthesize dismissBlock = _dismissBlock;
-@synthesize callToAcionBlock = _callToAcionBlock;
+@synthesize callToActionBlock = _callToActionBlock;
 
 #pragma mark - Lazy initialization
 
@@ -164,9 +164,9 @@
 }
 
 - (IBAction)ctaButtonPressed:(UIButton *)sender {
-    if (self.callToAcionBlock) {
+    if (self.callToActionBlock) {
         LQCallToAction *cta = [self.inAppMessage.callsToAction objectAtIndex:sender.tag];
-        self.callToAcionBlock(cta);
+        self.callToActionBlock(cta);
     }
 }
 

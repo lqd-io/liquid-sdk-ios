@@ -159,7 +159,7 @@
     __block LQModalView *modalView = [LQModalView modalWithContentView:messageView];
 
     // Define callbacks for CTAs and Dismiss
-    messageView.callToAcionBlock = ^(LQCallToAction *cta) {
+    messageView.callToActionBlock = ^(LQCallToAction *cta) {
         [self.eventTracker track:cta.eventName
                       attributes:cta.eventAttributes
                     loadedValues:nil

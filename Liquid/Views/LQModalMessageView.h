@@ -21,7 +21,7 @@ typedef void(^MessageCTABlock)(LQCallToAction *);
 @property (nonatomic, strong, readonly) NSMutableArray *callsToActionButtons;
 @property (nonatomic, strong) LQInAppMessageModal *inAppMessage;
 @property (nonatomic, copy) MessageDismissBlock dismissBlock;
-@property (nonatomic, copy) MessageCTABlock callToAcionBlock;
+@property (nonatomic, copy) MessageCTABlock callToActionBlock;
 
 - (void)defineLayoutWithInAppMessage;
 
