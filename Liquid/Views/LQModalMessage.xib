@@ -23,7 +23,7 @@
                         <action selector="dismissButtonPressd:" destination="iN0-l3-epB" eventType="touchUpInside" id="tEU-0g-mbV"/>
                     </connections>
                 </button>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="216" placeholderIntrinsicHeight="97" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="quG-oW-QRD">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="216" placeholderIntrinsicHeight="97" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="quG-oW-QRD">
                     <rect key="frame" x="15" y="71.5" width="216" height="97"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
