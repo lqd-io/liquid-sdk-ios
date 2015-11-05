@@ -17,6 +17,6 @@ typedef void(^CompletionBlock)();
 
 - (void)presentInWindow:(UIWindow *)window;
 - (void)dismissModal;
-+ (instancetype)modalWithContentView:(UIView *)contentView;
++ (instancetype)modalWithContentView:(UIViewController *)contentViewController;
 
 @end

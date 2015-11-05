@@ -13,7 +13,7 @@
 typedef void(^MessageDismissBlock)(void);
 typedef void(^MessageCTABlock)(LQCallToAction *);
 
-@interface LQModalMessageView : UIView
+@interface LQModalMessageViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UITextView *messageView;

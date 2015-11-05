@@ -6,9 +6,9 @@
 //  Copyright © 2015 Liquid. All rights reserved.
 //
 
-#import "LQModalMessageView.h"
+#import "LQModalMessageViewController.h"
 
-@interface LQModalMessageView () {
+@interface LQModalMessageViewController () {
     MessageDismissBlock _modalDismissBlock;
     MessageCTABlock _modalCTABlock;
     BOOL _layoutIsDefined;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation LQModalMessageView
+@implementation LQModalMessageViewController
 
 @synthesize inAppMessage = _inAppMessage;
 @synthesize callsToActionButtons = _callsToActionButtons;
@@ -50,7 +50,7 @@
     // Configure view elements
     self.titleLabel.text = self.inAppMessage.title;
     self.messageView.text = self.inAppMessage.message;
-    self.backgroundColor = self.inAppMessage.backgroundColor;
+    self.view.backgroundColor = self.inAppMessage.backgroundColor;
     self.titleLabel.textColor = self.inAppMessage.titleColor;
     self.messageView.textColor = self.inAppMessage.messageColor;
     [self.dismissButton setTitleColor:self.inAppMessage.titleColor forState:UIControlStateNormal];
@@ -70,7 +70,7 @@
 
     // Add button to view
     [self.callsToActionButtons addObject:button]; // Respect the same order as CTAs in _inAppMessage
-    [self addSubview:button];
+    [self.view addSubview:button];
 
     // Define visual aspect
     [button setTitle:callToAction.title forState:UIControlStateNormal];
@@ -81,7 +81,7 @@
 
     // Define constraints
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self removeConstraints:button.constraints];
+    [self.view removeConstraints:button.constraints];
     [self defineVerticalPositionConstraintsForButton:button]; // define Vertical position in view for CTA
     if (index > 0) {
         // Set size of all other buttons to the size of first button
@@ -95,14 +95,14 @@
 #pragma mark - Constraints helpers
 
 - (void)defineSizeConstraintsForButton:(UIButton *)button equalTo:(UIButton *)referenceButton {
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:referenceButton
                                                      attribute:NSLayoutAttributeWidth
                                                     multiplier:1
                                                       constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
                                                      attribute:NSLayoutAttributeHeight
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:referenceButton
@@ -112,14 +112,14 @@
 }
 
 - (void)defineVerticalPositionConstraintsForButton:(UIButton *)button {
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self.messageView
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1
                                                       constant:10]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:button
@@ -132,7 +132,7 @@
     // Defines constraints for buttons, creating a dynamic format like e.g: "H:|-(==15)-[button1]-(==15)-[button2]-(==15)-|"
     NSDictionary *viewsDictionary = [[self class] viewsDictionaryForButtons:self.callsToActionButtons];
     NSString *format = [[self class] constraintsFormatForNButtons:[self.callsToActionButtons count]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:0
                                                                  metrics:nil
                                                                    views:viewsDictionary]];

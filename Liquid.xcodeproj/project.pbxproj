@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		92E71585BB5944A394C1AC93 /* libPods-LiquidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */; };
 		A9035321193FA0C8005110DF /* liquid_package1.json in Resources */ = {isa = PBXBuildFile; fileRef = A9035320193FA0C8005110DF /* liquid_package1.json */; };
-		A91CC7EA1BDAAF06007363F3 /* LQModalMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */; settings = {ASSET_TAGS = (); }; };
+		A91CC7EA1BDAAF06007363F3 /* LQModalMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E71BDAAF06007363F3 /* LQModalMessageViewController.m */; settings = {ASSET_TAGS = (); }; };
 		A91CC7EB1BDAAF06007363F3 /* LQModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A91CC7E91BDAAF06007363F3 /* LQModalView.m */; settings = {ASSET_TAGS = (); }; };
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
@@ -122,8 +122,8 @@
 		A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_incorrect_data_types.json; path = HTTPStubs/liquid_package_incorrect_data_types.json; sourceTree = "<group>"; };
 		A91B4E2019737401005CF827 /* LQUserPrivates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserPrivates.h; sourceTree = "<group>"; };
 		A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LQModalMessage.xib; sourceTree = "<group>"; };
-		A91CC7E61BDAAF06007363F3 /* LQModalMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQModalMessageView.h; sourceTree = "<group>"; };
-		A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQModalMessageView.m; sourceTree = "<group>"; };
+		A91CC7E61BDAAF06007363F3 /* LQModalMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQModalMessageViewController.h; path = Liquid/Views/LQModalMessageViewController.h; sourceTree = "<group>"; };
+		A91CC7E71BDAAF06007363F3 /* LQModalMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQModalMessageViewController.m; path = Liquid/Views/LQModalMessageViewController.m; sourceTree = "<group>"; };
 		A91CC7E81BDAAF06007363F3 /* LQModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQModalView.h; sourceTree = "<group>"; };
 		A91CC7E91BDAAF06007363F3 /* LQModalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQModalView.m; sourceTree = "<group>"; };
 		A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidIntegrationSpec.m; path = Integration/LiquidIntegrationSpec.m; sourceTree = "<group>"; };
@@ -301,8 +301,6 @@
 				A91CC7E81BDAAF06007363F3 /* LQModalView.h */,
 				A91CC7E91BDAAF06007363F3 /* LQModalView.m */,
 				A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */,
-				A91CC7E61BDAAF06007363F3 /* LQModalMessageView.h */,
-				A91CC7E71BDAAF06007363F3 /* LQModalMessageView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -333,6 +331,8 @@
 		A93D5A311BE7B4A50029CFD0 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A91CC7E61BDAAF06007363F3 /* LQModalMessageViewController.h */,
+				A91CC7E71BDAAF06007363F3 /* LQModalMessageViewController.m */,
 				A93D5A321BE7B4EC0029CFD0 /* LQRootViewController.h */,
 				A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */,
 			);
@@ -781,7 +781,7 @@
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
-				A91CC7EA1BDAAF06007363F3 /* LQModalMessageView.m in Sources */,
+				A91CC7EA1BDAAF06007363F3 /* LQModalMessageViewController.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A91CC7EB1BDAAF06007363F3 /* LQModalView.m in Sources */,
 				A9EB82E51BDAB99500BA8176 /* LQCallToAction.m in Sources */,

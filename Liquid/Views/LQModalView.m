@@ -8,7 +8,7 @@
 
 #import "LQModalView.h"
 #import <QuartzCore/QuartzCore.h>
-#import "LQModalMessageView.h"
+#import "LQModalMessageViewController.h"
 
 static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curve ignores durations
 
@@ -21,28 +21,28 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) UIView *containerView;
-@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIViewController *contentViewController;
 
 @end
 
 @implementation LQModalView {
     UIView *_backgroundView;
     UIView *_containerView;
-    LQModalMessageView *_contentView;
+    UIViewController *_contentViewController;
     BOOL _isAnimating;
     BOOL _isShowing;
 }
 
-@synthesize contentView = _contentView;
+@synthesize contentViewController = _contentViewController;
 @synthesize backgroundView = _backgroundView;
 @synthesize containerView = _containerView;
 @synthesize isAnimating = _isAnimating;
 @synthesize isShowing = _isShowing;
 @synthesize fadingSpeed = _fadingSpeed;
 
-+ (LQModalView *)modalWithContentView:(UIView *)contentView {
++ (LQModalView *)modalWithContentView:(UIViewController *)contentViewController {
     LQModalView *modal = [[LQModalView alloc] init];
-    modal.contentView = contentView;
+    modal.contentViewController = contentViewController;
     return modal;
 }
 
@@ -134,9 +134,9 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
         [self animateBackground];
         
         // Add contentView to container
-        if (self.contentView.superview != self.containerView) {
-            [self.containerView addSubview:self.contentView];
-            [self.contentView layoutIfNeeded];
+        if (self.contentViewController.view.superview != self.containerView) {
+            [self.containerView addSubview:self.contentViewController.view];
+            [self.contentViewController.view layoutIfNeeded];
         }
         
         [self defineContainerViewConstraints];
@@ -297,32 +297,32 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 }
 
 - (void)defineContentViewConstraints {
-    [_contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self removeConstraints:_contentView.constraints];
+    [self.contentViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self removeConstraints:self.contentViewController.view.constraints];
     
     // Align Container View frame with Content View frame
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
                                                      attribute:NSLayoutAttributeCenterX
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1
                                                       constant:0]];
-    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
+    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
                                                                attribute:NSLayoutAttributeCenterY
                                                                relatedBy:NSLayoutRelationEqual
                                                                   toItem:_containerView
                                                                attribute:NSLayoutAttributeCenterY
                                                               multiplier:1
                                                                 constant:0]];
-    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
+    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
                                                                attribute:NSLayoutAttributeWidth
                                                                relatedBy:NSLayoutRelationEqual
                                                                   toItem:_containerView
                                                                attribute:NSLayoutAttributeWidth
                                                               multiplier:1
                                                                 constant:0]];
-    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
+    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
                                                                attribute:NSLayoutAttributeHeight
                                                                relatedBy:NSLayoutRelationEqual
                                                                   toItem:_containerView

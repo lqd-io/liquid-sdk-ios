@@ -10,7 +10,7 @@
 #import "LQDefaults.h"
 #import "NSData+LQData.h"
 #import "LQModalView.h"
-#import "LQModalMessageView.h"
+#import "LQModalMessageViewController.h"
 #import "LQInAppMessageModal.h"
 #import "LQRequest.h"
 #import "LQDate.h"
@@ -153,13 +153,13 @@
     }
 
     // Put ModalMessageView inside ModalView and present it
-    LQModalMessageView *messageView = [[[NSBundle mainBundle] loadNibNamed:@"LQModalMessage" owner:self options:nil] lastObject];
-    messageView.inAppMessage = message;
-    [messageView defineLayoutWithInAppMessage];
-    __block LQModalView *modalView = [LQModalView modalWithContentView:messageView];
+    LQModalMessageViewController *messageViewController = [[LQModalMessageViewController alloc] initWithNibName:@"LQModalMessage" bundle:[NSBundle mainBundle]];
+    messageViewController.inAppMessage = message;
+    [messageViewController defineLayoutWithInAppMessage];
+    __block LQModalView *modalView = [LQModalView modalWithContentView:messageViewController];
 
     // Define callbacks for CTAs and Dismiss
-    messageView.callToActionBlock = ^(LQCallToAction *cta) {
+    messageViewController.callToActionBlock = ^(LQCallToAction *cta) {
         [self.eventTracker track:cta.eventName
                       attributes:cta.eventAttributes
                     loadedValues:nil
@@ -168,7 +168,7 @@
         [modalView dismissModal];
         [cta followURL];
     };
-    messageView.dismissBlock = ^{
+    messageViewController.dismissBlock = ^{
         [self.eventTracker track:message.dismissEventName
                       attributes:message.dismissEventAttributes
                     loadedValues:nil
