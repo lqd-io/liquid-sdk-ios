@@ -16,7 +16,7 @@ typedef void(^CompletionBlock)();
 @property (nonatomic, copy) CompletionBlock hideAnimationCompletedBlock;
 
 - (void)presentInWindow:(UIWindow *)window;
-- (void)dismissModal;
+- (void)dismiss;
 + (instancetype)modalWithContentView:(UIViewController *)contentViewController;
 
 @end

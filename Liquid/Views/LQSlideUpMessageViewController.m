@@ -51,7 +51,7 @@
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [recognizer translationInView:self.view];
         recognizer.view.center = CGPointMake(recognizer.view.center.x,
-                                             recognizer.view.center.y + translation.y);
+                                             recognizer.view.center.y + (translation.y * [self inertiaFactorRelativeTo:recognizer.view.center.y]));
         [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         if (self.view.center.y > self.originalCenter.y + 50 / 2) {
@@ -60,6 +60,12 @@
             [self restorePosition];
         }
     }
+}
+
+- (CGFloat)inertiaFactorRelativeTo:(CGFloat)position {
+    CGFloat max = 100;
+    CGFloat delta = fabs(position - self.originalCenter.y);
+    return (max - delta) / max;
 }
 
 - (void)moveAway {

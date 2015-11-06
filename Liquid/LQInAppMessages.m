@@ -218,7 +218,7 @@
                     loadedValues:nil
                         withDate:[LQDate uniqueNow]];
         [self reportPresentedMessageWithAttributes:cta.eventAttributes];
-        [modalView dismissModal];
+        [modalView dismiss];
         [cta followURL];
     };
     messageViewController.dismissBlock = ^{
@@ -227,7 +227,7 @@
                     loadedValues:nil
                         withDate:[LQDate uniqueNow]];
         [self reportPresentedMessageWithAttributes:message.dismissEventAttributes];
-        [modalView dismissModal];
+        [modalView dismiss];
     };
     modalView.hideAnimationCompletedBlock = ^{
         self.window = nil;

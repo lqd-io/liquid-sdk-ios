@@ -154,18 +154,17 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 
 #pragma mark - Dismiss Modal
 
-- (void)dismissModal {
+- (void)dismiss {
     if ([self modalCanBeDismissed]) {
         _isAnimating = YES;
         _isShowing = NO;
-        
         dispatch_async( dispatch_get_main_queue(), ^{
-            [self dismissModalInThread];
+            [self dismissInThread];
         });
     }
 }
 
-- (void)dismissModalInThread {
+- (void)dismissInThread {
     // Make fade happen faster than motion. Use linear for fades.
     void (^backgroundAnimationBlock)(void) = ^(void) {
         _backgroundView.alpha = 0.0;
