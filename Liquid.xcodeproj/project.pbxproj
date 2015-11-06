@@ -14,6 +14,11 @@
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
+		A93D5A261BE27F570029CFD0 /* LQSlideUpMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D5A251BE27F570029CFD0 /* LQSlideUpMessageViewController.m */; settings = {ASSET_TAGS = (); }; };
+		A93D5A2A1BE285F60029CFD0 /* LQInAppMessageSlideUp.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D5A291BE285F60029CFD0 /* LQInAppMessageSlideUp.m */; settings = {ASSET_TAGS = (); }; };
+		A93D5A2D1BE292410029CFD0 /* LQSlideUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D5A2C1BE292410029CFD0 /* LQSlideUpView.m */; settings = {ASSET_TAGS = (); }; };
+		A93D5A2E1BE2AFB80029CFD0 /* LQSlideUpMessage.xib in CopyFiles */ = {isa = PBXBuildFile; fileRef = A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */; };
+		A93D5A2F1BE2AFCC0029CFD0 /* LQSlideUpMessage.xib in Resources */ = {isa = PBXBuildFile; fileRef = A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */; };
 		A93D5A341BE7B4EC0029CFD0 /* LQRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */; settings = {ASSET_TAGS = (); }; };
 		A93E44C71BDFC73B00734DE7 /* LQInAppMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E44C61BDFC73B00734DE7 /* LQInAppMessages.m */; settings = {ASSET_TAGS = (); }; };
 		A94B6A9D1954BC1D00AB4B04 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
@@ -108,6 +113,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				A93D5A2E1BE2AFB80029CFD0 /* LQSlideUpMessage.xib in CopyFiles */,
 				A9EB82ED1BDE860E00BA8176 /* LQModalMessage.xib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +137,13 @@
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
 		A93AF9CE19316FCA0035E811 /* LQEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEntity.h; sourceTree = "<group>"; };
 		A93AF9CF19316FCA0035E811 /* LQEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEntity.m; sourceTree = "<group>"; };
+		A93D5A241BE27F570029CFD0 /* LQSlideUpMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQSlideUpMessageViewController.h; path = Liquid/Views/LQSlideUpMessageViewController.h; sourceTree = "<group>"; };
+		A93D5A251BE27F570029CFD0 /* LQSlideUpMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQSlideUpMessageViewController.m; path = Liquid/Views/LQSlideUpMessageViewController.m; sourceTree = "<group>"; };
+		A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LQSlideUpMessage.xib; sourceTree = "<group>"; };
+		A93D5A281BE285F60029CFD0 /* LQInAppMessageSlideUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessageSlideUp.h; sourceTree = "<group>"; };
+		A93D5A291BE285F60029CFD0 /* LQInAppMessageSlideUp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessageSlideUp.m; sourceTree = "<group>"; };
+		A93D5A2B1BE292410029CFD0 /* LQSlideUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSlideUpView.h; sourceTree = "<group>"; };
+		A93D5A2C1BE292410029CFD0 /* LQSlideUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSlideUpView.m; sourceTree = "<group>"; };
 		A93D5A321BE7B4EC0029CFD0 /* LQRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQRootViewController.h; path = Liquid/ViewControllers/LQRootViewController.h; sourceTree = "<group>"; };
 		A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQRootViewController.m; path = Liquid/ViewControllers/LQRootViewController.m; sourceTree = "<group>"; };
 		A93E44C51BDFC73B00734DE7 /* LQInAppMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessages.h; sourceTree = "<group>"; };
@@ -143,8 +156,8 @@
 		A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychainSpec.m; sourceTree = "<group>"; };
 		A95EC5AA1B0DFEBB00407D03 /* LQKeychainPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQKeychainPrivates.h; sourceTree = "<group>"; };
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
-		A97250E81BE91C140001D764 /* LQWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQWindow.h; path = Helpers/LQWindow.h; sourceTree = "<group>"; };
-		A97250E91BE91C140001D764 /* LQWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQWindow.m; path = Helpers/LQWindow.m; sourceTree = "<group>"; };
+		A97250E81BE91C140001D764 /* LQWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQWindow.h; path = ../Helpers/LQWindow.h; sourceTree = "<group>"; };
+		A97250E91BE91C140001D764 /* LQWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQWindow.m; path = ../Helpers/LQWindow.m; sourceTree = "<group>"; };
 		A98196621BE1BBB6003F75B9 /* LQEventTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEventTracker.h; sourceTree = "<group>"; };
 		A98196631BE1BBB6003F75B9 /* LQEventTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEventTracker.m; sourceTree = "<group>"; };
 		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -301,6 +314,9 @@
 				A91CC7E81BDAAF06007363F3 /* LQModalView.h */,
 				A91CC7E91BDAAF06007363F3 /* LQModalView.m */,
 				A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */,
+				A93D5A2B1BE292410029CFD0 /* LQSlideUpView.h */,
+				A93D5A2C1BE292410029CFD0 /* LQSlideUpView.m */,
+				A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -333,6 +349,8 @@
 			children = (
 				A91CC7E61BDAAF06007363F3 /* LQModalMessageViewController.h */,
 				A91CC7E71BDAAF06007363F3 /* LQModalMessageViewController.m */,
+				A93D5A241BE27F570029CFD0 /* LQSlideUpMessageViewController.h */,
+				A93D5A251BE27F570029CFD0 /* LQSlideUpMessageViewController.m */,
 				A93D5A321BE7B4EC0029CFD0 /* LQRootViewController.h */,
 				A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */,
 			);
@@ -364,8 +382,6 @@
 				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
 				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
 				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
-				A97250E81BE91C140001D764 /* LQWindow.h */,
-				A97250E91BE91C140001D764 /* LQWindow.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -406,6 +422,8 @@
 				A9BA7D2919AA698700E1F0F2 /* LQDate.m */,
 				A9FBA7AB1B03B0E200900AAC /* LQKeychainItem.h */,
 				A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */,
+				A97250E81BE91C140001D764 /* LQWindow.h */,
+				A97250E91BE91C140001D764 /* LQWindow.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -461,6 +479,8 @@
 				A9EB82E11BDAB28900BA8176 /* LQInAppMessage.m */,
 				A9EB82EA1BDABCCE00BA8176 /* LQInAppMessageModal.h */,
 				A9EB82EB1BDABCCE00BA8176 /* LQInAppMessageModal.m */,
+				A93D5A281BE285F60029CFD0 /* LQInAppMessageSlideUp.h */,
+				A93D5A291BE285F60029CFD0 /* LQInAppMessageSlideUp.m */,
 				A9EB82E31BDAB99500BA8176 /* LQCallToAction.h */,
 				A9EB82E41BDAB99500BA8176 /* LQCallToAction.m */,
 			);
@@ -661,6 +681,7 @@
 				A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */,
 				A98CF0131949C7A3003DF949 /* LiquidDemo.storyboard in Resources */,
 				A9EB82EE1BDE864700BA8176 /* LQModalMessage.xib in Resources */,
+				A93D5A2F1BE2AFCC0029CFD0 /* LQSlideUpMessage.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,6 +783,7 @@
 			files = (
 				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
+				A93D5A2A1BE285F60029CFD0 /* LQInAppMessageSlideUp.m in Sources */,
 				A93D5A341BE7B4EC0029CFD0 /* LQRootViewController.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
 				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
@@ -776,6 +798,7 @@
 				A9EB82E21BDAB28900BA8176 /* LQInAppMessage.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A9EB82EC1BDABCCE00BA8176 /* LQInAppMessageModal.m in Sources */,
+				A93D5A261BE27F570029CFD0 /* LQSlideUpMessageViewController.m in Sources */,
 				A9FBA7AA1B03981200900AAC /* LQKeychain.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
@@ -783,6 +806,7 @@
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
 				A91CC7EA1BDAAF06007363F3 /* LQModalMessageViewController.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
+				A93D5A2D1BE292410029CFD0 /* LQSlideUpView.m in Sources */,
 				A91CC7EB1BDAAF06007363F3 /* LQModalView.m in Sources */,
 				A9EB82E51BDAB99500BA8176 /* LQCallToAction.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,

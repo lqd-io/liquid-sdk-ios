@@ -12,6 +12,9 @@
 #import "LQModalView.h"
 #import "LQModalMessageViewController.h"
 #import "LQInAppMessageModal.h"
+#import "LQSlideUpView.h"
+#import "LQSlideUpMessageViewController.h"
+#import "LQInAppMessageSlideUp.h"
 #import "LQRequest.h"
 #import "LQDate.h"
 #import "LQWindow.h"
@@ -72,6 +75,10 @@
                 id message;
                 if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
                     message = [[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict];
+                } else if ([inAppMessageDict[@"layout"] isEqualToString:@"slide_up"]) {
+                    message = [[LQInAppMessageSlideUp alloc] initFromDictionary:inAppMessageDict];
+                }
+                if (message) {
                     @synchronized(self.messagesQueue) {
                         [self.messagesQueue addObject:message];
                     }
@@ -143,7 +150,53 @@
     if ([message isKindOfClass:[LQInAppMessageModal class]]) {
         _presentingMessage = YES;
         [self presentModalInAppMessage:message];
+    } else if ([message isKindOfClass:[LQInAppMessageSlideUp class]]) {
+        _presentingMessage = YES;
+        [self presentSlideUpInAppMessage:message];
     }
+}
+
+- (void)presentSlideUpInAppMessage:(LQInAppMessageSlideUp *)message {
+    if(![[NSBundle mainBundle] pathForResource:@"LQSlideUpMessage" ofType:@"nib"]) {
+        LQLog(kLQLogLevelError, @"Could not find LQSlideUpMessage XIB to show SlideUp In-App Message.");
+        return;
+    }
+
+    // Put SlideUpMessageView inside SlideUpView and present it
+    LQSlideUpMessageViewController *messageViewController = [[LQSlideUpMessageViewController alloc] initWithNibName:@"LQSlideUpMessage" bundle:[NSBundle mainBundle]];
+    messageViewController.inAppMessage = message;
+    [messageViewController defineLayoutWithInAppMessage];
+    __block LQSlideUpView *slideUpView = [LQSlideUpView slideUpWithContentViewController:messageViewController];
+
+    // Define callbacks for CTAs and Dismiss
+    messageViewController.callToActionBlock = ^(LQCallToAction *cta) {
+        [self.eventTracker track:cta.eventName
+                      attributes:cta.eventAttributes
+                    loadedValues:nil
+                        withDate:[LQDate uniqueNow]];
+        [self reportPresentedMessageWithAttributes:cta.eventAttributes];
+        [slideUpView dismiss];
+        [cta followURL];
+    };
+    messageViewController.dismissBlock = ^() {
+        [self.eventTracker track:message.dismissEventName
+                      attributes:message.dismissEventAttributes
+                    loadedValues:nil
+                        withDate:[LQDate uniqueNow]];
+        [self reportPresentedMessageWithAttributes:message.dismissEventAttributes];
+        [slideUpView dismiss];
+    };
+    slideUpView.hideAnimationCompletedBlock = ^{
+        self.window = nil;
+        _presentingMessage = NO;
+        [self presentNextMessageInQueue];
+    };
+
+    // Create window and show message
+    UIWindow *window = [LQWindow bottomWindow];
+    [window makeKeyAndVisible];
+    self.window = window;
+    [slideUpView presentInWindow:self.window];
 }
 
 - (void)presentModalInAppMessage:(LQInAppMessageModal *)message {

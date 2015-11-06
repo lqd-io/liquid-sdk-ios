@@ -26,8 +26,8 @@
 
 + (UIWindow *)bottomWindow {
     CGRect bounds = [[UIScreen mainScreen] bounds];
-    UIWindow *window = [[UIWindow alloc] initWithFrame:CGRectMake(0, (bounds.size.height - 50), bounds.size.width, bounds.size.height)];
-    window.backgroundColor = [UIColor redColor];
+    UIWindow *window = [[UIWindow alloc] initWithFrame:CGRectMake(0, (bounds.size.height - 70), bounds.size.width, bounds.size.height)];
+    window.backgroundColor = [UIColor clearColor];
     window.windowLevel = UIWindowLevelAlert;
     window.hidden = NO;
     window.rootViewController = [[self class] autoRotateRootViewController];

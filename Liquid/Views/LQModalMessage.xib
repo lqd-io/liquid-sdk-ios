@@ -38,6 +38,7 @@
                 </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="quG-oW-QRD" firstAttribute="top" secondItem="FyM-iY-j50" secondAttribute="bottom" constant="15" id="0fT-Eu-OzV"/>
                 <constraint firstItem="FyM-iY-j50" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="BPR-05-FQ4"/>
