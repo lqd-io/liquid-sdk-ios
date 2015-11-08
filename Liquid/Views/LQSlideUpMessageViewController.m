@@ -21,6 +21,14 @@
 @synthesize inAppMessage = _inAppMessage;
 @synthesize dismissBlock = _dismissBlock;
 @synthesize callToActionBlock = _callToAcionBlock;
+@synthesize height = _height;
+
+- (NSNumber *)height {
+    if (!_height) {
+        _height = @100.0;
+    }
+    return _height;
+}
 
 - (void)viewDidLoad {
     _layoutIsDefined = NO;
@@ -74,7 +82,7 @@
                                              recognizer.view.center.y + yTranslation);
         [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        if (self.view.center.y > self.originalCenter.y + 50 / 2) {
+        if (self.view.center.y > self.originalCenter.y + [self.height floatValue] / 2) {
             [self moveAway];
         } else {
             [self restorePosition];
@@ -83,7 +91,7 @@
 }
 
 - (CGFloat)inertiaFactorRelativeTo:(CGFloat)position {
-    CGFloat max = 100;
+    CGFloat max = ([self.height floatValue] * 2.0);
     CGFloat delta = self.originalCenter.y - position;
     if (delta < 0) {
         return 1; // only apply ineria if direction is up

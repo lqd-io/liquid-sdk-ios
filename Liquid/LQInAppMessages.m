@@ -161,10 +161,12 @@
         LQLog(kLQLogLevelError, @"Could not find LQSlideUpMessage XIB to show SlideUp In-App Message.");
         return;
     }
-
+    
     // Put SlideUpMessageView inside SlideUpView and present it
+    NSNumber *height = @65.0;
     LQSlideUpMessageViewController *messageViewController = [[LQSlideUpMessageViewController alloc] initWithNibName:@"LQSlideUpMessage" bundle:[NSBundle mainBundle]];
     messageViewController.inAppMessage = message;
+    messageViewController.height = height;
     [messageViewController defineLayoutWithInAppMessage];
     __block LQSlideUpView *slideUpView = [LQSlideUpView slideUpWithContentViewController:messageViewController];
 
@@ -193,7 +195,7 @@
     };
 
     // Create window and show message
-    UIWindow *window = [LQWindow bottomWindow];
+    UIWindow *window = [LQWindow bottomWindowWithHeight:[height floatValue]];
     [window makeKeyAndVisible];
     self.window = window;
     [slideUpView presentInWindow:self.window];

@@ -13,7 +13,7 @@
 
 + (UIWindow *)mainWindow;
 + (UIWindow *)fullscreenWindow;
-+ (UIWindow *)bottomWindow;
-+ (UIWindow *)topWindow;
++ (UIWindow *)bottomWindowWithHeight:(CGFloat)height;
++ (UIWindow *)topWindowWithHeight:(CGFloat)height;
     
 @end

@@ -24,9 +24,9 @@
     return window;
 }
 
-+ (UIWindow *)bottomWindow {
++ (UIWindow *)bottomWindowWithHeight:(CGFloat)height {
     CGRect bounds = [[UIScreen mainScreen] bounds];
-    UIWindow *window = [[UIWindow alloc] initWithFrame:CGRectMake(0, (bounds.size.height - 70), bounds.size.width, bounds.size.height)];
+    UIWindow *window = [[UIWindow alloc] initWithFrame:CGRectMake(0, (bounds.size.height - height), bounds.size.width, bounds.size.height)];
     window.backgroundColor = [UIColor clearColor];
     window.windowLevel = UIWindowLevelAlert;
     window.hidden = NO;
@@ -34,8 +34,8 @@
     return window;
 }
 
-+ (UIWindow *)topWindow {
-    UIWindow *window = [[self class] bottomWindow];
++ (UIWindow *)topWindowWithHeight:(CGFloat)height {
+    UIWindow *window = [[self class] bottomWindowWithHeight:height];
     window.frame = CGRectMake(0, 0, window.frame.size.width, window.frame.size.height);
     return window;
 }
