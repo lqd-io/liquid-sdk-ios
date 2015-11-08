@@ -8,7 +8,9 @@
 
 #import "LQSlideUpMessageViewController.h"
 
-@interface LQSlideUpMessageViewController ()
+@interface LQSlideUpMessageViewController () {
+    BOOL _layoutIsDefined;
+}
 
 @property (nonatomic, assign) CGPoint originalCenter;
 
@@ -21,12 +23,29 @@
 @synthesize callToActionBlock = _callToAcionBlock;
 
 - (void)viewDidLoad {
+    _layoutIsDefined = NO;
     self.originalCenter = CGPointMake(self.view.center.x, self.view.center.y);
     [self assignGestureHandlers];
 }
 
 - (void)defineLayoutWithInAppMessage {
-    // ...
+    if (_layoutIsDefined) {
+        [NSException raise:NSInternalInconsistencyException
+                    format:@"Layout has already been defined. You can do it only once"];
+        return;
+    }
+    if (!self.inAppMessage) {
+        [NSException raise:NSInvalidArgumentException
+                    format:@"No In-App Message was defined."];
+        return;
+    }
+    _layoutIsDefined = YES;
+    
+    // Configure view elements
+    self.messageView.text = self.inAppMessage.message;
+    self.view.backgroundColor = self.inAppMessage.backgroundColor;
+    self.messageView.textColor = self.inAppMessage.messageColor;
+    [self.callToAction setTitleColor:self.inAppMessage.messageColor forState:UIControlStateNormal];
 }
 
 - (IBAction)ctaButtonPressed {

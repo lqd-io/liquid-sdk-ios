@@ -23,6 +23,10 @@
 @synthesize dismissBlock = _dismissBlock;
 @synthesize callToActionBlock = _callToActionBlock;
 
+- (void)viewDidLoad {
+    _layoutIsDefined = NO;
+}
+
 #pragma mark - Lazy initialization
 
 - (NSMutableArray *)callsToActionButtons {

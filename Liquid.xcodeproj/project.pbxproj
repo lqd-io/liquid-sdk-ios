@@ -127,7 +127,7 @@
 		A9035320193FA0C8005110DF /* liquid_package1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package1.json; path = HTTPStubs/liquid_package1.json; sourceTree = "<group>"; };
 		A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_incorrect_data_types.json; path = HTTPStubs/liquid_package_incorrect_data_types.json; sourceTree = "<group>"; };
 		A91B4E2019737401005CF827 /* LQUserPrivates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserPrivates.h; sourceTree = "<group>"; };
-		A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LQModalMessage.xib; sourceTree = "<group>"; };
+		A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LQModalMessage.xib; path = Liquid/Views/LQModalMessage.xib; sourceTree = "<group>"; };
 		A91CC7E61BDAAF06007363F3 /* LQModalMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQModalMessageViewController.h; path = Liquid/Views/LQModalMessageViewController.h; sourceTree = "<group>"; };
 		A91CC7E71BDAAF06007363F3 /* LQModalMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQModalMessageViewController.m; path = Liquid/Views/LQModalMessageViewController.m; sourceTree = "<group>"; };
 		A91CC7E81BDAAF06007363F3 /* LQModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQModalView.h; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 		A93AF9CF19316FCA0035E811 /* LQEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEntity.m; sourceTree = "<group>"; };
 		A93D5A241BE27F570029CFD0 /* LQSlideUpMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQSlideUpMessageViewController.h; path = Liquid/Views/LQSlideUpMessageViewController.h; sourceTree = "<group>"; };
 		A93D5A251BE27F570029CFD0 /* LQSlideUpMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQSlideUpMessageViewController.m; path = Liquid/Views/LQSlideUpMessageViewController.m; sourceTree = "<group>"; };
-		A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LQSlideUpMessage.xib; sourceTree = "<group>"; };
+		A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LQSlideUpMessage.xib; path = Liquid/Views/LQSlideUpMessage.xib; sourceTree = "<group>"; };
 		A93D5A281BE285F60029CFD0 /* LQInAppMessageSlideUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessageSlideUp.h; sourceTree = "<group>"; };
 		A93D5A291BE285F60029CFD0 /* LQInAppMessageSlideUp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessageSlideUp.m; sourceTree = "<group>"; };
 		A93D5A2B1BE292410029CFD0 /* LQSlideUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSlideUpView.h; sourceTree = "<group>"; };
@@ -313,10 +313,8 @@
 			children = (
 				A91CC7E81BDAAF06007363F3 /* LQModalView.h */,
 				A91CC7E91BDAAF06007363F3 /* LQModalView.m */,
-				A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */,
 				A93D5A2B1BE292410029CFD0 /* LQSlideUpView.h */,
 				A93D5A2C1BE292410029CFD0 /* LQSlideUpView.m */,
-				A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -349,8 +347,10 @@
 			children = (
 				A91CC7E61BDAAF06007363F3 /* LQModalMessageViewController.h */,
 				A91CC7E71BDAAF06007363F3 /* LQModalMessageViewController.m */,
+				A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */,
 				A93D5A241BE27F570029CFD0 /* LQSlideUpMessageViewController.h */,
 				A93D5A251BE27F570029CFD0 /* LQSlideUpMessageViewController.m */,
+				A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */,
 				A93D5A321BE7B4EC0029CFD0 /* LQRootViewController.h */,
 				A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */,
 			);
