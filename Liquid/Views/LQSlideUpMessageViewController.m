@@ -50,8 +50,9 @@
         self.originalCenter = self.view.center;
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [recognizer translationInView:self.view];
+        CGFloat yTranslation = translation.y * [self inertiaFactorRelativeTo:recognizer.view.center.y];
         recognizer.view.center = CGPointMake(recognizer.view.center.x,
-                                             recognizer.view.center.y + (translation.y * [self inertiaFactorRelativeTo:recognizer.view.center.y]));
+                                             recognizer.view.center.y + yTranslation);
         [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         if (self.view.center.y > self.originalCenter.y + 50 / 2) {
@@ -64,7 +65,10 @@
 
 - (CGFloat)inertiaFactorRelativeTo:(CGFloat)position {
     CGFloat max = 100;
-    CGFloat delta = fabs(position - self.originalCenter.y);
+    CGFloat delta = self.originalCenter.y - position;
+    if (delta < 0) {
+        return 1; // only apply ineria if direction is up
+    }
     return (max - delta) / max;
 }
 
