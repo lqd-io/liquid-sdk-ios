@@ -20,7 +20,7 @@ typedef void(^MessageCTABlock)(LQCallToAction *);
 @property (nonatomic, strong) LQInAppMessageSlideUp *inAppMessage;
 @property (nonatomic, copy) MessageDismissBlock dismissBlock;
 @property (nonatomic, copy) MessageCTABlock callToActionBlock;
-@property (nonatomic, assign) NSNumber *height;
+@property (nonatomic, copy, readonly) NSNumber *height;
 
 - (void)defineLayoutWithInAppMessage;
 

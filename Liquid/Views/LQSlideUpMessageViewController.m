@@ -24,10 +24,7 @@
 @synthesize height = _height;
 
 - (NSNumber *)height {
-    if (!_height) {
-        _height = @100.0;
-    }
-    return _height;
+    return [NSNumber numberWithFloat:self.messageView.frame.size.height];
 }
 
 - (void)viewDidLoad {
@@ -54,7 +51,35 @@
     self.view.backgroundColor = self.inAppMessage.backgroundColor;
     self.messageView.textColor = self.inAppMessage.messageColor;
     [self.callToAction setTitleColor:self.inAppMessage.messageColor forState:UIControlStateNormal];
+    [self.messageView sizeToFit];
+
+    [self.view removeConstraints:self.view.constraints];
+    [self defineHorizontalConstraints];
+    [self defineVerticalConstraints];
 }
+
+#pragma mark - Sizes and Constraints
+
+- (void)defineHorizontalConstraints {
+    NSDictionary *viewsDictionary = @{ @"message": self.messageView, @"cta": self.callToAction };
+    NSString *format = @"H:|-[message]-[cta]-|";
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:viewsDictionary]];
+}
+
+- (void)defineVerticalConstraints {
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.callToAction
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.messageView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1
+                                                           constant:0]];
+}
+
+#pragma mark - Actions
 
 - (IBAction)ctaButtonPressed {
     if (self.callToActionBlock) {

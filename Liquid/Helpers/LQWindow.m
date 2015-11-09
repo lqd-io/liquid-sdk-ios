@@ -26,7 +26,8 @@
 
 + (UIWindow *)bottomWindowWithHeight:(CGFloat)height {
     CGRect bounds = [[UIScreen mainScreen] bounds];
-    UIWindow *window = [[UIWindow alloc] initWithFrame:CGRectMake(0, (bounds.size.height - height), bounds.size.width, bounds.size.height)];
+    UIWindow *window = [[UIWindow alloc] initWithFrame:CGRectMake(0, (bounds.size.height - height),
+                                                                  bounds.size.width, height)];
     window.backgroundColor = [UIColor clearColor];
     window.windowLevel = UIWindowLevelAlert;
     window.hidden = NO;

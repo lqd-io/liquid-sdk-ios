@@ -345,12 +345,12 @@
 		A93D5A311BE7B4A50029CFD0 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */,
 				A91CC7E61BDAAF06007363F3 /* LQModalMessageViewController.h */,
 				A91CC7E71BDAAF06007363F3 /* LQModalMessageViewController.m */,
-				A91CC7E51BDAAF06007363F3 /* LQModalMessage.xib */,
+				A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */,
 				A93D5A241BE27F570029CFD0 /* LQSlideUpMessageViewController.h */,
 				A93D5A251BE27F570029CFD0 /* LQSlideUpMessageViewController.m */,
-				A93D5A271BE2825F0029CFD0 /* LQSlideUpMessage.xib */,
 				A93D5A321BE7B4EC0029CFD0 /* LQRootViewController.h */,
 				A93D5A331BE7B4EC0029CFD0 /* LQRootViewController.m */,
 			);

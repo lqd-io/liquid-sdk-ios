@@ -92,6 +92,16 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 
 #pragma mark - Present SlideUp
 
+- (void)defineLayoutAndSize {
+    // Add contentView to container
+    if (self.contentViewController.view.superview != self.containerView) {
+        [self.containerView addSubview:self.contentViewController.view];
+        [self.contentViewController.view layoutIfNeeded];
+    }
+    [self defineContainerViewConstraints];
+    [self defineContentViewConstraints];
+}
+
 - (void)presentInWindow:(UIWindow *)window {
     dispatch_async( dispatch_get_main_queue(), ^{
         [self presentInThreadInWindow:window];
@@ -103,22 +113,12 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
         _isAnimating = YES;
         _isShowing = NO;
 
-        [self addToWindow:window];
-
         // Make sure we're not hidden
         self.hidden = NO;
         self.alpha = 1.0;
 
-        // Add contentView to container
-        if (self.contentViewController.view.superview != self.containerView) {
-            [self.containerView addSubview:self.contentViewController.view];
-            [self.contentViewController.view layoutIfNeeded];
-        }
-
-        [self defineContainerViewConstraints];
-        [self defineContentViewConstraints];
-
         // Animate
+        [self addToWindow:window];
         [self animateContainerFromTopInFrame:self.window.frame];
     }
 }
@@ -177,94 +177,71 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 #pragma mark - Constraints
 
 - (void)defineContainerViewConstraints {
-//    [_containerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    [self removeConstraints:_containerView.constraints];
-//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
-//                                                     attribute:NSLayoutAttributeCenterX
-//                                                     relatedBy:NSLayoutRelationEqual
-//                                                        toItem:self
-//                                                     attribute:NSLayoutAttributeCenterX
-//                                                    multiplier:1
-//                                                      constant:0]];
-//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
-//                                                     attribute:NSLayoutAttributeCenterY
-//                                                     relatedBy:NSLayoutRelationEqual
-//                                                        toItem:self
-//                                                     attribute:NSLayoutAttributeCenterY
-//                                                    multiplier:1
-//                                                      constant:0]];
-//    NSLayoutConstraint *constraint;
-//    constraint = [NSLayoutConstraint constraintWithItem:_containerView
-//                                              attribute:NSLayoutAttributeWidth
-//                                              relatedBy:NSLayoutRelationLessThanOrEqual
-//                                                 toItem:nil
-//                                              attribute:NSLayoutAttributeNotAnAttribute
-//                                             multiplier:1
-//                                               constant:350];
-//    constraint.priority = 1000;
-//    [self addConstraint:constraint];
-//    constraint = [NSLayoutConstraint constraintWithItem:_containerView
-//                                              attribute:NSLayoutAttributeWidth
-//                                              relatedBy:NSLayoutRelationEqual
-//                                                 toItem:self
-//                                              attribute:NSLayoutAttributeWidth
-//                                             multiplier:0.75
-//                                               constant:0];
-//    constraint.priority = 750;
-//    [self addConstraint:constraint];
-//    constraint = [NSLayoutConstraint constraintWithItem:_containerView
-//                                              attribute:NSLayoutAttributeHeight
-//                                              relatedBy:NSLayoutRelationLessThanOrEqual
-//                                                 toItem:nil
-//                                              attribute:NSLayoutAttributeNotAnAttribute
-//                                             multiplier:1
-//                                               constant:200];
-//    constraint.priority = 1000;
-//    [self addConstraint:constraint];
-//    constraint = [NSLayoutConstraint constraintWithItem:_containerView
-//                                              attribute:NSLayoutAttributeHeight
-//                                              relatedBy:NSLayoutRelationEqual
-//                                                 toItem:self
-//                                              attribute:NSLayoutAttributeHeight
-//                                             multiplier:1
-//                                               constant:-30];
-//    constraint.priority = 750;
-//    [self addConstraint:constraint];
+    [_containerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self removeConstraints:_containerView.constraints];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:1
+                                                      constant:0]];
 }
 
 - (void)defineContentViewConstraints {
-//    [_contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    [self removeConstraints:_contentView.constraints];
-//    
-//    // Align Container View frame with Content View frame
-//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
-//                                                     attribute:NSLayoutAttributeCenterX
-//                                                     relatedBy:NSLayoutRelationEqual
-//                                                        toItem:self
-//                                                     attribute:NSLayoutAttributeCenterX
-//                                                    multiplier:1
-//                                                      constant:0]];
-//    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
-//                                                               attribute:NSLayoutAttributeCenterY
-//                                                               relatedBy:NSLayoutRelationEqual
-//                                                                  toItem:_containerView
-//                                                               attribute:NSLayoutAttributeCenterY
-//                                                              multiplier:1
-//                                                                constant:0]];
-//    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
-//                                                               attribute:NSLayoutAttributeWidth
-//                                                               relatedBy:NSLayoutRelationEqual
-//                                                                  toItem:_containerView
-//                                                               attribute:NSLayoutAttributeWidth
-//                                                              multiplier:1
-//                                                                constant:0]];
-//    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_contentView
-//                                                               attribute:NSLayoutAttributeHeight
-//                                                               relatedBy:NSLayoutRelationEqual
-//                                                                  toItem:_containerView
-//                                                               attribute:NSLayoutAttributeHeight
-//                                                              multiplier:1
-//                                                                constant:0]];
+    [self.contentViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self removeConstraints:self.contentViewController.view.constraints];
+    
+    // Align Container View frame with Content View frame
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1
+                                                      constant:0]];
+    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
+                                                               attribute:NSLayoutAttributeCenterY
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_containerView
+                                                               attribute:NSLayoutAttributeCenterY
+                                                              multiplier:1
+                                                                constant:0]];
+    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
+                                                               attribute:NSLayoutAttributeWidth
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_containerView
+                                                               attribute:NSLayoutAttributeWidth
+                                                              multiplier:1
+                                                                constant:0]];
+    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_containerView
+                                                               attribute:NSLayoutAttributeHeight
+                                                              multiplier:1
+                                                                constant:0]];
 }
 
 @end
