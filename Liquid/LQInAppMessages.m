@@ -127,6 +127,11 @@
     });
 }
 
+- (void)unpresentCurrentMessage {
+    self.window = nil;
+    self.presentingMessage = nil;
+}
+
 #pragma mark - Reports
 
 - (void)reportPresentedMessageWithAttributes:(NSDictionary *)attributes {
@@ -158,6 +163,9 @@
     } else if ([message isKindOfClass:[LQInAppMessageSlideUp class]]) {
         self.presentingMessage = message;
         [self presentSlideUpInAppMessage:message];
+    } else {
+        [self unpresentCurrentMessage];
+        [self presentNextMessageInQueue];
     }
 }
 
@@ -194,8 +202,7 @@
         [slideUpView dismiss];
     };
     slideUpView.hideAnimationCompletedBlock = ^{
-        self.window = nil;
-        self.presentingMessage = nil;
+        [self unpresentCurrentMessage];
         [self presentNextMessageInQueue];
     };
 
@@ -237,8 +244,7 @@
         [modalView dismiss];
     };
     modalView.hideAnimationCompletedBlock = ^{
-        self.window = nil;
-        self.presentingMessage = nil;
+        [self unpresentCurrentMessage];
         [self presentNextMessageInQueue];
     };
 
