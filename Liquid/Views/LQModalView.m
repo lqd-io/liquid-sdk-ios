@@ -160,7 +160,6 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 }
 
 - (void)dismissInThread {
-    // Make fade happen faster than motion. Use linear for fades.
     void (^backgroundAnimationBlock)(void) = ^(void) {
         _backgroundView.alpha = 0.0;
     };
@@ -169,8 +168,8 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
                         options:UIViewAnimationOptionCurveLinear
                      animations:backgroundAnimationBlock
                      completion:NULL];
-    
-    // Setup completion block
+
+    // Animate!
     void (^completionBlock)(BOOL) = ^(BOOL finished) {
         [self removeFromSuperview];
         _isAnimating = NO;
@@ -185,7 +184,6 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
         _containerView.frame = finalFrame;
     } completion:completionBlock];
 }
-
 
 #pragma mark - Animations
 
