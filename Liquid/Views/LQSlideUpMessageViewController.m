@@ -20,8 +20,10 @@
 
 @synthesize inAppMessage = _inAppMessage;
 @synthesize dismissBlock = _dismissBlock;
-@synthesize callToActionBlock = _callToAcionBlock;
+@synthesize callToActionBlock = _callToActionBlock;
 @synthesize height = _height;
+@synthesize messageView = _messageView;
+@synthesize callToAction = _callToAction;
 
 - (NSNumber *)height {
     return [NSNumber numberWithFloat:self.messageView.frame.size.height];
@@ -47,7 +49,8 @@
     _layoutIsDefined = YES;
     
     // Configure view elements
-    self.messageView.text = self.inAppMessage.message;
+    [self.view setNeedsDisplay];
+    [self.messageView setText:self.inAppMessage.message];
     self.view.backgroundColor = self.inAppMessage.backgroundColor;
     self.messageView.textColor = self.inAppMessage.messageColor;
     [self.callToAction setTitleColor:self.inAppMessage.messageColor forState:UIControlStateNormal];

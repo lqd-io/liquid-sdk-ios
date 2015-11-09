@@ -52,6 +52,7 @@
     _layoutIsDefined = YES;
     
     // Configure view elements
+    [self.view setNeedsDisplay];
     self.titleLabel.text = self.inAppMessage.title;
     self.messageView.text = self.inAppMessage.message;
     self.view.backgroundColor = self.inAppMessage.backgroundColor;
