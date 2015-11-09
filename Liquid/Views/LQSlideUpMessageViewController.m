@@ -107,7 +107,7 @@
                                              recognizer.view.center.y + yTranslation);
         [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        if (self.view.center.y > self.originalCenter.y + [self.height floatValue] / 2) {
+        if (self.view.center.y > self.originalCenter.y + [self.height floatValue] / 3) {
             [self moveAway];
         } else {
             [self restorePosition];

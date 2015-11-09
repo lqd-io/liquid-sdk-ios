@@ -159,7 +159,7 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
     _containerView.alpha = 1.0;
     _containerView.transform = CGAffineTransformIdentity;
     CGRect startFrame = finalContainerFrame;
-    startFrame.origin.y = +CGRectGetHeight(finalContainerFrame);
+    startFrame.origin.y = CGRectGetHeight(finalContainerFrame) * 2;
     _containerView.frame = startFrame;
     
     // Animate!
