@@ -38,12 +38,8 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 + (instancetype)slideUpWithContentViewController:(UIViewController *)contentViewController {
     LQSlideUpView *slideUp = [[[self class] alloc] init];
     slideUp.contentViewController = contentViewController;
+    [slideUp defineLayoutAndSize];
     return slideUp;
-}
-
-- (void)dealloc {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self]; // stop listening to notifications
 }
 
 #pragma mark - Initializers/deallocers

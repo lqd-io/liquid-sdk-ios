@@ -46,11 +46,6 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
     return modal;
 }
 
-- (void)dealloc {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self]; // stop listening to notifications
-}
-
 #pragma mark - Initializers/deallocers
 
 - (id)init {
