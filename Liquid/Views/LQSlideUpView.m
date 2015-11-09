@@ -56,9 +56,6 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.autoresizesSubviews = YES;
         self.fadingSpeed = 0.50;
-        self.layer.shadowColor = [UIColor blackColor].CGColor;
-        self.layer.shadowOpacity = 0.25;
-        self.layer.shadowOffset = CGSizeMake(0.0, -2.0);
 
         _isAnimating = NO;
         _isShowing = NO;
@@ -97,6 +94,9 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
     if (self.contentViewController.view.superview != self.containerView) {
         [self.containerView addSubview:self.contentViewController.view];
         [self.contentViewController.view layoutIfNeeded];
+        self.contentViewController.view.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.contentViewController.view.layer.shadowOpacity = 0.25;
+        self.contentViewController.view.layer.shadowOffset = CGSizeMake(0.0, -2.0);
     }
     [self defineContainerViewConstraints];
     [self defineContentViewConstraints];
@@ -228,13 +228,27 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
                                                                attribute:NSLayoutAttributeCenterY
                                                               multiplier:1
                                                                 constant:0]];
-    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
-                                                               attribute:NSLayoutAttributeWidth
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:_containerView
-                                                               attribute:NSLayoutAttributeWidth
-                                                              multiplier:1
-                                                                constant:0]];
+
+    NSLayoutConstraint *constraint;
+    constraint = [NSLayoutConstraint constraintWithItem:self.contentViewController.view
+                                              attribute:NSLayoutAttributeWidth
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:_containerView
+                                              attribute:NSLayoutAttributeWidth
+                                             multiplier:1
+                                               constant:0];
+    constraint.priority = 999;
+    [_containerView addConstraint:constraint];
+    constraint = [NSLayoutConstraint constraintWithItem:self.contentViewController.view
+                                              attribute:NSLayoutAttributeWidth
+                                              relatedBy:NSLayoutRelationLessThanOrEqual
+                                                 toItem:nil
+                                              attribute:NSLayoutAttributeNotAnAttribute
+                                             multiplier:1
+                                               constant:667]; // Full with at iPhone 6
+    constraint.priority = 1000;
+    [_containerView addConstraint:constraint];
+
     [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentViewController.view
                                                                attribute:NSLayoutAttributeHeight
                                                                relatedBy:NSLayoutRelationEqual

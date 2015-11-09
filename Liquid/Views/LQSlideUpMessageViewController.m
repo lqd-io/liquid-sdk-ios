@@ -16,6 +16,8 @@
 
 @end
 
+static NSNumber *messageMargin;
+
 @implementation LQSlideUpMessageViewController
 
 @synthesize inAppMessage = _inAppMessage;
@@ -26,10 +28,11 @@
 @synthesize callToAction = _callToAction;
 
 - (NSNumber *)height {
-    return [NSNumber numberWithFloat:self.messageView.frame.size.height];
+    return [NSNumber numberWithFloat:(self.messageView.frame.size.height + 20)];
 }
 
 - (void)viewDidLoad {
+    messageMargin = @20.0;
     _layoutIsDefined = NO;
     self.originalCenter = CGPointMake(self.view.center.x, self.view.center.y);
     [self assignGestureHandlers];
@@ -64,12 +67,13 @@
 #pragma mark - Sizes and Constraints
 
 - (void)defineHorizontalConstraints {
-    NSDictionary *viewsDictionary = @{ @"message": self.messageView, @"cta": self.callToAction };
-    NSString *format = @"H:|-[message]-[cta]-|";
+    NSString *format = @"H:|-(==margin)-[message]-[cta(==20)]-(==margin)-|";
+    NSDictionary *views = @{ @"message": self.messageView, @"cta": self.callToAction };
+    NSDictionary *metrics = @{ @"margin": messageMargin };
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                       options:0
-                                                                      metrics:nil
-                                                                        views:viewsDictionary]];
+                                                                      metrics:metrics
+                                                                        views:views]];
 }
 
 - (void)defineVerticalConstraints {
@@ -80,6 +84,14 @@
                                                           attribute:NSLayoutAttributeCenterY
                                                          multiplier:1
                                                            constant:0]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.messageView
+                                                          attribute:NSLayoutAttributeTopMargin
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeTopMargin
+                                                         multiplier:1
+                                                           constant:[messageMargin floatValue]]];
 }
 
 #pragma mark - Actions
