@@ -50,8 +50,13 @@
         self.queue = queue;
         self.eventTracker = eventTracker;
         self.presentingMessage = nil;
+        [self setupRotationNotification];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSMutableArray *)messagesQueue {
@@ -248,6 +253,24 @@
 
 + (void)dismissKeyboard {
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+}
+
+#pragma mark - Handle device rotation
+
+- (void)setupRotationNotification {
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deviceOrientationDidChange:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+}
+
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+    // Only SlideUp messages need rotation handle
+    if (self.presentingMessage && [self.presentingMessage isKindOfClass:[LQInAppMessageSlideUp class]]) {
+        self.window = nil;
+        [self presentInAppMessage:self.presentingMessage];
+    }
 }
 
 @end
