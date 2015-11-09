@@ -19,13 +19,12 @@
 #import "LQDate.h"
 #import "LQWindow.h"
 
-@interface LQInAppMessages () {
-    BOOL _presentingMessage;
-}
+@interface LQInAppMessages ()
 
 @property (nonatomic, strong) LQNetworking *networking;
 @property (nonatomic, strong) LQEventTracker *eventTracker;
 @property (nonatomic, strong) NSMutableArray *messagesQueue;
+@property (nonatomic, strong) id presentingMessage;
 #if OS_OBJECT_USE_OBJC
 @property (atomic, strong) dispatch_queue_t queue;
 #else
@@ -50,6 +49,7 @@
         self.networking = networking;
         self.queue = queue;
         self.eventTracker = eventTracker;
+        self.presentingMessage = nil;
     }
     return self;
 }
@@ -64,7 +64,7 @@
 #pragma mark - Request and Present Messages
 
 - (void)requestAndPresentInAppMessages {
-    if (_presentingMessage) {
+    if (self.presentingMessage) {
         LQLog(kLQLogLevelInfo, @"<Liquid/InAppMessages> Will not request more In-App Messages while showing one.");
         return;
     }
@@ -102,7 +102,7 @@
 }
 
 - (void)presentNextMessageInQueue {
-    if (_presentingMessage) {
+    if (self.presentingMessage) {
         LQLog(kLQLogLevelInfoVerbose, @"Already preesnting a In-App Message.");
         return;
     }
@@ -148,10 +148,10 @@
     }
     [[self class] dismissKeyboard];
     if ([message isKindOfClass:[LQInAppMessageModal class]]) {
-        _presentingMessage = YES;
+        self.presentingMessage = message;
         [self presentModalInAppMessage:message];
     } else if ([message isKindOfClass:[LQInAppMessageSlideUp class]]) {
-        _presentingMessage = YES;
+        self.presentingMessage = message;
         [self presentSlideUpInAppMessage:message];
     }
 }
@@ -190,7 +190,7 @@
     };
     slideUpView.hideAnimationCompletedBlock = ^{
         self.window = nil;
-        _presentingMessage = NO;
+        self.presentingMessage = nil;
         [self presentNextMessageInQueue];
     };
 
@@ -233,7 +233,7 @@
     };
     modalView.hideAnimationCompletedBlock = ^{
         self.window = nil;
-        _presentingMessage = NO;
+        self.presentingMessage = nil;
         [self presentNextMessageInQueue];
     };
 
