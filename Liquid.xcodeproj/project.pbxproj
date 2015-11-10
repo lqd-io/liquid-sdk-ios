@@ -45,6 +45,7 @@
 		A98CF0331949F627003DF949 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F121935077600D0E0A1 /* CoreTelephony.framework */; };
 		A98CF0341949F62C003DF949 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */; };
 		A98CF0371949F795003DF949 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
+		A99A44F31BF21E3F00D9BC55 /* LQCaret.m in Sources */ = {isa = PBXBuildFile; fileRef = A99A44F21BF21E3F00D9BC55 /* LQCaret.m */; settings = {ASSET_TAGS = (); }; };
 		A99B835A1940B9E1005AB709 /* data_point1.json in Resources */ = {isa = PBXBuildFile; fileRef = A99B83591940B9E1005AB709 /* data_point1.json */; };
 		A99BFF3419BB471A00C2C2A2 /* LQNetworkingSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A99BFF3319BB471A00C2C2A2 /* LQNetworkingSpec.m */; };
 		A99EB4F8192447FA0060E484 /* Liquid.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E1192447FA0060E484 /* Liquid.m */; };
@@ -171,6 +172,8 @@
 		A98CF0141949C7A3003DF949 /* LiquidDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidDemoViewController.h; sourceTree = "<group>"; };
 		A98CF0151949C7A3003DF949 /* LiquidDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiquidDemoViewController.m; sourceTree = "<group>"; };
 		A98CF0171949C7A3003DF949 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A99A44F11BF21E3F00D9BC55 /* LQCaret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQCaret.h; sourceTree = "<group>"; };
+		A99A44F21BF21E3F00D9BC55 /* LQCaret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQCaret.m; sourceTree = "<group>"; };
 		A99B83591940B9E1005AB709 /* data_point1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data_point1.json; path = HTTPStubs/data_point1.json; sourceTree = "<group>"; };
 		A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_correct_data_types.json; path = HTTPStubs/liquid_package_correct_data_types.json; sourceTree = "<group>"; };
 		A99BFF3219BB461E00C2C2A2 /* LQNetworkingPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQNetworkingPrivates.h; sourceTree = "<group>"; };
@@ -315,6 +318,8 @@
 				A91CC7E91BDAAF06007363F3 /* LQModalView.m */,
 				A93D5A2B1BE292410029CFD0 /* LQSlideUpView.h */,
 				A93D5A2C1BE292410029CFD0 /* LQSlideUpView.m */,
+				A99A44F11BF21E3F00D9BC55 /* LQCaret.h */,
+				A99A44F21BF21E3F00D9BC55 /* LQCaret.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -781,6 +786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A99A44F31BF21E3F00D9BC55 /* LQCaret.m in Sources */,
 				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
 				A93D5A2A1BE285F60029CFD0 /* LQInAppMessageSlideUp.m in Sources */,

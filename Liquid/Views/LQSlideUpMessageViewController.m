@@ -7,6 +7,7 @@
 //
 
 #import "LQSlideUpMessageViewController.h"
+#import "LQCaret.h"
 
 @interface LQSlideUpMessageViewController () {
     BOOL _layoutIsDefined;
@@ -38,6 +39,8 @@ static NSNumber *messageMargin;
     [self assignGestureHandlers];
 }
 
+#pragma mark - Layout
+
 - (void)defineLayoutWithInAppMessage {
     if (_layoutIsDefined) {
         [NSException raise:NSInternalInconsistencyException
@@ -49,19 +52,46 @@ static NSNumber *messageMargin;
                     format:@"No In-App Message was defined."];
         return;
     }
-    _layoutIsDefined = YES;
-    
-    // Configure view elements
-    [self.view setNeedsDisplay];
-    [self.messageView setText:self.inAppMessage.message];
-    self.view.backgroundColor = self.inAppMessage.backgroundColor;
-    self.messageView.textColor = self.inAppMessage.messageColor;
-    [self.callToAction setTitleColor:self.inAppMessage.messageColor forState:UIControlStateNormal];
-    [self.messageView sizeToFit];
 
+    // Define view elements
+    [self.view setNeedsDisplay];
+    self.view.backgroundColor = self.inAppMessage.backgroundColor;
+    [self defineMessageLayout];
+    [self defineCTALayout];
+
+    // Define constraints
     [self.view removeConstraints:self.view.constraints];
     [self defineHorizontalConstraints];
     [self defineVerticalConstraints];
+
+    _layoutIsDefined = YES;
+}
+
+- (void)defineMessageLayout {
+    [self.messageView setText:self.inAppMessage.message];
+    self.messageView.textColor = self.inAppMessage.messageColor;
+    [self.messageView sizeToFit];
+}
+
+- (void)defineCTALayout {
+    [self.callToAction setTitleColor:self.inAppMessage.messageColor forState:UIControlStateNormal];
+    [self.callToAction setTitle:@"" forState:UIControlStateNormal];
+    LQCaret *caret = [[LQCaret alloc] initWithFrame:CGRectMake(0, 0, 20, 20) strokeColor:self.inAppMessage.messageColor];
+    [self.callToAction addSubview:caret];
+    [self.callToAction addConstraint:[NSLayoutConstraint constraintWithItem:caret
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.callToAction
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                 multiplier:1
+                                                                   constant:0]];
+    [self.callToAction addConstraint:[NSLayoutConstraint constraintWithItem:caret
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.callToAction
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                 multiplier:1
+                                                                   constant:1]]; // slightly below the line
 }
 
 #pragma mark - Sizes and Constraints
