@@ -13,7 +13,7 @@
 
 + (UIColor *)colorFromHexadecimalString:(NSString *)hexadecimalString {
     if (![hexadecimalString isKindOfClass:[NSString class]]) {
-        LQLog(kLQLogLevelWarning, @"<Liquid> Warning: cannot get a color from a nil value. Expected an NSString instead.");
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Warning: cannot get a color from a nil value. Expected an NSString instead.");
         return nil;
     }
     if([hexadecimalString rangeOfString:@"#"].location != 0)
