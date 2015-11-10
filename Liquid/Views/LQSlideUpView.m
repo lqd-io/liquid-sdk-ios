@@ -11,6 +11,8 @@
 #import "LQSlideUpMessageViewController.h"
 
 static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curve ignores durations
+static NSInteger const kiPhone6Width = 667;
+static NSInteger const kCornerRadius = 4;
 
 @interface LQSlideUpView ()
 
@@ -97,6 +99,7 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
         self.contentViewController.view.layer.shadowColor = [UIColor blackColor].CGColor;
         self.contentViewController.view.layer.shadowOpacity = 0.25;
         self.contentViewController.view.layer.shadowOffset = CGSizeMake(0.0, -2.0);
+        self.contentViewController.view.layer.cornerRadius = kCornerRadius;
     }
     [self defineContainerViewConstraints];
     [self defineContentViewConstraints];
@@ -236,7 +239,7 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
                                                  toItem:_containerView
                                               attribute:NSLayoutAttributeWidth
                                              multiplier:1
-                                               constant:0];
+                                               constant:(kCornerRadius * 2)];
     constraint.priority = 999;
     [_containerView addConstraint:constraint];
     constraint = [NSLayoutConstraint constraintWithItem:self.contentViewController.view
@@ -245,7 +248,7 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
                                                  toItem:nil
                                               attribute:NSLayoutAttributeNotAnAttribute
                                              multiplier:1
-                                               constant:667]; // Full with at iPhone 6
+                                               constant:(kiPhone6Width + kCornerRadius * 2)]; // full width at iPhone 6
     constraint.priority = 1000;
     [_containerView addConstraint:constraint];
 

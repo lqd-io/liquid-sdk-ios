@@ -77,7 +77,7 @@
     [self.callsToActionButtons addObject:button]; // Respect the same order as CTAs in _inAppMessage
     [self.view addSubview:button];
 
-    // Define visual aspect
+    // Define visual elements
     [button setTitle:callToAction.title forState:UIControlStateNormal];
     [button setTitleColor:callToAction.titleColor forState:UIControlStateNormal];
     button.backgroundColor = callToAction.backgroundColor;
