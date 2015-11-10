@@ -29,11 +29,11 @@ static NSNumber *messageMargin;
 @synthesize callToAction = _callToAction;
 
 - (NSNumber *)height {
-    return [NSNumber numberWithFloat:(self.messageView.frame.size.height + 20)];
+    return [NSNumber numberWithFloat:(self.messageView.frame.size.height + [messageMargin floatValue] * 2)];
 }
 
 - (void)viewDidLoad {
-    messageMargin = @20.0;
+    messageMargin = @15.0;
     _layoutIsDefined = NO;
     self.originalCenter = CGPointMake(self.view.center.x, self.view.center.y);
     [self assignGestureHandlers];
@@ -116,10 +116,10 @@ static NSNumber *messageMargin;
                                                            constant:0]];
 
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.messageView
-                                                          attribute:NSLayoutAttributeTopMargin
+                                                          attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
-                                                          attribute:NSLayoutAttributeTopMargin
+                                                          attribute:NSLayoutAttributeTop
                                                          multiplier:1
                                                            constant:[messageMargin floatValue]]];
 }

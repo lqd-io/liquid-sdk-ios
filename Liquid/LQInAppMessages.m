@@ -205,7 +205,7 @@
     };
 
     // Create window and show message
-    UIWindow *window = [LQWindow bottomWindowWithHeight:[messageViewController.height floatValue] + 8];
+    UIWindow *window = [LQWindow bottomWindowWithHeight:[messageViewController.height floatValue]];
     [window makeKeyAndVisible];
     self.window = window;
     [slideUpView presentInWindow:self.window];

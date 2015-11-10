@@ -10,6 +10,10 @@
 
 @interface LQRootViewController : UIViewController
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 90000
+@property (nonatomic, assign) NSUInteger interfaceOrientationMask;
+#else
 @property (nonatomic, assign) UIInterfaceOrientationMask interfaceOrientationMask;
+#endif
 
 @end
