@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.0.0-rc2: Fix compiling issues
+
+* **[bugfix]** Small fix that could avoid compiling on iOS < 9
+
 ## 2.0.0-rc1: Add support for In-App Messaging
 
 * **[feature]** [iOS >= 6.0] Add support for Modal In-App Messages.
