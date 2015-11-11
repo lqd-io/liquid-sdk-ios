@@ -157,22 +157,24 @@
         return;
     }
     [[self class] dismissKeyboard];
+    BOOL presented = NO;
     if ([message isKindOfClass:[LQInAppMessageModal class]]) {
         self.presentingMessage = message;
-        [self presentModalInAppMessage:message];
+        presented = [self presentModalInAppMessage:message];
     } else if ([message isKindOfClass:[LQInAppMessageSlideUp class]]) {
         self.presentingMessage = message;
-        [self presentSlideUpInAppMessage:message];
-    } else {
+        presented = [self presentSlideUpInAppMessage:message];
+    }
+    if (!presented) {
         [self unpresentCurrentMessage];
         [self presentNextMessageInQueue];
     }
 }
 
-- (void)presentSlideUpInAppMessage:(LQInAppMessageSlideUp *)message {
+- (BOOL)presentSlideUpInAppMessage:(LQInAppMessageSlideUp *)message {
     if(![[NSBundle mainBundle] pathForResource:@"LQSlideUpMessage" ofType:@"nib"]) {
         LQLog(kLQLogLevelError, @"Could not find LQSlideUpMessage XIB to show SlideUp In-App Message.");
-        return;
+        return NO;
     }
     
     // Put SlideUpMessageView inside SlideUpView and present it
@@ -209,12 +211,13 @@
     [window makeKeyAndVisible];
     self.window = window;
     [slideUpView presentInWindow:self.window];
+    return YES;
 }
 
-- (void)presentModalInAppMessage:(LQInAppMessageModal *)message {
+- (BOOL)presentModalInAppMessage:(LQInAppMessageModal *)message {
     if(![[NSBundle mainBundle] pathForResource:@"LQModalMessage" ofType:@"nib"]) {
         LQLog(kLQLogLevelError, @"Could not find LQModalMessage XIB to show Modal In-App Message.");
-        return;
+        return NO;
     }
 
     // Put ModalMessageView inside ModalView and present it
@@ -251,6 +254,7 @@
     [window makeKeyAndVisible];
     self.window = window;
     [modalView presentInWindow:self.window];
+    return YES;
 }
 
 #pragma mark - Keyboard
