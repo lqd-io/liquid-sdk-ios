@@ -16,7 +16,11 @@
 
 @synthesize interfaceOrientationMask = _interfaceOrientationMask;
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 90000
+- (NSUInteger)interfaceOrientationMask {
+#else
 - (UIInterfaceOrientationMask)interfaceOrientationMask {
+#endif
     if (!_interfaceOrientationMask) {
         _interfaceOrientationMask = UIInterfaceOrientationMaskPortrait;
     }
