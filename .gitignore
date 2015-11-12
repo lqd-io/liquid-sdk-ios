@@ -3,6 +3,7 @@
 
 # Xcode
 build/
+DerivedData
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -13,9 +14,12 @@ build/
 !default.perspectivev3
 xcuserdata
 *.xccheckout
-profile
 *.moved-aside
-DerivedData
+*.xcuserstate
+*.xcscmblueprint
+*.xcscheme
+
+## Obj-C/Swift specific
 *.hmap
 *.ipa
 
