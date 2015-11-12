@@ -69,6 +69,10 @@
 #pragma mark - Request and Present Messages
 
 - (void)requestAndPresentInAppMessages {
+    if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
+        LQLog(kLQLogLevelInfo, @"<Liquid/InAppMessages> In-App Messages are only supported in iOS >= 6.0.");
+        return;
+    }
     if (self.presentingMessage) {
         LQLog(kLQLogLevelInfo, @"<Liquid/InAppMessages> Will not request more In-App Messages while showing one.");
         return;
