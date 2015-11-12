@@ -1,5 +1,18 @@
 # Liquid iOS SDK Change Log
 
+## 2.0.0-rc2: Fix compiling issues
+
+* **[bugfix]** Small fix that could avoid compiling on iOS < 9
+
+## 2.0.0-rc1: Add support for In-App Messaging
+
+* **[feature]** [iOS >= 6.0] Add support for Modal In-App Messages.
+* **[feature]** [iOS >= 6.0] Add support for Banner n-App Messages.
+
+## 1.2.2: Avoid a crash while changing a user attribute
+
+* **[bugfix]** Avoid a race condition in certain situations, while changing a user attribute with `setUserAttribute:forKey:` or while setting the device location with `setCurrentLocation:`.
+
 ## 1.2.1: Fix compiler warnings
 * **[fix warning]** Change deprecated `NSGregorianCalendar` to `NSCalendarIdentifierGregorian`.
 * **[fix warning]** Always use `arc4random_uniform` (instead of `arc4random`) to generate random values.

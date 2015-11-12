@@ -97,6 +97,21 @@
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A9E98054193E257C0055D1E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
 		A9E9805A193E257C0055D1E7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9E98058193E257C0055D1E7 /* InfoPlist.strings */; };
+		A9EA29A61BF520FD001BE1B7 /* LQCallToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29A51BF520FD001BE1B7 /* LQCallToAction.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29AD1BF5210A001BE1B7 /* LQInAppMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29A81BF5210A001BE1B7 /* LQInAppMessage.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29AE1BF5210A001BE1B7 /* LQInAppMessageModal.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29AA1BF5210A001BE1B7 /* LQInAppMessageModal.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29AC1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29B21BF52131001BE1B7 /* LQRootViewController.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29C11BF52157001BE1B7 /* LQCaret.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29B61BF52157001BE1B7 /* LQCaret.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29C21BF52157001BE1B7 /* LQModalMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29B91BF52157001BE1B7 /* LQModalMessageViewController.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29C31BF52157001BE1B7 /* LQModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29BB1BF52157001BE1B7 /* LQModalView.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29C41BF52157001BE1B7 /* LQSlideUpMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29BE1BF52157001BE1B7 /* LQSlideUpMessageViewController.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29C51BF52157001BE1B7 /* LQSlideUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29C01BF52157001BE1B7 /* LQSlideUpView.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29CA1BF521F3001BE1B7 /* LQEventTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29C91BF521F3001BE1B7 /* LQEventTracker.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29CD1BF52201001BE1B7 /* LQInAppMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29CC1BF52201001BE1B7 /* LQInAppMessages.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29D01BF522FF001BE1B7 /* LQWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29CF1BF522FF001BE1B7 /* LQWindow.m */; settings = {ASSET_TAGS = (); }; };
+		A9EA29D21BF52651001BE1B7 /* LQModalMessage.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9EA29B71BF52157001BE1B7 /* LQModalMessage.xib */; };
+		A9EA29D31BF52654001BE1B7 /* LQSlideUpMessage.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9EA29BC1BF52157001BE1B7 /* LQSlideUpMessage.xib */; };
 		A9EB204419352FBA00191F7E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */; };
 		A9EB204619353CD200191F7E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
 		A9F3264419527046005731BD /* liquid_package_targets.json in Resources */ = {isa = PBXBuildFile; fileRef = A9F3264319527046005731BD /* liquid_package_targets.json */; };
@@ -314,6 +329,34 @@
 		A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidTests-Info.plist"; sourceTree = "<group>"; };
 		A9E98059193E257C0055D1E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A9E9805D193E257C0055D1E7 /* LiquidTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LiquidTests-Prefix.pch"; sourceTree = "<group>"; };
+		A9EA29A41BF520FD001BE1B7 /* LQCallToAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQCallToAction.h; sourceTree = "<group>"; };
+		A9EA29A51BF520FD001BE1B7 /* LQCallToAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQCallToAction.m; sourceTree = "<group>"; };
+		A9EA29A71BF5210A001BE1B7 /* LQInAppMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessage.h; sourceTree = "<group>"; };
+		A9EA29A81BF5210A001BE1B7 /* LQInAppMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessage.m; sourceTree = "<group>"; };
+		A9EA29A91BF5210A001BE1B7 /* LQInAppMessageModal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessageModal.h; sourceTree = "<group>"; };
+		A9EA29AA1BF5210A001BE1B7 /* LQInAppMessageModal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessageModal.m; sourceTree = "<group>"; };
+		A9EA29AB1BF5210A001BE1B7 /* LQInAppMessageSlideUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessageSlideUp.h; sourceTree = "<group>"; };
+		A9EA29AC1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessageSlideUp.m; sourceTree = "<group>"; };
+		A9EA29B11BF52131001BE1B7 /* LQRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQRootViewController.h; path = ViewControllers/LQRootViewController.h; sourceTree = "<group>"; };
+		A9EA29B21BF52131001BE1B7 /* LQRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQRootViewController.m; path = ViewControllers/LQRootViewController.m; sourceTree = "<group>"; };
+		A9EA29B51BF52157001BE1B7 /* LQCaret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQCaret.h; path = Views/LQCaret.h; sourceTree = "<group>"; };
+		A9EA29B61BF52157001BE1B7 /* LQCaret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQCaret.m; path = Views/LQCaret.m; sourceTree = "<group>"; };
+		A9EA29B71BF52157001BE1B7 /* LQModalMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LQModalMessage.xib; path = Views/LQModalMessage.xib; sourceTree = "<group>"; };
+		A9EA29B81BF52157001BE1B7 /* LQModalMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQModalMessageViewController.h; path = Views/LQModalMessageViewController.h; sourceTree = "<group>"; };
+		A9EA29B91BF52157001BE1B7 /* LQModalMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQModalMessageViewController.m; path = Views/LQModalMessageViewController.m; sourceTree = "<group>"; };
+		A9EA29BA1BF52157001BE1B7 /* LQModalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQModalView.h; path = Views/LQModalView.h; sourceTree = "<group>"; };
+		A9EA29BB1BF52157001BE1B7 /* LQModalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQModalView.m; path = Views/LQModalView.m; sourceTree = "<group>"; };
+		A9EA29BC1BF52157001BE1B7 /* LQSlideUpMessage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LQSlideUpMessage.xib; path = Views/LQSlideUpMessage.xib; sourceTree = "<group>"; };
+		A9EA29BD1BF52157001BE1B7 /* LQSlideUpMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQSlideUpMessageViewController.h; path = Views/LQSlideUpMessageViewController.h; sourceTree = "<group>"; };
+		A9EA29BE1BF52157001BE1B7 /* LQSlideUpMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQSlideUpMessageViewController.m; path = Views/LQSlideUpMessageViewController.m; sourceTree = "<group>"; };
+		A9EA29BF1BF52157001BE1B7 /* LQSlideUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQSlideUpView.h; path = Views/LQSlideUpView.h; sourceTree = "<group>"; };
+		A9EA29C01BF52157001BE1B7 /* LQSlideUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQSlideUpView.m; path = Views/LQSlideUpView.m; sourceTree = "<group>"; };
+		A9EA29C81BF521F3001BE1B7 /* LQEventTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQEventTracker.h; sourceTree = "<group>"; };
+		A9EA29C91BF521F3001BE1B7 /* LQEventTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQEventTracker.m; sourceTree = "<group>"; };
+		A9EA29CB1BF52201001BE1B7 /* LQInAppMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQInAppMessages.h; sourceTree = "<group>"; };
+		A9EA29CC1BF52201001BE1B7 /* LQInAppMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQInAppMessages.m; sourceTree = "<group>"; };
+		A9EA29CE1BF522FF001BE1B7 /* LQWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQWindow.h; path = ../Helpers/LQWindow.h; sourceTree = "<group>"; };
+		A9EA29CF1BF522FF001BE1B7 /* LQWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQWindow.m; path = ../Helpers/LQWindow.m; sourceTree = "<group>"; };
 		A9EB204519353CD200191F7E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A9F3264319527046005731BD /* liquid_package_targets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package_targets.json; path = HTTPStubs/liquid_package_targets.json; sourceTree = "<group>"; };
 		A9FBA7A81B03981200900AAC /* LQKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQKeychain.h; sourceTree = "<group>"; };
@@ -533,6 +576,16 @@
 		A99EB4E3192447FA0060E484 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A9EA29CE1BF522FF001BE1B7 /* LQWindow.h */,
+				A9EA29CF1BF522FF001BE1B7 /* LQWindow.m */,
+				A9EA29A41BF520FD001BE1B7 /* LQCallToAction.h */,
+				A9EA29A51BF520FD001BE1B7 /* LQCallToAction.m */,
+				A9EA29A71BF5210A001BE1B7 /* LQInAppMessage.h */,
+				A9EA29A81BF5210A001BE1B7 /* LQInAppMessage.m */,
+				A9EA29A91BF5210A001BE1B7 /* LQInAppMessageModal.h */,
+				A9EA29AA1BF5210A001BE1B7 /* LQInAppMessageModal.m */,
+				A9EA29AB1BF5210A001BE1B7 /* LQInAppMessageSlideUp.h */,
+				A9EA29AC1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m */,
 				A9BA7D2819AA698700E1F0F2 /* LQDate.h */,
 				A9BA7D2919AA698700E1F0F2 /* LQDate.m */,
 				A99EB4EC192447FA0060E484 /* LQRequest.h */,
@@ -611,6 +664,76 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A9EA29B01BF52117001BE1B7 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A9EA29B11BF52131001BE1B7 /* LQRootViewController.h */,
+				A9EA29B21BF52131001BE1B7 /* LQRootViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		A9EA29B41BF5213A001BE1B7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A9EA29B51BF52157001BE1B7 /* LQCaret.h */,
+				A9EA29B61BF52157001BE1B7 /* LQCaret.m */,
+				A9EA29B71BF52157001BE1B7 /* LQModalMessage.xib */,
+				A9EA29B81BF52157001BE1B7 /* LQModalMessageViewController.h */,
+				A9EA29B91BF52157001BE1B7 /* LQModalMessageViewController.m */,
+				A9EA29BA1BF52157001BE1B7 /* LQModalView.h */,
+				A9EA29BB1BF52157001BE1B7 /* LQModalView.m */,
+				A9EA29BC1BF52157001BE1B7 /* LQSlideUpMessage.xib */,
+				A9EA29BD1BF52157001BE1B7 /* LQSlideUpMessageViewController.h */,
+				A9EA29BE1BF52157001BE1B7 /* LQSlideUpMessageViewController.m */,
+				A9EA29BF1BF52157001BE1B7 /* LQSlideUpView.h */,
+				A9EA29C01BF52157001BE1B7 /* LQSlideUpView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		A9EA29D11BF52302001BE1B7 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
+				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
+				A9FBA7A81B03981200900AAC /* LQKeychain.h */,
+				A9FBA7A91B03981200900AAC /* LQKeychain.m */,
+				A9E789E519BFBBC0006CA1D8 /* LQStorage.h */,
+				A9E789E619BFBBC0006CA1D8 /* LQStorage.m */,
+				A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */,
+				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
+			);
+			name = Lib;
+			sourceTree = "<group>";
+		};
+		A9EA29D41BF52826001BE1B7 /* Liquid Modules */ = {
+			isa = PBXGroup;
+			children = (
+				A9EA29C81BF521F3001BE1B7 /* LQEventTracker.h */,
+				A9EA29C91BF521F3001BE1B7 /* LQEventTracker.m */,
+				A9EA29CB1BF52201001BE1B7 /* LQInAppMessages.h */,
+				A9EA29CC1BF52201001BE1B7 /* LQInAppMessages.m */,
+				A90F158F1BD1711A00E70FD7 /* LQNetworkingProtected.h */,
+				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
+				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
+				A90F15881BD16BA900E70FD7 /* LQNetworkingURLConnection.h */,
+				A90F15891BD16BA900E70FD7 /* LQNetworkingURLConnection.m */,
+				A90F158B1BD16C1200E70FD7 /* LQNetworkingURLSession.h */,
+				A90F158C1BD16C1200E70FD7 /* LQNetworkingURLSession.m */,
+			);
+			name = "Liquid Modules";
+			sourceTree = "<group>";
+		};
+		A9EA29D51BF5283E001BE1B7 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				A96D872F1BD2B2E2003158EB /* LQNetworkingFactory.h */,
+				A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */,
+			);
+			name = Factories;
+			sourceTree = "<group>";
+		};
 		C73E4AD61923C61D001EF2E6 = {
 			isa = PBXGroup;
 			children = (
@@ -661,24 +784,12 @@
 				A99EB4E0192447FA0060E484 /* Liquid.h */,
 				A99EB4E1192447FA0060E484 /* Liquid.m */,
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
-				A96D872F1BD2B2E2003158EB /* LQNetworkingFactory.h */,
-				A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */,
-				A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */,
-				A90F158F1BD1711A00E70FD7 /* LQNetworkingProtected.h */,
-				A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */,
-				A90F15881BD16BA900E70FD7 /* LQNetworkingURLConnection.h */,
-				A90F15891BD16BA900E70FD7 /* LQNetworkingURLConnection.m */,
-				A90F158B1BD16C1200E70FD7 /* LQNetworkingURLSession.h */,
-				A90F158C1BD16C1200E70FD7 /* LQNetworkingURLSession.m */,
-				A9FBA7A81B03981200900AAC /* LQKeychain.h */,
-				A9FBA7A91B03981200900AAC /* LQKeychain.m */,
-				A9E789E519BFBBC0006CA1D8 /* LQStorage.h */,
-				A9E789E619BFBBC0006CA1D8 /* LQStorage.m */,
-				A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */,
-				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
-				A9BA7D2B19AA928C00E1F0F2 /* LQHelpers.h */,
-				A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
+				A9EA29D41BF52826001BE1B7 /* Liquid Modules */,
+				A9EA29D11BF52302001BE1B7 /* Lib */,
+				A9EA29D51BF5283E001BE1B7 /* Factories */,
+				A9EA29B41BF5213A001BE1B7 /* Views */,
+				A9EA29B01BF52117001BE1B7 /* View Controllers */,
 				A99EB54F1924DB730060E484 /* Categories */,
 				A99EB4E3192447FA0060E484 /* Model */,
 			);
@@ -866,6 +977,8 @@
 				A98CF0181949C7A3003DF949 /* Images.xcassets in Resources */,
 				A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */,
 				A98CF0131949C7A3003DF949 /* LiquidDemo.storyboard in Resources */,
+				A9EA29D21BF52651001BE1B7 /* LQModalMessage.xib in Resources */,
+				A9EA29D31BF52654001BE1B7 /* LQSlideUpMessage.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1008,6 +1121,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9EA29CA1BF521F3001BE1B7 /* LQEventTracker.m in Sources */,
 				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
@@ -1016,25 +1130,37 @@
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
+				A9EA29C41BF52157001BE1B7 /* LQSlideUpMessageViewController.m in Sources */,
 				A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
+				A9EA29AD1BF5210A001BE1B7 /* LQInAppMessage.m in Sources */,
 				A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A9FBA7AA1B03981200900AAC /* LQKeychain.m in Sources */,
+				A9EA29C51BF52157001BE1B7 /* LQSlideUpView.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
+				A9EA29D01BF522FF001BE1B7 /* LQWindow.m in Sources */,
+				A9EA29CD1BF52201001BE1B7 /* LQInAppMessages.m in Sources */,
 				A92016DE1BCF169F00859450 /* Liquid+iOS.m in Sources */,
+				A9EA29C31BF52157001BE1B7 /* LQModalView.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
+				A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
+				A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */,
+				A9EA29C21BF52157001BE1B7 /* LQModalMessageViewController.m in Sources */,
 				A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */,
+				A9EA29C11BF52157001BE1B7 /* LQCaret.m in Sources */,
+				A9EA29A61BF520FD001BE1B7 /* LQCallToAction.m in Sources */,
 				A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */,
 				A99EB500192447FA0060E484 /* LQUser.m in Sources */,
 				A90F158A1BD16BA900E70FD7 /* LQNetworkingURLConnection.m in Sources */,
 				A9FBA7B61B090BD300900AAC /* LQUserDefaults.m in Sources */,
 				A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */,
 				A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */,
+				A9EA29AE1BF5210A001BE1B7 /* LQInAppMessageModal.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

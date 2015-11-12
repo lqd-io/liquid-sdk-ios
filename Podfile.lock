@@ -1,7 +1,9 @@
 PODS:
   - Kiwi (2.3.0)
   - OCMock (2.2.4)
-  - OHHTTPStubs (3.1.2)
+  - OHHTTPStubs (3.1.12):
+    - OHHTTPStubs/Core (= 3.1.12)
+  - OHHTTPStubs/Core (3.1.12)
 
 DEPENDENCIES:
   - Kiwi (from `https://github.com/kiwi-bdd/Kiwi.git`, tag `2.3.0`)
@@ -21,6 +23,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Kiwi: 4c3988bd551f80f6ca0009f302f7c1a2e3777bf2
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
-  OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
+  OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
 
 COCOAPODS: 0.39.0

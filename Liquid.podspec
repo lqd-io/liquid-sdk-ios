@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name              = "Liquid"
-  s.version           = "1.2.1"
+  s.version           = "2.0.0-rc2"
   s.summary           = "Liquid is a platform that enables publishers to dynamically serve their applications based on user profiling, activity and context."
   s.homepage          = "https://onliquid.com/"
   s.license           = 'Apache, Version 2.0'
@@ -21,6 +21,7 @@ Pod::Spec.new do |s|
   }
   s.source_files = 'Liquid/**/*.{m,h}'
   s.public_header_files = 'Liquid/**/*.h'
+  s.resources = 'Liquid/**/*.xib'
 
   s.watchos.deployment_target = '2.0'
 end

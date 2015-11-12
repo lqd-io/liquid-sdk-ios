@@ -24,7 +24,7 @@
 + (LQUser *)unarchiveUserForToken:(NSString *)apiToken;
 + (void)deleteUserFileForToken:(NSString *)apiToken;
 
-@property(nonatomic, strong, readonly) NSString *identifier;
-@property(nonatomic, strong) NSDictionary *attributes;
+@property(atomic, strong, readonly) NSString *identifier;
+@property(atomic, strong) NSDictionary *attributes;
 
 @end

@@ -30,27 +30,35 @@
 #import "NSData+LQData.h"
 #import "LQNetworkingFactory.h"
 #import "LQStorage.h"
+#import "LQInAppMessages.h"
+#import "LQEventTracker.h"
 
 #if !__has_feature(objc_arc)
 #  error Compile me with ARC, please!
 #endif
 
-@interface Liquid ()
+@interface Liquid () {
+    LQUser *_currentUser;
+    LQSession *_currentSession;
+}
 
-@property(nonatomic, strong) NSString *apiToken;
-@property(nonatomic, assign) BOOL developmentMode;
-@property(atomic, strong) LQUser *currentUser;
-@property(atomic, strong) LQUser *previousUser;
-@property(atomic, strong) LQDevice *device;
-@property(atomic, strong) LQSession *currentSession;
-@property(nonatomic, strong) NSDate *enterBackgroundTime;
-@property(atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
-@property(nonatomic, strong) NSMutableArray *valuesSentToServer;
-@property(atomic, strong) LQNetworking *networking;
+@property (nonatomic, strong) NSString *apiToken;
+@property (nonatomic, assign) BOOL developmentMode;
+@property (atomic, strong) LQUser *currentUser;
+@property (atomic, strong) LQUser *previousUser;
+@property (atomic, strong) LQDevice *device;
+@property (atomic, strong) LQSession *currentSession;
+@property (nonatomic, strong) NSDate *enterBackgroundTime;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
+@property (atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
+@property (nonatomic, strong) NSMutableArray *valuesSentToServer;
+@property (atomic, strong) LQNetworking *networking;
+@property (nonatomic, strong) LQInAppMessages *inAppMessages;
+@property (nonatomic, strong) LQEventTracker *eventTracker;
 #if OS_OBJECT_USE_OBJC
-@property(atomic, strong) dispatch_queue_t queue;
+@property (atomic, strong) dispatch_queue_t queue;
 #else
-@property(atomic, assign) dispatch_queue_t queue;
+@property (atomic, assign) dispatch_queue_t queue;
 #endif
 
 @end
@@ -65,6 +73,8 @@ static Liquid *sharedInstance = nil;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 @synthesize valuesSentToServer = _valuesSentToServer;
 @synthesize networking = _networking;
+@synthesize inAppMessages = _inAppMessages;
+@synthesize eventTracker = _eventTracker;
 
 NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
 NSString * const LQDidLoadValues = kLQNotificationLQDidLoadValues;
@@ -128,6 +138,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
+        self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
+        self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
         self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
@@ -147,7 +159,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             LQLog(kLQLogLevelInfo, @"<Liquid> Found a cached user (%@). Identified using it.", _previousUser.identifier);
         } else {
             [self resetUser];
-            LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", _currentUser.identifier);
+            LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", self.currentUser.identifier);
         }
         if (!self.currentSession) {
             [self startSessionBy:@"Identify" with:self.currentUser.identifier];
@@ -157,6 +169,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [_networking startFlushTimer];
 
         [self bindNotifications];
+
+        // Request and present In-App Messages
+        [self.inAppMessages requestAndPresentInAppMessages];
 
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }
@@ -178,6 +193,25 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     return _valuesSentToServer;
 }
 
+- (LQUser *)currentUser {
+    return _currentUser;
+}
+
+- (void)setCurrentUser:(LQUser *)currentUser {
+    _currentUser = currentUser;
+    _eventTracker.currentUser = currentUser;
+    _inAppMessages.currentUser = currentUser;
+}
+
+- (LQSession *)currentSession {
+    return _currentSession;
+}
+
+- (void)setCurrentSession:(LQSession *)currentSession {
+    _currentSession = currentSession;
+    _eventTracker.currentSession = currentSession;
+}
+
 #pragma mark - UIApplication notifications
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification {
@@ -193,6 +227,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     [_networking startFlushTimer];
     [self loadLiquidPackageSynced:YES];
+
+    // Request and present In-App Messages
+    [self.inAppMessages requestAndPresentInAppMessages];
 }
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
@@ -296,17 +333,15 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)setUserAttribute:(id)attribute forKey:(NSString *)key {
-    if (![LQUser assertAttributeType:attribute andKey:key]) return;
-
-    dispatch_async(self.queue, ^{
-        if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
-            return;
-        }
-        [self.currentUser setAttribute:attribute
-                                forKey:key];
-        [self saveCurrentUserToDisk];
-    });
+    if (![LQUser assertAttributeType:attribute andKey:key]) {
+        return;
+    }
+    if(self.currentUser == nil) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
+        return;
+    }
+    [self.currentUser setAttribute:attribute forKey:key];
+    [self saveCurrentUserToDisk];
 }
 
 - (void)setUserAttributes:(NSDictionary *)attributes {
@@ -319,13 +354,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)setCurrentLocation:(CLLocation *)location {
-    dispatch_async(self.queue, ^{
-        if(self.currentUser == nil) {
-            LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
-            return;
-        }
-        [self.device setLocation:location];
-    });
+    if(self.currentUser == nil) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error: A user has not been identified yet.");
+        return;
+    }
+    [self.device setLocation:location];
 }
 
 - (void)saveCurrentUserToDisk {
@@ -441,57 +474,15 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents withDate:(NSDate *)eventDate {
-    NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
-
     if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
         NSAssert(false, @"<Liquid> Event names cannot start with _");
         LQLog(kLQLogLevelError, @"<Liquid> Event names cannot start with _");
         return;
     }
-
-    if(!self.currentUser) {
-        LQLog(kLQLogLevelError, @"<Liquid> No user identified yet.");
-        return;
-    }
-    if(!self.currentSession) {
-        LQLog(kLQLogLevelError, @"<Liquid> No session started yet.");
-        return;
-    }
-
-    NSDate *now;
-    if (eventDate) {
-        now = [eventDate copy];
-    } else {
-        now = [LQDate uniqueNow];
-    }
-    
-    if ([eventName hasPrefix:@"_"]) {
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Tracking Liquid event %@ (%@)", eventName, [NSDateFormatter iso8601StringFromDate:now]);
-    } else {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking event %@ (%@)", eventName, [NSDateFormatter iso8601StringFromDate:now]);
-    }
-    
-    NSString *finalEventName = eventName;
-    if (eventName == nil || [eventName length] == 0) {
-        LQLog(kLQLogLevelInfo, @"<Liquid> Tracking unnammed event.");
-        finalEventName = @"unnamedEvent";
-    }
-    LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
-    LQUser *user = self.currentUser;
-    LQDevice *device = self.device;
-    LQSession *session = self.currentSession;
-    NSArray *loadedValues = _loadedLiquidPackage.values;
-    LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
-                                                          user:user
-                                                        device:device
-                                                       session:session
-                                                         event:event
-                                                        values:loadedValues];
-    NSDictionary *jsonDict = [dataPoint jsonDictionary];
-    NSData *jsonData = [NSData toJSON:jsonDict];
-    dispatch_async(self.queue, ^{
-        [_networking addToHttpQueue:jsonData endPoint:@"data_points" httpMethod:@"POST"];
-    });
+    [self.eventTracker track:eventName
+                  attributes:attributes
+                loadedValues:_loadedLiquidPackage.values
+                    withDate:eventDate];
 }
 
 #pragma mark - Liquid Package
