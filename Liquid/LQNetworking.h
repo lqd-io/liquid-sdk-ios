@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LQRequest.h"
 
 @interface LQNetworking : NSObject
 
@@ -27,7 +28,9 @@
 + (NSMutableArray*)unarchiveHttpQueueForToken:(NSString*)apiToken;
 + (void)deleteHttpQueueFileForToken:(NSString *)token;
 
-- (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
-- (NSData *)getDataFromEndpoint:(NSString *)endpoint;
+- (void)sendData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler;
+- (void)getDataFromEndpoint:(nonnull NSString *)endpoint completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData)) completionHandler;
+- (LQQueueStatus)sendSynchronousData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method;
+- (nullable NSData *)getSynchronousDataFromEndpoint:(nonnull NSString *)endpoint;
 
 @end

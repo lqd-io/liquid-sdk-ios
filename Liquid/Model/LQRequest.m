@@ -15,10 +15,10 @@
 #define kLQQueueJSON @"JSON"
 #define kLQQueueNumberOfTries @"NumberOfTries"
 
-NSInteger const LQQueueStatusOk = 0;
-NSInteger const LQQueueStatusUnreachable = 1;
-NSInteger const LQQueueStatusUnauthorized = 2;
-NSInteger const LQQueueStatusRejected = 3;
+LQQueueStatus const LQQueueStatusOk = 0;
+LQQueueStatus const LQQueueStatusUnreachable = 1;
+LQQueueStatus const LQQueueStatusUnauthorized = 2;
+LQQueueStatus const LQQueueStatusRejected = 3;
 
 @synthesize nextTryAfter = _nextTryAfter;
 

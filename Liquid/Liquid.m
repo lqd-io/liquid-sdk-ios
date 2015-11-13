@@ -497,7 +497,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         return nil;
     }
     NSString *endPoint = [NSString stringWithFormat:@"users/%@/devices/%@/liquid_package", self.currentUser.identifier, self.device.uid, nil];
-    NSData *dataFromServer = [_networking getDataFromEndpoint:endPoint];
+    NSData *dataFromServer = [_networking getSynchronousDataFromEndpoint:endPoint];
     LQLiquidPackage *liquidPackage = nil;
     if(dataFromServer != nil) {
         NSDictionary *liquidPackageDictionary = [NSData fromJSON:dataFromServer];
@@ -580,9 +580,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                       (fallbackValue?fallbackValue:[NSNull null]), @"default_value", nil];
             NSData *json = [NSData toJSON:variable];
             LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending fallback Variable to server: %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
-            NSInteger res = [_networking sendData:json
-                                       toEndpoint:@"variables"
-                                      usingMethod:@"POST"];
+            LQQueueStatus res = [_networking sendSynchronousData:json
+                                                      toEndpoint:@"variables"
+                                                     usingMethod:@"POST"];
             if(res != LQQueueStatusOk) LQLog(kLQLogLevelHttpData, @"<Liquid> Could not send variables to server %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
         }
     });

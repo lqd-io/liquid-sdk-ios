@@ -143,9 +143,9 @@ NSUInteger const maxTries = kLQHttpMaxTries;
             LQRequest *queuedHttp = [self.httpQueue firstObject];
             if ([[NSDate new] compare:[queuedHttp nextTryAfter]] > NSOrderedAscending) {
                 LQLog(kLQLogLevelHttpData, @"<Liquid> Flushing: %@", [[NSString alloc] initWithData:queuedHttp.json encoding:NSUTF8StringEncoding]);
-                NSInteger res = [self sendData:queuedHttp.json
-                                    toEndpoint:queuedHttp.url
-                                   usingMethod:queuedHttp.httpMethod];
+                LQQueueStatus res = [self sendSynchronousData:queuedHttp.json
+                                                   toEndpoint:queuedHttp.url
+                                                  usingMethod:queuedHttp.httpMethod];
                 [self.httpQueue removeObject:queuedHttp];
                 if(res != LQQueueStatusOk) {
                     if([[queuedHttp numberOfTries] intValue] < kLQHttpMaxTries) {
@@ -170,6 +170,8 @@ NSUInteger const maxTries = kLQHttpMaxTries;
         [self archiveHttpQueue];
     }
 }
+
+#pragma mark - Queue of requests to send to server
 
 - (void)resetHttpQueue {
     _httpQueue = [NSMutableArray new];
@@ -237,16 +239,44 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     }
 }
 
-- (NSInteger)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method {
+#pragma mark - Asynchronous send/get methods
+
+- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (NSData *)getDataFromEndpoint:(NSString *)endpoint {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
+- (void)sendData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler {
+    [self requestData:data toEndpoint:endpoint usingMethod:method completionHandler:completionHandler];
+}
+
+- (void)getDataFromEndpoint:(nonnull NSString *)endpoint completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData)) completionHandler {
+    [self requestData:nil toEndpoint:endpoint usingMethod:@"GET" completionHandler:completionHandler];
+}
+
+#pragma mark - Synchronous send/get methods
+
+- (LQQueueStatus)sendSynchronousData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method {
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    __block LQQueueStatus returnQueueStatus;
+    [self sendData:data toEndpoint:endpoint usingMethod:method completionHandler:^(LQQueueStatus queueStatus, NSData * _Nullable responseData) {
+        returnQueueStatus = queueStatus;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    return returnQueueStatus;
+}
+
+- (NSData *)getSynchronousDataFromEndpoint:(nonnull NSString *)endpoint {
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    __block NSData *returnData = nil;
+    [self getDataFromEndpoint:endpoint completionHandler:^(LQQueueStatus queueStatus, NSData * _Nullable responseData) {
+        returnData = responseData;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    return returnData;
 }
 
 @end

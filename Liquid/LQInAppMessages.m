@@ -104,7 +104,7 @@
         return;
     }
     NSString *endPoint = [NSString stringWithFormat:@"users/%@/inapp_messages", self.currentUser.identifier, nil];
-    NSData *dataFromServer = [_networking getDataFromEndpoint:endPoint];
+    NSData *dataFromServer = [_networking getSynchronousDataFromEndpoint:endPoint];
     if (dataFromServer != nil) {
         completionBlock(dataFromServer);
     }
@@ -145,7 +145,7 @@
               [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
         NSString *endpoint = [NSString stringWithFormat:@"users/%@/formulas/%@/report",
                               self.currentUser.identifier, attributes[@"formula_id"]];
-        NSInteger res = [_networking sendData:json toEndpoint:endpoint usingMethod:@"POST"];
+        NSInteger res = [_networking sendSynchronousData:json toEndpoint:endpoint usingMethod:@"POST"];
         if(res != LQQueueStatusOk) {
             LQLog(kLQLogLevelHttpError, @"<Liquid> Could not send report to server %@",
                   [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);

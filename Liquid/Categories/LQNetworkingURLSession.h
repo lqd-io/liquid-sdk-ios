@@ -10,4 +10,6 @@
 
 @interface LQNetworkingURLSession : LQNetworking
 
+- (void)requestData:(NSData * _Nullable)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler;
+
 @end

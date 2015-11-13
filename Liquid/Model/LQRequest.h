@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NSInteger LQQueueStatus;
+
 @interface LQRequest : NSObject <NSCoding>
 
 -(id)initWithUrl:(NSString*)url withHttpMethod:(NSString*)httpMethod withJSON:(NSData*)json;
@@ -21,9 +23,9 @@
 @property(nonatomic, strong, readonly) NSNumber* numberOfTries;
 @property(nonatomic, strong, readonly) NSDate* nextTryAfter;
 
-extern NSInteger const LQQueueStatusOk;
-extern NSInteger const LQQueueStatusUnreachable;
-extern NSInteger const LQQueueStatusUnauthorized;
-extern NSInteger const LQQueueStatusRejected;
+extern LQQueueStatus const LQQueueStatusOk;
+extern LQQueueStatus const LQQueueStatusUnreachable;
+extern LQQueueStatus const LQQueueStatusUnauthorized;
+extern LQQueueStatus const LQQueueStatusRejected;
 
 @end

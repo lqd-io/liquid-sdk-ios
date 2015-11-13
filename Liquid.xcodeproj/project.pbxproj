@@ -233,10 +233,10 @@
 		A92016A61BCF0B5500859450 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A92016A81BCF0B5500859450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A92016BC1BCF0FB900859450 /* libLiquidWatch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquidWatch.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		A92016DC1BCF169F00859450 /* Liquid+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid+iOS.h"; sourceTree = "<group>"; };
-		A92016DD1BCF169F00859450 /* Liquid+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Liquid+iOS.m"; sourceTree = "<group>"; };
-		A92016E21BCF1C3200859450 /* Liquid+watchOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Liquid+watchOS.h"; sourceTree = "<group>"; };
-		A92016E31BCF1C3200859450 /* Liquid+watchOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Liquid+watchOS.m"; sourceTree = "<group>"; };
+		A92016DC1BCF169F00859450 /* Liquid+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Liquid+iOS.h"; path = "Categories/Liquid+iOS.h"; sourceTree = "<group>"; };
+		A92016DD1BCF169F00859450 /* Liquid+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Liquid+iOS.m"; path = "Categories/Liquid+iOS.m"; sourceTree = "<group>"; };
+		A92016E21BCF1C3200859450 /* Liquid+watchOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Liquid+watchOS.h"; path = "Categories/Liquid+watchOS.h"; sourceTree = "<group>"; };
+		A92016E31BCF1C3200859450 /* Liquid+watchOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Liquid+watchOS.m"; path = "Categories/Liquid+watchOS.m"; sourceTree = "<group>"; };
 		A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidIntegrationSpec.m; path = Integration/LiquidIntegrationSpec.m; sourceTree = "<group>"; };
 		A9253F55193F5D8400B70A43 /* LiquidPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidPrivates.h; sourceTree = "<group>"; };
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
@@ -619,10 +619,6 @@
 		A99EB54F1924DB730060E484 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				A92016DC1BCF169F00859450 /* Liquid+iOS.h */,
-				A92016DD1BCF169F00859450 /* Liquid+iOS.m */,
-				A92016E21BCF1C3200859450 /* Liquid+watchOS.h */,
-				A92016E31BCF1C3200859450 /* Liquid+watchOS.m */,
 				A99EB5521924DB730060E484 /* UIColor+LQColor.h */,
 				A99EB5531924DB730060E484 /* UIColor+LQColor.m */,
 				C7DB3A811924FE4200CC5D64 /* NSData+LQData.h */,
@@ -783,6 +779,10 @@
 			children = (
 				A99EB4E0192447FA0060E484 /* Liquid.h */,
 				A99EB4E1192447FA0060E484 /* Liquid.m */,
+				A92016DC1BCF169F00859450 /* Liquid+iOS.h */,
+				A92016DD1BCF169F00859450 /* Liquid+iOS.m */,
+				A92016E21BCF1C3200859450 /* Liquid+watchOS.h */,
+				A92016E31BCF1C3200859450 /* Liquid+watchOS.m */,
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
 				A9EA29D41BF52826001BE1B7 /* Liquid Modules */,
