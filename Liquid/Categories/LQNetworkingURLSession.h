@@ -7,9 +7,10 @@
 //
 
 #import "LQNetworking.h"
+#import "LQRequest.h"
 
 @interface LQNetworkingURLSession : LQNetworking
 
-- (void)requestData:(NSData * _Nullable)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler;
+- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler;
 
 @end

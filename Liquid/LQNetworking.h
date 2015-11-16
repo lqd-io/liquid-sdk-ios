@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "LQRequest.h"
+#import "LQURLRequestFactory.h"
 
 @interface LQNetworking : NSObject
 
 @property(nonatomic, assign) NSUInteger queueSizeLimit;
 @property(nonatomic, assign) NSUInteger flushInterval;
+@property (nonatomic, strong, readonly) LQURLRequestFactory *urlRequestFactory;
 
 - (instancetype)initWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue;
 - (instancetype)initFromDiskWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue;
@@ -22,15 +24,16 @@
 - (void)resetHttpQueue;
 - (void)addDictionaryToHttpQueue:(NSDictionary *)dictionary endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
 - (void)addToHttpQueue:(NSData *)jsonData endPoint:(NSString *)endPoint httpMethod:(NSString *)httpMethod;
-+ (NSString *)liquidUserAgent;
 
 - (BOOL)archiveHttpQueue;
 + (NSMutableArray*)unarchiveHttpQueueForToken:(NSString*)apiToken;
 + (void)deleteHttpQueueFileForToken:(NSString *)token;
 
-- (void)sendData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler;
-- (void)getDataFromEndpoint:(nonnull NSString *)endpoint completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData)) completionHandler;
-- (LQQueueStatus)sendSynchronousData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method;
-- (nullable NSData *)getSynchronousDataFromEndpoint:(nonnull NSString *)endpoint;
+- (void)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler;
+- (void)getDataFromEndpoint:(NSString *)endpoint completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData)) completionHandler;
+- (LQQueueStatus)sendSynchronousData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
+- (NSData *)getSynchronousDataFromEndpoint:(NSString *)endpoint;
+
++ (LQQueueStatus)queueStatusFromData:(NSData *)responseData response:(NSURLResponse *)response error:(NSError *)error;
 
 @end

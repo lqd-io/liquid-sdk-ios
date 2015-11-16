@@ -92,6 +92,7 @@
 		A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */; };
 		A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2919AA698700E1F0F2 /* LQDate.m */; };
 		A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */; };
+		A9D1CCC51BFA45B5002F04B2 /* LQURLRequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1CCC41BFA45B5002F04B2 /* LQURLRequestFactory.m */; settings = {ASSET_TAGS = (); }; };
 		A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E789E619BFBBC0006CA1D8 /* LQStorage.m */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
@@ -322,6 +323,8 @@
 		A9D12F0E1935076A00D0E0A1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A9D12F121935077600D0E0A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		A9D1CCC31BFA45B5002F04B2 /* LQURLRequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQURLRequestFactory.h; path = Factories/LQURLRequestFactory.h; sourceTree = "<group>"; };
+		A9D1CCC41BFA45B5002F04B2 /* LQURLRequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQURLRequestFactory.m; path = Factories/LQURLRequestFactory.m; sourceTree = "<group>"; };
 		A9E789E519BFBBC0006CA1D8 /* LQStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQStorage.h; sourceTree = "<group>"; };
 		A9E789E619BFBBC0006CA1D8 /* LQStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQStorage.m; sourceTree = "<group>"; };
 		A9E98050193E257C0055D1E7 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -726,6 +729,8 @@
 			children = (
 				A96D872F1BD2B2E2003158EB /* LQNetworkingFactory.h */,
 				A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */,
+				A9D1CCC31BFA45B5002F04B2 /* LQURLRequestFactory.h */,
+				A9D1CCC41BFA45B5002F04B2 /* LQURLRequestFactory.m */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -1125,6 +1130,7 @@
 				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
+				A9D1CCC51BFA45B5002F04B2 /* LQURLRequestFactory.m in Sources */,
 				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
 				A90F158D1BD16C1200E70FD7 /* LQNetworkingURLSession.m in Sources */,
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,

@@ -11,6 +11,6 @@
 
 @interface LQNetworkingURLConnection : LQNetworking
 
-- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler;
+- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler;
 
 @end

@@ -14,10 +14,8 @@
 #import "LQDevice.h"
 #import "LQDate.h"
 #import "LQHelpers.h"
-#import "LQDevice.h"
 #import "LQStorage.h"
 
-#define kLQServerUrl @"https://api.lqd.io/collect/"
 #define kLQDefaultHttpQueueSizeLimit 500 // number of requests (data points) to keep in queue
 #ifdef DEBUG
 #define kLQDefaultFlushInterval 5 //seconds
@@ -31,17 +29,15 @@
 
 @interface LQNetworking ()
 
-@property(nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
 @implementation LQNetworking
 
 @synthesize appToken = _appToken;
-@synthesize liquidUserAgent = _liquidUserAgent;
 @synthesize httpQueue = _httpQueue;
 
-NSString * const serverUrl = kLQServerUrl;
 NSUInteger const minFlushInterval = kLQMinFlushInterval;
 NSUInteger const timeUnreachableWait = kLQHttpUnreachableWait;
 NSUInteger const timeRejectedWait = kLQHttpRejectedWait;
@@ -51,6 +47,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 - (instancetype)initWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue {
     if ([self isKindOfClass:[LQNetworking class]]) {
+        _urlRequestFactory = [[LQURLRequestFactory alloc] initWithAppToken:apiToken];
         _httpQueue = [NSMutableArray new];
         _appToken = apiToken;
         _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
@@ -62,6 +59,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 - (instancetype)initFromDiskWithToken:(NSString *)apiToken dipatchQueue:(dispatch_queue_t)queue {
     if ([self isKindOfClass:[LQNetworking class]]) {
+        _urlRequestFactory = [[LQURLRequestFactory alloc] initWithAppToken:apiToken];
         _httpQueue = [LQNetworking unarchiveHttpQueueForToken:apiToken];
         _appToken = apiToken;
         _queueSizeLimit = kLQDefaultHttpQueueSizeLimit;
@@ -79,23 +77,6 @@ NSUInteger const maxTries = kLQHttpMaxTries;
             _queueSizeLimit = limit;
         }
     }
-}
-
-- (NSString *)liquidUserAgent {
-    if(!_liquidUserAgent) {
-        _liquidUserAgent = [LQNetworking liquidUserAgent];
-    }
-    return _liquidUserAgent;
-}
-
-+ (NSString *)liquidUserAgent {
-    LQDevice *device = [LQDevice sharedInstance];
-    return [NSString stringWithFormat:@"Liquid/%@ (%@; %@ %@; %@; %@)", [device liquidVersion],
-        kLQDevicePlatform,
-        kLQDevicePlatform, [device systemVersion],
-        [device locale],
-        [device deviceModel]
-    ];
 }
 
 - (void)setFlushInterval:(NSUInteger)interval {
@@ -241,26 +222,26 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 #pragma mark - Asynchronous send/get methods
 
-- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler {
+- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (void)sendData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData))completionHandler {
+- (void)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler {
     [self requestData:data toEndpoint:endpoint usingMethod:method completionHandler:completionHandler];
 }
 
-- (void)getDataFromEndpoint:(nonnull NSString *)endpoint completionHandler:(void(^ _Nonnull)(LQQueueStatus queueStatus, NSData * _Nullable responseData)) completionHandler {
+- (void)getDataFromEndpoint:(NSString *)endpoint completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData)) completionHandler {
     [self requestData:nil toEndpoint:endpoint usingMethod:@"GET" completionHandler:completionHandler];
 }
 
 #pragma mark - Synchronous send/get methods
 
-- (LQQueueStatus)sendSynchronousData:(nonnull NSData *)data toEndpoint:(nonnull NSString *)endpoint usingMethod:(nonnull NSString *)method {
+- (LQQueueStatus)sendSynchronousData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method {
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     __block LQQueueStatus returnQueueStatus;
-    [self sendData:data toEndpoint:endpoint usingMethod:method completionHandler:^(LQQueueStatus queueStatus, NSData * _Nullable responseData) {
+    [self sendData:data toEndpoint:endpoint usingMethod:method completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
         returnQueueStatus = queueStatus;
         dispatch_semaphore_signal(semaphore);
     }];
@@ -268,15 +249,49 @@ NSUInteger const maxTries = kLQHttpMaxTries;
     return returnQueueStatus;
 }
 
-- (NSData *)getSynchronousDataFromEndpoint:(nonnull NSString *)endpoint {
+- (NSData *)getSynchronousDataFromEndpoint:(NSString *)endpoint {
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     __block NSData *returnData = nil;
-    [self getDataFromEndpoint:endpoint completionHandler:^(LQQueueStatus queueStatus, NSData * _Nullable responseData) {
+    [self getDataFromEndpoint:endpoint completionHandler:^(LQQueueStatus queueStatus, NSData *
+                                                           responseData) {
         returnData = responseData;
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     return returnData;
+}
+
+#pragma mark - Queue status
+
++ (LQQueueStatus)queueStatusFromData:(NSData *)responseData response:(NSURLResponse *)response error:(NSError *)error {
+    if (error) {
+        return [[self class] queueStatusFromError:error];
+    }
+    return [[self class] queueStatusFromResponse:response data:responseData];
+}
+
++ (LQQueueStatus)queueStatusFromError:(NSError *)error {
+    if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
+        LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
+        return LQQueueStatusUnreachable;
+    } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
+        LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
+        return LQQueueStatusUnauthorized;
+    }
+    LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
+    return LQQueueStatusRejected;
+}
+
++ (LQQueueStatus)queueStatusFromResponse:(NSURLResponse *)response data:(NSData *)responseData {
+    if (kLQLogLevel == kLQLogLevelHttpData) {
+        LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server: '%@'", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+    }
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    if(httpResponse.statusCode < 200 || httpResponse.statusCode >= 300) {
+        LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server.", (long) httpResponse.statusCode);
+        return LQQueueStatusRejected;
+    }
+    return LQQueueStatusOk;
 }
 
 @end

@@ -23,6 +23,7 @@ typedef NSInteger LQQueueStatus;
 @property(nonatomic, strong, readonly) NSNumber* numberOfTries;
 @property(nonatomic, strong, readonly) NSDate* nextTryAfter;
 
+extern LQQueueStatus const LQQueueStatusUnknown;
 extern LQQueueStatus const LQQueueStatusOk;
 extern LQQueueStatus const LQQueueStatusUnreachable;
 extern LQQueueStatus const LQQueueStatusUnauthorized;

@@ -15,6 +15,7 @@
 #define kLQQueueJSON @"JSON"
 #define kLQQueueNumberOfTries @"NumberOfTries"
 
+LQQueueStatus const LQQueueStatusUnknown = -1;
 LQQueueStatus const LQQueueStatusOk = 0;
 LQQueueStatus const LQQueueStatusUnreachable = 1;
 LQQueueStatus const LQQueueStatusUnauthorized = 2;
