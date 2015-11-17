@@ -10,12 +10,17 @@
 #import "NSData+LQData.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "LQDefaults.h"
+#ifndef TARGET_OS_WATCH
 #import <UIKit/UIDevice.h>
+#endif
 
 @implementation NSString (LQString)
 
 + (NSString *)generateRandomUUIDAppendingTimestamp:(BOOL)appendTimestamp {
     NSString *uuid;
+#ifdef TARGET_OS_WATCH
+    uuid = [[NSUUID UUID] UUIDString];
+#else
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         uuid = [[NSUUID UUID] UUIDString];
     } else {
@@ -25,12 +30,11 @@
         uuid = [((__bridge NSString *) cfuuid) copy];
         CFRelease(cfuuid);
     }
-
+#endif
     if (appendTimestamp) {
         return [NSString stringWithFormat:@"%@-%ld", uuid, (long) [[NSDate date] timeIntervalSince1970]];
-    } else {
-        return uuid;
     }
+    return uuid;
 }
 
 + (NSString *)generateRandomUUID {
