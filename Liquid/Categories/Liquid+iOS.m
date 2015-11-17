@@ -11,7 +11,7 @@
 
 @interface Liquid ()
 
-@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 
 @end
 

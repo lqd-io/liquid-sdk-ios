@@ -49,7 +49,6 @@
 @property (atomic, strong) LQDevice *device;
 @property (atomic, strong) LQSession *currentSession;
 @property (nonatomic, strong) NSDate *enterBackgroundTime;
-@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @property (atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property (nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property (atomic, strong) LQNetworking *networking;
