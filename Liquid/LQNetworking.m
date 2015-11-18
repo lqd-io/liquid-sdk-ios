@@ -252,9 +252,10 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 - (NSData *)getSynchronousDataFromEndpoint:(NSString *)endpoint {
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     __block NSData *returnData = nil;
-    [self getDataFromEndpoint:endpoint completionHandler:^(LQQueueStatus queueStatus, NSData *
-                                                           responseData) {
-        returnData = responseData;
+    [self getDataFromEndpoint:endpoint completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
+        if (queueStatus == LQQueueStatusOk) {
+            returnData = responseData;
+        }
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -275,7 +276,7 @@ NSUInteger const maxTries = kLQHttpMaxTries;
         LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
         return LQQueueStatusUnreachable;
     } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-        LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
+        LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
         return LQQueueStatusUnauthorized;
     }
     LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
