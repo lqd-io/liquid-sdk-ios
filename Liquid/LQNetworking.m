@@ -288,11 +288,16 @@ NSUInteger const maxTries = kLQHttpMaxTries;
         LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server: '%@'", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
     }
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    if(httpResponse.statusCode < 200 || httpResponse.statusCode >= 300) {
+    if (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
+        return LQQueueStatusOk;
+    } else if (httpResponse.statusCode >= 401 && httpResponse.statusCode <= 403) {
+        LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long) httpResponse.statusCode);
+        return LQQueueStatusUnauthorized;
+    } else {
         LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server.", (long) httpResponse.statusCode);
         return LQQueueStatusRejected;
     }
-    return LQQueueStatusOk;
+    return LQQueueStatusRejected;
 }
 
 @end
