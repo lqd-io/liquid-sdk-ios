@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#import <UIKit/UIApplication.h>
+#import <UIKit/UIColor.h>
 #import "LQEntity.h"
 #import "LQDefaults.h"
 

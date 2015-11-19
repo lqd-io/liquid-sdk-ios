@@ -8,33 +8,11 @@
 
 #import "LQDefaults.h"
 #import "LQDevice.h"
-#import "NSString+LQString.h"
 #import "LQKeychain.h"
 #import "LQStorage.h"
 #import "LQUserDefaults.h"
-#import <UIKit/UIDevice.h>
-#import <UIKit/UIScreen.h>
 #include <sys/sysctl.h>
-
-#import <CoreTelephony/CTCarrier.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <SystemConfiguration/SystemConfiguration.h>
-
-#ifdef LIQUID_USE_IFA
-#import <AdSupport/ASIdentifierManager.h>
-#endif
-
 #define kLQDeviceVendor @"Apple"
-#define KLQDeviceReachabilityUrl "www.google.com"
-#define kLQDeviceWifi @"WiFi"
-#define kLQDeviceCellular @"Cellular"
-#define kLQDeviceNoConnectivity @"No Connectivity"
-
-@interface LQDevice ()
-
-@property (nonatomic, assign) SCNetworkReachabilityRef networkReachability;
-
-@end
 
 static LQDevice *sharedInstance = nil;
 
@@ -62,33 +40,23 @@ static LQDevice *sharedInstance = nil;
     self = [super init];
     if(self) {
         _vendor = kLQDeviceVendor;
-        _deviceModel = [LQDevice deviceModel];
-        _systemVersion = [LQDevice systemVersion];
-        _systemLanguage = [LQDevice systemLanguage];
-        _locale = [LQDevice locale];
-        _deviceName = [LQDevice deviceName];
-        _carrier = [LQDevice carrier];
-        _screenSize = [LQDevice screenSize];
+        _deviceModel = [[self class] deviceModel];
+        _systemVersion = [[self class] systemVersion];
+        _systemLanguage = [[self class] systemLanguage];
+        _locale = [[self class] locale];
+        _screenSize = [[self class] screenSize];
         _uid = [self uid];
-        _appBundle = [LQDevice appBundle];
-        _appName = [LQDevice appName];
-        _appVersion = [LQDevice appVersion];
-        _releaseVersion = [LQDevice releaseVersion];
-        _liquidVersion = [LQDevice liquidVersion];
+        _appBundle = [[self class] appBundle];
+        _appName = [[self class] appName];
+        _appVersion = [[self class] appVersion];
+        _releaseVersion = [[self class] releaseVersion];
+        _liquidVersion = [[self class] liquidVersion];
 
-        _uid = [LQDevice uniqueId];
+        _uid = [[self class] uniqueId];
         [self storeUniqueId];
 
         NSString *apnsTokenCacheKey = [NSString stringWithFormat:@"%@.%@", kLQBundle, @"APNSToken"];
         _apnsToken = [[NSUserDefaults standardUserDefaults] objectForKey:apnsTokenCacheKey];
-
-        [self initReachabilityCallback];
-        SCNetworkReachabilityFlags flags;
-        if (SCNetworkReachabilityGetFlags(self.networkReachability, &flags)) {
-            [self reachabilityChanged:flags];
-        } else {
-            _internetConnectivity = kLQDeviceNoConnectivity;
-        }
         if(_attributes == nil) {
             _attributes = [NSDictionary new];
         }
@@ -133,16 +101,6 @@ static LQDevice *sharedInstance = nil;
             @YES, @"updated_at", nil];
 }
 
-#pragma mark - Deallocation
-
-- (void)dealloc{
-    if (self.networkReachability) {
-        SCNetworkReachabilitySetCallback(self.networkReachability, NULL, NULL);
-        SCNetworkReachabilitySetDispatchQueue(self.networkReachability, NULL);
-        self.networkReachability = nil;
-    }
-}
-
 #pragma mark - JSON
 
 - (NSDictionary *)jsonDictionary {
@@ -153,10 +111,7 @@ static LQDevice *sharedInstance = nil;
     [dictionary setObject:_systemVersion forKey:@"system_version"];
     [dictionary setObject:_systemLanguage forKey:@"system_language"];
     [dictionary setObject:_locale forKey:@"locale"];
-    [dictionary setObject:_deviceName forKey:@"name"];
     [dictionary setObject:_screenSize forKey:@"screen_size"];
-    [dictionary setObject:_carrier forKey:@"carrier"];
-    [dictionary setObject:_internetConnectivity forKey:@"internet_connectivity"];
     if (_appBundle) {
         [dictionary setObject:_appBundle forKey:@"app_bundle"];
     }
@@ -182,23 +137,6 @@ static LQDevice *sharedInstance = nil;
 
 #pragma mark - Device Info
 
-+ (NSString*)carrier {
-    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
-    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
-    if (carrier.carrierName.length) {
-        return  carrier.carrierName;
-    }
-    return @"No Carrier";
-}
-
-+ (NSString*)screenSize {
-    CGFloat scale = [UIScreen mainScreen].scale;
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    NSInteger width = screenSize.width  *scale;
-    NSInteger height = screenSize.height  *scale;
-    return [NSString stringWithFormat:@"%ldx%ld", (unsigned long)width, (unsigned long)height];
-}
-
 + (NSString*)deviceModel {
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
@@ -209,8 +147,16 @@ static LQDevice *sharedInstance = nil;
     return deviceModel;
 }
 
++ (NSString*)screenSize {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
+}
+
 + (NSString*)systemVersion {
-    return [[UIDevice currentDevice] systemVersion];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 + (NSString*)liquidVersion {
@@ -223,10 +169,6 @@ static LQDevice *sharedInstance = nil;
 
 + (NSString*)locale {
     return [[NSLocale currentLocale] objectForKey:NSLocaleIdentifier];
-}
-
-+ (NSString*)deviceName {
-    return [[UIDevice currentDevice] name];
 }
 
 #pragma mark - Device Unique ID
@@ -250,19 +192,19 @@ static LQDevice *sharedInstance = nil;
  */
 + (NSString*)uniqueId {
     NSString *uniqueId;
-    if ((uniqueId = [LQDevice uniqueIdFromKeychain])) { // 1.
+    if ((uniqueId = [[self class] uniqueIdFromKeychain])) { // 1.
         LQLog(kLQLogLevelData, @"Retrieved Device UniqueId from Keychain: %@", uniqueId);
         return uniqueId;
     }
-    if ((uniqueId = [LQDevice uniqueIdFromArchive])) { // 2.
+    if ((uniqueId = [[self class] uniqueIdFromArchive])) { // 2.
         LQLog(kLQLogLevelData, @"Retrieved Device UniqueId from file: %@", uniqueId);
         return uniqueId;
     }
-    if ((uniqueId = [LQDevice uniqueIdFromNSUserDefaults])) { // 3.
+    if ((uniqueId = [[self class] uniqueIdFromNSUserDefaults])) { // 3.
         LQLog(kLQLogLevelData, @"Retrieved Device UniqueId from NSUserDefaults: %@", uniqueId);
         return uniqueId;
     }
-    uniqueId = [LQDevice generateDeviceUID]; // 4.
+    uniqueId = [[self class] generateDeviceUID]; // 4.
     LQLog(kLQLogLevelData, @"No Device UniqueId found in cache (Keychain, file or NSUserDefaults). Generating a new one: %@", uniqueId);
     return uniqueId;
 }
@@ -277,43 +219,13 @@ static LQDevice *sharedInstance = nil;
 }
 
 + (NSString *)uniqueIdFromArchive {
-    return [LQDevice unarchiveUniqueId];
-}
-
-+ (NSString *)appleIFA {
-    NSString *ifa = nil;
-#ifndef LIQUID_NO_IFA
-    Class ASIdentifierManagerClass = NSClassFromString(@"ASIdentifierManager");
-    if (ASIdentifierManagerClass) {
-        SEL sharedManagerSelector = NSSelectorFromString(@"sharedManager");
-        id sharedManager = ((id (*)(id, SEL))[ASIdentifierManagerClass methodForSelector:sharedManagerSelector])(ASIdentifierManagerClass, sharedManagerSelector);
-        SEL advertisingIdentifierSelector = NSSelectorFromString(@"advertisingIdentifier");
-        NSUUID *advertisingIdentifier = ((NSUUID* (*)(id, SEL))[sharedManager methodForSelector:advertisingIdentifierSelector])(sharedManager, advertisingIdentifierSelector);
-        ifa = [advertisingIdentifier UUIDString];
-    }
-#endif
-    return ifa;
-}
-
-+ (NSString *)appleIFV {
-    NSString *ifv = nil;
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        if (NSClassFromString(@"UIDevice")) {
-            ifv = [[UIDevice currentDevice].identifierForVendor UUIDString];
-        }
-    }
-    return ifv;
+    return [[self class] unarchiveUniqueId];
 }
 
 + (NSString *)generateDeviceUID {
-    NSString *newUid;
-    if ((newUid = [LQDevice appleIFA])) {
-        return newUid;
-    }
-    if ((newUid = [LQDevice appleIFV])) {
-        return newUid;
-    }
-    return [NSString generateRandomUUID];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 #pragma mark - Application Info
@@ -336,55 +248,10 @@ static LQDevice *sharedInstance = nil;
 
 #pragma mark - Reachability
 
-- (void)initReachabilityCallback {
-    BOOL reachabilityInitated = NO;
-    self.networkReachability = SCNetworkReachabilityCreateWithName(NULL, KLQDeviceReachabilityUrl);
-    if (self.networkReachability != NULL) {
-        SCNetworkReachabilityContext context = {0, (__bridge void*)self, NULL, NULL, NULL};
-        if (SCNetworkReachabilitySetCallback(self.networkReachability, LQDeviceNetworkReachabilityCallback, &context)) {
-            dispatch_queue_t queue  = dispatch_queue_create("LQReachabilityQueue", DISPATCH_QUEUE_SERIAL);
-            if (SCNetworkReachabilitySetDispatchQueue(self.networkReachability, queue)) {
-                reachabilityInitated = YES;
-            } else {
-                // cleanup callback if setting dispatch queue failed
-                SCNetworkReachabilitySetCallback(self.networkReachability, NULL, NULL);
-            }
-        }
-    }
-    if (!reachabilityInitated) {
-        //NSLog(@"%@ failed to set up reachability callback: %s", self, SCErrorString(SCError()));
-    }
-}
-
-- (void)reachabilityChanged:(SCNetworkReachabilityFlags)flags {
-    if(flags & kSCNetworkReachabilityFlagsReachable) {
-        if(flags & kSCNetworkReachabilityFlagsIsWWAN) {
-            _internetConnectivity = kLQDeviceCellular;
-        } else {
-            _internetConnectivity = kLQDeviceWifi;
-        }
-    } else {
-        _internetConnectivity = kLQDeviceNoConnectivity;
-    }
-}
-
-static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info) {
-    if (info != NULL && [(__bridge NSObject*)info isKindOfClass:[LQDevice class]]) {
-        @autoreleasepool {
-            LQDevice *device = (__bridge LQDevice *)info;
-            [device reachabilityChanged:flags];
-        }
-    } else {
-        //NSLog(@"Reachability: Unexpected info");
-    }
-}
-
 - (BOOL)reachesInternet {
-    if (_internetConnectivity == nil || ![_internetConnectivity isEqualToString:kLQDeviceNoConnectivity]) {
-        return true;
-    } else {
-        return false;
-    }
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 #pragma mark - NSCoding & NSCopying
@@ -397,8 +264,6 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
         _systemVersion = [aDecoder decodeObjectForKey:@"systemVersion"];
         _systemLanguage = [aDecoder decodeObjectForKey:@"systemLanguage"];
         _locale = [aDecoder decodeObjectForKey:@"locale"];
-        _deviceName = [aDecoder decodeObjectForKey:@"deviceName"];
-        _carrier = [aDecoder decodeObjectForKey:@"carrier"];
         _screenSize = [aDecoder decodeObjectForKey:@"screenSize"];
         _uid = [aDecoder decodeObjectForKey:@"uid"];
         _appBundle = [aDecoder decodeObjectForKey:@"appBundle"];
@@ -406,7 +271,6 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
         _appVersion = [aDecoder decodeObjectForKey:@"appVersion"];
         _releaseVersion = [aDecoder decodeObjectForKey:@"releaseVersion"];
         _liquidVersion = [aDecoder decodeObjectForKey:@"liquidVersion"];
-        _internetConnectivity = [aDecoder decodeObjectForKey:@"internetConnectivity"];
         _apnsToken = [aDecoder decodeObjectForKey:@"apnsToken"];
         _attributes = [aDecoder decodeObjectForKey:@"attributes"];
     }
@@ -419,8 +283,6 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     [aCoder encodeObject:_systemVersion forKey:@"systemVersion"];
     [aCoder encodeObject:_systemLanguage forKey:@"systemLanguage"];
     [aCoder encodeObject:_locale forKey:@"locale"];
-    [aCoder encodeObject:_deviceName forKey:@"deviceName"];
-    [aCoder encodeObject:_carrier forKey:@"carrier"];
     [aCoder encodeObject:_screenSize forKey:@"screenSize"];
     [aCoder encodeObject:_uid forKey:@"uid"];
     [aCoder encodeObject:_appBundle forKey:@"appBundle"];
@@ -428,7 +290,6 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
     [aCoder encodeObject:_appVersion forKey:@"appVersion"];
     [aCoder encodeObject:_releaseVersion forKey:@"releaseVersion"];
     [aCoder encodeObject:_liquidVersion forKey:@"liquidVersion"];
-    [aCoder encodeObject:_internetConnectivity forKey:@"internetConnectivity"];
     [aCoder encodeObject:_apnsToken forKey:@"apnsToken"];
     [aCoder encodeObject:_attributes forKey:@"attributes"];
 }
@@ -440,11 +301,11 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
         return NO;
     }
     LQLog(kLQLogLevelData, @"<Liquid> Saving Device UniqueId to disk");
-    return [NSKeyedArchiver archiveRootObject:uniqueId toFile:[LQDevice uniqueIdFile]];
+    return [NSKeyedArchiver archiveRootObject:uniqueId toFile:[[self class] uniqueIdFile]];
 }
 
 + (NSString *)unarchiveUniqueId {
-    NSString *filePath = [LQDevice uniqueIdFile];
+    NSString *filePath = [[self class] uniqueIdFile];
     NSString *uniqueId = nil;
     @try {
         id object = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
@@ -463,7 +324,7 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
 }
 
 + (void)deleteUniqueIdFile {
-    NSString *filePath = [LQDevice uniqueIdFile];
+    NSString *filePath = [[self class] uniqueIdFile];
     LQLog(kLQLogLevelInfo, @"<Liquid> Deleting cached Device UID");
     NSError *error;
     [LQStorage deleteFileIfExists:filePath error:&error];

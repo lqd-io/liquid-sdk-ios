@@ -147,8 +147,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
         self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
+#if LQ_IOS
         self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
-        self.device = [LQDevice sharedInstance];
+#endif
+
+#if LQ_WATCHOS
+        self.device = [LQDeviceWatchOS sharedInstance];
+#else
+        self.device = [LQDeviceIOS sharedInstance];
+#endif
+
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
 #if LQ_IOS

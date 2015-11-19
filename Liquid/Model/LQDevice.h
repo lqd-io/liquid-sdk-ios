@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "LQEntity.h"
 #import "LQUser.h"
+#import "LQDefaults.h"
 
 @interface LQDevice : LQEntity <NSCoding, NSCopying>
 
@@ -27,10 +28,7 @@
 @property(nonatomic, strong, readonly) NSString *systemVersion;
 @property(nonatomic, strong, readonly) NSString *systemLanguage;
 @property(nonatomic, strong, readonly) NSString *locale;
-@property(nonatomic, strong, readonly) NSString *deviceName;
 @property(nonatomic, strong, readonly) NSString *screenSize;
-@property(nonatomic, strong, readonly) NSString *carrier;
-@property(nonatomic, strong, readonly) NSString *internetConnectivity;
 @property(nonatomic, strong, readonly) NSString *uid;
 @property(nonatomic, strong, readonly) NSString *appBundle;
 @property(nonatomic, strong, readonly) NSString *appName;
