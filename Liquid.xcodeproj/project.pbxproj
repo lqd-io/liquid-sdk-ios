@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		92E71585BB5944A394C1AC93 /* libPods-LiquidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */; };
 		A9035321193FA0C8005110DF /* liquid_package1.json in Resources */ = {isa = PBXBuildFile; fileRef = A9035320193FA0C8005110DF /* liquid_package1.json */; };
+		A909AD741BFE2853006D5EDD /* LQDeviceWatchOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A909AD731BFE2853006D5EDD /* LQDeviceWatchOS.m */; settings = {ASSET_TAGS = (); }; };
+		A909AD771BFE285B006D5EDD /* LQDeviceIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A909AD761BFE285B006D5EDD /* LQDeviceIOS.m */; settings = {ASSET_TAGS = (); }; };
+		A909AD7A1BFE2AFB006D5EDD /* libLiquidWatch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A92016BC1BCF0FB900859450 /* libLiquidWatch.a */; };
+		A909AD7B1BFE2B2E006D5EDD /* LQEventTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29C91BF521F3001BE1B7 /* LQEventTracker.m */; };
+		A909AD7C1BFE2B2E006D5EDD /* LQURLRequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1CCC41BFA45B5002F04B2 /* LQURLRequestFactory.m */; };
 		A90F158A1BD16BA900E70FD7 /* LQNetworkingURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A90F15891BD16BA900E70FD7 /* LQNetworkingURLConnection.m */; settings = {ASSET_TAGS = (); }; };
 		A90F158D1BD16C1200E70FD7 /* LQNetworkingURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A90F158C1BD16C1200E70FD7 /* LQNetworkingURLSession.m */; settings = {ASSET_TAGS = (); }; };
 		A90F158E1BD16C1200E70FD7 /* LQNetworkingURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A90F158C1BD16C1200E70FD7 /* LQNetworkingURLSession.m */; settings = {ASSET_TAGS = (); }; };
@@ -128,6 +133,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A909AD781BFE2AF5006D5EDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A92016BB1BCF0FB900859450;
+			remoteInfo = LiquidWatch;
+		};
 		A92016981BCF0B5500859450 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C73E4AD71923C61D001EF2E6 /* Project object */;
@@ -212,6 +224,10 @@
 		378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiquidTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EE274BAFA779A0863EAB159 /* Pods-LiquidTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.release.xcconfig"; sourceTree = "<group>"; };
 		A9035320193FA0C8005110DF /* liquid_package1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package1.json; path = HTTPStubs/liquid_package1.json; sourceTree = "<group>"; };
+		A909AD721BFE2853006D5EDD /* LQDeviceWatchOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDeviceWatchOS.h; sourceTree = "<group>"; };
+		A909AD731BFE2853006D5EDD /* LQDeviceWatchOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQDeviceWatchOS.m; sourceTree = "<group>"; };
+		A909AD751BFE285B006D5EDD /* LQDeviceIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDeviceIOS.h; sourceTree = "<group>"; };
+		A909AD761BFE285B006D5EDD /* LQDeviceIOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQDeviceIOS.m; sourceTree = "<group>"; };
 		A90F15881BD16BA900E70FD7 /* LQNetworkingURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQNetworkingURLConnection.h; sourceTree = "<group>"; };
 		A90F15891BD16BA900E70FD7 /* LQNetworkingURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQNetworkingURLConnection.m; sourceTree = "<group>"; };
 		A90F158B1BD16C1200E70FD7 /* LQNetworkingURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQNetworkingURLSession.h; path = Categories/LQNetworkingURLSession.h; sourceTree = "<group>"; };
@@ -383,6 +399,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A909AD7A1BFE2AFB006D5EDD /* libLiquidWatch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +618,10 @@
 				A99EB4F3192447FA0060E484 /* LQUser.m */,
 				A99EB4E6192447FA0060E484 /* LQDevice.h */,
 				A99EB4E7192447FA0060E484 /* LQDevice.m */,
+				A909AD751BFE285B006D5EDD /* LQDeviceIOS.h */,
+				A909AD761BFE285B006D5EDD /* LQDeviceIOS.m */,
+				A909AD721BFE2853006D5EDD /* LQDeviceWatchOS.h */,
+				A909AD731BFE2853006D5EDD /* LQDeviceWatchOS.m */,
 				A99EB4EE192447FA0060E484 /* LQSession.h */,
 				A99EB4EF192447FA0060E484 /* LQSession.m */,
 				A99EB4E8192447FA0060E484 /* LQEvent.h */,
@@ -832,6 +853,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A909AD791BFE2AF5006D5EDD /* PBXTargetDependency */,
 			);
 			name = "LiquidWatchDemo Extension";
 			productName = "LiquidWatchDemo Extension";
@@ -1065,6 +1087,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A909AD7B1BFE2B2E006D5EDD /* LQEventTracker.m in Sources */,
+				A909AD7C1BFE2B2E006D5EDD /* LQURLRequestFactory.m in Sources */,
 				A92016C51BCF101600859450 /* Liquid.m in Sources */,
 				A92016C61BCF101600859450 /* LQNetworking.m in Sources */,
 				A92016C71BCF101600859450 /* LQKeychain.m in Sources */,
@@ -1075,6 +1099,7 @@
 				A92016CB1BCF101600859450 /* NSDateFormatter+LQDateFormatter.m in Sources */,
 				A92016CC1BCF101600859450 /* UIColor+LQColor.m in Sources */,
 				A92016CD1BCF101600859450 /* NSData+LQData.m in Sources */,
+				A909AD741BFE2853006D5EDD /* LQDeviceWatchOS.m in Sources */,
 				A92016CE1BCF101600859450 /* NSString+LQString.m in Sources */,
 				A92016CF1BCF101600859450 /* LQDate.m in Sources */,
 				A92016D01BCF101600859450 /* LQRequest.m in Sources */,
@@ -1127,12 +1152,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9EA29CA1BF521F3001BE1B7 /* LQEventTracker.m in Sources */,
+				A92016DE1BCF169F00859450 /* Liquid+iOS.m in Sources */,
 				A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */,
 				A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */,
 				A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */,
 				A9D1CCC51BFA45B5002F04B2 /* LQURLRequestFactory.m in Sources */,
 				C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */,
 				A90F158D1BD16C1200E70FD7 /* LQNetworkingURLSession.m in Sources */,
+				A909AD771BFE285B006D5EDD /* LQDeviceIOS.m in Sources */,
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
@@ -1147,7 +1174,6 @@
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
 				A9EA29D01BF522FF001BE1B7 /* LQWindow.m in Sources */,
 				A9EA29CD1BF52201001BE1B7 /* LQInAppMessages.m in Sources */,
-				A92016DE1BCF169F00859450 /* Liquid+iOS.m in Sources */,
 				A9EA29C31BF52157001BE1B7 /* LQModalView.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */,
@@ -1173,6 +1199,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A909AD791BFE2AF5006D5EDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A92016BB1BCF0FB900859450 /* LiquidWatch */;
+			targetProxy = A909AD781BFE2AF5006D5EDD /* PBXContainerItemProxy */;
+		};
 		A92016991BCF0B5500859450 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A92016951BCF0B5500859450 /* LiquidWatchDemo Extension */;
@@ -1254,6 +1285,10 @@
 				INFOPLIST_FILE = "LiquidWatchDemo Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -1274,6 +1309,10 @@
 				INFOPLIST_FILE = "LiquidWatchDemo Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -1296,6 +1335,10 @@
 				IBSC_MODULE = LiquidWatchDemo_Extension;
 				INFOPLIST_FILE = LiquidWatchDemo/Info.plist;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1319,6 +1362,10 @@
 				IBSC_MODULE = LiquidWatchDemo_Extension;
 				INFOPLIST_FILE = LiquidWatchDemo/Info.plist;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.lqd.LiquidDemo.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1376,6 +1423,10 @@
 				);
 				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "io.lqd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/liquid-sdk-ios/Liquid/**";
@@ -1395,6 +1446,10 @@
 				GCC_PREFIX_HEADER = "LiquidDemo/LiquidDemo-Prefix.pch";
 				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "io.lqd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/liquid-sdk-ios/Liquid/**";

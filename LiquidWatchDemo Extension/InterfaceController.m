@@ -23,7 +23,7 @@ static NSArray *uniqueIds;
 
 - (void)willActivate {
     [Liquid sharedInstanceWithToken:@"YOUR-APP-TOKEN" development:YES];
-    uniqueIds = @[@"100"];
+    uniqueIds = @[@"100", @"200", @"300", @"anna@example.com", @"mark@example.com"];
     [super willActivate];
 }
 
@@ -50,6 +50,3 @@ static NSArray *uniqueIds;
 }
 
 @end
-
-
-
