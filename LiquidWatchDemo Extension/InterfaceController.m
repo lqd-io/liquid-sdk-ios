@@ -7,29 +7,46 @@
 //
 
 #import "InterfaceController.h"
-
+#import "Liquid.h"
 
 @interface InterfaceController()
 
 @end
 
+static NSArray *uniqueIds;
 
 @implementation InterfaceController
 
 - (void)awakeWithContext:(id)context {
     [super awakeWithContext:context];
-
-    // Configure interface objects here.
 }
 
 - (void)willActivate {
-    // This method is called when watch view controller is about to be visible to user
+    [Liquid sharedInstanceWithToken:@"YOUR-APP-TOKEN" development:YES];
+    uniqueIds = @[@"100"];
     [super willActivate];
 }
 
 - (void)didDeactivate {
     // This method is called when watch view controller is no longer visible
     [super didDeactivate];
+}
+
+- (IBAction)trackEventButtonPressed {
+    [[Liquid sharedInstance] track:@"Watch Button Pressed"];
+}
+
+- (IBAction)identifyUserButtonPressed {
+    [[Liquid sharedInstance] identifyUserWithIdentifier:[self randomUniqueId]];
+}
+
+- (IBAction)resetUserButtonPressed {
+    [[Liquid sharedInstance] resetUser];
+}
+
+- (NSString *)randomUniqueId {
+    uint32_t rnd = arc4random_uniform([uniqueIds count]);
+    return [uniqueIds objectAtIndex:rnd];
 }
 
 @end
