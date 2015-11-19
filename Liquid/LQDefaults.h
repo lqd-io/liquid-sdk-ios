@@ -8,9 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
+#ifndef TARGET_OS_IOS
+#define TARGET_OS_IOS TARGET_OS_IPHONE
+#endif
+#ifndef TARGET_OS_WATCH
+#define TARGET_OS_WATCH 0
+#endif
+
+#define LQ_WATCHOS TARGET_OS_WATCH
+#define LQ_IOS TARGET_OS_IOS
+
 #define kLQVersion @"2.0.0-rc2"
+
+#ifdef LQ_WATCHOS
+#define kLQBundle @"io.lqd.watchos"
+#define kLQDevicePlatform @"WatchOS"
+#else
 #define kLQBundle @"io.lqd.ios"
 #define kLQDevicePlatform @"iOS"
+#endif
+
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
 #define kLQNotificationLQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
 #define kLQNotificationLQDidIdentifyUser @"io.lqd.ios.Notifications:DidIdentifyUser"

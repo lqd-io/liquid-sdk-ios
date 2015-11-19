@@ -54,7 +54,7 @@
 }
 
 + (NSString *)iso8601StringFromDate:(NSDate *)date {
-#ifdef TARGET_OS_WATCH
+#if LQ_WATCHOS
     return [NSDateFormatter iso8601StringFromDateIOS6:date];
 #else
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
@@ -105,7 +105,7 @@
 
 + (NSDate *)dateFromISO8601String:(NSString *)string {
     if (!string) return nil;
-#ifdef TARGET_OS_WATCH
+#if LQ_WATCHOS
     return [[self class] dateFromISO8601StringIOS6:string];
 #else
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {

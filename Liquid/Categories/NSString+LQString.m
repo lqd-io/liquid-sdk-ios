@@ -10,7 +10,7 @@
 #import "NSData+LQData.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "LQDefaults.h"
-#ifndef TARGET_OS_WATCH
+#if LQ_IOS
 #import <UIKit/UIDevice.h>
 #endif
 
@@ -18,7 +18,7 @@
 
 + (NSString *)generateRandomUUIDAppendingTimestamp:(BOOL)appendTimestamp {
     NSString *uuid;
-#ifdef TARGET_OS_WATCH
+#if LQ_WATCHOS
     uuid = [[NSUUID UUID] UUIDString];
 #else
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {

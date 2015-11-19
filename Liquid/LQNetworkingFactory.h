@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "LQDefaults.h"
 
-#if TARGET_OS_WATCH
+#if LQ_WATCHOS
 #import "LQNetworkingURLSession.h"
 #else
 #import "LQNetworkingURLSession.h"

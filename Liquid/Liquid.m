@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
-#ifdef TARGET_OS_WATCH
+#if LQ_WATCHOS
 #import "Liquid+watchOS.h"
 #else
 #import "Liquid+iOS.h"
@@ -14,7 +14,10 @@
 
 #import "LQEvent.h"
 #import "LQSession.h"
-#import "LQDevice.h"
+#import "LQDeviceIOS.h"
+#if LQ_WATCHOS
+#import "LQDeviceWatchOS.h"
+#endif
 #import "LQUser.h"
 #import "LQRequest.h"
 #import "LQVariable.h"
@@ -30,7 +33,9 @@
 #import "NSData+LQData.h"
 #import "LQNetworkingFactory.h"
 #import "LQStorage.h"
+#if LQ_IOS
 #import "LQInAppMessages.h"
+#endif
 #import "LQEventTracker.h"
 
 #if !__has_feature(objc_arc)
@@ -52,7 +57,9 @@
 @property (atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property (nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property (atomic, strong) LQNetworking *networking;
+#if LQ_IOS
 @property (nonatomic, strong) LQInAppMessages *inAppMessages;
+#endif
 @property (nonatomic, strong) LQEventTracker *eventTracker;
 #if OS_OBJECT_USE_OBJC
 @property (atomic, strong) dispatch_queue_t queue;
@@ -72,7 +79,9 @@ static Liquid *sharedInstance = nil;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 @synthesize valuesSentToServer = _valuesSentToServer;
 @synthesize networking = _networking;
+#if LQ_IOS
 @synthesize inAppMessages = _inAppMessages;
+#endif
 @synthesize eventTracker = _eventTracker;
 
 NSString * const LQDidReceiveValues = kLQNotificationLQDidReceiveValues;
@@ -142,7 +151,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.device = [LQDevice sharedInstance];
         self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
-#ifndef TARGET_OS_WATCH
+#if LQ_IOS
         [self initializeBackgroundTaskIdentifier];
 #endif
 
@@ -170,7 +179,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [self bindNotifications];
 
         // Request and present In-App Messages
+#if LQ_IOS
         [self.inAppMessages requestAndPresentInAppMessages];
+#endif
 
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
     }
@@ -199,7 +210,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)setCurrentUser:(LQUser *)currentUser {
     _currentUser = currentUser;
     _eventTracker.currentUser = currentUser;
+#if LQ_IOS
     _inAppMessages.currentUser = currentUser;
+#endif
 }
 
 - (LQSession *)currentSession {
@@ -228,12 +241,14 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self loadLiquidPackageSynced:YES];
 
     // Request and present In-App Messages
+#if LQ_IOS
     [self.inAppMessages requestAndPresentInAppMessages];
+#endif
 }
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
     NSDate *date = [LQDate uniqueNow];
-#ifndef TARGET_OS_WATCH
+#if LQ_IOS
     [self beginBackgroundUpdateTask];
 #endif
     [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
@@ -242,7 +257,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [_networking flush];
     dispatch_async(self.queue, ^{
         [self requestNewLiquidPackageSynced];
-#ifndef TARGET_OS_WATCH
+#if LQ_IOS
         [self endBackgroundUpdateTask];
 #endif
     });

@@ -11,9 +11,9 @@
 @implementation Liquid (watchOS)
 
 - (void)bindNotifications {
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     /*
      TODO:
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(applicationWillEnterForeground:)
                                name:...
