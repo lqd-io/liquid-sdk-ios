@@ -14,7 +14,6 @@
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"
 #define kLQNotificationLQDidLoadValues @"io.lqd.ios.Notifications:DidLoadValues"
 #define kLQNotificationLQDidIdentifyUser @"io.lqd.ios.Notifications:DidIdentifyUser"
-#define kLQBackgroundTaskName @"io.lqd.ios.BackgroundTask"
 
 #define kLQLogLevelPaths       9
 #define kLQLogLevelHttpData    8

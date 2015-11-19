@@ -8,6 +8,7 @@
 
 #import "Liquid+iOS.h"
 #import <UIKit/UIApplication.h>
+#import "LQDefaults.h"
 
 @interface Liquid ()
 
@@ -41,7 +42,8 @@
 
 - (void)beginBackgroundUpdateTask {
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) return;
-    self.backgroundUpdateTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:kLQBackgroundTaskName expirationHandler:^{
+    NSString *backgroundTaskName = [NSString stringWithFormat:@"%@.BackgroundTask", kLQBundle];
+    self.backgroundUpdateTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:backgroundTaskName expirationHandler:^{
         [self endBackgroundUpdateTask];
     }];
 }
