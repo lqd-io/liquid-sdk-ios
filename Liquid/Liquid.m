@@ -58,6 +58,7 @@
 @property (nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property (atomic, strong) LQNetworking *networking;
 #if LQ_IOS
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @property (nonatomic, strong) LQInAppMessages *inAppMessages;
 #endif
 @property (nonatomic, strong) LQEventTracker *eventTracker;
@@ -80,6 +81,7 @@ static Liquid *sharedInstance = nil;
 @synthesize valuesSentToServer = _valuesSentToServer;
 @synthesize networking = _networking;
 #if LQ_IOS
+@synthesize backgroundUpdateTask = _backgroundUpdateTask;
 @synthesize inAppMessages = _inAppMessages;
 #endif
 @synthesize eventTracker = _eventTracker;
