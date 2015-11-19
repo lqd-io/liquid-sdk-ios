@@ -83,8 +83,8 @@
 + (NSString*)screenSize {
     CGFloat scale = [UIScreen mainScreen].scale;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    NSInteger width = screenSize.width  *scale;
-    NSInteger height = screenSize.height  *scale;
+    NSInteger width = screenSize.width * scale;
+    NSInteger height = screenSize.height * scale;
     return [NSString stringWithFormat:@"%ldx%ld", (unsigned long)width, (unsigned long)height];
 }
 

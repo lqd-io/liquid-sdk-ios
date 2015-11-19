@@ -16,7 +16,11 @@
 #pragma mark - Device Info
 
 + (NSString*)screenSize {
-    return @"n/a";
+    CGFloat scale = [[WKInterfaceDevice currentDevice] screenScale];
+    CGSize screenSize = [[WKInterfaceDevice currentDevice] screenBounds].size;
+    NSInteger width = screenSize.width * scale;
+    NSInteger height = screenSize.height * scale;
+    return [NSString stringWithFormat:@"%ldx%ld", (unsigned long)width, (unsigned long)height];
 }
 
 + (NSString*)systemVersion {
