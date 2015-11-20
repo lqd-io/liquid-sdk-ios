@@ -7,11 +7,12 @@
 //
 
 #import "ExtensionDelegate.h"
+#import "Liquid.h"
 
 @implementation ExtensionDelegate
 
 - (void)applicationDidFinishLaunching {
-    // Perform any final initialization of your application.
+    [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
 }
 
 - (void)applicationDidBecomeActive {
