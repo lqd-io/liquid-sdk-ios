@@ -20,7 +20,7 @@
 
 #define kLQVersion @"2.0.0-rc2"
 
-#ifdef LQ_WATCHOS
+#if LQ_WATCHOS
 #define kLQBundle @"io.lqd.watchos"
 #else
 #define kLQBundle @"io.lqd.ios"
