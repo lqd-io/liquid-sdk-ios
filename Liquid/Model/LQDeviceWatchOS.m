@@ -7,6 +7,9 @@
 //
 
 #import "LQDeviceWatchOS.h"
+#import "LQDefaults.h"
+
+#if LQ_WATCHOS
 #import "NSString+LQString.h"
 
 @import WatchKit;
@@ -46,3 +49,4 @@ static NSString *platform;
 }
 
 @end
+#endif

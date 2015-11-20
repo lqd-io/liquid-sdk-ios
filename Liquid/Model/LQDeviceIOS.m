@@ -7,6 +7,9 @@
 //
 
 #import "LQDeviceIOS.h"
+#import "LQDefaults.h"
+
+#if LQ_IOS
 #import <UIKit/UIDevice.h>
 #import <UIKit/UIScreen.h>
 #import <CoreTelephony/CTCarrier.h>
@@ -211,3 +214,4 @@ static void LQDeviceNetworkReachabilityCallback(SCNetworkReachabilityRef target,
 }
 
 @end
+#endif

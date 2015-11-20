@@ -7,8 +7,10 @@
 //
 
 #import "Liquid+iOS.h"
-#import <UIKit/UIApplication.h>
 #import "LQDefaults.h"
+
+#if LQ_IOS
+#import <UIKit/UIApplication.h>
 
 @interface Liquid ()
 
@@ -57,3 +59,4 @@
 }
 
 @end
+#endif

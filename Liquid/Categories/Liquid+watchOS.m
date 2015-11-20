@@ -7,6 +7,9 @@
 //
 
 #import "Liquid+watchOS.h"
+#import "LQDefaults.h"
+
+#if LQ_WATCHOS
 
 @implementation Liquid (watchOS)
 
@@ -30,3 +33,4 @@
 }
 
 @end
+#endif

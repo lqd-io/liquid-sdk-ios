@@ -7,6 +7,9 @@
 //
 
 #import "LQNetworkingURLConnection.h"
+#import "LQDefaults.h"
+
+#if LQ_IOS
 #import "LQNetworkingProtected.h"
 
 @implementation LQNetworkingURLConnection
@@ -24,3 +27,4 @@
 }
 
 @end
+#endif
