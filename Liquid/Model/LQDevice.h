@@ -25,6 +25,7 @@
 
 @property(nonatomic, strong, readonly) NSString *vendor;
 @property(nonatomic, strong, readonly) NSString *deviceModel;
+@property(nonatomic, strong, readonly) NSString *platform;
 @property(nonatomic, strong, readonly) NSString *systemVersion;
 @property(nonatomic, strong, readonly) NSString *systemLanguage;
 @property(nonatomic, strong, readonly) NSString *locale;

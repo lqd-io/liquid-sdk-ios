@@ -22,10 +22,8 @@
 
 #ifdef LQ_WATCHOS
 #define kLQBundle @"io.lqd.watchos"
-#define kLQDevicePlatform @"WatchOS"
 #else
 #define kLQBundle @"io.lqd.ios"
-#define kLQDevicePlatform @"iOS"
 #endif
 
 #define kLQNotificationLQDidReceiveValues @"io.lqd.ios.Notifications:LQDidReceiveValues"

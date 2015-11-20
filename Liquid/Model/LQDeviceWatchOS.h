@@ -12,6 +12,7 @@
 
 - (BOOL)reachesInternet;
 + (NSString *)screenSize;
++ (NSString *)platform;
 + (NSString *)systemVersion;
 
 @end

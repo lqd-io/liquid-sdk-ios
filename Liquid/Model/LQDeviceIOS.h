@@ -18,6 +18,7 @@
 - (BOOL)reachesInternet;
 + (NSString *)screenSize;
 + (NSString *)carrier;
++ (NSString *)platform;
 + (NSString *)systemVersion;
 
 @end

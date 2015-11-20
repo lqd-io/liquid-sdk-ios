@@ -11,6 +11,8 @@
 
 @import WatchKit;
 
+static NSString *platform;
+
 @implementation LQDeviceWatchOS
 
 #pragma mark - Device Info
@@ -21,6 +23,10 @@
     NSInteger width = screenSize.width * scale;
     NSInteger height = screenSize.height * scale;
     return [NSString stringWithFormat:@"%ldx%ld", (unsigned long)width, (unsigned long)height];
+}
+
++ (NSString *)platform {
+    return @"WatchOS";
 }
 
 + (NSString*)systemVersion {

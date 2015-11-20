@@ -83,8 +83,8 @@ NSString * const serverUrl = kLQServerUrl;
 + (NSString *)liquidUserAgent {
     LQDevice *device = [LQDevice sharedInstance];
     return [NSString stringWithFormat:@"Liquid/%@ (%@; %@ %@; %@; %@)", [device liquidVersion],
-            kLQDevicePlatform,
-            kLQDevicePlatform, [device systemVersion],
+            [device platform],
+            [device platform], [device systemVersion],
             [device locale],
             [device deviceModel]
             ];

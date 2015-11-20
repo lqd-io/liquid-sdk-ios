@@ -88,6 +88,10 @@
     return [NSString stringWithFormat:@"%ldx%ld", (unsigned long)width, (unsigned long)height];
 }
 
++ (NSString *)platform {
+    return @"iOS";
+}
+
 + (NSString*)systemVersion {
     return [[UIDevice currentDevice] systemVersion];
 }

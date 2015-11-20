@@ -41,6 +41,7 @@ static LQDevice *sharedInstance = nil;
     if(self) {
         _vendor = kLQDeviceVendor;
         _deviceModel = [[self class] deviceModel];
+        _platform = [[self class] platform];
         _systemVersion = [[self class] systemVersion];
         _systemLanguage = [[self class] systemLanguage];
         _locale = [[self class] locale];
@@ -129,7 +130,7 @@ static LQDevice *sharedInstance = nil;
     }
     [dictionary setObject:_liquidVersion forKey:@"liquid_version"];
     [dictionary setObject:self.uid forKey:@"unique_id"];
-    [dictionary setObject:kLQDevicePlatform forKey:@"platform"];
+    [dictionary setObject:self.platform forKey:@"platform"];
 
     return [NSDictionary dictionaryWithDictionary:dictionary];
 }
@@ -148,6 +149,12 @@ static LQDevice *sharedInstance = nil;
 }
 
 + (NSString*)screenSize {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
+}
+
++ (NSString *)platform {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
