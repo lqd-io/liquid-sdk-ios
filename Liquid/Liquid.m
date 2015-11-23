@@ -236,7 +236,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - UIApplication notifications
 
-- (void)applicationWillEnterForeground:(NSNotification *)notification {
+- (void)clientApplicationForeground {
     [LQDate resetUniqueNow];
     NSTimeInterval timedOut = [self checkSessionTimeout];
     if (timedOut > 0) {
@@ -249,31 +249,20 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     [_networking startFlushTimer];
     [self loadLiquidPackageSynced:YES];
-
-    // Request and present In-App Messages
-#if LQ_IOS
-    [self.inAppMessages requestAndPresentInAppMessages];
-#endif
 }
 
-- (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
+- (void)clientApplicationBackground {
     NSDate *date = [LQDate uniqueNow];
-#if LQ_IOS
-    [self beginBackgroundUpdateTask];
-#endif
     [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
     self.enterBackgroundTime = [LQDate uniqueNow];
     [_networking stopFlushTimer];
     [_networking flush];
     dispatch_async(self.queue, ^{
         [self requestNewLiquidPackageSynced];
-#if LQ_IOS
-        [self endBackgroundUpdateTask];
-#endif
     });
 }
 
-- (void)applicationWillTerminate:(NSNotificationCenter *)notification {
+- (void)clientApplicationTerminate {
     [self endSessionNowBy:@"App Terminate" with:nil];
 }
 

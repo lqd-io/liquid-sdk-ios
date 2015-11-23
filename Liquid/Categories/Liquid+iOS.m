@@ -8,6 +8,7 @@
 
 #import "Liquid+iOS.h"
 #import "LQDefaults.h"
+#import "LQInAppMessages.h"
 
 #if LQ_IOS
 #import <UIKit/UIApplication.h>
@@ -15,6 +16,16 @@
 @interface Liquid ()
 
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
+@property (nonatomic, strong) LQInAppMessages *inAppMessages;
+#if OS_OBJECT_USE_OBJC
+@property (atomic, strong) dispatch_queue_t queue;
+#else
+@property (atomic, assign) dispatch_queue_t queue;
+#endif
+
+- (void)clientApplicationForeground;
+- (void)clientApplicationBackground;
+- (void)clientApplicationTerminate;
 
 @end
 
@@ -23,11 +34,11 @@
 - (void)bindNotifications {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
-                           selector:@selector(applicationWillEnterForeground:)
+                           selector:@selector(clientApplicationForeground)
                                name:UIApplicationWillEnterForegroundNotification
                              object:nil];
     [notificationCenter addObserver:self
-                           selector:@selector(applicationDidEnterBackground:)
+                           selector:@selector(clientApplicationBackground)
                                name:UIApplicationDidEnterBackgroundNotification
                              object:nil];
     [notificationCenter addObserver:self
@@ -35,6 +46,27 @@
                                name:UIApplicationWillTerminateNotification
                              object:nil];
 }
+
+#pragma mark - Notifications
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
+    [self clientApplicationForeground];
+    [self.inAppMessages requestAndPresentInAppMessages];
+}
+
+- (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {
+    [self beginBackgroundUpdateTask];
+    [self clientApplicationBackground];
+    dispatch_async(self.queue, ^{
+        [self endBackgroundUpdateTask];
+    });
+}
+
+- (void)applicationWillTerminate:(NSNotificationCenter *)notification {
+    [self clientApplicationTerminate];
+}
+
+#pragma mark - Background Tasks
 
 - (void)initializeBackgroundTaskIdentifier {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {

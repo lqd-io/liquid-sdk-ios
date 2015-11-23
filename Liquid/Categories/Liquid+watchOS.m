@@ -11,25 +11,35 @@
 
 #if LQ_WATCHOS
 
+@interface Liquid ()
+
+- (void)clientApplicationForeground;
+- (void)clientApplicationBackground;
+
+@end
+
 @implementation Liquid (watchOS)
 
 - (void)bindNotifications {
-    /*
-     TODO:
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
-                           selector:@selector(applicationWillEnterForeground:)
-                               name:...
+                           selector:@selector(clientApplicationForeground)
+                               name:NSExtensionHostWillEnterForegroundNotification
                              object:nil];
     [notificationCenter addObserver:self
-                           selector:@selector(applicationDidEnterBackground:)
-                               name:...
+                           selector:@selector(clientApplicationBackground)
+                               name:NSExtensionHostDidEnterBackgroundNotification
                              object:nil];
-    [notificationCenter addObserver:self
-                           selector:@selector(applicationWillTerminate:)
-                               name:...
-                             object:nil];
-    */
+}
+
+#pragma mark - Notifications
+
+- (void)applicationWillEnterForeground {
+    [self clientApplicationForeground];
+}
+
+- (void)applicationDidEnterBackground {
+    [self clientApplicationBackground];
 }
 
 @end
