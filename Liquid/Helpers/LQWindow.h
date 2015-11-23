@@ -6,6 +6,9 @@
 //  Copyright © 2015 Liquid. All rights reserved.
 //
 
+#import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import <Foundation/Foundation.h>
 #import <UIKit/UIWindow.h>
 
@@ -17,3 +20,4 @@
 + (UIWindow *)topWindowWithHeight:(CGFloat)height;
     
 @end
+#endif

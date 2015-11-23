@@ -8,6 +8,8 @@
 
 #import "LQInAppMessages.h"
 #import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import "NSData+LQData.h"
 #import "LQModalView.h"
 #import "LQModalMessageViewController.h"
@@ -289,3 +291,4 @@
 }
 
 @end
+#endif

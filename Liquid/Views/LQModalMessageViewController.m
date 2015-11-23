@@ -7,7 +7,9 @@
 //
 
 #import "LQModalMessageViewController.h"
+#import "LQDefaults.h"
 
+#if LQ_INAPP_MESSAGES_SUPPORT
 @interface LQModalMessageViewController () {
     MessageDismissBlock _modalDismissBlock;
     MessageCTABlock _modalCTABlock;
@@ -176,3 +178,4 @@
 }
 
 @end
+#endif

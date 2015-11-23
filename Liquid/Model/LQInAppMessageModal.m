@@ -7,6 +7,9 @@
 //
 
 #import "LQInAppMessageModal.h"
+#import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import "LQCallToAction.h"
 #import "UIColor+LQColor.h"
 
@@ -43,3 +46,4 @@
 }
 
 @end
+#endif

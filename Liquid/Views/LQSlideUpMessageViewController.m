@@ -7,6 +7,9 @@
 //
 
 #import "LQSlideUpMessageViewController.h"
+#import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import "LQCaret.h"
 
 @interface LQSlideUpMessageViewController () {
@@ -186,3 +189,4 @@ static NSNumber *messageMargin;
 }
 
 @end
+#endif

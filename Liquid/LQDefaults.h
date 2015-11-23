@@ -17,6 +17,7 @@
 
 #define LQ_WATCHOS TARGET_OS_WATCH
 #define LQ_IOS TARGET_OS_IOS
+#define LQ_INAPP_MESSAGES_SUPPORT LQ_IOS
 
 #define kLQVersion @"2.0.0-rc2"
 

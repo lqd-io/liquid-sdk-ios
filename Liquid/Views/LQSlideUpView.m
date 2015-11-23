@@ -7,6 +7,9 @@
 //
 
 #import "LQSlideUpView.h"
+#import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import <QuartzCore/QuartzCore.h>
 #import "LQSlideUpMessageViewController.h"
 
@@ -262,3 +265,4 @@ static NSInteger const kCornerRadius = 4;
 }
 
 @end
+#endif

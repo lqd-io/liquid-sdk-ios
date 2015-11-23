@@ -6,6 +6,9 @@
 //  Copyright © 2015 Liquid. All rights reserved.
 //
 
+#import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import <UIKit/UIKit.h>
 
 @interface LQRootViewController : UIViewController
@@ -17,3 +20,4 @@
 #endif
 
 @end
+#endif

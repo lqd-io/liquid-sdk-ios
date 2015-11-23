@@ -7,7 +7,9 @@
 //
 
 #import "LQInAppMessageSlideUp.h"
+#import "LQDefaults.h"
 
+#if LQ_INAPP_MESSAGES_SUPPORT
 @implementation LQInAppMessageSlideUp
 
 #pragma mark - Initializers
@@ -30,3 +32,4 @@
 }
 
 @end
+#endif

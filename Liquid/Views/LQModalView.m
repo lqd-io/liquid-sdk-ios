@@ -7,6 +7,9 @@
 //
 
 #import "LQModalView.h"
+#import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import <QuartzCore/QuartzCore.h>
 #import "LQModalMessageViewController.h"
 
@@ -324,3 +327,4 @@ static NSInteger const kAnimationOptionCurveIOS7 = (7 << 16); // note: this curv
 }
 
 @end
+#endif

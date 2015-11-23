@@ -6,6 +6,8 @@
 //  Copyright © 2015 Liquid. All rights reserved.
 //
 
+#import "LQDefaults.h"
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import <UIKit/UIKit.h>
 
 @interface LQCaret : UIView
@@ -15,3 +17,4 @@
 - (instancetype)initWithFrame:(CGRect)frame strokeColor:(UIColor *)strokeColor;
 
 @end
+#endif

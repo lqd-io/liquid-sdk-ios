@@ -8,6 +8,8 @@
 
 #import "LQInAppMessage.h"
 #import "LQDefaults.h"
+
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import "UIColor+LQColor.h"
 
 @implementation LQInAppMessage
@@ -52,3 +54,4 @@
 }
 
 @end
+#endif

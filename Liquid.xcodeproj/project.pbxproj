@@ -64,6 +64,20 @@
 		A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; settings = {ASSET_TAGS = (); }; };
 		A96D87321BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; settings = {ASSET_TAGS = (); }; };
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
+		A97A12C31BFFB13700323C38 /* LQInAppMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29CC1BF52201001BE1B7 /* LQInAppMessages.m */; };
+		A97A12C41BFFB13700323C38 /* LQNetworkingURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A90F15891BD16BA900E70FD7 /* LQNetworkingURLConnection.m */; };
+		A97A12C51BFFB13700323C38 /* LQCaret.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29B61BF52157001BE1B7 /* LQCaret.m */; };
+		A97A12C61BFFB13700323C38 /* LQModalMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29B91BF52157001BE1B7 /* LQModalMessageViewController.m */; };
+		A97A12C71BFFB13700323C38 /* LQModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29BB1BF52157001BE1B7 /* LQModalView.m */; };
+		A97A12C81BFFB13700323C38 /* LQSlideUpMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29BE1BF52157001BE1B7 /* LQSlideUpMessageViewController.m */; };
+		A97A12C91BFFB13700323C38 /* LQSlideUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29C01BF52157001BE1B7 /* LQSlideUpView.m */; };
+		A97A12CA1BFFB13700323C38 /* LQRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29B21BF52131001BE1B7 /* LQRootViewController.m */; };
+		A97A12CB1BFFB13700323C38 /* LQWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29CF1BF522FF001BE1B7 /* LQWindow.m */; };
+		A97A12CC1BFFB13700323C38 /* LQCallToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29A51BF520FD001BE1B7 /* LQCallToAction.m */; };
+		A97A12CD1BFFB13700323C38 /* LQInAppMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29A81BF5210A001BE1B7 /* LQInAppMessage.m */; };
+		A97A12CE1BFFB13700323C38 /* LQInAppMessageModal.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29AA1BF5210A001BE1B7 /* LQInAppMessageModal.m */; };
+		A97A12CF1BFFB13700323C38 /* LQInAppMessageSlideUp.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EA29AC1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m */; };
+		A97A12D01BFFB13700323C38 /* LQDeviceIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A909AD761BFE285B006D5EDD /* LQDeviceIOS.m */; };
 		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
 		A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -1087,6 +1101,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A97A12C31BFFB13700323C38 /* LQInAppMessages.m in Sources */,
+				A97A12C41BFFB13700323C38 /* LQNetworkingURLConnection.m in Sources */,
+				A97A12C51BFFB13700323C38 /* LQCaret.m in Sources */,
+				A97A12C61BFFB13700323C38 /* LQModalMessageViewController.m in Sources */,
+				A97A12C71BFFB13700323C38 /* LQModalView.m in Sources */,
+				A97A12C81BFFB13700323C38 /* LQSlideUpMessageViewController.m in Sources */,
+				A97A12C91BFFB13700323C38 /* LQSlideUpView.m in Sources */,
+				A97A12CA1BFFB13700323C38 /* LQRootViewController.m in Sources */,
+				A97A12CB1BFFB13700323C38 /* LQWindow.m in Sources */,
+				A97A12CC1BFFB13700323C38 /* LQCallToAction.m in Sources */,
+				A97A12CD1BFFB13700323C38 /* LQInAppMessage.m in Sources */,
+				A97A12CE1BFFB13700323C38 /* LQInAppMessageModal.m in Sources */,
+				A97A12CF1BFFB13700323C38 /* LQInAppMessageSlideUp.m in Sources */,
+				A97A12D01BFFB13700323C38 /* LQDeviceIOS.m in Sources */,
 				A909AD7B1BFE2B2E006D5EDD /* LQEventTracker.m in Sources */,
 				A909AD7C1BFE2B2E006D5EDD /* LQURLRequestFactory.m in Sources */,
 				A92016C51BCF101600859450 /* Liquid.m in Sources */,
