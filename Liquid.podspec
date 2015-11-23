@@ -9,19 +9,27 @@ Pod::Spec.new do |s|
   s.social_media_url  = 'https://twitter.com/onliquid'
   s.documentation_url = "https://lqd.io/documentation/ios"
 
-  s.platform     = :ios, '5.0'
+  s.platform     = :ios, :watchos
   s.ios.deployment_target = '5.0'
+  s.watchos.deployment_target = '2.0'
   s.requires_arc = true
-  s.preserve_paths = [ 'Liquid.xcodeproj' ]
+  s.preserve_paths = %w(Liquid.xcodeproj)
 
-  s.frameworks = %w(Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
+  s.ios.frameworks = %w(Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
+  s.watchos.frameworks = []
 
   s.xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load',
   }
   s.source_files = 'Liquid/**/*.{m,h}'
   s.public_header_files = 'Liquid/**/*.h'
-  s.resources = 'Liquid/**/*.xib'
-
-  s.watchos.deployment_target = '2.0'
+  s.ios.resources = 'Liquid/**/*.xib'
+  s.watchos.resources = []
+  s.ios.exclude_files = 'Liquid/**/*[wW]atchOS*.[mh]'
+  s.watchos.exclude_files = 'Liquid/**/*[iI]OS*.[mh]',
+                            'Liquid/Model/LQCallToAction.[mh]',
+                            'Liquid/Model/LQInAppMessage*.[mh]',
+                            'Liquid/LQNetworkingURLConnection.[mh]',
+                            'Liquid/Views/*.{m,h,xib}',
+                            'Liquid/ViewControllers/*.[mh]'
 end
