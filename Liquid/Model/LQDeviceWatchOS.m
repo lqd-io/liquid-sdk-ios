@@ -29,7 +29,7 @@ static NSString *platform;
 }
 
 + (NSString *)platform {
-    return @"WatchOS";
+    return @"watchOS";
 }
 
 + (NSString*)systemVersion {
