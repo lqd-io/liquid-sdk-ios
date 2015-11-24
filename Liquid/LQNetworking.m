@@ -273,21 +273,21 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 + (LQQueueStatus)queueStatusFromError:(NSError *)error {
     if (error.code == NSURLErrorCannotFindHost || error.code == NSURLErrorCannotConnectToHost || error.code == NSURLErrorNetworkConnectionLost) {
-        LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable", (long)error.code);
+        LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server is unreachable: %@", (long)error.code, error.localizedDescription);
         return LQQueueStatusUnreachable;
     } else if(error.code == NSURLErrorUserCancelledAuthentication || error.code == NSURLErrorUserAuthenticationRequired) {
-        LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token)", (long)error.code);
+        LQLog(kLQLogLevelError, @"<Liquid> Error (%ld) while sending data to server: Unauthorized (check App Token): %@", (long)error.code, error.localizedDescription);
         return LQQueueStatusUnauthorized;
     }
-    LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error", (long)error.code);
+    LQLog(kLQLogLevelHttpError, @"<Liquid> Error (%ld) while sending data to server: Server error: %@", (long)error.code, error.localizedDescription);
     return LQQueueStatusRejected;
 }
 
 + (LQQueueStatus)queueStatusFromResponse:(NSURLResponse *)response data:(NSData *)responseData {
-    if (kLQLogLevel == kLQLogLevelHttpData) {
-        LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server: '%@'", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-    }
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    if (kLQLogLevel == kLQLogLevelHttpData) {
+        LQLog(kLQLogLevelHttpData, @"<Liquid> Response from server (%ld): '%@'", (long) httpResponse.statusCode, [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+    }
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
         return LQQueueStatusOk;
     } else if (httpResponse.statusCode >= 401 && httpResponse.statusCode <= 403) {
