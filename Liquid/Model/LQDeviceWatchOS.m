@@ -11,6 +11,7 @@
 
 #if LQ_WATCHOS
 #import "NSString+LQString.h"
+#import <WatchKit/WKInterfaceDevice.h>
 
 @import WatchKit;
 
@@ -20,7 +21,7 @@ static NSString *platform;
 
 #pragma mark - Device Info
 
-+ (NSString*)screenSize {
++ (NSString *)screenSize {
     CGFloat scale = [[WKInterfaceDevice currentDevice] screenScale];
     CGSize screenSize = [[WKInterfaceDevice currentDevice] screenBounds].size;
     NSInteger width = screenSize.width * scale;
@@ -32,8 +33,8 @@ static NSString *platform;
     return @"watchOS";
 }
 
-+ (NSString*)systemVersion {
-    return @"n/a";
++ (NSString *)systemVersion {
+    return [[WKInterfaceDevice currentDevice] systemVersion];
 }
 
 #pragma mark - Device Unique ID
