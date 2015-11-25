@@ -6,18 +6,18 @@
 //  Copyright (c) 2014 Liquid Data Intelligence, S.A. All rights reserved.
 //
 
+#import "LQDefaults.h"
+
 #if LQ_WATCHOS
 #import "Liquid+watchOS.h"
+#import "LQDeviceWatchOS.h"
 #else
 #import "Liquid+iOS.h"
+#import "LQDeviceIOS.h"
+#import "LQInAppMessages.h"
 #endif
-
 #import "LQEvent.h"
 #import "LQSession.h"
-#import "LQDeviceIOS.h"
-#if LQ_WATCHOS
-#import "LQDeviceWatchOS.h"
-#endif
 #import "LQUser.h"
 #import "LQRequest.h"
 #import "LQVariable.h"
@@ -25,7 +25,6 @@
 #import "LQTarget.h"
 #import "LQDataPoint.h"
 #import "LQLiquidPackage.h"
-#import "LQDefaults.h"
 #import "LQDate.h"
 #import "UIColor+LQColor.h"
 #import "NSDateFormatter+LQDateFormatter.h"
@@ -33,9 +32,6 @@
 #import "NSData+LQData.h"
 #import "LQNetworkingFactory.h"
 #import "LQStorage.h"
-#if LQ_IOS
-#import "LQInAppMessages.h"
-#endif
 #import "LQEventTracker.h"
 
 #if !__has_feature(objc_arc)
