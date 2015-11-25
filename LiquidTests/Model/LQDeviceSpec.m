@@ -7,7 +7,7 @@
 //
 
 #import <Kiwi/Kiwi.h>
-#import "LQDevicePrivates.h"
+#import "LQDeviceIOSPrivates.h"
 #import "LQKeychain.h"
 #import "LQUserDefaults.h"
 #import "NSString+LQString.h"
@@ -22,7 +22,7 @@ describe(@"LQDevice", ^{
 
         beforeEach(^{
             SecItemDelete((__bridge CFDictionaryRef) @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword});
-            [LQDevice deleteUniqueIdFile];
+            [LQDeviceIOS deleteUniqueIdFile];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"io.lqd.ios.UUID"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         });
@@ -34,23 +34,23 @@ describe(@"LQDevice", ^{
             });
 
             it(@"returns the same uniqueId if called twice", ^{
-                NSString *uniqueId = [LQDevice uniqueId];
-                [[uniqueId should] equal:[LQDevice uniqueId]];
+                NSString *uniqueId = [LQDeviceIOS uniqueId];
+                [[uniqueId should] equal:[LQDeviceIOS uniqueId]];
             });
         });
 
         context(@"given a uniqueId stored in a file", ^{
             beforeEach(^{
-                [NSKeyedArchiver archiveRootObject:randomUUID toFile:[LQDevice uniqueIdFile]];
+                [NSKeyedArchiver archiveRootObject:randomUUID toFile:[LQDeviceIOS uniqueIdFile]];
             });
 
             it(@"retrieves the uniqueId from the file", ^{
-                [[[LQDevice uniqueId] should] equal:randomUUID];
+                [[[LQDeviceIOS uniqueId] should] equal:randomUUID];
             });
 
             it(@"returns the same uniqueId if called twice", ^{
-                [LQDevice uniqueId];
-                [[[LQDevice uniqueId] should] equal:randomUUID];
+                [LQDeviceIOS uniqueId];
+                [[[LQDeviceIOS uniqueId] should] equal:randomUUID];
             });
         });
 
@@ -60,23 +60,23 @@ describe(@"LQDevice", ^{
             });
 
             it(@"retrieves the uniqueId from the NSUserDefaults if called once (retrocompatibility test)", ^{
-                [[[LQDevice uniqueIdFromKeychain] should] beNil];
-                [[[LQDevice uniqueIdFromNSUserDefaults] shouldNot] beNil];
-                [LQDevice uniqueId];
+                [[[LQDeviceIOS uniqueIdFromKeychain] should] beNil];
+                [[[LQDeviceIOS uniqueIdFromNSUserDefaults] shouldNot] beNil];
+                [LQDeviceIOS uniqueId];
             });
 
             it(@"returns the same uniqueId if called twice", ^{
-                NSString *uniqueId = [LQDevice uniqueId];
-                [[uniqueId should] equal:[LQDevice uniqueId]];
+                NSString *uniqueId = [LQDeviceIOS uniqueId];
+                [[uniqueId should] equal:[LQDeviceIOS uniqueId]];
             });
 
             it(@"returns the same uniqueId that was stored in NSUserDefaults", ^{
-                [[[LQDevice uniqueId] should] equal:randomUUID];
+                [[[LQDeviceIOS uniqueId] should] equal:randomUUID];
             });
 
             it(@"returns the same uniqueId that was stored in NSUserDefaults, if called twice", ^{
-                [LQDevice uniqueId];
-                [[[LQDevice uniqueId] should] equal:randomUUID];
+                [LQDeviceIOS uniqueId];
+                [[[LQDeviceIOS uniqueId] should] equal:randomUUID];
             });
         });
     });
@@ -85,7 +85,7 @@ describe(@"LQDevice", ^{
         context(@"given no uniqueId stored anywhere", ^{
             beforeEach(^{
                 SecItemDelete((__bridge CFDictionaryRef) @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword});
-                [LQDevice deleteUniqueIdFile];
+                [LQDeviceIOS deleteUniqueIdFile];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"io.lqd.ios.UUID"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             });
@@ -95,17 +95,17 @@ describe(@"LQDevice", ^{
             });
 
             it(@"stores the uniqueId in Keychain", ^{
-                LQDevice __attribute__((unused)) *device = [[LQDevice alloc] init];
+                LQDeviceIOS __attribute__((unused)) *device = [[LQDeviceIOS alloc] init];
                 [[[LQKeychain valueForKey:@"device.unique_id"] shouldNot] beNil];
             });
 
             it(@"has no key stored in a file", ^{
-                [[[LQDevice unarchiveUniqueId] should] beNil];
+                [[[LQDeviceIOS unarchiveUniqueId] should] beNil];
             });
 
             it(@"stores the uniqueId in a file", ^{
-                LQDevice __attribute__((unused)) *device = [[LQDevice alloc] init];
-                [[[LQDevice unarchiveUniqueId] shouldNot] beNil];
+                LQDeviceIOS __attribute__((unused)) *device = [[LQDeviceIOS alloc] init];
+                [[[LQDeviceIOS unarchiveUniqueId] shouldNot] beNil];
             });
 
             it(@"has no key stored in NSUserDefaults", ^{
@@ -113,7 +113,7 @@ describe(@"LQDevice", ^{
             });
 
             it(@"stores the uniqueId in NSUserDefaults", ^{
-                LQDevice __attribute__((unused)) *device = [[LQDevice alloc] init];
+                LQDeviceIOS __attribute__((unused)) *device = [[LQDeviceIOS alloc] init];
                 [[[[NSUserDefaults standardUserDefaults] objectForKey:@"io.lqd.ios.UUID"] shouldNot] beNil];
             });
         });

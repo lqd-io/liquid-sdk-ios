@@ -8,7 +8,7 @@
 
 #import <Kiwi/Kiwi.h>
 #import "LiquidPrivates.h"
-#import "LQDevice.h"
+#import "LQDeviceIOS.h"
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "OHHTTPStubs.h"
 #import <OCMock/OCMock.h>
@@ -22,16 +22,16 @@ describe(@"Liquid", ^{
     });
 
     let(deviceId, ^id{
-        return [[LQDevice sharedInstance] uid];
+        return [[LQDeviceIOS sharedInstance] uid];
     });
 
     beforeAll(^{
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
-        [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
-        [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
-        [LQDevice stub:@selector(appVersion) andReturn:@"9.9"];
-        [LQDevice stub:@selector(releaseVersion) andReturn:@"9.8"];
-        [LQDevice stub:@selector(uniqueId) andReturn:deviceId];
+        [LQDeviceIOS stub:@selector(appName) andReturn:@"LiquidTest"];
+        [LQDeviceIOS stub:@selector(appBundle) andReturn:kLQBundle];
+        [LQDeviceIOS stub:@selector(appVersion) andReturn:@"9.9"];
+        [LQDeviceIOS stub:@selector(releaseVersion) andReturn:@"9.8"];
+        [LQDeviceIOS stub:@selector(uniqueId) andReturn:deviceId];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return [request.URL.path hasPrefix:@"/collect/users/"] && [request.URL.path hasSuffix:[NSString stringWithFormat:@"/devices/%@/liquid_package", deviceId]];
@@ -113,9 +113,9 @@ describe(@"Liquid", ^{
                     previousSessionId = [liquid sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.2f];
-                    [liquid applicationDidEnterBackground:nil];
+                    [liquid clientApplicationBackground];
                     [NSThread sleepForTimeInterval:0.25f];
-                    [liquid applicationWillEnterForeground:nil];
+                    [liquid clientApplicationForeground];
                     [NSThread sleepForTimeInterval:0.2f];
                 });
 
@@ -133,9 +133,9 @@ describe(@"Liquid", ^{
                     previousSessionId = [liquid sessionIdentifier];
 
                     [NSThread sleepForTimeInterval:0.1f];
-                    [liquid applicationDidEnterBackground:nil];
+                    [liquid clientApplicationBackground];
                     [NSThread sleepForTimeInterval:3.0f];
-                    [liquid applicationWillEnterForeground:nil];
+                    [liquid clientApplicationForeground];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
 

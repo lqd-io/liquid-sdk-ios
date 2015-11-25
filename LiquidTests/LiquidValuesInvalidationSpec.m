@@ -2,7 +2,7 @@
 #import "LiquidPrivates.h"
 #import "OHHTTPStubs.h"
 #import "NSString+LQString.h"
-#import "LQDevice.h"
+#import "LQDeviceIOS.h"
 #import <OCMock/OCMock.h>
 #import "LQNetworkingPrivates.h"
 
@@ -14,7 +14,7 @@ describe(@"Liquid", ^{
     });
 
     let(deviceId, ^id{
-        return [[LQDevice sharedInstance] uid];
+        return [[LQDeviceIOS sharedInstance] uid];
     });
     
     let(userId, ^id{
@@ -23,10 +23,10 @@ describe(@"Liquid", ^{
     
     beforeAll(^{
         [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
-        [LQDevice stub:@selector(appName) andReturn:@"LiquidTest"];
-        [LQDevice stub:@selector(appBundle) andReturn:kLQBundle];
-        [LQDevice stub:@selector(appVersion) andReturn:@"9.9"];
-        [LQDevice stub:@selector(releaseVersion) andReturn:@"9.8"];
+        [LQDeviceIOS stub:@selector(appName) andReturn:@"LiquidTest"];
+        [LQDeviceIOS stub:@selector(appBundle) andReturn:kLQBundle];
+        [LQDeviceIOS stub:@selector(appVersion) andReturn:@"9.9"];
+        [LQDeviceIOS stub:@selector(releaseVersion) andReturn:@"9.8"];
     });
 
     context(@"given a Liquid Package with 6 variables", ^{
@@ -46,13 +46,11 @@ describe(@"Liquid", ^{
                 liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
                 [liquid identifyUserWithIdentifier:userId];
                 [liquid stub:@selector(flush)];
-                //                [LQNetworking deleteHttpQueueFileForToken:@"liquid_tests"];
-                //                [liquid.networking resetQueue];
                 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [liquid applicationDidEnterBackground:nil];
-                [liquid applicationWillEnterForeground:nil];
+                [liquid clientApplicationBackground];
+                [liquid clientApplicationForeground];
                 [NSThread sleepForTimeInterval:0.1f];
             });
 

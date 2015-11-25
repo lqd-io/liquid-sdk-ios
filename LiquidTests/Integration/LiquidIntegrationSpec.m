@@ -2,7 +2,7 @@
 #import "LiquidPrivates.h"
 #import "OHHTTPStubs.h"
 #import "NSString+LQString.h"
-#import "LQDevice.h"
+#import "LQDeviceIOS.h"
 #import <OCMock/OCMock.h>
 #import "LQDefaults.h"
 #import "LQNetworkingPrivates.h"
@@ -15,17 +15,17 @@ describe(@"Liquid", ^{
     });
 
     let(deviceId, ^id{
-        return [[LQDevice sharedInstance] uid];
+        return [[LQDeviceIOS sharedInstance] uid];
     });
 
     context(@"given a Liquid Package with 2 variables", ^{
         beforeAll(^{
             [NSBundle stub:@selector(mainBundle) andReturn:[NSBundle bundleForClass:[self class]]];
-            [LQDevice stub:@selector(appName) andReturn:[@"LiquidTest" copy]];
-            [LQDevice stub:@selector(appBundle) andReturn:[kLQBundle copy]];
-            [LQDevice stub:@selector(appVersion) andReturn:[@"9.9" copy]];
-            [LQDevice stub:@selector(releaseVersion) andReturn:[@"9.8" copy]];
-            [LQDevice stub:@selector(uniqueId) andReturn:deviceId];
+            [LQDeviceIOS stub:@selector(appName) andReturn:[@"LiquidTest" copy]];
+            [LQDeviceIOS stub:@selector(appBundle) andReturn:[kLQBundle copy]];
+            [LQDeviceIOS stub:@selector(appVersion) andReturn:[@"9.9" copy]];
+            [LQDeviceIOS stub:@selector(releaseVersion) andReturn:[@"9.8" copy]];
+            [LQDeviceIOS stub:@selector(uniqueId) andReturn:deviceId];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return [request.URL.path hasPrefix:@"/collect/users/"] && [request.URL.path hasSuffix:[NSString stringWithFormat:@"/devices/%@/liquid_package", deviceId]];
@@ -52,8 +52,8 @@ describe(@"Liquid", ^{
                 beforeAll(^{
                     // Simulate an app going in background and foreground again:
                     [NSThread sleepForTimeInterval:0.1f];
-                    [liquid applicationDidEnterBackground:nil];
-                    [liquid applicationWillEnterForeground:nil];
+                    [liquid clientApplicationBackground];
+                    [liquid clientApplicationForeground];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
 
@@ -89,8 +89,8 @@ describe(@"Liquid", ^{
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [liquid applicationDidEnterBackground:nil];
-                [liquid applicationWillEnterForeground:nil];
+                [liquid clientApplicationBackground];
+                [liquid clientApplicationForeground];
                 [NSThread sleepForTimeInterval:0.1f];
             });
 
@@ -99,9 +99,9 @@ describe(@"Liquid", ^{
                 dispatch_queue_t serialQueue = dispatch_queue_create([@"serial" UTF8String], DISPATCH_QUEUE_SERIAL);
                 for(NSInteger i = 0; i < 20; i++) {
                     dispatch_async(serialQueue, ^{
-                        [liquid applicationDidEnterBackground:nil];
+                        [liquid clientApplicationBackground];
                         [NSThread sleepForTimeInterval:0.25f];
-                        [liquid applicationWillEnterForeground:nil];
+                        [liquid clientApplicationForeground];
                         @synchronized(totalOfBlocks) {
                             totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
                         }

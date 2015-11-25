@@ -11,7 +11,7 @@
 #import "LQDataPoint.h"
 #import "LQDefaults.h"
 #import "LQUser.h"
-#import "LQDevice.h"
+#import "LQDeviceIOS.h"
 #import "LQSession.h"
 #import "LQEvent.h"
 
@@ -26,7 +26,7 @@ describe(@"LQDataPoint", ^{
                 @"name": @"Audrey Tautou",
                 @"age": [NSNumber numberWithInt:37]
             }];
-            LQDevice *device = [[LQDevice alloc] init];
+            LQDeviceIOS *device = [[LQDeviceIOS alloc] init];
             LQSession *session = [[LQSession alloc] initWithDate:[NSDate date] timeout:[NSNumber numberWithInt:30]];
             LQEvent *event = [[LQEvent alloc] initWithName:@"Click Button" attributes:nil date:[NSDate date]];
             dataPoint = [[LQDataPoint alloc] initWithDate:event.date
