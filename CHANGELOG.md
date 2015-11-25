@@ -1,6 +1,10 @@
 # Liquid iOS SDK Change Log
 
-## 2.0.0-rc2: Fix compiling issues
+## 2.1.0-rc1: Add Apple Watch Support
+
+* **[feature]** Add support for Apple Watch (watchOS 2.0+)
+
+## 2.0.0-rc2: Fix compilation issues
 
 * **[bugfix]** Small fix that could avoid compiling on iOS < 9
 

@@ -1,12 +1,12 @@
 ![pod badge](http://img.shields.io/cocoapods/v/Liquid.svg?style=flat)
 
-# Quick Start to Liquid SDK for iOS
+# Quick Start to Liquid SDK for iOS & Apple Watch
 
 This document is just a quick start introduction to Liquid SDK for iOS. You can read the full documentation at [https://www.onliquid.com/documentation/ios/](https://www.onliquid.com/documentation/ios/).
 
-To integrate Liquid in your app, just follow the 4 simple steps below.
+To integrate Liquid in your app, just follow the simple steps below.
 
-## Install Liquid in your project
+## Install Liquid in your project (iOS)
 
 1. Install [CocoaPods](http://cocoapods.org/) in your system
 2. Open your Xcode project folder and create a file called `Podfile` with the following content:
@@ -16,6 +16,27 @@ To integrate Liquid in your app, just follow the 4 simple steps below.
     ```
 
 3. Run `pod install` and wait for CocoaPod to install Liquid SDK. From this moment on, instead of using `.xcodeproj` file, you should start using `.xcworkspace`.
+
+## Install Liquid in your project (watchOS)
+
+To install Liquid for an watchOS project, you need to explicitly define the platform for each of your targets, in your Podfile, like shown below:
+
+```ruby
+target 'Example' do
+  platform :ios, '5.0'
+  pod 'Liquid'
+end
+
+target 'ExampleApp WatchKit Extension' do
+  platform :watchos, '2.0'
+  pod 'Liquid'
+end
+
+target 'ExampleApp WatchKit App' do
+  platform :watchos, '2.0'
+  pod 'Liquid'
+end
+```
 
 ## Start using Liquid
 
