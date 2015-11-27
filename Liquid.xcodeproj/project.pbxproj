@@ -106,6 +106,7 @@
 		A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+LQColor.m */; };
 		A9A3FC3D199298830094A2B6 /* LQLiquidPackageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */; };
 		A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A58B2A19736B27007085C9 /* LQUserSpec.m */; };
+		A9B434EB1C07817900A59926 /* BackgroundLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B434EA1C07817900A59926 /* BackgroundLocationManager.m */; settings = {ASSET_TAGS = (); }; };
 		A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */; };
 		A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2919AA698700E1F0F2 /* LQDate.m */; };
 		A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */; };
@@ -343,6 +344,8 @@
 		A99EB5531924DB730060E484 /* UIColor+LQColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+LQColor.m"; sourceTree = "<group>"; };
 		A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQLiquidPackageSpec.m; path = Model/LQLiquidPackageSpec.m; sourceTree = "<group>"; };
 		A9A58B2A19736B27007085C9 /* LQUserSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQUserSpec.m; path = Model/LQUserSpec.m; sourceTree = "<group>"; };
+		A9B434E91C07817900A59926 /* BackgroundLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLocationManager.h; sourceTree = "<group>"; };
+		A9B434EA1C07817900A59926 /* BackgroundLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundLocationManager.m; sourceTree = "<group>"; };
 		A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQNetworking.h; sourceTree = "<group>"; };
 		A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQNetworking.m; sourceTree = "<group>"; };
 		A9BA7D2819AA698700E1F0F2 /* LQDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDate.h; sourceTree = "<group>"; };
@@ -591,6 +594,8 @@
 				A98CF0111949C7A3003DF949 /* LiquidDemo.storyboard */,
 				A98CF0141949C7A3003DF949 /* LiquidDemoViewController.h */,
 				A98CF0151949C7A3003DF949 /* LiquidDemoViewController.m */,
+				A9B434E91C07817900A59926 /* BackgroundLocationManager.h */,
+				A9B434EA1C07817900A59926 /* BackgroundLocationManager.m */,
 				A98CF0171949C7A3003DF949 /* Images.xcassets */,
 				A98CF0061949C7A3003DF949 /* Supporting Files */,
 			);
@@ -970,6 +975,13 @@
 					A92016BB1BCF0FB900859450 = {
 						CreatedOnToolsVersion = 7.0.1;
 					};
+					A98CF0001949C7A3003DF949 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = C73E4ADA1923C61D001EF2E6 /* Build configuration list for PBXProject "Liquid" */;
@@ -1153,6 +1165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9B434EB1C07817900A59926 /* BackgroundLocationManager.m in Sources */,
 				A98CF0161949C7A3003DF949 /* LiquidDemoViewController.m in Sources */,
 				A98CF0101949C7A3003DF949 /* LiquidDemoAppDelegate.m in Sources */,
 				A98CF00C1949C7A3003DF949 /* main.m in Sources */,
