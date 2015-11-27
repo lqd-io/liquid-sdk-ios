@@ -13,8 +13,9 @@
 
 @interface Liquid ()
 
-- (void)clientApplicationForeground;
-- (void)clientApplicationBackground;
+- (void)clientApplicationDidBecomeActive;
+- (void)clientApplicationDidEnterBackground;
+- (void)clientApplicationWillEnterForeground;
 
 @end
 
@@ -23,23 +24,31 @@
 - (void)bindNotifications {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
-                           selector:@selector(clientApplicationForeground)
+                           selector:@selector(applicationDidBecomeActive)
+                               name:NSExtensionHostDidBecomeActiveNotification
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(applicationWillEnterForeground)
                                name:NSExtensionHostWillEnterForegroundNotification
                              object:nil];
     [notificationCenter addObserver:self
-                           selector:@selector(clientApplicationBackground)
+                           selector:@selector(applicationDidEnterBackground)
                                name:NSExtensionHostDidEnterBackgroundNotification
                              object:nil];
 }
 
 #pragma mark - Notifications
 
-- (void)applicationWillEnterForeground {
-    [self clientApplicationForeground];
+- (void)applicationDidBecomeActive {
+    [self clientApplicationDidBecomeActive];
 }
 
 - (void)applicationDidEnterBackground {
-    [self clientApplicationBackground];
+    [self clientApplicationDidEnterBackground];
+}
+
+- (void)applicationWillEnterForeground {
+    [self clientApplicationWillEnterForeground];
 }
 
 @end

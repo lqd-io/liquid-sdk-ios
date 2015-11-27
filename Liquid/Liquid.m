@@ -175,9 +175,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             [self resetUser];
             LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", self.currentUser.identifier);
         }
-        if (!self.currentSession) {
-            [self startSessionBy:@"Identify" with:self.currentUser.identifier];
-        }
+
+        // Session will be automatically started in clientApplicationDidBecomeActive:
 
         // Start auto flush timer
         [_networking startFlushTimer];
@@ -232,10 +231,32 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - UIApplication notifications
 
-- (void)clientApplicationForeground {
+// Going active (both first time or from background)
+- (void)clientApplicationDidBecomeActive {
+    if (!self.currentSession) {
+        [self startSessionBy:@"clientApplicationDidBecomeActive" with:self.currentUser.identifier];
+    }
+}
+
+// Going from foreground to background
+- (void)clientApplicationDidEnterBackground {
+    NSDate *date = [LQDate uniqueNow];
+    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
+    self.enterBackgroundTime = [LQDate uniqueNow];
+    [_networking stopFlushTimer];
+    [_networking flush];
+    dispatch_async(self.queue, ^{
+        [self requestNewLiquidPackageSynced];
+    });
+}
+
+// Going from background to foreground
+- (void)clientApplicationWillEnterForeground {
     [LQDate resetUniqueNow];
     NSTimeInterval timedOut = [self checkSessionTimeout];
-    if (timedOut > 0) {
+    if (!self.currentSession) {
+        [self startSessionBy:@"clientApplicationWillEnterForeground" with:self.currentUser.identifier];
+    } else if (timedOut > 0) {
         if ([self.currentSession inProgress]) {
             [self endSessionAt:self.enterBackgroundTime by:@"Timeout" with:[NSString stringWithFormat:@"%f", timedOut]];
         }
@@ -247,18 +268,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self loadLiquidPackageSynced:YES];
 }
 
-- (void)clientApplicationBackground {
-    NSDate *date = [LQDate uniqueNow];
-    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
-    self.enterBackgroundTime = [LQDate uniqueNow];
-    [_networking stopFlushTimer];
-    [_networking flush];
-    dispatch_async(self.queue, ^{
-        [self requestNewLiquidPackageSynced];
-    });
-}
-
-- (void)clientApplicationTerminate {
+- (void)clientApplicationWillTerminate {
     [self endSessionNowBy:@"App Terminate" with:nil];
 }
 
