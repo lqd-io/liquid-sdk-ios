@@ -148,15 +148,18 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             [self resetUser];
             LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", _currentUser.identifier);
         }
-        if (!self.currentSession) {
-            [self startSessionBy:@"Identify" with:self.currentUser.identifier];
-        }
+
+        // Session will be automatically started in clientApplicationDidBecomeActive:
 
         // Start auto flush timer
         [_networking startFlushTimer];
 
         // Bind notifications:
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self
+                               selector:@selector(applicationDidBecomeActive:)
+                                   name:UIApplicationDidBecomeActiveNotification
+                                 object:nil];
         [notificationCenter addObserver:self
                                selector:@selector(applicationWillEnterForeground:)
                                    name:UIApplicationWillEnterForegroundNotification
@@ -192,10 +195,18 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 
 #pragma mark - UIApplication notifications
 
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    if (!self.currentSession) {
+        [self startSessionBy:@"clientApplicationDidBecomeActive" with:self.currentUser.identifier];
+    }
+}
+
 - (void)applicationWillEnterForeground:(NSNotification *)notification {
     [LQDate resetUniqueNow];
     NSTimeInterval timedOut = [self checkSessionTimeout];
-    if (timedOut > 0) {
+    if (!self.currentSession) {
+        [self startSessionBy:@"clientApplicationWillEnterForeground" with:self.currentUser.identifier];
+    } else if (timedOut > 0) {
         if ([self.currentSession inProgress]) {
             [self endSessionAt:self.enterBackgroundTime by:@"Timeout" with:[NSString stringWithFormat:@"%f", timedOut]];
         }
@@ -221,7 +232,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)applicationWillTerminate:(NSNotificationCenter *)notification {
-    [self endSessionNowBy:@"App Terminate" with:nil];
+    [self endSessionNowBy:@"applicationWillTerminate" with:nil];
 }
 
 - (void)beginBackgroundUpdateTask {
@@ -473,7 +484,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         return;
     }
     if(!self.currentSession) {
-        LQLog(kLQLogLevelError, @"<Liquid> No session started yet.");
+        if (!self.currentSession) {
+            [self startSessionBy:@"Track Event" with:eventName];
+        }
         return;
     }
 
