@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.1.0-rc2: Sessions only created in foreground
+
+* **[enhancement]** Do not create a session when the app is open in background. This avoids creating huge sessions that are open in background and only closed when the app goes foreground.
+
 ## 2.1.0-rc1: Add Apple Watch Support
 
 * **[feature]** Add support for Apple Watch (watchOS 2.0+)
@@ -12,6 +16,11 @@
 
 * **[feature]** [iOS >= 6.0] Add support for Modal In-App Messages.
 * **[feature]** [iOS >= 6.0] Add support for Banner n-App Messages.
+
+## 1.2.3: Sessions only created in foreground
+
+* **[enhancement]** Do not create a session when the app is open in background. This avoids creating huge sessions that are open in background and only closed when the app goes foreground.
+
 
 ## 1.2.2: Avoid a crash while changing a user attribute
 
