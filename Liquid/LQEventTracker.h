@@ -20,5 +20,6 @@
 
 - (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue;
 - (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes loadedValues:(NSArray *)loadedValues withDate:(NSDate *)eventDate;
+- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes loadedValues:(NSArray *)loadedValues withDate:(NSDate *)eventDate errorHandler:(void(^)(NSError *error))errorBlock;
 
 @end

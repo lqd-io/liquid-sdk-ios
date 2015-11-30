@@ -12,6 +12,7 @@
 #import "LQDataPoint.h"
 #import "NSDateFormatter+LQDateFormatter.h"
 #import "NSData+LQData.h"
+#import "Liquid.h"
 
 @interface LQEventTracker ()
 
@@ -55,15 +56,28 @@
 
 - (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes
                                   loadedValues:(NSArray *)loadedValues
+                                      withDate:(NSDate *)eventDate
+                                  errorHandler:(void(^)(NSError *error))errorBlock {
+    if (!self.currentUser) {
+        errorBlock([NSError errorWithDomain:kLQBundle code:kLQErrorNoUser userInfo:nil]);
+    }
+    if (!self.currentSession) {
+        errorBlock([NSError errorWithDomain:kLQBundle code:kLQErrorNoSession userInfo:nil]);
+    }
+    [self track:eventName attributes:attributes loadedValues:loadedValues withDate:eventDate];
+}
+
+- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes
+                                  loadedValues:(NSArray *)loadedValues
                                       withDate:(NSDate *)eventDate {
     NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
 
-    if(!self.currentUser) {
-        LQLog(kLQLogLevelError, @"<Liquid> No user identified yet.");
+    if (!self.currentUser) {
+        LQLog(kLQLogLevelError, @"<Liquid> %@", @"No user identified yet.");
         return;
     }
-    if(!self.currentSession) {
-        LQLog(kLQLogLevelError, @"<Liquid> No session started yet.");
+    if (!self.currentSession) {
+        LQLog(kLQLogLevelError, @"<Liquid> %@", @"No session started yet.");
         return;
     }
 

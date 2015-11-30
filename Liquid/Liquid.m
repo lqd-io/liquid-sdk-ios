@@ -501,7 +501,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self.eventTracker track:eventName
                   attributes:attributes
                 loadedValues:_loadedLiquidPackage.values
-                    withDate:eventDate];
+                    withDate:eventDate
+                errorHandler:^(NSError *error) {
+                    if (error.code == kLQErrorNoSession) {
+                        [self startSessionBy:@"Track Event with no Sassion" with:self.currentUser.identifier];
+                    }
+                }];
 }
 
 #pragma mark - Liquid Package
