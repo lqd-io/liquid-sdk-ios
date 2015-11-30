@@ -8,8 +8,24 @@
 
 #import "LiquidDemoAppDelegate.h"
 #import "Liquid.h"
+#import "BackgroundLocationManager.h"
+
+@interface LiquidDemoAppDelegate ()
+
+@property (strong, nonatomic) BackgroundLocationManager *locationManager;
+
+@end
 
 @implementation LiquidDemoAppDelegate
+
+@synthesize locationManager = _locationManager;
+
+- (BackgroundLocationManager *)locationManager {
+    if (!_locationManager) {
+        _locationManager = [[BackgroundLocationManager alloc] init];
+    }
+    return _locationManager;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
@@ -29,6 +45,7 @@
                                                                                UIRemoteNotificationTypeSound)];
     }
 #endif
+    [self.locationManager startUpdatingLocation];
     return YES;
 }
 							
@@ -45,7 +62,7 @@
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    [[Liquid sharedInstance] setCurrentLocation:newLocation];
+    //e.g: [[Liquid sharedInstance] setCurrentLocation:newLocation];
 }
 
 #pragma mark - Push Notifications < iOS 8

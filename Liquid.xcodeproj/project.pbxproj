@@ -54,6 +54,7 @@
 		A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */; };
 		A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2919AA698700E1F0F2 /* LQDate.m */; };
 		A9BA7D2D19AA928C00E1F0F2 /* LQHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2C19AA928C00E1F0F2 /* LQHelpers.m */; };
+		A9E5FB5C1C0C66DF0025BC80 /* BackgroundLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E5FB5B1C0C66DF0025BC80 /* BackgroundLocationManager.m */; settings = {ASSET_TAGS = (); }; };
 		A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E789E619BFBBC0006CA1D8 /* LQStorage.m */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
@@ -176,6 +177,8 @@
 		A9D12F0E1935076A00D0E0A1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A9D12F101935077000D0E0A1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A9D12F121935077600D0E0A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		A9E5FB5A1C0C66DF0025BC80 /* BackgroundLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLocationManager.h; sourceTree = "<group>"; };
+		A9E5FB5B1C0C66DF0025BC80 /* BackgroundLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundLocationManager.m; sourceTree = "<group>"; };
 		A9E789E519BFBBC0006CA1D8 /* LQStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQStorage.h; sourceTree = "<group>"; };
 		A9E789E619BFBBC0006CA1D8 /* LQStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQStorage.m; sourceTree = "<group>"; };
 		A9E98050193E257C0055D1E7 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -286,6 +289,8 @@
 				A98CF0111949C7A3003DF949 /* LiquidDemo.storyboard */,
 				A98CF0141949C7A3003DF949 /* LiquidDemoViewController.h */,
 				A98CF0151949C7A3003DF949 /* LiquidDemoViewController.m */,
+				A9E5FB5A1C0C66DF0025BC80 /* BackgroundLocationManager.h */,
+				A9E5FB5B1C0C66DF0025BC80 /* BackgroundLocationManager.m */,
 				A98CF0171949C7A3003DF949 /* Images.xcassets */,
 				A98CF0061949C7A3003DF949 /* Supporting Files */,
 			);
@@ -618,6 +623,7 @@
 			files = (
 				A98CF0161949C7A3003DF949 /* LiquidDemoViewController.m in Sources */,
 				A98CF0101949C7A3003DF949 /* LiquidDemoAppDelegate.m in Sources */,
+				A9E5FB5C1C0C66DF0025BC80 /* BackgroundLocationManager.m in Sources */,
 				A98CF00C1949C7A3003DF949 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
