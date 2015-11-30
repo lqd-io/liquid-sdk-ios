@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 1.2.3: Sessions only created in foreground
+
+* **[enhancement]** Do not create a session when the app is open in background. This avoids creating huge sessions that are open in background and only closed when the app goes foreground.
+
 ## 1.2.2: Avoid a crash while changing a user attribute
 
 * **[bugfix]** Avoid a race condition in certain situations, while changing a user attribute with `setUserAttribute:forKey:` or while setting the device location with `setCurrentLocation:`.
