@@ -504,7 +504,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                     withDate:eventDate
                 errorHandler:^(NSError *error) {
                     if (error.code == kLQErrorNoSession) {
-                        [self startSessionBy:@"Track Event with no Sassion" with:self.currentUser.identifier];
+                        [self startSessionBy:@"Track Event" with:eventName];
                     }
                 }];
 }
