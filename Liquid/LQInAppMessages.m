@@ -81,7 +81,7 @@
     }
     dispatch_async(self.queue, ^{
         [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
-            if (dataFromServer) {
+            if (!dataFromServer) {
                 return;
             }
             NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
