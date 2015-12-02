@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.1.0-rc3: In-App messages weren't being displayed
+
+* **[bugfix]** Fix a issue that was preventing in-app messages from being displayed.
+
 ## 2.1.0-rc2: Sessions only created in foreground
 
 * **[enhancement]** Do not create a session when the app is open in background. This avoids creating huge sessions that are open in background and only closed when the app goes foreground.
