@@ -148,8 +148,8 @@
     dispatch_async(self.queue, ^{
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Sending In-App Message report to server: %@",
               [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
-        NSString *endpoint = [NSString stringWithFormat:@"users/%@/formulas/%@/report",
-                              self.currentUser.identifier, attributes[@"formula_id"]];
+        NSString *endpoint = [NSString stringWithFormat:@"formulas/%@/users/%@/report",
+                              attributes[@"formula_id"], self.currentUser.identifier];
         NSInteger res = [_networking sendSynchronousData:json toEndpoint:endpoint usingMethod:@"POST"];
         if(res != LQQueueStatusOk) {
             LQLog(kLQLogLevelHttpError, @"<Liquid> Could not send report to server %@",
