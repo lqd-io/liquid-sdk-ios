@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.1.0-rc4: Change API endpoint for in-app messages reports
+
+* **[enhancement]** Change API endpoint for in-app messages reports
+
 ## 2.1.0-rc3: In-App messages weren't being displayed
 
 * **[bugfix]** Fix a issue that was preventing in-app messages from being displayed.
