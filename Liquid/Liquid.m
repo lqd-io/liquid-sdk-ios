@@ -33,6 +33,7 @@
 #import "LQNetworkingFactory.h"
 #import "LQStorage.h"
 #import "LQEventTracker.h"
+#import "LQInterceptor.h"
 
 #if !__has_feature(objc_arc)
 #  error Compile me with ARC, please!
@@ -53,11 +54,15 @@
 @property (atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property (nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property (atomic, strong) LQNetworking *networking;
+@property (nonatomic, strong) LQEventTracker *eventTracker;
+
 #if LQ_IOS
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @property (nonatomic, strong) LQInAppMessages *inAppMessages;
+@property (nonatomic, strong) LQInterceptor *interceptor;
 #endif
-@property (nonatomic, strong) LQEventTracker *eventTracker;
+
+
 #if OS_OBJECT_USE_OBJC
 @property (atomic, strong) dispatch_queue_t queue;
 #else
@@ -79,6 +84,7 @@ static Liquid *sharedInstance = nil;
 #if LQ_IOS
 @synthesize backgroundUpdateTask = _backgroundUpdateTask;
 @synthesize inAppMessages = _inAppMessages;
+@synthesize interceptor = _interceptor;
 #endif
 @synthesize eventTracker = _eventTracker;
 
@@ -147,6 +153,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
 #if LQ_IOS
         self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
+        self.interceptor = [[LQInterceptor alloc] init];
+        [self.interceptor interceptNewObjects];
 #endif
 
 #if LQ_WATCHOS

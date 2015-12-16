@@ -1,4 +1,5 @@
 PODS:
+  - Aspects (1.4.1)
   - Kiwi (2.3.0)
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.12):
@@ -6,6 +7,7 @@ PODS:
   - OHHTTPStubs/Core (3.1.12)
 
 DEPENDENCIES:
+  - Aspects
   - Kiwi (from `https://github.com/kiwi-bdd/Kiwi.git`, tag `2.3.0`)
   - OCMock (~> 2.2.4)
   - OHHTTPStubs (~> 3.1.2)
@@ -21,6 +23,7 @@ CHECKOUT OPTIONS:
     :tag: 2.3.0
 
 SPEC CHECKSUMS:
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   Kiwi: 4c3988bd551f80f6ca0009f302f7c1a2e3777bf2
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261

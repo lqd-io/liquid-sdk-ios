@@ -1,4 +1,12 @@
-platform :ios, '5.0'
+platform :ios, '6.0'
+
+pod 'Aspects'
+
+target :LiquidDemo do
+end
+
+target :Liquid do
+end
 
 target :LiquidTests, exclusive: true do
   pod 'Kiwi', git: 'https://github.com/kiwi-bdd/Kiwi.git', tag: '2.3.0'

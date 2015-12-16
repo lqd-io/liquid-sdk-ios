@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6550D24736EF357490C2A5BC /* libPods-LiquidDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CB57C3AFDA3E7F3EEE630AA /* libPods-LiquidDemo.a */; };
+		9025E84C69503A2253BE0995 /* libPods-Liquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2157443187AF11B8A9579B6 /* libPods-Liquid.a */; };
 		92E71585BB5944A394C1AC93 /* libPods-LiquidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */; };
 		A9035321193FA0C8005110DF /* liquid_package1.json in Resources */ = {isa = PBXBuildFile; fileRef = A9035320193FA0C8005110DF /* liquid_package1.json */; };
 		A909AD741BFE2853006D5EDD /* LQDeviceWatchOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A909AD731BFE2853006D5EDD /* LQDeviceWatchOS.m */; settings = {ASSET_TAGS = (); }; };
@@ -59,6 +61,10 @@
 		A95E65A0194566D90075161E /* LiquidValuesInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */; };
 		A95EC5A61B0DEA2900407D03 /* LQDeviceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A51B0DEA2900407D03 /* LQDeviceSpec.m */; };
 		A95EC5A91B0DFE2000407D03 /* LQKeychainSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */; };
+		A96B47C11C199E1600A6DF8D /* LQTrackableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A96B47C01C199E1600A6DF8D /* LQTrackableObject.m */; settings = {ASSET_TAGS = (); }; };
+		A96B47C41C19A07D00A6DF8D /* LQInterceptor.m in Sources */ = {isa = PBXBuildFile; fileRef = A96B47C31C19A07D00A6DF8D /* LQInterceptor.m */; settings = {ASSET_TAGS = (); }; };
+		A96B47C71C19CD9400A6DF8D /* UIView+UIViewPath.m in Sources */ = {isa = PBXBuildFile; fileRef = A96B47C61C19CD9400A6DF8D /* UIView+UIViewPath.m */; settings = {ASSET_TAGS = (); }; };
+		A96B47CB1C19D3D700A6DF8D /* libAspects.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96B47CA1C19D3D700A6DF8D /* libAspects.a */; };
 		A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; settings = {ASSET_TAGS = (); }; };
 		A96D87321BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; settings = {ASSET_TAGS = (); }; };
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
@@ -106,6 +112,7 @@
 		A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+LQColor.m */; };
 		A9A3FC3D199298830094A2B6 /* LQLiquidPackageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */; };
 		A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A58B2A19736B27007085C9 /* LQUserSpec.m */; };
+		A9A602D41C209BAD001EE078 /* UIButton+LQTrackableButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A602D31C209BAD001EE078 /* UIButton+LQTrackableButton.m */; settings = {ASSET_TAGS = (); }; };
 		A9B434EB1C07817900A59926 /* BackgroundLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B434EA1C07817900A59926 /* BackgroundLocationManager.m */; settings = {ASSET_TAGS = (); }; };
 		A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2619AA466400E1F0F2 /* LQNetworking.m */; };
 		A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BA7D2919AA698700E1F0F2 /* LQDate.m */; };
@@ -145,6 +152,7 @@
 		A9FF7A9619350C9500DB73C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A821924FE4200CC5D64 /* NSData+LQData.m */; };
 		C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */; };
+		FE8D8684CECE9EB4F5E6ECD4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D957148095FDB2EC836B393 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -236,7 +244,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08766FE70A158609A783F362 /* Pods-Liquid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Liquid.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Liquid/Pods-Liquid.debug.xcconfig"; sourceTree = "<group>"; };
+		0D957148095FDB2EC836B393 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CB57C3AFDA3E7F3EEE630AA /* libPods-LiquidDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiquidDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiquidTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E1CAB606CFF4C84FC1B1547 /* Pods-LiquidDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidDemo/Pods-LiquidDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		6EE274BAFA779A0863EAB159 /* Pods-LiquidTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.release.xcconfig"; sourceTree = "<group>"; };
 		A9035320193FA0C8005110DF /* liquid_package1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = liquid_package1.json; path = HTTPStubs/liquid_package1.json; sourceTree = "<group>"; };
 		A909AD721BFE2853006D5EDD /* LQDeviceWatchOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDeviceWatchOS.h; sourceTree = "<group>"; };
@@ -296,6 +308,14 @@
 		A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQKeychainSpec.m; sourceTree = "<group>"; };
 		A95EC5AA1B0DFEBB00407D03 /* LQKeychainPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQKeychainPrivates.h; sourceTree = "<group>"; };
 		A95FB00C1C04F16D00D16056 /* LQDeviceIOSPrivates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQDeviceIOSPrivates.h; sourceTree = "<group>"; };
+		A96B47BF1C199E1600A6DF8D /* LQTrackableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQTrackableObject.h; sourceTree = "<group>"; };
+		A96B47C01C199E1600A6DF8D /* LQTrackableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQTrackableObject.m; sourceTree = "<group>"; };
+		A96B47C21C19A07D00A6DF8D /* LQInterceptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQInterceptor.h; path = Lib/LQInterceptor.h; sourceTree = "<group>"; };
+		A96B47C31C19A07D00A6DF8D /* LQInterceptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQInterceptor.m; path = Lib/LQInterceptor.m; sourceTree = "<group>"; };
+		A96B47C51C19CD9400A6DF8D /* UIView+UIViewPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UIViewPath.h"; sourceTree = "<group>"; };
+		A96B47C61C19CD9400A6DF8D /* UIView+UIViewPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UIViewPath.m"; sourceTree = "<group>"; };
+		A96B47C81C19D34C00A6DF8D /* libAspects.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAspects.a; path = "Pods/../build/Debug-iphoneos/libAspects.a"; sourceTree = "<group>"; };
+		A96B47CA1C19D3D700A6DF8D /* libAspects.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAspects.a; path = "Pods/../build/Debug-iphoneos/libAspects.a"; sourceTree = "<group>"; };
 		A96D872F1BD2B2E2003158EB /* LQNetworkingFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQNetworkingFactory.h; sourceTree = "<group>"; };
 		A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQNetworkingFactory.m; sourceTree = "<group>"; };
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
@@ -344,6 +364,8 @@
 		A99EB5531924DB730060E484 /* UIColor+LQColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+LQColor.m"; sourceTree = "<group>"; };
 		A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQLiquidPackageSpec.m; path = Model/LQLiquidPackageSpec.m; sourceTree = "<group>"; };
 		A9A58B2A19736B27007085C9 /* LQUserSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQUserSpec.m; path = Model/LQUserSpec.m; sourceTree = "<group>"; };
+		A9A602D21C209BAD001EE078 /* UIButton+LQTrackableButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+LQTrackableButton.h"; sourceTree = "<group>"; };
+		A9A602D31C209BAD001EE078 /* UIButton+LQTrackableButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+LQTrackableButton.m"; sourceTree = "<group>"; };
 		A9B434E91C07817900A59926 /* BackgroundLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLocationManager.h; sourceTree = "<group>"; };
 		A9B434EA1C07817900A59926 /* BackgroundLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundLocationManager.m; sourceTree = "<group>"; };
 		A9BA7D2519AA466400E1F0F2 /* LQNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQNetworking.h; sourceTree = "<group>"; };
@@ -403,13 +425,16 @@
 		A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUserDefaults.h; sourceTree = "<group>"; };
 		A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUserDefaults.m; sourceTree = "<group>"; };
 		A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		B671901BE721E8D7EBFC30B1 /* Pods-LiquidDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidDemo/Pods-LiquidDemo.release.xcconfig"; sourceTree = "<group>"; };
 		C73E4ADF1923C61D001EF2E6 /* libLiquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLiquid.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E4AE21923C61D001EF2E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C7DB3A811924FE4200CC5D64 /* NSData+LQData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+LQData.h"; sourceTree = "<group>"; };
 		C7DB3A821924FE4200CC5D64 /* NSData+LQData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+LQData.m"; sourceTree = "<group>"; };
 		C7DB3A841924FF0B00CC5D64 /* NSString+LQString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+LQString.h"; sourceTree = "<group>"; };
 		C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+LQString.m"; sourceTree = "<group>"; };
+		D2157443187AF11B8A9579B6 /* libPods-Liquid.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Liquid.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF2701CFCA81FCA5879006D6 /* Pods-LiquidTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiquidTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F18B31254D86713533800882 /* Pods-Liquid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Liquid.release.xcconfig"; path = "Pods/Target Support Files/Pods-Liquid/Pods-Liquid.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,6 +457,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A96B47CB1C19D3D700A6DF8D /* libAspects.a in Frameworks */,
 				A98CF0371949F795003DF949 /* libLiquid.a in Frameworks */,
 				A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */,
 				A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */,
@@ -439,6 +465,7 @@
 				A98CF0331949F627003DF949 /* CoreTelephony.framework in Frameworks */,
 				A98CF0321949F61E003DF949 /* SystemConfiguration.framework in Frameworks */,
 				A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */,
+				6550D24736EF357490C2A5BC /* libPods-LiquidDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +491,8 @@
 				A9FF7A9319350C7F00DB73C7 /* CoreTelephony.framework in Frameworks */,
 				A9EB204619353CD200191F7E /* CoreGraphics.framework in Frameworks */,
 				A9FF7A9419350C8400DB73C7 /* UIKit.framework in Frameworks */,
+				9025E84C69503A2253BE0995 /* libPods-Liquid.a in Frameworks */,
+				FE8D8684CECE9EB4F5E6ECD4 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +504,10 @@
 			children = (
 				EF2701CFCA81FCA5879006D6 /* Pods-LiquidTests.debug.xcconfig */,
 				6EE274BAFA779A0863EAB159 /* Pods-LiquidTests.release.xcconfig */,
+				3E1CAB606CFF4C84FC1B1547 /* Pods-LiquidDemo.debug.xcconfig */,
+				B671901BE721E8D7EBFC30B1 /* Pods-LiquidDemo.release.xcconfig */,
+				08766FE70A158609A783F362 /* Pods-Liquid.debug.xcconfig */,
+				F18B31254D86713533800882 /* Pods-Liquid.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -656,6 +689,8 @@
 				A99EB4F7192447FA0060E484 /* LQVariable.m */,
 				A9FBA7AB1B03B0E200900AAC /* LQKeychainItem.h */,
 				A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */,
+				A96B47BF1C199E1600A6DF8D /* LQTrackableObject.h */,
+				A96B47C01C199E1600A6DF8D /* LQTrackableObject.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -671,6 +706,10 @@
 				C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */,
 				A99EB5501924DB730060E484 /* NSDateFormatter+LQDateFormatter.h */,
 				A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */,
+				A96B47C51C19CD9400A6DF8D /* UIView+UIViewPath.h */,
+				A96B47C61C19CD9400A6DF8D /* UIView+UIViewPath.m */,
+				A9A602D21C209BAD001EE078 /* UIButton+LQTrackableButton.h */,
+				A9A602D31C209BAD001EE078 /* UIButton+LQTrackableButton.m */,
 			);
 			name = Categories;
 			path = Liquid/Categories;
@@ -744,6 +783,8 @@
 				A9E789E619BFBBC0006CA1D8 /* LQStorage.m */,
 				A9FBA7B41B090BD300900AAC /* LQUserDefaults.h */,
 				A9FBA7B51B090BD300900AAC /* LQUserDefaults.m */,
+				A96B47C21C19A07D00A6DF8D /* LQInterceptor.h */,
+				A96B47C31C19A07D00A6DF8D /* LQInterceptor.m */,
 			);
 			name = Lib;
 			sourceTree = "<group>";
@@ -809,6 +850,8 @@
 		C73E4AE11923C61D001EF2E6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A96B47CA1C19D3D700A6DF8D /* libAspects.a */,
+				A96B47C81C19D34C00A6DF8D /* libAspects.a */,
 				A9EB204519353CD200191F7E /* CoreGraphics.framework */,
 				A9FF7A9719350C9900DB73C7 /* CoreLocation.framework */,
 				A9D12F121935077600D0E0A1 /* CoreTelephony.framework */,
@@ -817,6 +860,9 @@
 				C73E4AE21923C61D001EF2E6 /* Foundation.framework */,
 				A9E98051193E257C0055D1E7 /* XCTest.framework */,
 				378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */,
+				2CB57C3AFDA3E7F3EEE630AA /* libPods-LiquidDemo.a */,
+				D2157443187AF11B8A9579B6 /* libPods-Liquid.a */,
+				0D957148095FDB2EC836B393 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -902,10 +948,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A98CF02F1949C7A4003DF949 /* Build configuration list for PBXNativeTarget "LiquidDemo" */;
 			buildPhases = (
+				3FFC753E243E6D45FAC6B7A5 /* Check Pods Manifest.lock */,
 				A98CEFFD1949C7A3003DF949 /* Sources */,
 				A98CEFFE1949C7A3003DF949 /* Frameworks */,
 				A98CEFFF1949C7A3003DF949 /* Resources */,
 				A949FB851BCE75ED00F7C48E /* Embed Watch Content */,
+				9690712420CDD33E324A0FB9 /* Embed Pods Frameworks */,
+				28984BAF245B083EFE700C71 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -944,9 +993,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C73E4B021923C61D001EF2E6 /* Build configuration list for PBXNativeTarget "Liquid" */;
 			buildPhases = (
+				F5216DD05EDAB248B5D1D030 /* Check Pods Manifest.lock */,
 				C73E4ADB1923C61D001EF2E6 /* Sources */,
 				C73E4ADC1923C61D001EF2E6 /* Frameworks */,
 				C73E4ADD1923C61D001EF2E6 /* CopyFiles */,
+				5E7F6E840EAFE6764A6AA898 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1053,6 +1104,66 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		28984BAF245B083EFE700C71 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidDemo/Pods-LiquidDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3FFC753E243E6D45FAC6B7A5 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5E7F6E840EAFE6764A6AA898 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9690712420CDD33E324A0FB9 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidDemo/Pods-LiquidDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B4BDBE5490AE2A97587311AC /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1081,6 +1192,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F5216DD05EDAB248B5D1D030 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FE6C6D3BBB0542DCB80EA44D /* Check Pods Manifest.lock */ = {
@@ -1211,15 +1337,18 @@
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A9EA29AD1BF5210A001BE1B7 /* LQInAppMessage.m in Sources */,
 				A9E789E719BFBBC0006CA1D8 /* LQStorage.m in Sources */,
+				A9A602D41C209BAD001EE078 /* UIButton+LQTrackableButton.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A9FBA7AA1B03981200900AAC /* LQKeychain.m in Sources */,
 				A9EA29C51BF52157001BE1B7 /* LQSlideUpView.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
 				A9EA29D01BF522FF001BE1B7 /* LQWindow.m in Sources */,
 				A9EA29CD1BF52201001BE1B7 /* LQInAppMessages.m in Sources */,
+				A96B47C11C199E1600A6DF8D /* LQTrackableObject.m in Sources */,
 				A9EA29C31BF52157001BE1B7 /* LQModalView.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */,
+				A96B47C71C19CD9400A6DF8D /* UIView+UIViewPath.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
@@ -1235,6 +1364,7 @@
 				A9FBA7B61B090BD300900AAC /* LQUserDefaults.m in Sources */,
 				A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */,
 				A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */,
+				A96B47C41C19A07D00A6DF8D /* LQInterceptor.m in Sources */,
 				A9EA29AE1BF5210A001BE1B7 /* LQInAppMessageModal.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1453,6 +1583,7 @@
 		};
 		A98CF02B1949C7A4003DF949 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E1CAB606CFF4C84FC1B1547 /* Pods-LiquidDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1466,6 +1597,10 @@
 				);
 				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -1480,6 +1615,7 @@
 		};
 		A98CF02C1949C7A4003DF949 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B671901BE721E8D7EBFC30B1 /* Pods-LiquidDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1489,6 +1625,10 @@
 				GCC_PREFIX_HEADER = "LiquidDemo/LiquidDemo-Prefix.pch";
 				INFOPLIST_FILE = "LiquidDemo/LiquidDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -1616,6 +1756,7 @@
 		};
 		C73E4B031923C61D001EF2E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 08766FE70A158609A783F362 /* Pods-Liquid.debug.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1633,6 +1774,7 @@
 		};
 		C73E4B041923C61D001EF2E6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F18B31254D86713533800882 /* Pods-Liquid.release.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
