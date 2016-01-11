@@ -33,7 +33,7 @@
 #import "LQNetworkingFactory.h"
 #import "LQStorage.h"
 #import "LQEventTracker.h"
-#import "LQInterceptor.h"
+#import "LQUIElementChanger.h"
 
 #if !__has_feature(objc_arc)
 #  error Compile me with ARC, please!
@@ -59,7 +59,7 @@
 #if LQ_IOS
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @property (nonatomic, strong) LQInAppMessages *inAppMessages;
-@property (nonatomic, strong) LQInterceptor *interceptor;
+@property (nonatomic, strong) LQUIElementChanger *uiElementChanger;
 #endif
 
 
@@ -84,7 +84,7 @@ static Liquid *sharedInstance = nil;
 #if LQ_IOS
 @synthesize backgroundUpdateTask = _backgroundUpdateTask;
 @synthesize inAppMessages = _inAppMessages;
-@synthesize interceptor = _interceptor;
+@synthesize uiElementChanger = _uiElementChanger;
 #endif
 @synthesize eventTracker = _eventTracker;
 
@@ -153,8 +153,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
 #if LQ_IOS
         self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
-        self.interceptor = [[LQInterceptor alloc] init];
-        [self.interceptor interceptNewObjects];
+        self.uiElementChanger = [[LQUIElementChanger alloc] init];
+        [self.uiElementChanger interceptNewElements];
 #endif
 
 #if LQ_WATCHOS

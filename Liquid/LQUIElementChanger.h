@@ -1,5 +1,5 @@
 //
-//  LQInterceptor.h
+//  LQUIElementChanger.h
 //  Liquid
 //
 //  Created by Miguel M. Almeida on 10/12/15.
@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LQInterceptor : NSObject
+@interface LQUIElementChanger : NSObject
 
-- (void)interceptNewObjects;
+- (void)interceptNewElements;
 
 @end

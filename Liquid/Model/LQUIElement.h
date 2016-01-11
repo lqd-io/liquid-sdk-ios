@@ -1,5 +1,5 @@
 //
-//  LQTrackableObject.h
+//  LQUIElement.h
 //  Liquid
 //
 //  Created by Miguel M. Almeida on 10/12/15.
@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface LQTrackableObject : NSObject
+@interface LQUIElement : NSObject
 
-@property (nonatomic, strong, readonly) NSString *path;
 @property (nonatomic, strong, readonly) NSString *identifier;
+@property (nonatomic, assign, readonly) BOOL active;
+@property (nonatomic, strong, readonly) NSString *eventName;
+@property (nonatomic, strong, readonly) NSDictionary *eventAttributes;
 
 - (id)initFromDictionary:(NSDictionary *)dict;
 - (BOOL)matchesUIView:(UIView *)view;

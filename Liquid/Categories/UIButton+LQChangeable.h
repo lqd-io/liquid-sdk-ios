@@ -1,5 +1,5 @@
 //
-//  UIButton+LQTrackableButton.h
+//  UIButton+LQChangeable.h
 //  Liquid
 //
 //  Created by Miguel M. Almeida on 15/12/15.
@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIButton (LQTrackableButton)
+@interface UIButton (LQChangeable)
 
-- (NSString *)trackableIdentifier;
+- (NSString *)liquidIdentifier;
+- (BOOL)isChangeable;
 
 @end
