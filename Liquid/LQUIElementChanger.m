@@ -29,11 +29,13 @@
         LQUIElement *button1 = [[LQUIElement alloc] initFromDictionary:@{
                                     @"identifier": @"/UIWindow/UIView/UITextView/UITextField/UIButton/x",
                                     @"event_name": @"Track X",
+                                    @"event_attributes": @{ @"x": @1, @"y": @2 },
                                     @"active": @YES
                                 }];
         LQUIElement *button2 = [[LQUIElement alloc] initFromDictionary:@{
                                     @"identifier": @"/UIWindow/UIView/UIButton/Track \"Play Music\"",
                                     @"event_name": @"Track Y",
+                                    @"event_attributes": @{ @"x": @1, @"y": @2 },
                                     @"active": @YES
                                 }];
         _changedElements = [NSSet setWithObjects:button1, button2, nil];
@@ -68,11 +70,11 @@
 
 - (void)touchUpButton:(UIButton *)button {
     LQUIElement *uiElement = [self uiElementFor:button];
-    if ([uiElement eventName]) { // need to check again because button could not be tracked at the moment of touch event
+    if (![uiElement eventName]) { // need to check again because button could not be tracked at the moment of touch event
         return;
     }
-    NSString *eventName = [uiElement eventName];
-    NSLog(@"Touched button %@ with identifier %@ to track event named %@", button.titleLabel.text, [button liquidIdentifier], eventName);
+    NSLog(@"Touched button %@ with identifier %@ to track event named %@ and attributes %@",
+          button.titleLabel.text, button.liquidIdentifier, uiElement.eventName, uiElement.eventAttributes);
 }
 
 #pragma mark - Helpers

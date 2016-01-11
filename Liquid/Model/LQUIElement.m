@@ -30,7 +30,7 @@
         }
         _identifier = [dict objectForKey:@"identifier"];
         _eventName = [dict objectForKey:@"event_name"];
-        //_eventAttributes = [dict objectForKey:@"event_attributes"]; // TODO: add support for nsdictionary
+        _eventAttributes = [dict objectForKey:@"event_attributes"];
     }
     return self;
 }
