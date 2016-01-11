@@ -27,10 +27,14 @@
 - (NSSet<LQUIElement *> *)changedElements { // TMP
     if (!_changedElements) {
         LQUIElement *button1 = [[LQUIElement alloc] initFromDictionary:@{
-                                    @"identifier": @"/UIWindow/UIView/UITextView/UITextField/UIButton/x"
+                                    @"identifier": @"/UIWindow/UIView/UITextView/UITextField/UIButton/x",
+                                    @"event_name": @"Track X",
+                                    @"active": @YES
                                 }];
         LQUIElement *button2 = [[LQUIElement alloc] initFromDictionary:@{
-                                    @"identifier": @"/UIWindow/UIView/UIButton/Track \"Play Music\""
+                                    @"identifier": @"/UIWindow/UIView/UIButton/Track \"Play Music\"",
+                                    @"event_name": @"Track Y",
+                                    @"active": @YES
                                 }];
         _changedElements = [NSSet setWithObjects:button1, button2, nil];
     }
@@ -49,19 +53,26 @@
     });
 }
 
-#pragma mark - Tracking UIButton
+#pragma mark - Change UIButton
 
-- (void)changeUIButton:(UIButton *)button {
+- (void)changeUIButton:(UIButton *)button { // TODO?: receive an UIElement instead of a UIButton?
     LQUIElement *uiElement = [self uiElementFor:button];
     if (!uiElement || ![uiElement active]) {
         return; // return if button is not on the list of elements to be changed or is not active
     }
-    [button addTarget:self action:@selector(touchUpButton:) forControlEvents:UIControlEventTouchUpInside];
-    NSLog(@"Binding UIButton with identifier \"%@\" and label \"%@\"", [uiElement identifier], button.titleLabel.text);
+    if ([uiElement eventName]) {
+        [button addTarget:self action:@selector(touchUpButton:) forControlEvents:UIControlEventTouchUpInside];
+        NSLog(@"Tracking events in UIButton with identifier \"%@\" and label \"%@\"", [uiElement identifier], button.titleLabel.text);
+    }
 }
 
 - (void)touchUpButton:(UIButton *)button {
-    NSLog(@"Clicked button %@ with identifier %@", button.titleLabel.text, [button liquidIdentifier]);
+    LQUIElement *uiElement = [self uiElementFor:button];
+    if ([uiElement eventName]) { // need to check again because button could not be tracked at the moment of touch event
+        return;
+    }
+    NSString *eventName = [uiElement eventName];
+    NSLog(@"Touched button %@ with identifier %@ to track event named %@", button.titleLabel.text, [button liquidIdentifier], eventName);
 }
 
 #pragma mark - Helpers
@@ -72,7 +83,7 @@
             return uiElement;
         }
     }
-    return nil; // means not binded
+    return nil; // means "not to be changed"
 }
 
 @end

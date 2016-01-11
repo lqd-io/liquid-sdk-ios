@@ -23,12 +23,14 @@
 - (instancetype)initFromDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        _identifier = [dict objectForKey:@"identifier"];
         if ([[dict objectForKey:@"active"] isEqualToNumber:@YES]) {
             _active = [dict objectForKey:@"active"];
         } else {
             _active = NO;
         }
+        _identifier = [dict objectForKey:@"identifier"];
+        _eventName = [dict objectForKey:@"event_name"];
+        //_eventAttributes = [dict objectForKey:@"event_attributes"]; // TODO: add support for nsdictionary
     }
     return self;
 }
