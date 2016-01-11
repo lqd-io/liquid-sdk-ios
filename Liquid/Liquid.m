@@ -153,7 +153,8 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
 #if LQ_IOS
         self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
-        self.uiElementChanger = [[LQUIElementChanger alloc] init];
+        self.uiElementChanger = [[LQUIElementChanger alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
+        [self.uiElementChanger requestUiElements];
         [self.uiElementChanger interceptNewElements];
 #endif
 

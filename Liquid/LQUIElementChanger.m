@@ -13,34 +13,35 @@
 #import <Aspects/Aspects.h>
 #import <UIKit/UIKit.h>
 #import "UIView+LQChangeable.h"
+#import "NSData+LQData.h"
 
 @interface LQUIElementChanger ()
 
 @property (nonatomic, strong) NSSet<LQUIElement *> *changedElements; // TODO: change to nsdictionary
+@property (nonatomic, strong) LQNetworking *networking;
+#if OS_OBJECT_USE_OBJC
+@property (atomic, strong) dispatch_queue_t queue;
+#else
+@property (atomic, assign) dispatch_queue_t queue;
+#endif
 
 @end
 
 @implementation LQUIElementChanger
 
 @synthesize changedElements = _changedElements;
+@synthesize networking = _networking;
+@synthesize queue = _queue;
 
-- (NSSet<LQUIElement *> *)changedElements { // TMP
-    if (!_changedElements) {
-        LQUIElement *button1 = [[LQUIElement alloc] initFromDictionary:@{
-                                    @"identifier": @"/UIWindow/UIView/UITextView/UITextField/UIButton/x",
-                                    @"event_name": @"Track X",
-                                    @"event_attributes": @{ @"x": @1, @"y": @2 },
-                                    @"active": @YES
-                                }];
-        LQUIElement *button2 = [[LQUIElement alloc] initFromDictionary:@{
-                                    @"identifier": @"/UIWindow/UIView/UIButton/Track \"Play Music\"",
-                                    @"event_name": @"Track Y",
-                                    @"event_attributes": @{ @"x": @1, @"y": @2 },
-                                    @"active": @YES
-                                }];
-        _changedElements = [NSSet setWithObjects:button1, button2, nil];
+#pragma mark - Initializers
+
+- (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue {
+    self = [super init];
+    if (self) {
+        self.networking = networking;
+        self.queue = queue;
     }
-    return _changedElements;
+    return self;
 }
 
 - (void)interceptNewElements {
@@ -86,6 +87,28 @@
         }
     }
     return nil; // means "not to be changed"
+}
+
+#pragma mark - Request UI Elements from server
+
+- (void)requestUiElements {
+    dispatch_async(self.queue, ^{
+        [self requestUIElementsWithCompletionHandler:^(NSData *dataFromServer) {
+            if (!dataFromServer) return;
+            NSMutableSet *changedElements = [[NSMutableSet alloc] init];
+            for (NSDictionary *uiElementDict in [NSData fromJSON:dataFromServer]) {
+                [changedElements addObject:[[LQUIElement alloc] initFromDictionary:uiElementDict]];
+            }
+            _changedElements = changedElements;
+        }];
+    });
+}
+
+- (void)requestUIElementsWithCompletionHandler:(void(^)(NSData *data))completionBlock {
+    NSData *dataFromServer = [_networking getSynchronousDataFromEndpoint:@"ui_elements"];
+    if (dataFromServer != nil) {
+        completionBlock(dataFromServer);
+    }
 }
 
 @end

@@ -7,9 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LQNetworking.h"
+#import "LQUser.h"
 
 @interface LQUIElementChanger : NSObject
 
+- (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue;
 - (void)interceptNewElements;
+- (void)requestUiElements;
 
 @end
