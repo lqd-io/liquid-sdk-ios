@@ -20,6 +20,21 @@
 @synthesize eventName = _eventName;
 @synthesize eventAttributes = _eventAttributes;
 
+#pragma mark - Initializers
+
+- (instancetype)initFromUIView:(UIView *)view {
+    self = [super init];
+    if (self) {
+        if (![view isChangeable]) {
+            [NSException raise:NSInternalInconsistencyException format:@"Liquid: View %@ is not changeable", [view liquidIdentifier]];
+        }
+        _active = YES;
+        _identifier = [NSString stringWithString:[view liquidIdentifier]];
+        _eventName = @"X";
+    }
+    return self;
+}
+
 - (instancetype)initFromDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
@@ -30,13 +45,25 @@
         }
         _identifier = [dict objectForKey:@"identifier"];
         _eventName = [dict objectForKey:@"event_name"];
-        _eventAttributes = [dict objectForKey:@"event_attributes"];
+        //_eventAttributes = [dict objectForKey:@"event_attributes"]; // TO REMOVE FROM HERE AND EVERYWHERE ELSE
     }
     return self;
 }
 
+#pragma mark - Instance methods
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@", self.identifier];
+}
+
 - (BOOL)matchesUIView:(UIView *)view {
     return [self.identifier isEqualToString:view.liquidIdentifier];
+}
+
+- (NSDictionary *)jsonDictionary {
+    return [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"ios", @"platform",
+            _identifier, @"identifier",
+            _eventName, @"event_name", nil];
 }
 
 @end

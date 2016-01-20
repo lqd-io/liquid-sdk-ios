@@ -15,8 +15,10 @@
 @property (nonatomic, assign, readonly) BOOL active;
 @property (nonatomic, strong, readonly) NSString *eventName;
 @property (nonatomic, strong, readonly) NSDictionary *eventAttributes;
+@property (nonatomic, strong, readonly) NSDictionary *jsonDictionary;
 
-- (id)initFromDictionary:(NSDictionary *)dict;
-- (BOOL)matchesUIView:(UIView *)view;
+- (instancetype)initFromUIView:(id)view; // TODO: change id to UIView *
+- (instancetype)initFromDictionary:(NSDictionary *)dict;
+- (BOOL)matchesUIView:(id)view; // TODO: change id to UIView *
 
 @end
