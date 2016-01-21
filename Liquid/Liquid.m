@@ -230,7 +230,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)setCurrentUser:(LQUser *)currentUser {
     _currentUser = currentUser;
     _eventTracker.currentUser = currentUser;
-#if LQ_IOS
+#if LQ_INAPP_MESSAGES_SUPPORT
     _inAppMessages.currentUser = currentUser;
 #endif
 }

@@ -18,6 +18,7 @@
 - (void)requestUiElements;
 - (void)registerUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler;
 - (void)unregisterUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler;
-- (BOOL)viewIsChanged:(id)view; // FIX ID to UIView
+- (LQUIElement *)uiElementFor:(id)view; // FIX ID to UIView
+- (BOOL)viewIsTrackingEvent:(id)view; // FIX ID to UIView
 
 @end

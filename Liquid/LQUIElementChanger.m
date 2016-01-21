@@ -16,7 +16,7 @@
 
 @interface LQUIElementChanger ()
 
-@property (nonatomic, strong) NSSet<LQUIElement *> *changedElements; // TODO: change to nsdictionary
+@property (nonatomic, strong) NSDictionary<NSString *, LQUIElement *> *changedElements;
 @property (nonatomic, strong) LQNetworking *networking;
 
 @end
@@ -72,17 +72,19 @@
 
 #pragma mark - Helpers
 
-- (LQUIElement *)uiElementFor:(UIView *)view { // optimize this to NSDictionary
-    for (LQUIElement *uiElement in self.changedElements) {
-        if ([uiElement matchesUIView:view]) {
+- (BOOL)viewIsTrackingEvent:(UIView *)view {
+    LQUIElement *element = [self uiElementFor:view];
+    return element && element.eventName;
+}
+
+- (LQUIElement *)uiElementFor:(UIView *)view {
+    for (NSString *identifier in self.changedElements) { // TODO: get rid of this for
+        LQUIElement *uiElement = self.changedElements[identifier];
+        if ([uiElement matchesUIView:view] && uiElement.active) {
             return uiElement;
         }
     }
-    return nil; // means "not to be changed"
-}
-
-- (BOOL)viewIsChanged:(UIView *)view {
-    return !![self uiElementFor:view];
+    return nil;
 }
 
 #pragma mark - Request UI Elements from server
@@ -91,11 +93,12 @@
     [_networking getDataFromEndpoint:@"ui_elements?platform=ios" completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) { // TODO: remove ?platform
         //responseData = [@"[{\"identifier\":\"/UIWindow/UIView/UITextView/UITextField/UIButton/x\",\"event_name\":\"Track X\",\"event_attributes\":{\"x\":1,\"y\":2},\"active\":true},{\"identifier\":\"/UIWindow/UIView/UIButton/Track \\\"Play Music\\\"\",\"event_name\":\"Track Y\",\"event_attributes\":{\"x\":1,\"y\":2},\"active\":true}]" dataUsingEncoding:NSUTF8StringEncoding];
         if (queueStatus == LQQueueStatusOk) {
-            NSMutableSet *changedElements = [[NSMutableSet alloc] init];
+            NSMutableDictionary *newElements = [[NSMutableDictionary alloc] init];
             for (NSDictionary *uiElementDict in [NSData fromJSON:responseData]) {
-                [changedElements addObject:[[LQUIElement alloc] initFromDictionary:uiElementDict]];
+                LQUIElement *uiElement = [[LQUIElement alloc] initFromDictionary:uiElementDict];
+                [newElements setObject:uiElement forKey:uiElement.identifier];
             }
-            _changedElements = changedElements;
+            _changedElements = newElements;
             [self logChangedElements];
         } else {
             LQLog(kLQLogLevelHttpError, @"<Liquid/UIElementChanger>: Error requesting UI Elements: %@", responseData);
@@ -109,8 +112,8 @@
     [_networking sendData:[NSData toJSON:[element jsonDictionary]] toEndpoint:@"ui_elements/add" usingMethod:@"POST"
         completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
             if (queueStatus == LQQueueStatusOk) {
-                NSMutableSet *newElements = [NSMutableSet setWithSet:self.changedElements];
-                [newElements addObject:element];
+                NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
+                [newElements setObject:element forKey:element.identifier];
                 self.changedElements = newElements;
                 [self logChangedElements];
                 dispatch_async(dispatch_get_main_queue(), successHandler);
@@ -121,12 +124,13 @@
 }
 
 - (void)unregisterUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler {
-    [_networking sendData:nil toEndpoint:@"ui_elements/remove" usingMethod:@"POST"
+    [_networking sendData:[NSData toJSON:[element jsonDictionary]] toEndpoint:@"ui_elements/remove" usingMethod:@"POST"
         completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
             if (queueStatus == LQQueueStatusOk) {
-                NSMutableSet *newElements = [NSMutableSet setWithSet:self.changedElements];
-                [newElements addObject:element];
+                NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
+                [newElements removeObjectForKey:element.identifier];
                 self.changedElements = newElements;
+                [self logChangedElements];
                 dispatch_async(dispatch_get_main_queue(), successHandler);
             } else {
                 dispatch_async(dispatch_get_main_queue(), failHandler);
@@ -136,10 +140,9 @@
 
 - (void)logChangedElements {
     if (kLQLogLevel < kLQLogLevelInfoVerbose) return;
-    NSSet *elements = [NSSet setWithSet:self.changedElements];
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid/UIElementChanger> Chaged UI Elements:");
-    for (LQUIElement *element in elements) {
-        LQLog(kLQLogLevelInfoVerbose, @" - %@", [element description]);
+    for (NSString *identifier in self.changedElements) {
+        LQLog(kLQLogLevelInfoVerbose, @" - %@", identifier);
     }
 }
 

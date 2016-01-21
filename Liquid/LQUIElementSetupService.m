@@ -54,17 +54,7 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if (touchingDown) {
             touchingDown = NO;
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid"
-                                                                           message:@"This button isn't being tracked. Do you want to track?"
-                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
-            [alert addAction:[UIAlertAction actionWithTitle:@"Track" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-                [self registerUIElement:[[LQUIElement alloc] initFromUIView:button]];
-            }]];
-            [alert addAction:[UIAlertAction actionWithTitle:@"Don't Track" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                [self unregisterUIElement:[[LQUIElement alloc] initFromUIView:button]];
-            }]];
-            [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-            [[UIViewController topViewController] presentViewController:alert animated:YES completion:nil];
+            [self presentTrackingAlertForView:button];
             LQLog(kLQLogLevelInfo, @"Configuring button with title %@", button.titleLabel.text);
         }
     });
@@ -75,6 +65,34 @@
 }
 
 #pragma mark - Alerts
+
+- (void)presentTrackingAlertForView:(UIView *)view {
+    UIAlertController *alert;
+    NSString *klass = [[view class] description];
+    if ([self.elementChanger viewIsTrackingEvent:view]) {
+        LQUIElement *element = [self.elementChanger uiElementFor:view];
+        alert = [UIAlertController alertControllerWithTitle:@"Liquid"
+                                                    message:[NSString stringWithFormat:@"This %@ is being tracked.", klass]
+                                             preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking"
+                                                  style:UIAlertActionStyleDestructive
+                                                handler:^(UIAlertAction * action) {
+                                                    [self unregisterUIElement:element];
+                                                }]];
+    } else {
+        LQUIElement *element = [[LQUIElement alloc] initFromUIView:view];
+        alert = [UIAlertController alertControllerWithTitle:@"Liquid"
+                                                    message:[NSString stringWithFormat:@"This %@ isn't being tracked.", klass]
+                                             preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking"
+                                                  style:UIAlertActionStyleDestructive
+                                                handler:^(UIAlertAction * action) {
+                                                    [self registerUIElement:element];
+                                                }]];
+    }
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [[UIViewController topViewController] presentViewController:alert animated:YES completion:nil];
+}
 
 - (void)showNetworkFailAlert {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network error"
