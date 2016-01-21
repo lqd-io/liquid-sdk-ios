@@ -11,6 +11,8 @@
 
 @interface LQUIElementSetupService : NSObject
 
+@property (nonatomic, assign) BOOL devModeEnabled;
+
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger;
 - (void)interceptUIElements;
 

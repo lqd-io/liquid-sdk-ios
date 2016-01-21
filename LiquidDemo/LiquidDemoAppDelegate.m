@@ -59,6 +59,15 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {}
 
+#pragma mark - Deep Linking
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if ([[Liquid sharedInstance] handleOpenURL:url]) {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {

@@ -608,6 +608,21 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", [_loadedLiquidPackage dictOfVariablesAndValues]);
 }
 
+#pragma mark - Handle Deep Linking URLs
+
+- (BOOL)handleOpenURL:(NSURL *)url {
+    if (![url.scheme isEqual:@"liquid123"]) {
+        return NO;
+    }
+#if LQ_IOS
+    if ([url.host isEqualToString:@"dev_mode"]) {
+        self.uiElementSetupService.devModeEnabled = YES;
+        return YES;
+    }
+#endif
+    return NO;
+}
+
 #pragma mark - Development functionalities
 
 - (void)sendVariable:(NSString *)variableName fallback:(id)fallbackValue liquidType:(NSString *)typeString {

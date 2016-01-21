@@ -614,4 +614,16 @@ extern NSString * const LQDidIdentifyUser;
 + (void)softReset;
 + (void)hardResetForApiToken:(NSString *)token;
 
+
+///*!
+// @method
+// 
+// @abstract
+// Call this method to let Liquid be aware of its URLs.
+// 
+// @discussion
+// It should be called at - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+// */
+- (BOOL)handleOpenURL:(NSURL *)url;
+
 @end

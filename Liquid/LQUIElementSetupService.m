@@ -25,18 +25,20 @@
 @implementation LQUIElementSetupService
 
 @synthesize elementChanger = _elementChanger;
+@synthesize devModeEnabled = _devModeEnabled;
 
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger {
     self = [super init];
     if (self) {
         _elementChanger = elementChanger;
+        _devModeEnabled = NO;
     }
     return self;
 }
 
 #pragma mark - Change UIButton
 
-- (void)interceptUIElements {
+- (void)interceptUIElements { // TODO: include this at the ui element changeer, with a block
     static dispatch_once_t onceToken; // TODO: probably get rid of this
     dispatch_once(&onceToken, ^{
         [UIControl aspect_hookSelector:@selector(didMoveToWindow) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo) {
@@ -50,6 +52,9 @@
 }
 
 - (void)buttonTouchDown:(UIButton *)button { // TODO: UIAlertController is only supported in iOS 8
+    if (!self.devModeEnabled) {
+        return;
+    }
     touchingDown = YES;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if (touchingDown) {
@@ -61,6 +66,9 @@
 }
 
 - (void)buttonTouchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    if (!self.devModeEnabled) {
+        return;
+    }
     touchingDown = NO;
 }
 
