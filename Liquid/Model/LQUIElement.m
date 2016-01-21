@@ -22,6 +22,12 @@
 
 #pragma mark - Initializers
 
+- (instancetype)initFromUIView:(id)view evetName:(NSString *)eventName {
+    id me = [self initFromUIView:view];
+    _eventName = eventName;
+    return me;
+}
+
 - (instancetype)initFromUIView:(UIView *)view {
     self = [super init];
     if (self) {
@@ -30,7 +36,6 @@
         }
         _active = YES;
         _identifier = [NSString stringWithString:[view liquidIdentifier]];
-        _eventName = @"X";
     }
     return self;
 }
