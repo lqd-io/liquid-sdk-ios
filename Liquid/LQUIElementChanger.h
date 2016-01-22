@@ -14,11 +14,12 @@
 @interface LQUIElementChanger : NSObject
 
 - (instancetype)initWithNetworking:(LQNetworking *)networking;
-- (void)interceptUIElements;
+- (void)interceptUIElementsWithBlock:(void(^)(id view))interceptBlock; // TODO: FIX ID to UIView
+- (BOOL)applyChangesTo:(id)view; // TODO: FIX ID to UIView
 - (void)requestUiElements;
 - (void)registerUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler;
 - (void)unregisterUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler;
-- (LQUIElement *)uiElementFor:(id)view; // FIX ID to UIView
-- (BOOL)viewIsTrackingEvent:(id)view; // FIX ID to UIView
+- (LQUIElement *)uiElementFor:(id)view; // TODO: FIX ID to UIView
+- (BOOL)viewIsTrackingEvent:(id)view; // TODO: FIX ID to UIView
 
 @end

@@ -181,8 +181,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)configureModules {
 #if LQ_IOS
     [self.uiElementChanger requestUiElements];
-    [self.uiElementChanger interceptUIElements];
-    [self.uiElementSetupService interceptUIElements];
+    [self.uiElementChanger interceptUIElementsWithBlock:^(UIView *addedView) {
+        [self.uiElementChanger applyChangesTo:addedView];
+        [self.uiElementSetupService applySetupMenuTargetsTo:addedView];
+    }];
 #endif
 #if LQ_INAPP_MESSAGES_SUPPORT
     [self.inAppMessages requestAndPresentInAppMessages];
@@ -611,7 +613,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Handle Deep Linking URLs
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    if (![url.scheme isEqual:@"liquid123"]) {
+    if (![url.scheme isEqual:@"liquid123"]) { // TODO: change to startsWith:
         return NO;
     }
 #if LQ_IOS

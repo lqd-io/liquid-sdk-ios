@@ -36,37 +36,42 @@
     return self;
 }
 
-- (void)interceptUIElements {
+- (void)interceptUIElementsWithBlock:(void(^)(UIView *view))interceptBlock {
     static dispatch_once_t onceToken; // TODO: probably get rid of this
     dispatch_once(&onceToken, ^{
         [UIControl aspect_hookSelector:@selector(didMoveToWindow) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo) {
-            id object = [aspectInfo instance];
-            if ([object isChangeable] && [object isKindOfClass:[UIButton class]]) {
-                [self changeUIButtonIfActive:(UIButton *)object];
+            id view = [aspectInfo instance];
+            if ([view isKindOfClass:[UIView class]]) {
+                interceptBlock(view);
             }
         } error:NULL];
     });
 }
 
-#pragma mark - Change UIButton
+#pragma mark - Change Elements
 
-- (void)changeUIButtonIfActive:(UIButton *)button { // TODO?: receive an UIElement instead of a UIButton?
-    LQUIElement *uiElement = [self uiElementFor:button];
-    if (!uiElement || ![uiElement active]) {
-        return; // return if button is not on the list of elements to be changed or is not active
+- (BOOL)applyChangesTo:(UIView *)view {
+    LQUIElement *uiElement = [self uiElementFor:view];
+    if (!uiElement || ![view isChangeable] || ![uiElement active]) {
+        return false;
     }
-    if ([uiElement eventName]) {
+    if ([view isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)view;
         [button addTarget:self action:@selector(touchUpButton:) forControlEvents:UIControlEventTouchUpInside];
-        LQLog(kLQLogLevelInfo, @"Tracking events in UIButton with identifier \"%@\" and label \"%@\"", [uiElement identifier], button.titleLabel.text);
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger>Tracking events in UIButton with identifier \"%@\" and label \"%@\"", [uiElement identifier], button.titleLabel.text);
+        return true;
     }
+    return false;
 }
+
+#pragma mark - UI Elements events
 
 - (void)touchUpButton:(UIButton *)button {
     LQUIElement *uiElement = [self uiElementFor:button];
     if (![uiElement eventName]) { // need to check again because button could not be tracked at the moment of touch event
         return;
     }
-    LQLog(kLQLogLevelInfo, @"Touched button %@ with identifier %@ to track event named %@ and attributes %@",
+    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger>Touched button %@ with identifier %@ to track event named %@ and attributes %@",
           button.titleLabel.text, button.liquidIdentifier, uiElement.eventName, uiElement.eventAttributes);
 }
 

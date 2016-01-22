@@ -38,29 +38,28 @@
 
 #pragma mark - Change UIButton
 
-- (void)interceptUIElements { // TODO: include this at the ui element changeer, with a block
-    static dispatch_once_t onceToken; // TODO: probably get rid of this
-    dispatch_once(&onceToken, ^{
-        [UIControl aspect_hookSelector:@selector(didMoveToWindow) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo) {
-            id object = [aspectInfo instance];
-            if ([object isKindOfClass:[UIButton class]]) {
-                [object addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
-                [object addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
-            }
-        } error:NULL];
-    });
+- (BOOL)applySetupMenuTargetsTo:(UIView *)view {
+    if ([view isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)view;
+        [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
+        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
+        return true;
+    }
+    return false;
 }
+
+#pragma mark - UI Elements events
 
 - (void)buttonTouchDown:(UIButton *)button { // TODO: UIAlertController is only supported in iOS 8
     if (!self.devModeEnabled) {
         return;
     }
     touchingDown = YES;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if (touchingDown) {
             touchingDown = NO;
             [self presentTrackingAlertForView:button];
-            LQLog(kLQLogLevelInfo, @"Configuring button with title %@", button.titleLabel.text);
+            LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService>Configuring button with title %@", button.titleLabel.text);
         }
     });
 }
