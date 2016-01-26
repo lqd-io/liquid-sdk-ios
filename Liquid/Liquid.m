@@ -613,7 +613,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Handle Deep Linking URLs
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    if (![url.scheme isEqual:@"lqd"]) {
+    if (![url.scheme hasPrefix:@"lqd"]) {
         return NO;
     }
 #if LQ_IOS
