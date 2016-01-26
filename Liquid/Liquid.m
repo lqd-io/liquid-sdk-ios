@@ -613,11 +613,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Handle Deep Linking URLs
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    if (![url.scheme isEqual:@"liquid123"]) { // TODO: change to startsWith:
+    if (![url.scheme isEqual:@"lqd"]) {
         return NO;
     }
 #if LQ_IOS
-    if ([url.host isEqualToString:@"dev_mode"]) {
+    if ([url.host isEqualToString:@"edit"]) {
         self.uiElementSetupService.devModeEnabled = YES;
         return YES;
     }

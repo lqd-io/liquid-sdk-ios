@@ -29,7 +29,7 @@
 			<string>io.lqd.ios</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>liquid123</string>
+				<string>lqd123</string>
 			</array>
 		</dict>
 	</array>
