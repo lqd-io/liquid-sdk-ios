@@ -56,7 +56,6 @@
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
 		A94B6A9D1954BC1D00AB4B04 /* libLiquid.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4ADF1923C61D001EF2E6 /* libLiquid.a */; };
 		A9509877194F104E0048106A /* LiquidSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9509876194F104E0048106A /* LiquidSpec.m */; };
-		A953C51F1C4E5F2C0085B3ED /* UIViewController+LQTopmost.m in Sources */ = {isa = PBXBuildFile; fileRef = A953C51E1C4E5F2C0085B3ED /* UIViewController+LQTopmost.m */; settings = {ASSET_TAGS = (); }; };
 		A95E659B194543140075161E /* liquid_package_incorrect_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A9166A931942345100DCB517 /* liquid_package_incorrect_data_types.json */; };
 		A95E659C194543180075161E /* liquid_package_correct_data_types.json in Resources */ = {isa = PBXBuildFile; fileRef = A99B835B1940BEED005AB709 /* liquid_package_correct_data_types.json */; };
 		A95E659E194566600075161E /* LiquidTargetsInvalidationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */; };
@@ -305,8 +304,6 @@
 		A949FB781BCE75ED00F7C48E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A949FB7A1BCE75ED00F7C48E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9509876194F104E0048106A /* LiquidSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidSpec.m; path = Model/LiquidSpec.m; sourceTree = "<group>"; };
-		A953C51D1C4E5F2C0085B3ED /* UIViewController+LQTopmost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LQTopmost.h"; sourceTree = "<group>"; };
-		A953C51E1C4E5F2C0085B3ED /* UIViewController+LQTopmost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LQTopmost.m"; sourceTree = "<group>"; };
 		A95E659D194566600075161E /* LiquidTargetsInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidTargetsInvalidationSpec.m; sourceTree = "<group>"; };
 		A95E659F194566D90075161E /* LiquidValuesInvalidationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiquidValuesInvalidationSpec.m; sourceTree = "<group>"; };
 		A95EC5A51B0DEA2900407D03 /* LQDeviceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDeviceSpec.m; path = Model/LQDeviceSpec.m; sourceTree = "<group>"; };
@@ -716,8 +713,6 @@
 				A96B47C61C19CD9400A6DF8D /* UIView+LQChangeable.m */,
 				A9A602D21C209BAD001EE078 /* UIButton+LQChangeable.h */,
 				A9A602D31C209BAD001EE078 /* UIButton+LQChangeable.m */,
-				A953C51D1C4E5F2C0085B3ED /* UIViewController+LQTopmost.h */,
-				A953C51E1C4E5F2C0085B3ED /* UIViewController+LQTopmost.m */,
 			);
 			name = Categories;
 			path = Liquid/Categories;
@@ -1365,7 +1360,6 @@
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A924FCA41C4461E600ECC953 /* LQUIElementSetupService.m in Sources */,
-				A953C51F1C4E5F2C0085B3ED /* UIViewController+LQTopmost.m in Sources */,
 				A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */,
 				A9EA29C21BF52157001BE1B7 /* LQModalMessageViewController.m in Sources */,
 				A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */,

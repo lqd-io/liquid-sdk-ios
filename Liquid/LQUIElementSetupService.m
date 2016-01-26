@@ -11,8 +11,8 @@
 #import <Aspects/Aspects.h>
 #import <UIKit/UIKit.h>
 #import "LQDefaults.h"
-#import "UIViewController+LQTopmost.h"
 #import "LQUIElement.h"
+#import "LQWindow.h"
 
 @interface LQUIElementSetupService() {
     BOOL touchingDown;
@@ -95,7 +95,7 @@
         }]];
     }
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [[UIViewController topViewController] presentViewController:alert animated:YES completion:nil];
+    [self presentViewControllerInTopMost:alert];
 }
 
 - (void)presentTrackingEventNameForView:(UIView *)view {
@@ -110,7 +110,7 @@
         LQUIElement *element = [[LQUIElement alloc] initFromUIView:view evetName:alert.textFields.firstObject.text];
         [self registerUIElement:element];
     }]];
-    [[UIViewController topViewController] presentViewController:alert animated:YES completion:nil];
+    [self presentViewControllerInTopMost:alert];
 }
 
 - (void)showNetworkFailAlert {
@@ -118,7 +118,7 @@
                                                                    message:@"An error occured while configuring your UI element on Liquid. Please try again."
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
-    [[UIViewController topViewController] presentViewController:alert animated:YES completion:nil];
+    [self presentViewControllerInTopMost:alert];
 }
 
 #pragma mark - Button actions
@@ -137,6 +137,14 @@
     } failHandler:^{
         [self showNetworkFailAlert];
     }];
+}
+
+#pragma mark - Helper methods
+
+- (void)presentViewControllerInTopMost:(UIViewController *)viewController {
+    UIWindow *window = [LQWindow fullscreenWindow];
+    [window makeKeyAndVisible];
+    [window.rootViewController presentViewController:viewController animated:YES completion:nil];
 }
 
 @end
