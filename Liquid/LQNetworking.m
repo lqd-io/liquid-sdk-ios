@@ -222,18 +222,40 @@ NSUInteger const maxTries = kLQHttpMaxTries;
 
 #pragma mark - Asynchronous send/get methods
 
-- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler {
+- (void)requestData:(NSData *)data toEndpoint:(NSString *)endpoint
+        usingMethod:(NSString *)method
+  completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (void)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler {
+- (void)sendData:(NSData *)data
+      toEndpoint:(NSString *)endpoint
+     usingMethod:(NSString *)method
+completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler {
     [self requestData:data toEndpoint:endpoint usingMethod:method completionHandler:completionHandler];
 }
 
-- (void)getDataFromEndpoint:(NSString *)endpoint completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData)) completionHandler {
+- (void)sendData:(NSData *)data
+      toEndpoint:(NSString *)endpoint
+     usingMethod:(NSString *)method
+  withParameters:(NSDictionary *)params
+completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler {
+    NSString *fullEndpoint = [NSString stringWithFormat:@"%@%@", endpoint, [LQRequest buildQueryStringWith:params]];
+    [self requestData:data toEndpoint:fullEndpoint usingMethod:method completionHandler:completionHandler];
+}
+
+- (void)getDataFromEndpoint:(NSString *)endpoint
+          completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData)) completionHandler {
     [self requestData:nil toEndpoint:endpoint usingMethod:@"GET" completionHandler:completionHandler];
+}
+
+- (void)getDataFromEndpoint:(NSString *)endpoint
+             withParameters:(NSDictionary *)params
+          completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData)) completionHandler {
+    NSString *fullEndpoint = [NSString stringWithFormat:@"%@%@", endpoint, [LQRequest buildQueryStringWith:params]];
+    [self requestData:nil toEndpoint:fullEndpoint usingMethod:@"GET" completionHandler:completionHandler];
 }
 
 #pragma mark - Synchronous send/get methods

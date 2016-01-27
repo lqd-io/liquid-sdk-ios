@@ -25,6 +25,7 @@
 
 @synthesize changedElements = _changedElements;
 @synthesize networking = _networking;
+@synthesize developerToken = _developerToken;
 
 #pragma mark - Initializers
 
@@ -92,11 +93,25 @@
     return nil;
 }
 
+
+- (NSDictionary *)requestParams {
+    return [self requestParamsWith:nil];
+}
+
+- (NSDictionary *)requestParamsWith:(NSDictionary *)params {
+    if (!self.developerToken) {
+        return params;
+    }
+    NSMutableDictionary *queryParams = [[NSMutableDictionary alloc] initWithDictionary:params];
+    queryParams[@"token"] = self.developerToken;
+    return queryParams;
+}
+
 #pragma mark - Request UI Elements from server
 
 - (void)requestUiElements {
-    [_networking getDataFromEndpoint:@"ui_elements?platform=ios" completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) { // TODO: remove ?platform
-        //responseData = [@"[{\"identifier\":\"/UIWindow/UIView/UITextView/UITextField/UIButton/x\",\"event_name\":\"Track X\",\"event_attributes\":{\"x\":1,\"y\":2},\"active\":true},{\"identifier\":\"/UIWindow/UIView/UIButton/Track \\\"Play Music\\\"\",\"event_name\":\"Track Y\",\"event_attributes\":{\"x\":1,\"y\":2},\"active\":true}]" dataUsingEncoding:NSUTF8StringEncoding];
+    [_networking getDataFromEndpoint:@"ui_elements" withParameters:[self requestParamsWith:@{ @"platform" : @"ios" }]
+                   completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
         if (queueStatus == LQQueueStatusOk) {
             NSMutableDictionary *newElements = [[NSMutableDictionary alloc] init];
             for (NSDictionary *uiElementDict in [NSData fromJSON:responseData]) {
@@ -115,7 +130,7 @@
 
 - (void)registerUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler {
     [_networking sendData:[NSData toJSON:[element jsonDictionary]] toEndpoint:@"ui_elements/add" usingMethod:@"POST"
-        completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
+     withParameters:[self requestParams] completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
             if (queueStatus == LQQueueStatusOk) {
                 NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
                 [newElements setObject:element forKey:element.identifier];
@@ -130,7 +145,7 @@
 
 - (void)unregisterUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler {
     [_networking sendData:[NSData toJSON:[element jsonDictionary]] toEndpoint:@"ui_elements/remove" usingMethod:@"POST"
-        completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
+        withParameters:[self requestParams] completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
             if (queueStatus == LQQueueStatusOk) {
                 NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
                 [newElements removeObjectForKey:element.identifier];

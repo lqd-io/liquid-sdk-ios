@@ -616,10 +616,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (![url.scheme hasPrefix:@"lqd"]) {
         return NO;
     }
-#if LQ_IOS
-    if ([url.host isEqualToString:@"edit"]) {
-        self.uiElementSetupService.devModeEnabled = YES;
-        return YES;
+#if LQ_IOS // TODO: only support iOS 8+
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    if ([urlComponents.host isEqualToString:@"edit"]) {
+        for (NSURLQueryItem *item in urlComponents.queryItems) {
+            if ([item.name isEqualToString:@"token"]) {
+                self.uiElementSetupService.devModeEnabled = YES;
+                self.uiElementChanger.developerToken = item.value;
+                return YES;
+            }
+        }
     }
 #endif
     return NO;

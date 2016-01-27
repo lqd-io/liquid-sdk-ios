@@ -12,10 +12,11 @@ typedef NSInteger LQQueueStatus;
 
 @interface LQRequest : NSObject <NSCoding>
 
--(id)initWithUrl:(NSString*)url withHttpMethod:(NSString*)httpMethod withJSON:(NSData*)json;
--(void)incrementNumberOfTriesBy:(NSUInteger)increment;
--(void)incrementNumberOfTries;
--(void)incrementNextTryDateIn:(NSTimeInterval)seconds;
+- (id)initWithUrl:(NSString*)url withHttpMethod:(NSString*)httpMethod withJSON:(NSData*)json;
+- (void)incrementNumberOfTriesBy:(NSUInteger)increment;
+- (void)incrementNumberOfTries;
+- (void)incrementNextTryDateIn:(NSTimeInterval)seconds;
++ (NSString *)buildQueryStringWith:(NSDictionary *)params;
 
 @property(nonatomic, strong, readonly) NSString* url;
 @property(nonatomic, strong, readonly) NSString* httpMethod;

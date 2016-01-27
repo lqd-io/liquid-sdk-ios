@@ -25,7 +25,7 @@ LQQueueStatus const LQQueueStatusRejected = 3;
 
 #pragma mark - Initializers
 
--(id)initWithUrl:(NSString *)url withHttpMethod:(NSString *)httpMethod withJSON:(NSData *)json {
+- (id)initWithUrl:(NSString *)url withHttpMethod:(NSString *)httpMethod withJSON:(NSData *)json {
     self = [super init];
     if(self) {
         _url = url;
@@ -36,7 +36,7 @@ LQQueueStatus const LQQueueStatusRejected = 3;
     return self;
 }
 
--(NSDate *)nextTryAfter {
+- (NSDate *)nextTryAfter {
     if (!_nextTryAfter) {
         _nextTryAfter = [NSDate dateWithTimeIntervalSince1970:0];
     }
@@ -45,7 +45,7 @@ LQQueueStatus const LQQueueStatusRejected = 3;
 
 #pragma mark - NSCoding
 
--(id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if(self) {
         _url = [aDecoder decodeObjectForKey:kLQQueueUrl];
@@ -55,7 +55,7 @@ LQQueueStatus const LQQueueStatusRejected = 3;
     }
     return self;
 }
--(void)encodeWithCoder:(NSCoder *)aCoder {
+- (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:_url forKey:kLQQueueUrl];
     [aCoder encodeObject:_httpMethod forKey:kLQQueueHttpMethod];
     [aCoder encodeObject:_json forKey:kLQQueueJSON];
@@ -64,17 +64,32 @@ LQQueueStatus const LQQueueStatusRejected = 3;
 
 #pragma mark - Network Retries
 
--(void)incrementNumberOfTriesBy:(NSUInteger)increment {
+- (void)incrementNumberOfTriesBy:(NSUInteger)increment {
     int numberOfTries = _numberOfTries.intValue + (int) increment;
     _numberOfTries = [NSNumber numberWithInt:numberOfTries];
 }
 
--(void)incrementNumberOfTries {
+- (void)incrementNumberOfTries {
     [self incrementNumberOfTriesBy:1];
 }
 
--(void)incrementNextTryDateIn:(NSTimeInterval)seconds {
+- (void)incrementNextTryDateIn:(NSTimeInterval)seconds {
     _nextTryAfter = [[NSDate date] dateByAddingTimeInterval:seconds];
+}
+
+#pragma mark - Helper methods
+
++ (NSString *)buildQueryStringWith:(NSDictionary *)params {
+    if ([params count] == 0) {
+        return @"";
+    }
+    NSString *query = @"?";
+    for (NSString *param in params) {
+        BOOL firstElement = [query isEqualToString:@"?"];
+        query = [query stringByAppendingString:[NSString stringWithFormat:@"%@%@=%@",
+                                                (firstElement ? @"" : @"&"), param, params[param]]];
+    }
+    return query;
 }
 
 @end
