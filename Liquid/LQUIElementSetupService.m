@@ -81,11 +81,9 @@
         alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                     message:[NSString stringWithFormat:@"This %@ is being tracked, with event named '%@'", klass, element.eventName]
                                              preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking"
-                                                  style:UIAlertActionStyleDestructive
-                                                handler:^(UIAlertAction * action) {
-                                                    [self unregisterUIElement:element];
-                                                }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+            [self unregisterUIElement:element];
+        }]];
     } else {
         alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                     message:[NSString stringWithFormat:@"This %@ isn't being tracked.", klass]
@@ -107,8 +105,7 @@
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-        LQUIElement *element = [[LQUIElement alloc] initFromUIView:view evetName:alert.textFields.firstObject.text];
-        [self registerUIElement:element];
+        [self registerUIElement:[[LQUIElement alloc] initFromUIView:view evetName:alert.textFields.firstObject.text]];
     }]];
     [self presentViewControllerInTopMost:alert];
 }
@@ -125,7 +122,7 @@
 
 - (void)registerUIElement:(LQUIElement *)element {
     [self.elementChanger registerUIElement:element withSuccessHandler:^{
-        LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Registered a new UIElement");
+        LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Registered a new UI Element: %@", element);
     } failHandler:^{
         [self showNetworkFailAlert];
     }];
@@ -133,7 +130,7 @@
 
 - (void)unregisterUIElement:(LQUIElement *)element {
     [self.elementChanger unregisterUIElement:element withSuccessHandler:^{
-        LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Unregistered UIElement %@", element.identifier);
+        LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Unregistered UI Element %@", element.identifier);
     } failHandler:^{
         [self showNetworkFailAlert];
     }];

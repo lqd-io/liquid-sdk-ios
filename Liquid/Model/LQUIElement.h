@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface LQUIElement : NSObject
+@interface LQUIElement : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, strong, readonly) NSString *identifier;
 @property (nonatomic, assign, readonly) BOOL active;

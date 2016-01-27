@@ -50,7 +50,7 @@
         }
         _identifier = [dict objectForKey:@"identifier"];
         _eventName = [dict objectForKey:@"event_name"];
-        //_eventAttributes = [dict objectForKey:@"event_attributes"]; // TO REMOVE FROM HERE AND EVERYWHERE ELSE
+        //_eventAttributes = [dict objectForKey:@"event_attributes"]; // TODO: TO REMOVE FROM HERE AND EVERYWHERE ELSE
     }
     return self;
 }
@@ -69,6 +69,24 @@
     return [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"ios", @"platform",
             _identifier, @"identifier",
             _eventName, @"event_name", nil];
+}
+
+#pragma mark - NSCoding & NSCopying
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _active = [[aDecoder decodeObjectForKey:@"active"] boolValue];
+        _identifier = [aDecoder decodeObjectForKey:@"identifier"];
+        _eventName = [aDecoder decodeObjectForKey:@"event_name"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:[NSNumber numberWithBool:_active] forKey:@"active"];
+    [aCoder encodeObject:_identifier forKey:@"attributes"];
+    [aCoder encodeObject:_eventName forKey:@"event_name"];
 }
 
 @end
