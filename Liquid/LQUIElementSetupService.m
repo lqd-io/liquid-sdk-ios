@@ -19,6 +19,8 @@
 }
 
 @property (nonatomic, strong) LQUIElementChanger *elementChanger;
+@property (nonatomic, assign) BOOL devModeEnabled;
+@property (nonatomic, strong) NSTimer *pollTimer;
 
 @end
 
@@ -26,6 +28,7 @@
 
 @synthesize elementChanger = _elementChanger;
 @synthesize devModeEnabled = _devModeEnabled;
+@synthesize pollTimer = _pollTimer;
 
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger {
     self = [super init];
@@ -34,6 +37,29 @@
         _devModeEnabled = NO;
     }
     return self;
+}
+
+#pragma mark - Enable/disable Development Mode
+
+- (void)enterDevelopmentMode {
+    if (self.devModeEnabled) return;
+    self.devModeEnabled = YES;
+    self.pollTimer = [NSTimer scheduledTimerWithTimeInterval:2.0
+                                                      target:self
+                                                    selector:@selector(timerCode)
+                                                    userInfo:nil
+                                                     repeats:YES];
+}
+
+- (void)exitDevelopmentMode {
+    if (!self.devModeEnabled) return;
+    self.devModeEnabled = NO;
+    [self.pollTimer invalidate];
+    self.pollTimer = nil;
+}
+
+- (void)timerCode {
+    [self.elementChanger requestUiElements];
 }
 
 #pragma mark - Change UIButton

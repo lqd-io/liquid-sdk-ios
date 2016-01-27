@@ -266,6 +266,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     dispatch_async(self.queue, ^{
         [self requestNewLiquidPackageSynced];
     });
+#if LQ_IOS
+    [self.uiElementSetupService exitDevelopmentMode]; // TODO: do this? And: only do this if #UIELEMENT_SUPPORTED
+#endif
 }
 
 // Going from background to foreground
@@ -622,7 +625,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if ([urlComponents.host isEqualToString:@"edit"]) {
         for (NSURLQueryItem *item in urlComponents.queryItems) {
             if ([item.name isEqualToString:@"token"]) {
-                self.uiElementSetupService.devModeEnabled = YES;
+                [self.uiElementSetupService enterDevelopmentMode];
                 self.uiElementChanger.developerToken = item.value;
                 return YES;
             }

@@ -11,8 +11,8 @@
 
 @interface LQUIElementSetupService : NSObject
 
-@property (nonatomic, assign) BOOL devModeEnabled;
-
+- (void)enterDevelopmentMode;
+- (void)exitDevelopmentMode;
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger;
 - (BOOL)applySetupMenuTargetsTo:(id)view;
 
