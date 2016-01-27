@@ -287,6 +287,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
     [_networking startFlushTimer];
     [self loadLiquidPackageSynced:YES];
+#if LQ_IOS
+    [self.uiElementChanger requestUiElements];
+#endif
 }
 
 - (void)clientApplicationWillTerminate {

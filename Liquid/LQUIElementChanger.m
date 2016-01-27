@@ -91,7 +91,7 @@
             }
             self.changedElements = newElements;
             LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Received %ld UI Elements from server", (unsigned long) newElements.count);
-            [self archiveUIElements];
+            [self archiveUIElements]; // TODO: only archive if they are different (with an md5)?
             [self logChangedElements];
         } else {
             LQLog(kLQLogLevelHttpError, @"<Liquid/UIElementChanger> Error requesting UI Elements: %@", responseData);
