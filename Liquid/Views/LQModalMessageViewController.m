@@ -138,6 +138,9 @@
 - (void)defineHorizontalPositionConstraintsForButtons {
     // Defines constraints for buttons, creating a dynamic format like e.g: "H:|-(==15)-[button1]-(==15)-[button2]-(==15)-|"
     NSDictionary *viewsDictionary = [[self class] viewsDictionaryForButtons:self.callsToActionButtons];
+    if ([viewsDictionary count] == 0) {
+        return;
+    }
     NSString *format = [[self class] constraintsFormatForNButtons:[self.callsToActionButtons count]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:0
