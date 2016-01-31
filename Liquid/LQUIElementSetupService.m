@@ -14,13 +14,13 @@
 #import "LQUIElement.h"
 #import "LQWindow.h"
 
-@interface LQUIElementSetupService() {
-    BOOL touchingDown;
-}
+@interface LQUIElementSetupService()
 
 @property (nonatomic, strong) LQUIElementChanger *elementChanger;
 @property (nonatomic, assign) BOOL devModeEnabled;
 @property (nonatomic, strong) NSTimer *pollTimer;
+@property (nonatomic, strong) NSTimer *longPressTimer;
+@property (nonatomic, assign) BOOL touchingDown;
 
 @end
 
@@ -29,12 +29,16 @@
 @synthesize elementChanger = _elementChanger;
 @synthesize devModeEnabled = _devModeEnabled;
 @synthesize pollTimer = _pollTimer;
+@synthesize longPressTimer = _longPressTimer;
+@synthesize touchingDown = _touchingDown;
+
 
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger {
     self = [super init];
     if (self) {
         _elementChanger = elementChanger;
         _devModeEnabled = NO;
+        _touchingDown = NO;
     }
     return self;
 }
@@ -69,6 +73,7 @@
         UIButton *button = (UIButton *)view;
         [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
         [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
+        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside];
         return true;
     }
     return false;
@@ -80,21 +85,30 @@
     if (!self.devModeEnabled) {
         return;
     }
-    touchingDown = YES;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        if (touchingDown) {
-            touchingDown = NO;
-            [self presentTrackingAlertForView:button];
-            LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService>Configuring button with title %@", button.titleLabel.text);
-        }
-    });
+    self.touchingDown = YES;
+    self.longPressTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                      target:self
+                                                         selector:@selector(longPressCode:)
+                                                    userInfo:button
+                                                     repeats:YES];
+}
+
+- (void)longPressCode:(NSTimer *)timer {
+    if (self.touchingDown) {
+        UIButton *button = timer.userInfo;
+        self.touchingDown = NO;
+        [self presentTrackingAlertForView:button];
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService>Configuring button with title %@", button.titleLabel.text);
+    }
 }
 
 - (void)buttonTouchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     if (!self.devModeEnabled) {
         return;
     }
-    touchingDown = NO;
+    self.touchingDown = NO;
+    [self.longPressTimer invalidate];
+    self.longPressTimer = nil;
 }
 
 #pragma mark - Alerts
