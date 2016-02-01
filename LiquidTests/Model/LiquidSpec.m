@@ -90,62 +90,6 @@ describe(@"Liquid", ^{
         });
     });
 
-    describe(@"applicationWillEnterForeground:", ^{
-        context(@"given a Liquid instance", ^{
-            __block Liquid *liquid;
-
-            beforeAll(^{
-                liquid = [[Liquid alloc] initWithToken:@"liquid_tests"];
-                [liquid setSessionTimeout:1.5f];
-                [liquid stub:@selector(flush) andReturn:nil];
-                [liquid stub:@selector(flush)];
-                [liquid stub:@selector(beginBackgroundUpdateTask)];
-                [liquid stub:@selector(track:attributes:allowLqdEvents:)];
-                [NSThread sleepForTimeInterval:1.0f];
-            });
-
-            context(@"given an app that is in background for less than the timeout time", ^{
-                __block NSString *previousUserId;
-                __block NSString *previousSessionId;
-
-                beforeEach(^{
-                    previousUserId = [liquid userIdentifier];
-                    previousSessionId = [liquid sessionIdentifier];
-
-                    [NSThread sleepForTimeInterval:0.2f];
-                    [liquid clientApplicationBackground];
-                    [NSThread sleepForTimeInterval:0.25f];
-                    [liquid clientApplicationForeground];
-                    [NSThread sleepForTimeInterval:0.2f];
-                });
-
-                it(@"should keep the previous Session ID", ^{
-                    [[[liquid sessionIdentifier] should] equal:(NSString *)previousSessionId];
-                });
-            });
-
-            context(@"given an app that is in background for more than the timeout time", ^{
-                __block NSString *previousUserId;
-                __block NSString *previousSessionId;
-
-                beforeEach(^{
-                    previousUserId = [liquid userIdentifier];
-                    previousSessionId = [liquid sessionIdentifier];
-
-                    [NSThread sleepForTimeInterval:0.1f];
-                    [liquid clientApplicationBackground];
-                    [NSThread sleepForTimeInterval:3.0f];
-                    [liquid clientApplicationForeground];
-                    [NSThread sleepForTimeInterval:0.1f];
-                });
-
-                it(@"should create a new Session ID", ^{
-                    [[[liquid sessionIdentifier] shouldNot] equal:(NSString *)previousSessionId];
-                });
-            });
-        });
-    });
-
     describe(@"track:", ^{
         it(@"should identify User (anonymous) with the automatically generated identifier", ^{
             Liquid *liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
@@ -271,7 +215,6 @@ describe(@"Liquid", ^{
                     liquidInstance = [[Liquid alloc] initWithToken:@"liquid_tests"];
                     [liquidInstance stub:@selector(flush)];
                     userId = [[liquidInstance userIdentifier] copy];
-                    sessionId = [[liquidInstance sessionIdentifier] copy];
                 });
 
                 context(@"given identifying again with the same unique_id", ^{
@@ -282,10 +225,6 @@ describe(@"Liquid", ^{
                     it(@"should keep the same user identifier", ^{
                         [[[liquidInstance userIdentifier] should] equal:userId];
                     });
-
-                    it(@"should keep the same session identifier", ^{
-                        [[[liquidInstance sessionIdentifier] should] equal:sessionId];
-                    });
                 });
 
                 context(@"given identifying again with a different unique_id", ^{
@@ -295,10 +234,6 @@ describe(@"Liquid", ^{
 
                     it(@"should use the new user identifier", ^{
                         [[[liquidInstance userIdentifier] should] equal:@"124"];
-                    });
-
-                    it(@"should not create a new session identifier", ^{
-                        [[[liquidInstance sessionIdentifier] should] equal:sessionId];
                     });
                 });
             });
@@ -370,7 +305,7 @@ describe(@"Liquid", ^{
             });
 
             it(@"should change the User Unqiue ID to a new one", ^{
-                NSString *previousSessionId = [liquid sessionIdentifier];
+                NSString *previousSessionId = [liquid userIdentifier];
                 [Liquid softReset];
                 [[[liquid userIdentifier] shouldNot] equal:previousSessionId];
             });

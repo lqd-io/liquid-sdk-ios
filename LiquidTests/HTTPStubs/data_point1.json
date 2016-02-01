@@ -16,11 +16,6 @@
     "unique_id" : "7513B224-9860-4BC2-8050-5B5D0738CB1D",
     "identified" : true
   },
-  "session" : {
-    "unique_id" : "C96BB192-9F7E-4009-AAA6-ECB1D2FF806D-1401979297",
-    "started_at" : "2014-06-05T14:41:37.609Z",
-    "timeout" : 0
-  },
   "event" : {
     "name" : "_startSession",
     "date" : "2014-06-05T14:41:37.609Z"

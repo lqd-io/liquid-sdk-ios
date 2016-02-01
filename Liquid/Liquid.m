@@ -400,12 +400,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Events
 
 - (void)track:(NSString *)eventName {
-    [self track:eventName];
+    [self track:eventName attributes:nil withDate:nil];
 }
 
 - (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
     NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
-    [self track:eventName attributes:validAttributes];
+    [self track:eventName attributes:validAttributes withDate:nil];
 }
 
 - (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes withDate:(NSDate *)eventDate {

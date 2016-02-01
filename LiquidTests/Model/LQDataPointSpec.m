@@ -17,7 +17,7 @@
 SPEC_BEGIN(LQDataPointSpec)
 
 describe(@"LQDataPoint", ^{
-    context(@"given a DataPoint with a user, a device, a session and an event", ^{
+    context(@"given a DataPoint with a user, a device and an event", ^{
         __block LQDataPoint *dataPoint;
 
         beforeEach(^{
@@ -26,12 +26,10 @@ describe(@"LQDataPoint", ^{
                 @"age": [NSNumber numberWithInt:37]
             }];
             LQDeviceIOS *device = [[LQDeviceIOS alloc] init];
-            LQSession *session = [[LQSession alloc] initWithDate:[NSDate date] timeout:[NSNumber numberWithInt:30]];
             LQEvent *event = [[LQEvent alloc] initWithName:@"Click Button" attributes:nil date:[NSDate date]];
             dataPoint = [[LQDataPoint alloc] initWithDate:event.date
                                                      user:user
                                                    device:device
-                                                  session:session
                                                     event:event
                                                    values:nil];
         });
@@ -42,10 +40,6 @@ describe(@"LQDataPoint", ^{
 
         it(@"should create a Data Point with a device", ^{
             [[dataPoint.device shouldNot] equal:@"audreytautou@gmail.com"];
-        });
-
-        it(@"should create a Data Point with a Session", ^{
-            [[dataPoint.session shouldNot] equal:@"audreytautou@gmail.com"];
         });
 
         it(@"should create a Data Point with the correct Event name", ^{
