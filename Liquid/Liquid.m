@@ -400,30 +400,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #pragma mark - Events
 
 - (void)track:(NSString *)eventName {
-    [self track:eventName attributes:nil allowLqdEvents:NO];
+    [self track:eventName];
 }
 
 - (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes {
     NSDictionary *validAttributes = [LQEvent assertAttributesTypesAndKeys:attributes];
-
-    [self track:eventName attributes:validAttributes allowLqdEvents:NO];
+    [self track:eventName attributes:validAttributes];
 }
 
-- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents {
-    [self track:eventName attributes:attributes allowLqdEvents:allowLqdEvents withDate:nil];
-}
-
-- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes allowLqdEvents:(BOOL)allowLqdEvents withDate:(NSDate *)eventDate {
-    if([eventName hasPrefix:@"_"] && !allowLqdEvents) {
-        NSAssert(false, @"<Liquid> Event names cannot start with _");
-        LQLog(kLQLogLevelError, @"<Liquid> Event names cannot start with _");
-        return;
-    }
-    [self.eventTracker track:eventName
-                  attributes:attributes
-                loadedValues:_loadedLiquidPackage.values
-                    withDate:eventDate
-                errorHandler:nil];
+- (void)track:(NSString *)eventName attributes:(NSDictionary *)attributes withDate:(NSDate *)eventDate {
+    [self.eventTracker track:eventName attributes:attributes loadedValues:_loadedLiquidPackage.values withDate:eventDate errorHandler:nil];
 }
 
 #pragma mark - Liquid Package
