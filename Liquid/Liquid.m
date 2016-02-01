@@ -230,10 +230,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self loadLiquidPackageSynced:YES];
 }
 
-- (void)clientApplicationWillTerminate {
-    [self track:@"app terminate"];
-}
-
 #pragma mark - User identification
 
 - (void)identifyUser:(LQUser *)user alias:(BOOL)alias {

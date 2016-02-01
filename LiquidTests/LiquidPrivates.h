@@ -85,7 +85,6 @@ extern NSString * const LQDidIdentifyUser;
 - (void)clientApplicationDidBecomeActive;
 - (void)clientApplicationDidEnterBackground;
 - (void)clientApplicationWillEnterForeground;
-- (void)clientApplicationWillTerminate;
 
 #pragma mark - User Interaction
 

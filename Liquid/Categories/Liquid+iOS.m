@@ -26,7 +26,6 @@
 - (void)clientApplicationDidBecomeActive;
 - (void)clientApplicationDidEnterBackground;
 - (void)clientApplicationWillEnterForeground;
-- (void)clientApplicationWillTerminate;
 
 @end
 
@@ -45,10 +44,6 @@
     [notificationCenter addObserver:self
                            selector:@selector(applicationDidEnterBackground:)
                                name:UIApplicationDidEnterBackgroundNotification
-                             object:nil];
-    [notificationCenter addObserver:self
-                           selector:@selector(applicationWillTerminate:)
-                               name:UIApplicationWillTerminateNotification
                              object:nil];
 }
 
@@ -69,10 +64,6 @@
     dispatch_async(self.queue, ^{
         [self endBackgroundUpdateTask];
     });
-}
-
-- (void)applicationWillTerminate:(NSNotificationCenter *)notification {
-    [self clientApplicationWillTerminate];
 }
 
 #pragma mark - Background Tasks
