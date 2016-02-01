@@ -32,7 +32,6 @@
 @synthesize queue = _queue;
 @synthesize device = _device;
 @synthesize currentUser = _currentUser;
-@synthesize currentSession = _currentSession;
 
 #pragma mark - Initializers
 
@@ -61,9 +60,6 @@
     if (!self.currentUser) {
         errorBlock([NSError errorWithDomain:kLQBundle code:kLQErrorNoUser userInfo:nil]);
     }
-    if (!self.currentSession) {
-        errorBlock([NSError errorWithDomain:kLQBundle code:kLQErrorNoSession userInfo:nil]);
-    }
     [self track:eventName attributes:attributes loadedValues:loadedValues withDate:eventDate];
 }
 
@@ -74,10 +70,6 @@
 
     if (!self.currentUser) {
         LQLog(kLQLogLevelError, @"<Liquid> %@", @"No user identified yet.");
-        return;
-    }
-    if (!self.currentSession) {
-        LQLog(kLQLogLevelError, @"<Liquid> %@", @"No session started yet.");
         return;
     }
 
@@ -104,11 +96,9 @@
     LQEvent *event = [[LQEvent alloc] initWithName:finalEventName attributes:validAttributes date:now];
     LQUser *user = self.currentUser;
     LQDevice *device = self.device;
-    LQSession *session = self.currentSession;
     LQDataPoint *dataPoint = [[LQDataPoint alloc] initWithDate:now
                                                           user:user
                                                         device:device
-                                                       session:session
                                                          event:event
                                                         values:loadedValues];
     NSDictionary *jsonDict = [dataPoint jsonDictionary];

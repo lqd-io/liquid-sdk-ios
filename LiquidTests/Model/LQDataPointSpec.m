@@ -12,7 +12,6 @@
 #import "LQDefaults.h"
 #import "LQUser.h"
 #import "LQDeviceIOS.h"
-#import "LQSession.h"
 #import "LQEvent.h"
 
 SPEC_BEGIN(LQDataPointSpec)

@@ -17,7 +17,6 @@
 #import "LQInAppMessages.h"
 #endif
 #import "LQEvent.h"
-#import "LQSession.h"
 #import "LQUser.h"
 #import "LQRequest.h"
 #import "LQVariable.h"
@@ -40,7 +39,6 @@
 
 @interface Liquid () {
     LQUser *_currentUser;
-    LQSession *_currentSession;
 }
 
 @property (nonatomic, strong) NSString *apiToken;
@@ -48,8 +46,6 @@
 @property (atomic, strong) LQUser *currentUser;
 @property (atomic, strong) LQUser *previousUser;
 @property (atomic, strong) LQDevice *device;
-@property (atomic, strong) LQSession *currentSession;
-@property (nonatomic, strong) NSDate *enterBackgroundTime;
 @property (atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property (nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property (atomic, strong) LQNetworking *networking;
@@ -72,7 +68,6 @@ static Liquid *sharedInstance = nil;
 
 @synthesize autoLoadValues = _autoLoadValues;
 @synthesize queueSizeLimit = _queueSizeLimit;
-@synthesize sessionTimeout = _sessionTimeout;
 @synthesize sendFallbackValuesInDevelopmentMode = _sendFallbackValuesInDevelopmentMode;
 @synthesize valuesSentToServer = _valuesSentToServer;
 @synthesize networking = _networking;
@@ -155,7 +150,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.device = [LQDeviceIOS sharedInstance];
 #endif
 
-        self.sessionTimeout = kLQDefaultSessionTimeout;
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
 #if LQ_IOS
         [self initializeBackgroundTaskIdentifier];
@@ -176,8 +170,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", self.currentUser.identifier);
         }
 
-        // Session will be automatically started in clientApplicationDidBecomeActive:
-
         // Start auto flush timer
         [_networking startFlushTimer];
 
@@ -194,12 +186,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 #pragma mark - Lazy initialization
-
-- (void)setSessionTimeout:(NSInteger)sessionTimeout {
-    @synchronized(self) {
-        _sessionTimeout = sessionTimeout;
-    }
-}
 
 - (NSMutableArray *)valuesSentToServer {
     if (!_valuesSentToServer) {
@@ -220,29 +206,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 #endif
 }
 
-- (LQSession *)currentSession {
-    return _currentSession;
-}
-
-- (void)setCurrentSession:(LQSession *)currentSession {
-    _currentSession = currentSession;
-    _eventTracker.currentSession = currentSession;
-}
-
 #pragma mark - UIApplication notifications
 
 // Going active (both first time or from background)
 - (void)clientApplicationDidBecomeActive {
-    if (!self.currentSession) {
-        [self startSessionBy:@"clientApplicationDidBecomeActive" with:self.currentUser.identifier];
-    }
+    [self track:@"app foreground"];
 }
 
 // Going from foreground to background
 - (void)clientApplicationDidEnterBackground {
-    NSDate *date = [LQDate uniqueNow];
-    [self track:@"_pauseSession" attributes:nil allowLqdEvents:YES withDate:date];
-    self.enterBackgroundTime = [LQDate uniqueNow];
+    [self track:@"app background"];
     [_networking stopFlushTimer];
     [_networking flush];
     dispatch_async(self.queue, ^{
@@ -253,23 +226,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 // Going from background to foreground
 - (void)clientApplicationWillEnterForeground {
     [LQDate resetUniqueNow];
-    NSTimeInterval timedOut = [self checkSessionTimeout];
-    if (!self.currentSession) {
-        [self startSessionBy:@"clientApplicationWillEnterForeground" with:self.currentUser.identifier];
-    } else if (timedOut > 0) {
-        if ([self.currentSession inProgress]) {
-            [self endSessionAt:self.enterBackgroundTime by:@"Timeout" with:[NSString stringWithFormat:@"%f", timedOut]];
-        }
-        [self startSessionBy:@"Timeout" with:[NSString stringWithFormat:@"%f", timedOut]];
-    } else {
-        [self resumeSession];
-    }
     [_networking startFlushTimer];
     [self loadLiquidPackageSynced:YES];
 }
 
 - (void)clientApplicationWillTerminate {
-    [self endSessionNowBy:@"App Terminate" with:nil];
+    [self track:@"app terminate"];
 }
 
 #pragma mark - User identification
@@ -387,6 +349,10 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     });
 }
 
+- (NSString *)sessionIdentifier {
+    return @"n/a";
+}
+
 #pragma mark - User aliasing of anonymous users
 
 - (void)aliasUser {
@@ -419,7 +385,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     });
 }
 
-#pragma mark - Sessions
+#pragma mark - Push Notifications
 
 - (void)setApplePushNotificationToken:(NSData *)deviceToken {
     NSString *hexToken = [[deviceToken copy] hexadecimalString];
@@ -429,51 +395,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [[NSUserDefaults standardUserDefaults] setObject:hexToken forKey:apnsTokenCacheKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
-}
-
-- (void)endSessionAt:(NSDate *)endAt by:(NSString *)by with:(NSString *)with {
-    NSDate *endAtDate = [endAt copy];
-    LQSession *session = self.currentSession;
-    if (self.currentUser && session && session.inProgress) {
-        [session endSessionOnDate:endAtDate];
-        NSDictionary *attributes = by ? [[NSDictionary alloc] initWithObjectsAndKeys:by, @"by", with, @"with", nil] : nil;
-        [self track:@"_endSession" attributes:attributes allowLqdEvents:YES withDate:endAtDate];
-        LQLog(kLQLogLevelInfo, @"Ended session %@ for user %@ (%@) at %@", session.identifier, session.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:endAtDate]);
-    }
-}
-
-- (void)endSessionNowBy:(NSString *)by with:(NSString *)with {
-    [self endSessionAt:[LQDate uniqueNow] by:by with:with];
-}
-
-- (void)startSessionBy:(NSString *)by with:(NSString *)with {
-    NSDate *now = [LQDate uniqueNow];
-    LQSession *session = [[LQSession alloc] initWithDate:now timeout:[NSNumber numberWithInt:(int)_sessionTimeout]];
-    self.currentSession = session;
-    NSDictionary *attributes = by ? [[NSDictionary alloc] initWithObjectsAndKeys:by, @"by", with, @"with", nil] : nil;
-    [self track:@"_startSession" attributes:attributes allowLqdEvents:YES withDate:now];
-    LQLog(kLQLogLevelInfo, @"Started session %@ for user %@ (%@) at %@", session.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
-}
-
-- (void)resumeSession {
-    NSDate *now = [LQDate uniqueNow];
-    [self track:@"_resumeSession" attributes:nil allowLqdEvents:YES withDate:now];
-    LQLog(kLQLogLevelInfo, @"Resumed session %@ for user %@ (%@) at %@", self.currentSession.identifier, self.currentUser.identifier, (self.currentUser.isIdentified ? @"identified" : @"anonymous"), [NSDateFormatter iso8601StringFromDate:now]);
-}
-
-- (NSTimeInterval)checkSessionTimeout {
-    if(self.currentSession != nil) {
-        NSDate *now = [LQDate uniqueNow];
-        NSTimeInterval interval = [now timeIntervalSinceDate:self.enterBackgroundTime];
-        if(interval >= _sessionTimeout) {
-            return interval; // Timed out
-        }
-    }
-    return 0; // No timeout
-}
-
-- (NSString *)sessionIdentifier {
-    return self.currentSession.identifier;
 }
 
 #pragma mark - Events
@@ -502,11 +423,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                   attributes:attributes
                 loadedValues:_loadedLiquidPackage.values
                     withDate:eventDate
-                errorHandler:^(NSError *error) {
-                    if (error.code == kLQErrorNoSession) {
-                        [self startSessionBy:@"Track Event" with:eventName];
-                    }
-                }];
+                errorHandler:nil];
 }
 
 #pragma mark - Liquid Package
@@ -514,10 +431,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (LQLiquidPackage *)requestNewLiquidPackageSynced {
     if(!self.currentUser) {
         LQLog(kLQLogLevelInfoVerbose, @"<Liquid> A user has not been identified yet.");
-        return nil;
-    }
-    if(!self.currentSession) {
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> No session is open yet.");
         return nil;
     }
     NSString *endPoint = [NSString stringWithFormat:@"users/%@/devices/%@/liquid_package", self.currentUser.identifier, self.device.uid, nil];
@@ -766,8 +679,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 + (void)softReset {
     [LQStorage deleteAllLiquidFiles];
     [sharedInstance resetUser];
-    [sharedInstance startSessionBy:@"resetSDK" with:sharedInstance.currentUser.identifier];
-    sharedInstance.enterBackgroundTime = nil;
     sharedInstance.loadedLiquidPackage = nil;
     [LQDate resetUniqueNow];
     [NSThread sleepForTimeInterval:0.2f];

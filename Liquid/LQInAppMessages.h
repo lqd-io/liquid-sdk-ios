@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "LQUser.h"
-#import "LQSession.h"
 #import "LQNetworking.h"
 #import "LQEventTracker.h"
 

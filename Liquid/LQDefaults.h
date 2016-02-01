@@ -47,12 +47,10 @@
 #    define kLQLogLevel kLQLogLevelNone
 #endif
 
-#define kLQDefaultSessionTimeout 30 //seconds
 #define kLQSendFallbackValuesInDevelopmentMode YES
 
 #define kLQErrorValueNotFound 1
 #define kLQErrorNoUser 2
-#define kLQErrorNoSession 3
 
 #define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)
 

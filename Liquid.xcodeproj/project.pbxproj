@@ -39,7 +39,6 @@
 		A92016D21BCF101600859450 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
 		A92016D31BCF101600859450 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F3192447FA0060E484 /* LQUser.m */; };
 		A92016D41BCF101600859450 /* LQDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E7192447FA0060E484 /* LQDevice.m */; };
-		A92016D51BCF101600859450 /* LQSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EF192447FA0060E484 /* LQSession.m */; };
 		A92016D61BCF101600859450 /* LQEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E9192447FA0060E484 /* LQEvent.m */; };
 		A92016D71BCF101600859450 /* LQLiquidPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */; };
 		A92016D81BCF101600859450 /* LQTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F1192447FA0060E484 /* LQTarget.m */; };
@@ -97,7 +96,6 @@
 		A99EB4FB192447FA0060E484 /* LQEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4E9192447FA0060E484 /* LQEvent.m */; };
 		A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */; };
 		A99EB4FD192447FA0060E484 /* LQRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4ED192447FA0060E484 /* LQRequest.m */; };
-		A99EB4FE192447FA0060E484 /* LQSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4EF192447FA0060E484 /* LQSession.m */; };
 		A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F1192447FA0060E484 /* LQTarget.m */; };
 		A99EB500192447FA0060E484 /* LQUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F3192447FA0060E484 /* LQUser.m */; };
 		A99EB501192447FA0060E484 /* LQValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB4F5192447FA0060E484 /* LQValue.m */; };
@@ -328,8 +326,6 @@
 		A99EB4EB192447FA0060E484 /* LQLiquidPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQLiquidPackage.m; sourceTree = "<group>"; };
 		A99EB4EC192447FA0060E484 /* LQRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQRequest.h; sourceTree = "<group>"; };
 		A99EB4ED192447FA0060E484 /* LQRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQRequest.m; sourceTree = "<group>"; };
-		A99EB4EE192447FA0060E484 /* LQSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSession.h; sourceTree = "<group>"; };
-		A99EB4EF192447FA0060E484 /* LQSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSession.m; sourceTree = "<group>"; };
 		A99EB4F0192447FA0060E484 /* LQTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQTarget.h; sourceTree = "<group>"; };
 		A99EB4F1192447FA0060E484 /* LQTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQTarget.m; sourceTree = "<group>"; };
 		A99EB4F2192447FA0060E484 /* LQUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUser.h; sourceTree = "<group>"; };
@@ -642,8 +638,6 @@
 				A909AD761BFE285B006D5EDD /* LQDeviceIOS.m */,
 				A909AD721BFE2853006D5EDD /* LQDeviceWatchOS.h */,
 				A909AD731BFE2853006D5EDD /* LQDeviceWatchOS.m */,
-				A99EB4EE192447FA0060E484 /* LQSession.h */,
-				A99EB4EF192447FA0060E484 /* LQSession.m */,
 				A99EB4E8192447FA0060E484 /* LQEvent.h */,
 				A99EB4E9192447FA0060E484 /* LQEvent.m */,
 				A99EB4EA192447FA0060E484 /* LQLiquidPackage.h */,
@@ -1150,7 +1144,6 @@
 				A92016D31BCF101600859450 /* LQUser.m in Sources */,
 				A92016D41BCF101600859450 /* LQDevice.m in Sources */,
 				A9F495851C036E2200B2D376 /* LQNetworkingURLSession.m in Sources */,
-				A92016D51BCF101600859450 /* LQSession.m in Sources */,
 				A92016D61BCF101600859450 /* LQEvent.m in Sources */,
 				A92016D71BCF101600859450 /* LQLiquidPackage.m in Sources */,
 				A92016D81BCF101600859450 /* LQTarget.m in Sources */,
@@ -1221,7 +1214,6 @@
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
-				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */,
