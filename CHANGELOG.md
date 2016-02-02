@@ -1,5 +1,10 @@
 # Liquid iOS SDK Change Log
 
+## 2.1.0-rc5: Sessions handled by Liquid backend
+
+* **[feature]** Remove session handling by the SDK. Sessions are now managed by Liquid servers. You can now define the maximum time between sessions in your App settings on Liquid Dashboard. This feature also improves better handling of events performed while the app is in background.
+* **[enhancement]** Stability improvements for in-app messages
+
 ## 2.1.0-rc4: Change API endpoint for in-app messages reports
 
 * **[enhancement]** Change API endpoint for in-app messages reports
