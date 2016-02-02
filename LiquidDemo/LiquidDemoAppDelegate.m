@@ -43,23 +43,19 @@
     }
 #endif
     [self.locationManager startUpdatingLocation];
+
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    if (UIApplicationStateBackground == application.applicationState) {
+        NSLog(@"Launched in background");
+    }
+
     return YES;
 }
-							
-- (void)applicationWillResignActive:(UIApplication *)application {}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {}
-
-- (void)applicationWillTerminate:(UIApplication *)application {}
 
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    //e.g: [[Liquid sharedInstance] setCurrentLocation:newLocation];
+    [[Liquid sharedInstance] setCurrentLocation:newLocation];
 }
 
 #pragma mark - Push Notifications < iOS 8
@@ -75,6 +71,13 @@
 
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
     NSLog(@"%@", [NSString stringWithFormat: @"Error obtaining push notification token: %@", err]);
+}
+
+#pragma mark - Background fetch
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    NSLog(@"Updated data in Background");
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
 @end
