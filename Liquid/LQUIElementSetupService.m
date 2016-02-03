@@ -21,7 +21,7 @@
 @property (nonatomic, assign) BOOL devModeEnabled;
 @property (nonatomic, strong) NSTimer *pollTimer;
 @property (nonatomic, strong) NSTimer *longPressTimer;
-@property (nonatomic, assign) BOOL touchingDown;
+@property (nonatomic, assign) UIButton *touchingDownButton;
 
 @end
 
@@ -31,7 +31,7 @@
 @synthesize devModeEnabled = _devModeEnabled;
 @synthesize pollTimer = _pollTimer;
 @synthesize longPressTimer = _longPressTimer;
-@synthesize touchingDown = _touchingDown;
+@synthesize touchingDownButton = _touchingDownButton;
 
 
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger {
@@ -39,7 +39,6 @@
     if (self) {
         _elementChanger = elementChanger;
         _devModeEnabled = NO;
-        _touchingDown = NO;
     }
     return self;
 }
@@ -87,7 +86,7 @@
     if (!self.devModeEnabled) {
         return;
     }
-    self.touchingDown = YES;
+    self.touchingDownButton = button;
     self.longPressTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                       target:self
                                                          selector:@selector(longPressCode:)
@@ -96,9 +95,9 @@
 }
 
 - (void)longPressCode:(NSTimer *)timer {
-    if (self.touchingDown) {
-        UIButton *button = timer.userInfo;
-        self.touchingDown = NO;
+    UIButton *button = self.touchingDownButton;
+    if (button && button == timer.userInfo) {
+        self.touchingDownButton = nil;
         [self presentTrackingAlertForView:button];
         LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService>Configuring button with title %@", button.titleLabel.text);
     }
@@ -108,7 +107,7 @@
     if (!self.devModeEnabled) {
         return;
     }
-    self.touchingDown = NO;
+    self.touchingDownButton = nil;
     [self.longPressTimer invalidate];
     self.longPressTimer = nil;
 }
