@@ -137,11 +137,9 @@
 }
 
 - (LQUIElement *)uiElementFor:(UIView *)view {
-    for (NSString *identifier in self.changedElements) { // TODO: get rid of this for
-        LQUIElement *uiElement = self.changedElements[identifier];
-        if ([uiElement matchesUIView:view]) {
-            return uiElement;
-        }
+    LQUIElement *element = [self.changedElements objectForKey:[view liquidIdentifier]];
+    if (element) {
+        return element;
     }
     return nil;
 }
