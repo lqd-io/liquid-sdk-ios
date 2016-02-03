@@ -13,6 +13,7 @@
 #import "LQDefaults.h"
 #import "LQUIElement.h"
 #import "LQWindow.h"
+#import "LQUIElementWelcomeViewControler.h"
 
 @interface LQUIElementSetupService()
 
@@ -53,6 +54,7 @@
                                                     selector:@selector(timerCode)
                                                     userInfo:nil
                                                      repeats:YES];
+    [self presentWelcomeScreen];
 }
 
 - (void)exitDevelopmentMode {
@@ -174,6 +176,13 @@
     } failHandler:^{
         [self showNetworkFailAlert];
     }];
+}
+
+#pragma mark - Welcome Screen
+
+- (void)presentWelcomeScreen {
+    LQUIElementWelcomeViewControler *welcomeViewController = [[LQUIElementWelcomeViewControler alloc] init];
+    [self presentViewControllerInTopMost:welcomeViewController];
 }
 
 #pragma mark - Helper methods
