@@ -12,9 +12,7 @@
 @interface LQUIElement : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, strong, readonly) NSString *identifier;
-@property (nonatomic, assign, readonly) BOOL active;
 @property (nonatomic, strong, readonly) NSString *eventName;
-@property (nonatomic, strong, readonly) NSDictionary *eventAttributes;
 @property (nonatomic, strong, readonly) NSDictionary *jsonDictionary;
 
 - (instancetype)initFromUIView:(id)view evetName:(NSString *)eventName; // TODO: change id to UIView *

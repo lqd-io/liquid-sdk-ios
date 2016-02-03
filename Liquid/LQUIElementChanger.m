@@ -57,7 +57,7 @@
 
 - (BOOL)applyChangesTo:(UIView *)view {
     LQUIElement *uiElement = [self uiElementFor:view];
-    if (!uiElement || ![view isChangeable] || ![uiElement active]) {
+    if (!uiElement || ![view isChangeable]) {
         return false;
     }
     if ([view isKindOfClass:[UIButton class]]) {
@@ -74,8 +74,8 @@
     if (![uiElement eventName]) {
         return;
     }
-    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger>Touched button %@ with identifier %@ to track event named %@ and attributes %@",
-          button.titleLabel.text, button.liquidIdentifier, uiElement.eventName, uiElement.eventAttributes);
+    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger>Touched button %@ with identifier %@ to track event named %@",
+          button.titleLabel.text, button.liquidIdentifier, uiElement.eventName);
 }
 
 #pragma mark - Request and Register UI Elements from/on server
@@ -139,7 +139,7 @@
 - (LQUIElement *)uiElementFor:(UIView *)view {
     for (NSString *identifier in self.changedElements) { // TODO: get rid of this for
         LQUIElement *uiElement = self.changedElements[identifier];
-        if ([uiElement matchesUIView:view] && uiElement.active) {
+        if ([uiElement matchesUIView:view]) {
             return uiElement;
         }
     }
