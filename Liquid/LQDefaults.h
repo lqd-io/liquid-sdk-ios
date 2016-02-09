@@ -19,7 +19,7 @@
 #define LQ_IOS TARGET_OS_IOS
 #define LQ_INAPP_MESSAGES_SUPPORT LQ_IOS
 
-#define kLQVersion @"2.1.0-rc5"
+#define kLQVersion @"2.1.0"
 
 #if LQ_WATCHOS
 #define kLQBundle @"io.lqd.watchos"
