@@ -488,6 +488,22 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", [_loadedLiquidPackage dictOfVariablesAndValues]);
 }
 
+#pragma mark - Handle Remote Notifications (Push Notifications)
+
+#if LQ_IOS
+- (BOOL)handleRemoteNotification:(NSDictionary *)userInfo forApplication:(UIApplication *)application {
+    NSString *deepLink = [userInfo objectForKey:@"lqd_deeplink"];
+    if (deepLink && application.applicationState == UIApplicationStateInactive) {
+        NSURL *url = [NSURL URLWithString:deepLink];
+        if ([application canOpenURL:url]) {
+            [application openURL:url];
+        }
+        LQLog(kLQLogLevelError, @"<Liquid/PushNotification> Could not follow an invalid URL.");
+    }
+    return NO;
+}
+#endif
+
 #pragma mark - Development functionalities
 
 - (void)sendVariable:(NSString *)variableName fallback:(id)fallbackValue liquidType:(NSString *)typeString {

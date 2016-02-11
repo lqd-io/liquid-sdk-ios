@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import <UIKit/UIColor.h>
+#import <UIKit/UIKit.h>
 #import "LQDefaults.h"
 
 @protocol LiquidDelegate <NSObject>
@@ -437,6 +437,23 @@ extern NSString * const LQDidIdentifyUser;
  */
 
 -(void)track:(NSString *)eventName attributes:(NSDictionary *)attributes;
+
+
+#if LQ_IOS
+/*!
+ @method
+ 
+ @abstract
+ Handles received remote notifications.
+ 
+ @discussion
+ This method should be called with a push noitification is received, to
+ allow Liquid to handle stuff like deep linking.
+ 
+ */
+
+- (BOOL)handleRemoteNotification:(NSDictionary *)userInfo forApplication:(UIApplication *)application;
+#endif
 
 
 /*!

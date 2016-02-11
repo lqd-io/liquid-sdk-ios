@@ -67,6 +67,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // Notify LiquidDemoViewController about a new Push Notification:
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Push Notification Received" object:userInfo];
+    [[Liquid sharedInstance] handleRemoteNotification:userInfo forApplication:application];
 }
 
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
