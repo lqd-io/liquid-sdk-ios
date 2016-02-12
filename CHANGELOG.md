@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.1.1: Better support for Deep Linking in Push Notifications
+
+* **[enhancement]** Add a method to automatically handle deep linking in push notifications: `handleRemoteNotification:forApplication:`, intended to be called when a push nofification is received by `AppDelegate`.
+
 ## 2.1.0: Stable new SDK release supporting Liquid 2.0
 * **[feature]** In-app messages. Notice that you will need to upgrade if you are still using 1.x.
 * **[feature]** Add support for Apple Watch.
