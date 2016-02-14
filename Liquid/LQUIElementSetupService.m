@@ -14,14 +14,21 @@
 #import "LQUIElement.h"
 #import "LQWindow.h"
 #import "LQUIElementWelcomeViewControler.h"
+#import "NSData+LQData.h"
+#import "SRWebSocket.h"
+#import "WebSocketRailsDispatcher.h"
+#import "WebSocketRailsChannel.h"
+
+#define kLQWebSocketServerrUrl @"ws://lqd.io/websocket"
 
 @interface LQUIElementSetupService()
 
 @property (nonatomic, strong) LQUIElementChanger *elementChanger;
 @property (nonatomic, assign) BOOL devModeEnabled;
-@property (nonatomic, strong) NSTimer *pollTimer;
 @property (nonatomic, strong) NSTimer *longPressTimer;
 @property (nonatomic, assign) UIButton *touchingDownButton;
+@property (nonatomic, strong) WebSocketRailsDispatcher *webSocketDispatcher;
+@property (nonatomic, strong) WebSocketRailsChannel *webSocketChannel;
 
 @end
 
@@ -29,7 +36,6 @@
 
 @synthesize elementChanger = _elementChanger;
 @synthesize devModeEnabled = _devModeEnabled;
-@synthesize pollTimer = _pollTimer;
 @synthesize longPressTimer = _longPressTimer;
 @synthesize touchingDownButton = _touchingDownButton;
 
@@ -45,27 +51,43 @@
 
 #pragma mark - Enable/disable Development Mode
 
-- (void)enterDevelopmentMode {
-    if (self.devModeEnabled) return;
-    self.devModeEnabled = YES;
-    self.pollTimer = [NSTimer scheduledTimerWithTimeInterval:2.0
-                                                      target:self
-                                                    selector:@selector(timerCode)
-                                                    userInfo:nil
-                                                     repeats:YES];
-    [self presentWelcomeScreen];
+- (void)enterDevelopmentModeWithToken:(NSString *)developmentToken {
+    if (self.devModeEnabled) {
+        return;
+    }
+    [self connectWebSocketToChannel:developmentToken];
+    [self.webSocketDispatcher bind:@"connection_opened" callback:^(id data) {
+        self.devModeEnabled = YES;
+        [self presentWelcomeScreen];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.webSocketChannel trigger:@"start_development" message:@""];
+        });
+    }];
+    [self.webSocketDispatcher connect];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (!self.devModeEnabled) {
+            [self showNetworkFailAlert];
+        }
+    });
 }
 
 - (void)exitDevelopmentMode {
+    [self.webSocketDispatcher disconnect];
+    self.webSocketChannel = nil;
     if (!self.devModeEnabled) return;
     self.devModeEnabled = NO;
-    [self.pollTimer invalidate];
-    self.pollTimer = nil;
 }
 
-- (void)timerCode {
-    [self.elementChanger requestUiElements];
+#pragma mark - Web Socket
+
+- (void)connectWebSocketToChannel:(NSString *)channelName {
+    if (self.webSocketDispatcher) {
+        [self.webSocketDispatcher disconnect];
+    }
+    self.webSocketDispatcher = [[WebSocketRailsDispatcher alloc] initWithUrl:[NSURL URLWithString:kLQWebSocketServerrUrl]];
+    self.webSocketChannel = [self.webSocketDispatcher subscribe:channelName];
 }
+
 
 #pragma mark - Change UIButton
 
@@ -122,31 +144,50 @@
         alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                     message:[NSString stringWithFormat:@"This %@ is being tracked, with event named '%@'", klass, element.eventName]
                                              preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking"
+                                                  style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
             [self unregisterUIElement:element];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Change Element" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self presentChangeTrackingEventNameForView:view currentElement:element];
         }]];
     } else {
         alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                     message:[NSString stringWithFormat:@"This %@ isn't being tracked.", klass]
                                              preferredStyle:UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self presentTrackingEventNameForView:view];
+            [self presentSetTrackingEventNameForView:view];
         }]];
     }
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewControllerInTopMost:alert];
 }
 
-- (void)presentTrackingEventNameForView:(UIView *)view {
+- (void)presentSetTrackingEventNameForView:(UIView *)view {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                                    message:@"Write down the name of the event"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = NSLocalizedString(@"e.g: Button Pressed", @"Event Name");
+        textField.placeholder = NSLocalizedString(@"e.g: Button Pressed", @"");
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self registerUIElement:[[LQUIElement alloc] initFromUIView:view evetName:alert.textFields.firstObject.text]];
+    }]];
+    [self presentViewControllerInTopMost:alert];
+}
+
+- (void)presentChangeTrackingEventNameForView:(UIView *)view currentElement:(LQUIElement *)element {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid"
+                                                                   message:@"Write down the name of the new event"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        NSString *currentEventName = [NSString stringWithFormat:@"Current: %@", element.eventName];
+        textField.placeholder = NSLocalizedString(currentEventName, @"");
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Change Event Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [self changeUIElement:[[LQUIElement alloc] initFromUIView:view evetName:alert.textFields.firstObject.text]];
     }]];
     [self presentViewControllerInTopMost:alert];
 }
@@ -162,20 +203,27 @@
 #pragma mark - Button actions
 
 - (void)registerUIElement:(LQUIElement *)element {
-    [self.elementChanger registerUIElement:element withSuccessHandler:^{
-        LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Registered a new UI Element: %@", element);
-    } failHandler:^{
-        [self showNetworkFailAlert];
-    }];
+    [self.elementChanger addUIElement:element];
+    NSString *message = [[NSString alloc] initWithData:[NSData toJSON:[element jsonDictionary]] encoding:NSUTF8StringEncoding];
+    [self.webSocketChannel trigger:@"add_element" message:message];
+    LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Registered a new UI Element: %@", element);
 }
 
 - (void)unregisterUIElement:(LQUIElement *)element {
-    [self.elementChanger unregisterUIElement:element withSuccessHandler:^{
-        LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Unregistered UI Element %@", element.identifier);
-    } failHandler:^{
-        [self showNetworkFailAlert];
-    }];
+    [self.elementChanger removeUIElement:element];
+    NSString *message = [[NSString alloc] initWithData:[NSData toJSON:[element jsonDictionary]] encoding:NSUTF8StringEncoding];
+    [self.webSocketChannel trigger:@"remove_element" message:message];
+    LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Unregistered UI Element %@", element.identifier);
 }
+
+- (void)changeUIElement:(LQUIElement *)element {
+    [self.elementChanger removeUIElement:element];
+    [self.elementChanger addUIElement:element];
+    NSString *message = [[NSString alloc] initWithData:[NSData toJSON:[element jsonDictionary]] encoding:NSUTF8StringEncoding];
+    [self.webSocketChannel trigger:@"change_element" message:message];
+    LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Changed UI Element %@", element.identifier);
+}
+
 
 #pragma mark - Welcome Screen
 

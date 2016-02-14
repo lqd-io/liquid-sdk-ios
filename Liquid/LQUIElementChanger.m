@@ -99,34 +99,18 @@
     }];
 }
 
-- (void)registerUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler {
-    [_networking sendData:[NSData toJSON:[element jsonDictionary]] toEndpoint:@"ui_elements/add" usingMethod:@"POST"
-     withParameters:[self requestParams] completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
-            if (queueStatus == LQQueueStatusOk) {
-                NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
-                [newElements setObject:element forKey:element.identifier];
-                self.changedElements = newElements;
-                [self logChangedElements];
-                dispatch_async(dispatch_get_main_queue(), successHandler);
-            } else {
-                dispatch_async(dispatch_get_main_queue(), failHandler);
-            }
-        }];
+- (void)addUIElement:(LQUIElement *)element {
+    NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
+    [newElements setObject:element forKey:element.identifier];
+    self.changedElements = newElements;
+    [self logChangedElements];
 }
 
-- (void)unregisterUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler {
-    [_networking sendData:[NSData toJSON:[element jsonDictionary]] toEndpoint:@"ui_elements/remove" usingMethod:@"POST"
-        withParameters:[self requestParams] completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
-            if (queueStatus == LQQueueStatusOk) {
-                NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
-                [newElements removeObjectForKey:element.identifier];
-                self.changedElements = newElements;
-                [self logChangedElements];
-                dispatch_async(dispatch_get_main_queue(), successHandler);
-            } else {
-                dispatch_async(dispatch_get_main_queue(), failHandler);
-            }
-        }];
+- (void)removeUIElement:(LQUIElement *)element {
+    NSMutableDictionary *newElements = [NSMutableDictionary dictionaryWithDictionary:self.changedElements];
+    [newElements removeObjectForKey:element.identifier];
+    self.changedElements = newElements;
+    [self logChangedElements];
 }
 
 #pragma mark - Helper methods

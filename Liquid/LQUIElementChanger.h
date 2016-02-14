@@ -19,8 +19,8 @@
 - (void)interceptUIElementsWithBlock:(void(^)(id view))interceptBlock; // TODO: FIX ID to UIView
 - (BOOL)applyChangesTo:(id)view; // TODO: FIX ID to UIView
 - (void)requestUiElements;
-- (void)registerUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler;
-- (void)unregisterUIElement:(LQUIElement *)element withSuccessHandler:(void(^)())successHandler failHandler:(void(^)())failHandler;
+- (void)addUIElement:(LQUIElement *)element;
+- (void)removeUIElement:(LQUIElement *)element;
 - (LQUIElement *)uiElementFor:(id)view; // TODO: FIX ID to UIView
 - (BOOL)viewIsTrackingEvent:(id)view; // TODO: FIX ID to UIView
 - (BOOL)archiveUIElements;

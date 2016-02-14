@@ -628,7 +628,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if ([urlComponents.host isEqualToString:@"edit"]) {
         for (NSURLQueryItem *item in urlComponents.queryItems) {
             if ([item.name isEqualToString:@"token"]) {
-                [self.uiElementSetupService enterDevelopmentMode];
+                [self.uiElementSetupService enterDevelopmentModeWithToken:item.value];
                 self.uiElementChanger.developerToken = item.value;
                 return YES;
             }

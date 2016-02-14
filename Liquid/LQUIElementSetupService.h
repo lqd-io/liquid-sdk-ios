@@ -11,7 +11,7 @@
 
 @interface LQUIElementSetupService : NSObject
 
-- (void)enterDevelopmentMode;
+- (void)enterDevelopmentModeWithToken:(NSString *)developmentToken;
 - (void)exitDevelopmentMode;
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger;
 - (BOOL)applySetupMenuTargetsTo:(id)view;
