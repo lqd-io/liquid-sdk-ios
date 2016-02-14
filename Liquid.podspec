@@ -15,7 +15,8 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.preserve_paths = %w(Liquid.xcodeproj)
 
-  s.ios.frameworks = %w(Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
+  s.ios.frameworks = %w(CFNetwork Security Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
+  s.ios.libraries = %w(icucore)
   s.watchos.frameworks = []
 
   s.xcconfig = {
