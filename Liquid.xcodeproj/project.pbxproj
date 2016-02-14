@@ -126,8 +126,6 @@
 		A9D47A6D1C70D94B00726B1B /* LQUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A651C70D94B00726B1B /* LQUserDefaults.m */; };
 		A9D47A6F1C70DB5D00726B1B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A6E1C70DB5D00726B1B /* Security.framework */; };
 		A9D47A711C70DB6400726B1B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A701C70DB6300726B1B /* CFNetwork.framework */; };
-		A9D47A921C70DC4D00726B1B /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A8C1C70DC4D00726B1B /* base64.c */; };
-		A9D47A931C70DC4D00726B1B /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A8F1C70DC4D00726B1B /* NSData+SRB64Additions.m */; };
 		A9D47A941C70DC4D00726B1B /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A911C70DC4D00726B1B /* SRWebSocket.m */; };
 		A9D47AA21C70DCFE00726B1B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A971C70DCFE00726B1B /* README.md */; };
 		A9D47AA31C70DCFE00726B1B /* WebSocketRailsChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9A1C70DCFE00726B1B /* WebSocketRailsChannel.m */; };
@@ -410,10 +408,6 @@
 		A9D47A741C70DBA700726B1B /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		A9D47A891C70DC4D00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A9D47A8A1C70DC4D00726B1B /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
-		A9D47A8C1C70DC4D00726B1B /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
-		A9D47A8D1C70DC4D00726B1B /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
-		A9D47A8E1C70DC4D00726B1B /* NSData+SRB64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SRB64Additions.h"; sourceTree = "<group>"; };
-		A9D47A8F1C70DC4D00726B1B /* NSData+SRB64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SRB64Additions.m"; sourceTree = "<group>"; };
 		A9D47A901C70DC4D00726B1B /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		A9D47A911C70DC4D00726B1B /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
 		A9D47A961C70DCFE00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -789,10 +783,6 @@
 		A9D47A8B1C70DC4D00726B1B /* SocketRocket */ = {
 			isa = PBXGroup;
 			children = (
-				A9D47A8C1C70DC4D00726B1B /* base64.c */,
-				A9D47A8D1C70DC4D00726B1B /* base64.h */,
-				A9D47A8E1C70DC4D00726B1B /* NSData+SRB64Additions.h */,
-				A9D47A8F1C70DC4D00726B1B /* NSData+SRB64Additions.m */,
 				A9D47A901C70DC4D00726B1B /* SRWebSocket.h */,
 				A9D47A911C70DC4D00726B1B /* SRWebSocket.m */,
 			);
@@ -1446,7 +1436,6 @@
 				A909AD771BFE285B006D5EDD /* LQDeviceIOS.m in Sources */,
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
-				A9D47A921C70DC4D00726B1B /* base64.c in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
 				A9D47AA21C70DCFE00726B1B /* README.md in Sources */,
 				A9D47AA31C70DCFE00726B1B /* WebSocketRailsChannel.m in Sources */,
@@ -1460,7 +1449,6 @@
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
 				A9EA29AD1BF5210A001BE1B7 /* LQInAppMessage.m in Sources */,
 				A9A602D41C209BAD001EE078 /* UIButton+LQChangeable.m in Sources */,
-				A9D47A931C70DC4D00726B1B /* NSData+SRB64Additions.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A9EA29C51BF52157001BE1B7 /* LQSlideUpView.m in Sources */,
 				A9D47A941C70DC4D00726B1B /* SRWebSocket.m in Sources */,
