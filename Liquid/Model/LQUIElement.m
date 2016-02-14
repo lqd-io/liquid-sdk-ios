@@ -74,8 +74,13 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:_identifier forKey:@"attributes"];
-    [aCoder encodeObject:_eventName forKey:@"event_name"];
+    [aCoder encodeObject:self.identifier forKey:@"identifier"];
+    [aCoder encodeObject:self.eventName forKey:@"event_name"];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 @end
