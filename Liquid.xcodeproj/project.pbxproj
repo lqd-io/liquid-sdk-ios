@@ -127,7 +127,6 @@
 		A9D47A6F1C70DB5D00726B1B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A6E1C70DB5D00726B1B /* Security.framework */; };
 		A9D47A711C70DB6400726B1B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A701C70DB6300726B1B /* CFNetwork.framework */; };
 		A9D47A941C70DC4D00726B1B /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A911C70DC4D00726B1B /* SRWebSocket.m */; };
-		A9D47AA21C70DCFE00726B1B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A971C70DCFE00726B1B /* README.md */; };
 		A9D47AA31C70DCFE00726B1B /* WebSocketRailsChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9A1C70DCFE00726B1B /* WebSocketRailsChannel.m */; };
 		A9D47AA41C70DCFE00726B1B /* WebSocketRailsConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9C1C70DCFE00726B1B /* WebSocketRailsConnection.m */; };
 		A9D47AA51C70DCFE00726B1B /* WebSocketRailsDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9E1C70DCFE00726B1B /* WebSocketRailsDispatcher.m */; };
@@ -407,11 +406,9 @@
 		A9D47A721C70DB7700726B1B /* libicucore.A.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.A.tbd; path = usr/lib/libicucore.A.tbd; sourceTree = SDKROOT; };
 		A9D47A741C70DBA700726B1B /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		A9D47A891C70DC4D00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A9D47A8A1C70DC4D00726B1B /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
 		A9D47A901C70DC4D00726B1B /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		A9D47A911C70DC4D00726B1B /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
 		A9D47A961C70DCFE00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A9D47A971C70DCFE00726B1B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A9D47A991C70DCFE00726B1B /* WebSocketRailsChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketRailsChannel.h; sourceTree = "<group>"; };
 		A9D47A9A1C70DCFE00726B1B /* WebSocketRailsChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketRailsChannel.m; sourceTree = "<group>"; };
 		A9D47A9B1C70DCFE00726B1B /* WebSocketRailsConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketRailsConnection.h; sourceTree = "<group>"; };
@@ -773,7 +770,6 @@
 			isa = PBXGroup;
 			children = (
 				A9D47A891C70DC4D00726B1B /* LICENSE */,
-				A9D47A8A1C70DC4D00726B1B /* README.rst */,
 				A9D47A8B1C70DC4D00726B1B /* SocketRocket */,
 			);
 			name = SocketRocket;
@@ -793,7 +789,6 @@
 			isa = PBXGroup;
 			children = (
 				A9D47A961C70DCFE00726B1B /* LICENSE */,
-				A9D47A971C70DCFE00726B1B /* README.md */,
 				A9D47A981C70DCFE00726B1B /* WebSocketRails-iOS */,
 			);
 			name = WebSocketRails;
@@ -1437,7 +1432,6 @@
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
-				A9D47AA21C70DCFE00726B1B /* README.md in Sources */,
 				A9D47AA31C70DCFE00726B1B /* WebSocketRailsChannel.m in Sources */,
 				A9D47A681C70D94B00726B1B /* LQKeychain.m in Sources */,
 				A9EA29C41BF52157001BE1B7 /* LQSlideUpMessageViewController.m in Sources */,
