@@ -14,6 +14,6 @@
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken;
 - (void)exitDevelopmentMode;
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger;
-- (BOOL)applySetupMenuTargetsTo:(id)view;
+- (BOOL)applySetupMenuTargetsTo:(UIView *)view;
 
 @end

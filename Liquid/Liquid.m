@@ -15,6 +15,8 @@
 #import "Liquid+iOS.h"
 #import "LQDeviceIOS.h"
 #import "LQInAppMessages.h"
+#import "LQUIElementChanger.h"
+#import "LQUIElementSetupService.h"
 #endif
 #import "LQEvent.h"
 #import "LQSession.h"
@@ -33,8 +35,6 @@
 #import "LQNetworkingFactory.h"
 #import "LQStorage.h"
 #import "LQEventTracker.h"
-#import "LQUIElementChanger.h"
-#import "LQUIElementSetupService.h"
 
 #if !__has_feature(objc_arc)
 #  error Compile me with ARC, please!

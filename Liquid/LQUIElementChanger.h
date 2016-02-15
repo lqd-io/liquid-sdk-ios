@@ -16,15 +16,14 @@
 @property (atomic, strong) NSString *developerToken;
 
 - (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken;
-- (void)interceptUIElementsWithBlock:(void(^)(id view))interceptBlock; // TODO: FIX ID to UIView
-- (BOOL)applyChangesTo:(id)view; // TODO: FIX ID to UIView
+- (void)interceptUIElementsWithBlock:(void(^)(UIView *view))interceptBlock;
+- (BOOL)applyChangesTo:(UIView *)view;
 - (void)requestUiElements;
 - (void)addUIElement:(LQUIElement *)element;
 - (void)removeUIElement:(LQUIElement *)element;
-- (LQUIElement *)uiElementFor:(id)view; // TODO: FIX ID to UIView
-- (BOOL)viewIsTrackingEvent:(id)view; // TODO: FIX ID to UIView
+- (LQUIElement *)uiElementFor:(UIView *)view;
+- (BOOL)viewIsTrackingEvent:(UIView *)view;
 - (BOOL)archiveUIElements;
 - (void)unarchiveUIElements;
-+ (NSDictionary<NSString *, LQUIElement *> *)unarchiveHttpQueueForToken:(NSString *)apiToken;
 
 @end
