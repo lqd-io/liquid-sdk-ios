@@ -72,6 +72,9 @@
 }
 
 - (void)exitDevelopmentMode {
+    if (!self.devModeEnabled) {
+        return;
+    }
     [self.webSocketDispatcher disconnect];
     self.webSocketChannel = nil;
     if (!self.devModeEnabled) return;

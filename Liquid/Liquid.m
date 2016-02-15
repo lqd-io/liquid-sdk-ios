@@ -267,7 +267,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [self requestNewLiquidPackageSynced];
     });
 #if LQ_IOS
-    [self.uiElementSetupService exitDevelopmentMode]; // TODO: do this? And: only do this if #UIELEMENT_SUPPORTED
+    [self.uiElementSetupService exitDevelopmentMode];
 #endif
 }
 
