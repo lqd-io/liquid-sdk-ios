@@ -49,6 +49,7 @@
 		A924FCA41C4461E600ECC953 /* LQUIElementSetupService.m in Sources */ = {isa = PBXBuildFile; fileRef = A924FCA31C4461E600ECC953 /* LQUIElementSetupService.m */; };
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
+		A930CF7B1C715A71002DA85A /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = A930CF791C715A71002DA85A /* Aspects.m */; };
 		A9313D5C1C612C42009A5279 /* LQUIElementWelcomeViewControler.m in Sources */ = {isa = PBXBuildFile; fileRef = A9313D5B1C612C42009A5279 /* LQUIElementWelcomeViewControler.m */; };
 		A9313D5F1C624B80009A5279 /* LQUIElementWelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9313D5E1C624B80009A5279 /* LQUIElementWelcomeView.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
@@ -62,7 +63,6 @@
 		A95EC5A91B0DFE2000407D03 /* LQKeychainSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A95EC5A81B0DFE2000407D03 /* LQKeychainSpec.m */; };
 		A96B47C11C199E1600A6DF8D /* LQUIElement.m in Sources */ = {isa = PBXBuildFile; fileRef = A96B47C01C199E1600A6DF8D /* LQUIElement.m */; };
 		A96B47C71C19CD9400A6DF8D /* UIView+LQChangeable.m in Sources */ = {isa = PBXBuildFile; fileRef = A96B47C61C19CD9400A6DF8D /* UIView+LQChangeable.m */; };
-		A96B47CB1C19D3D700A6DF8D /* libAspects.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96B47CA1C19D3D700A6DF8D /* libAspects.a */; };
 		A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; };
 		A96D87321BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; };
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
@@ -294,6 +294,9 @@
 		A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidIntegrationSpec.m; path = Integration/LiquidIntegrationSpec.m; sourceTree = "<group>"; };
 		A9253F55193F5D8400B70A43 /* LiquidPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidPrivates.h; sourceTree = "<group>"; };
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
+		A930CF781C715A71002DA85A /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
+		A930CF791C715A71002DA85A /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
+		A930CF7A1C715A71002DA85A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A9313D5A1C612C42009A5279 /* LQUIElementWelcomeViewControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQUIElementWelcomeViewControler.h; path = ViewControllers/LQUIElementWelcomeViewControler.h; sourceTree = "<group>"; };
 		A9313D5B1C612C42009A5279 /* LQUIElementWelcomeViewControler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQUIElementWelcomeViewControler.m; path = ViewControllers/LQUIElementWelcomeViewControler.m; sourceTree = "<group>"; };
 		A9313D5D1C624B80009A5279 /* LQUIElementWelcomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQUIElementWelcomeView.h; path = Views/LQUIElementWelcomeView.h; sourceTree = "<group>"; };
@@ -490,7 +493,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A96B47CB1C19D3D700A6DF8D /* libAspects.a in Frameworks */,
 				A98CF0371949F795003DF949 /* libLiquid.a in Frameworks */,
 				A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */,
 				A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */,
@@ -614,6 +616,17 @@
 				A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		A930CF771C715A71002DA85A /* Aspects */ = {
+			isa = PBXGroup;
+			children = (
+				A930CF781C715A71002DA85A /* Aspects.h */,
+				A930CF791C715A71002DA85A /* Aspects.m */,
+				A930CF7A1C715A71002DA85A /* LICENSE */,
+			);
+			name = Aspects;
+			path = Lib/Aspects;
 			sourceTree = "<group>";
 		};
 		A949FB571BCE75ED00F7C48E /* LiquidWatchDemo */ = {
@@ -875,6 +888,7 @@
 		A9EA29D11BF52302001BE1B7 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				A930CF771C715A71002DA85A /* Aspects */,
 				A9D47A951C70DCFE00726B1B /* WebSocketRails */,
 				A9D47A881C70DC4D00726B1B /* SocketRocket */,
 				A9D47A4E1C70D93900726B1B /* Liquid */,
@@ -1461,6 +1475,7 @@
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
+				A930CF7B1C715A71002DA85A /* Aspects.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A924FCA41C4461E600ECC953 /* LQUIElementSetupService.m in Sources */,
 				A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */,
