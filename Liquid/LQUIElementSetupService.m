@@ -8,16 +8,16 @@
 
 #import "LQUIElementSetupService.h"
 #import <objc/runtime.h>
-#import "Aspects.h"
+#import "LQAspects.h"
 #import <UIKit/UIKit.h>
 #import "LQDefaults.h"
 #import "LQUIElement.h"
 #import "LQWindow.h"
 #import "LQUIElementWelcomeViewControler.h"
 #import "NSData+LQData.h"
-#import "SRWebSocket.h"
-#import "WebSocketRailsDispatcher.h"
-#import "WebSocketRailsChannel.h"
+#import "LQSRWebSocket.h"
+#import "LQWebSocketRailsDispatcher.h"
+#import "LQWebSocketRailsChannel.h"
 
 #define kLQWebSocketServerrUrl @"ws://lqd.io/websocket"
 

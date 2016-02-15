@@ -9,11 +9,11 @@
 #pragma once
 
 #import <Foundation/Foundation.h>
-#import "WebSocketRailsEvent.h"
-#import "WebSocketRailsChannel.h"
-#import "WebSocketRailsTypes.h"
+#import "LQWebSocketRailsEvent.h"
+#import "LQWebSocketRailsChannel.h"
+#import "LQWebSocketRailsTypes.h"
 
-#define kPingPongFailureNotification @"com.patternoia.WebSocketRails.kPingPongFailureNotification"
+#define kPingPongFailureNotification @"com.onliquid.WebSocketRails.kPingPongFailureNotification"
 
 @class WebSocketRailsChannel;
 

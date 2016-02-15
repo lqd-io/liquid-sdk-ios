@@ -9,9 +9,9 @@
 #pragma once
 
 #import <Foundation/Foundation.h>
-#import "WebSocketRailsEvent.h"
-#import "WebSocketRailsDispatcher.h"
-#import "WebSocketRailsTypes.h"
+#import "LQWebSocketRailsEvent.h"
+#import "LQWebSocketRailsDispatcher.h"
+#import "LQWebSocketRailsTypes.h"
 
 @class WebSocketRailsDispatcher;
 

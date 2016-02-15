@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WebSocketRailsDispatcher.h"
-#import "WebSocketRailsEvent.h"
+#import "LQWebSocketRailsDispatcher.h"
+#import "LQWebSocketRailsEvent.h"
 
 @interface WebSocketRailsConnection : NSObject
 

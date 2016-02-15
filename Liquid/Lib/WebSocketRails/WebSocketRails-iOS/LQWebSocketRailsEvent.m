@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Evgeny Lavrik. All rights reserved.
 //
 
-#import "WebSocketRailsEvent.h"
+#import "LQWebSocketRailsEvent.h"
 
 @interface WebSocketRailsEvent()
 

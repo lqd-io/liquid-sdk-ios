@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Evgeny Lavrik. All rights reserved.
 //
 
-#import "WebSocketRailsConnection.h"
-#import "SRWebSocket.h"
+#import "LQWebSocketRailsConnection.h"
+#import "LQSRWebSocket.h"
 
 @interface WebSocketRailsConnection() <SRWebSocketDelegate>
 

@@ -9,7 +9,7 @@
 #import "LQDefaults.h"
 #import "LQUIElementChanger.h"
 #import <objc/runtime.h>
-#import "Aspects.h"
+#import "LQAspects.h"
 #import <UIKit/UIKit.h>
 #import "UIView+LQChangeable.h"
 #import "NSData+LQData.h"

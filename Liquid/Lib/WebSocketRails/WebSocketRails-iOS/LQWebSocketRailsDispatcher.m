@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Evgeny Lavrik. All rights reserved.
 //
 
-#import "WebSocketRailsDispatcher.h"
-#import "WebSocketRailsConnection.h"
+#import "LQWebSocketRailsDispatcher.h"
+#import "LQWebSocketRailsConnection.h"
 
 @interface WebSocketRailsDispatcher()
 

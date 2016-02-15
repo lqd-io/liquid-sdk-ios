@@ -49,7 +49,7 @@
 		A924FCA41C4461E600ECC953 /* LQUIElementSetupService.m in Sources */ = {isa = PBXBuildFile; fileRef = A924FCA31C4461E600ECC953 /* LQUIElementSetupService.m */; };
 		A9253F53193F5D4100B70A43 /* LiquidIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */; };
 		A92A75EF193E2C040013F66C /* LQDataPointSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A92A75EE193E2C040013F66C /* LQDataPointSpec.m */; };
-		A930CF7B1C715A71002DA85A /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = A930CF791C715A71002DA85A /* Aspects.m */; };
+		A930CF7B1C715A71002DA85A /* LQAspects.m in Sources */ = {isa = PBXBuildFile; fileRef = A930CF791C715A71002DA85A /* LQAspects.m */; };
 		A9313D5C1C612C42009A5279 /* LQUIElementWelcomeViewControler.m in Sources */ = {isa = PBXBuildFile; fileRef = A9313D5B1C612C42009A5279 /* LQUIElementWelcomeViewControler.m */; };
 		A9313D5F1C624B80009A5279 /* LQUIElementWelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9313D5E1C624B80009A5279 /* LQUIElementWelcomeView.m */; };
 		A93AF9D019316FCA0035E811 /* LQEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9CF19316FCA0035E811 /* LQEntity.m */; };
@@ -126,11 +126,11 @@
 		A9D47A6D1C70D94B00726B1B /* LQUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A651C70D94B00726B1B /* LQUserDefaults.m */; };
 		A9D47A6F1C70DB5D00726B1B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A6E1C70DB5D00726B1B /* Security.framework */; };
 		A9D47A711C70DB6400726B1B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A701C70DB6300726B1B /* CFNetwork.framework */; };
-		A9D47A941C70DC4D00726B1B /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A911C70DC4D00726B1B /* SRWebSocket.m */; };
-		A9D47AA31C70DCFE00726B1B /* WebSocketRailsChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9A1C70DCFE00726B1B /* WebSocketRailsChannel.m */; };
-		A9D47AA41C70DCFE00726B1B /* WebSocketRailsConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9C1C70DCFE00726B1B /* WebSocketRailsConnection.m */; };
-		A9D47AA51C70DCFE00726B1B /* WebSocketRailsDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9E1C70DCFE00726B1B /* WebSocketRailsDispatcher.m */; };
-		A9D47AA61C70DCFE00726B1B /* WebSocketRailsEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47AA01C70DCFE00726B1B /* WebSocketRailsEvent.m */; };
+		A9D47A941C70DC4D00726B1B /* LQSRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A911C70DC4D00726B1B /* LQSRWebSocket.m */; };
+		A9D47AA31C70DCFE00726B1B /* LQWebSocketRailsChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9A1C70DCFE00726B1B /* LQWebSocketRailsChannel.m */; };
+		A9D47AA41C70DCFE00726B1B /* LQWebSocketRailsConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9C1C70DCFE00726B1B /* LQWebSocketRailsConnection.m */; };
+		A9D47AA51C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9E1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m */; };
+		A9D47AA61C70DCFE00726B1B /* LQWebSocketRailsEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47AA01C70DCFE00726B1B /* LQWebSocketRailsEvent.m */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A9E98054193E257C0055D1E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -294,8 +294,8 @@
 		A9253F52193F5D4100B70A43 /* LiquidIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiquidIntegrationSpec.m; path = Integration/LiquidIntegrationSpec.m; sourceTree = "<group>"; };
 		A9253F55193F5D8400B70A43 /* LiquidPrivates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiquidPrivates.h; sourceTree = "<group>"; };
 		A92A75EE193E2C040013F66C /* LQDataPointSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQDataPointSpec.m; path = Model/LQDataPointSpec.m; sourceTree = "<group>"; };
-		A930CF781C715A71002DA85A /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
-		A930CF791C715A71002DA85A /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
+		A930CF781C715A71002DA85A /* LQAspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQAspects.h; sourceTree = "<group>"; };
+		A930CF791C715A71002DA85A /* LQAspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQAspects.m; sourceTree = "<group>"; };
 		A930CF7A1C715A71002DA85A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A9313D5A1C612C42009A5279 /* LQUIElementWelcomeViewControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LQUIElementWelcomeViewControler.h; path = ViewControllers/LQUIElementWelcomeViewControler.h; sourceTree = "<group>"; };
 		A9313D5B1C612C42009A5279 /* LQUIElementWelcomeViewControler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQUIElementWelcomeViewControler.m; path = ViewControllers/LQUIElementWelcomeViewControler.m; sourceTree = "<group>"; };
@@ -409,18 +409,18 @@
 		A9D47A721C70DB7700726B1B /* libicucore.A.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.A.tbd; path = usr/lib/libicucore.A.tbd; sourceTree = SDKROOT; };
 		A9D47A741C70DBA700726B1B /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		A9D47A891C70DC4D00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A9D47A901C70DC4D00726B1B /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
-		A9D47A911C70DC4D00726B1B /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
+		A9D47A901C70DC4D00726B1B /* LQSRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSRWebSocket.h; sourceTree = "<group>"; };
+		A9D47A911C70DC4D00726B1B /* LQSRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSRWebSocket.m; sourceTree = "<group>"; };
 		A9D47A961C70DCFE00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A9D47A991C70DCFE00726B1B /* WebSocketRailsChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketRailsChannel.h; sourceTree = "<group>"; };
-		A9D47A9A1C70DCFE00726B1B /* WebSocketRailsChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketRailsChannel.m; sourceTree = "<group>"; };
-		A9D47A9B1C70DCFE00726B1B /* WebSocketRailsConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketRailsConnection.h; sourceTree = "<group>"; };
-		A9D47A9C1C70DCFE00726B1B /* WebSocketRailsConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketRailsConnection.m; sourceTree = "<group>"; };
-		A9D47A9D1C70DCFE00726B1B /* WebSocketRailsDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketRailsDispatcher.h; sourceTree = "<group>"; };
-		A9D47A9E1C70DCFE00726B1B /* WebSocketRailsDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketRailsDispatcher.m; sourceTree = "<group>"; };
-		A9D47A9F1C70DCFE00726B1B /* WebSocketRailsEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketRailsEvent.h; sourceTree = "<group>"; };
-		A9D47AA01C70DCFE00726B1B /* WebSocketRailsEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketRailsEvent.m; sourceTree = "<group>"; };
-		A9D47AA11C70DCFE00726B1B /* WebSocketRailsTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketRailsTypes.h; sourceTree = "<group>"; };
+		A9D47A991C70DCFE00726B1B /* LQWebSocketRailsChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsChannel.h; sourceTree = "<group>"; };
+		A9D47A9A1C70DCFE00726B1B /* LQWebSocketRailsChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsChannel.m; sourceTree = "<group>"; };
+		A9D47A9B1C70DCFE00726B1B /* LQWebSocketRailsConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsConnection.h; sourceTree = "<group>"; };
+		A9D47A9C1C70DCFE00726B1B /* LQWebSocketRailsConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsConnection.m; sourceTree = "<group>"; };
+		A9D47A9D1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsDispatcher.h; sourceTree = "<group>"; };
+		A9D47A9E1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsDispatcher.m; sourceTree = "<group>"; };
+		A9D47A9F1C70DCFE00726B1B /* LQWebSocketRailsEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsEvent.h; sourceTree = "<group>"; };
+		A9D47AA01C70DCFE00726B1B /* LQWebSocketRailsEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsEvent.m; sourceTree = "<group>"; };
+		A9D47AA11C70DCFE00726B1B /* LQWebSocketRailsTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsTypes.h; sourceTree = "<group>"; };
 		A9E98050193E257C0055D1E7 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E98051193E257C0055D1E7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidTests-Info.plist"; sourceTree = "<group>"; };
@@ -621,8 +621,8 @@
 		A930CF771C715A71002DA85A /* Aspects */ = {
 			isa = PBXGroup;
 			children = (
-				A930CF781C715A71002DA85A /* Aspects.h */,
-				A930CF791C715A71002DA85A /* Aspects.m */,
+				A930CF781C715A71002DA85A /* LQAspects.h */,
+				A930CF791C715A71002DA85A /* LQAspects.m */,
 				A930CF7A1C715A71002DA85A /* LICENSE */,
 			);
 			name = Aspects;
@@ -792,8 +792,8 @@
 		A9D47A8B1C70DC4D00726B1B /* SocketRocket */ = {
 			isa = PBXGroup;
 			children = (
-				A9D47A901C70DC4D00726B1B /* SRWebSocket.h */,
-				A9D47A911C70DC4D00726B1B /* SRWebSocket.m */,
+				A9D47A901C70DC4D00726B1B /* LQSRWebSocket.h */,
+				A9D47A911C70DC4D00726B1B /* LQSRWebSocket.m */,
 			);
 			path = SocketRocket;
 			sourceTree = "<group>";
@@ -811,15 +811,15 @@
 		A9D47A981C70DCFE00726B1B /* WebSocketRails-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				A9D47A991C70DCFE00726B1B /* WebSocketRailsChannel.h */,
-				A9D47A9A1C70DCFE00726B1B /* WebSocketRailsChannel.m */,
-				A9D47A9B1C70DCFE00726B1B /* WebSocketRailsConnection.h */,
-				A9D47A9C1C70DCFE00726B1B /* WebSocketRailsConnection.m */,
-				A9D47A9D1C70DCFE00726B1B /* WebSocketRailsDispatcher.h */,
-				A9D47A9E1C70DCFE00726B1B /* WebSocketRailsDispatcher.m */,
-				A9D47A9F1C70DCFE00726B1B /* WebSocketRailsEvent.h */,
-				A9D47AA01C70DCFE00726B1B /* WebSocketRailsEvent.m */,
-				A9D47AA11C70DCFE00726B1B /* WebSocketRailsTypes.h */,
+				A9D47A991C70DCFE00726B1B /* LQWebSocketRailsChannel.h */,
+				A9D47A9A1C70DCFE00726B1B /* LQWebSocketRailsChannel.m */,
+				A9D47A9B1C70DCFE00726B1B /* LQWebSocketRailsConnection.h */,
+				A9D47A9C1C70DCFE00726B1B /* LQWebSocketRailsConnection.m */,
+				A9D47A9D1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.h */,
+				A9D47A9E1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m */,
+				A9D47A9F1C70DCFE00726B1B /* LQWebSocketRailsEvent.h */,
+				A9D47AA01C70DCFE00726B1B /* LQWebSocketRailsEvent.m */,
+				A9D47AA11C70DCFE00726B1B /* LQWebSocketRailsTypes.h */,
 			);
 			path = "WebSocketRails-iOS";
 			sourceTree = "<group>";
@@ -1446,12 +1446,12 @@
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
-				A9D47AA31C70DCFE00726B1B /* WebSocketRailsChannel.m in Sources */,
+				A9D47AA31C70DCFE00726B1B /* LQWebSocketRailsChannel.m in Sources */,
 				A9D47A681C70D94B00726B1B /* LQKeychain.m in Sources */,
 				A9EA29C41BF52157001BE1B7 /* LQSlideUpMessageViewController.m in Sources */,
 				A9D2F1051C218539007A4DD9 /* LQUIElementChanger.m in Sources */,
 				A9313D5C1C612C42009A5279 /* LQUIElementWelcomeViewControler.m in Sources */,
-				A9D47AA41C70DCFE00726B1B /* WebSocketRailsConnection.m in Sources */,
+				A9D47AA41C70DCFE00726B1B /* LQWebSocketRailsConnection.m in Sources */,
 				A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */,
 				A9F495841C036E2200B2D376 /* LQNetworkingURLSession.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
@@ -1459,7 +1459,7 @@
 				A9A602D41C209BAD001EE078 /* UIButton+LQChangeable.m in Sources */,
 				A9BA7D2A19AA698700E1F0F2 /* LQDate.m in Sources */,
 				A9EA29C51BF52157001BE1B7 /* LQSlideUpView.m in Sources */,
-				A9D47A941C70DC4D00726B1B /* SRWebSocket.m in Sources */,
+				A9D47A941C70DC4D00726B1B /* LQSRWebSocket.m in Sources */,
 				A9313D5F1C624B80009A5279 /* LQUIElementWelcomeView.m in Sources */,
 				A9D47A6C1C70D94B00726B1B /* LQUserDefaults.m in Sources */,
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
@@ -1470,18 +1470,18 @@
 				A9EA29C31BF52157001BE1B7 /* LQModalView.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */,
-				A9D47AA51C70DCFE00726B1B /* WebSocketRailsDispatcher.m in Sources */,
+				A9D47AA51C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m in Sources */,
 				A96B47C71C19CD9400A6DF8D /* UIView+LQChangeable.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
-				A930CF7B1C715A71002DA85A /* Aspects.m in Sources */,
+				A930CF7B1C715A71002DA85A /* LQAspects.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A924FCA41C4461E600ECC953 /* LQUIElementSetupService.m in Sources */,
 				A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */,
 				A9EA29C21BF52157001BE1B7 /* LQModalMessageViewController.m in Sources */,
 				A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */,
-				A9D47AA61C70DCFE00726B1B /* WebSocketRailsEvent.m in Sources */,
+				A9D47AA61C70DCFE00726B1B /* LQWebSocketRailsEvent.m in Sources */,
 				A9EA29C11BF52157001BE1B7 /* LQCaret.m in Sources */,
 				A9EA29A61BF520FD001BE1B7 /* LQCallToAction.m in Sources */,
 				A9D47A661C70D94B00726B1B /* LQHelpers.m in Sources */,

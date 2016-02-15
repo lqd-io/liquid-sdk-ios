@@ -5,7 +5,7 @@
 //  Copyright (c) 2014 Peter Steinberger. Licensed under the MIT license.
 //
 
-#import "Aspects.h"
+#import "LQAspects.h"
 #import <libkern/OSAtomic.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
