@@ -42,7 +42,7 @@
 }
 
 - (void)interceptUIElementsWithBlock:(void(^)(UIView *view))interceptBlock {
-    static dispatch_once_t onceToken; // TODO: probably get rid of this
+    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [UIControl aspect_hookSelector:@selector(didMoveToWindow) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo) {
             id view = [aspectInfo instance];
