@@ -11,7 +11,8 @@
 #if LQ_WATCHOS
 #import "Liquid+watchOS.h"
 #import "LQDeviceWatchOS.h"
-#else
+#endif
+#if LQ_IOS
 #import "Liquid+iOS.h"
 #import "LQDeviceIOS.h"
 #import "LQInAppMessages.h"
