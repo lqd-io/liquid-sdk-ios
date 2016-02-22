@@ -16,7 +16,7 @@
 #import "LQUIElementWelcomeViewControler.h"
 #import "NSData+LQData.h"
 
-#define kLQWebSocketServerrUrl @"wss://scable.onliquid.com/cable/"
+#define kLQWebSocketServerrUrl @"wss://cable.onliquid.com/"
 
 @interface LQUIElementSetupService()
 
@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSTimer *longPressTimer;
 @property (nonatomic, assign) UIButton *touchingDownButton;
 @property (nonatomic, strong) SRWebSocket *webSocket;
+@property (nonatomic, strong) NSString *developerToken;
 
 @end
 
@@ -35,6 +36,7 @@
 @synthesize longPressTimer = _longPressTimer;
 @synthesize touchingDownButton = _touchingDownButton;
 @synthesize webSocket = _webSocket;
+@synthesize developerToken = _developerToken;
 
 #pragma mark - Initializers
 
@@ -62,6 +64,7 @@
         return;
     }
     LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Trying to enter development mode...");
+    self.developerToken = developmentToken;
     [self.webSocket open];
 }
 
@@ -245,11 +248,7 @@
 }
 
 - (NSString *)identifier {
-    return [NSString stringWithFormat:@"{\"channel\": \"MessageChannel\", \"token\": \"%@\"}", [self channelIdentifier]];
-}
-
-- (NSString *)channelIdentifier {
-    return @"a6b1"; // TMP
+    return [NSString stringWithFormat:@"{\"channel\": \"MessageChannel\", \"token\": \"%@\"}", self.developerToken];
 }
 
 #pragma mark - SRWebSocketDelegate methods

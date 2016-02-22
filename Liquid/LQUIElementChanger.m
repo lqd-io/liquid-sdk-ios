@@ -137,7 +137,7 @@
         return params;
     }
     NSMutableDictionary *queryParams = [[NSMutableDictionary alloc] initWithDictionary:params];
-    queryParams[@"token"] = self.developerToken;
+    queryParams[@"token"] = self.developerToken; // TODO: do we really need to do this, now we use websockets?
     return queryParams;
 }
 
