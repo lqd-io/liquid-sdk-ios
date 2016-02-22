@@ -127,10 +127,6 @@
 		A9D47A6F1C70DB5D00726B1B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A6E1C70DB5D00726B1B /* Security.framework */; };
 		A9D47A711C70DB6400726B1B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D47A701C70DB6300726B1B /* CFNetwork.framework */; };
 		A9D47A941C70DC4D00726B1B /* LQSRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A911C70DC4D00726B1B /* LQSRWebSocket.m */; };
-		A9D47AA31C70DCFE00726B1B /* LQWebSocketRailsChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9A1C70DCFE00726B1B /* LQWebSocketRailsChannel.m */; };
-		A9D47AA41C70DCFE00726B1B /* LQWebSocketRailsConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9C1C70DCFE00726B1B /* LQWebSocketRailsConnection.m */; };
-		A9D47AA51C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47A9E1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m */; };
-		A9D47AA61C70DCFE00726B1B /* LQWebSocketRailsEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D47AA01C70DCFE00726B1B /* LQWebSocketRailsEvent.m */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A9E98054193E257C0055D1E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -411,16 +407,6 @@
 		A9D47A891C70DC4D00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A9D47A901C70DC4D00726B1B /* LQSRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSRWebSocket.h; sourceTree = "<group>"; };
 		A9D47A911C70DC4D00726B1B /* LQSRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSRWebSocket.m; sourceTree = "<group>"; };
-		A9D47A961C70DCFE00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A9D47A991C70DCFE00726B1B /* LQWebSocketRailsChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsChannel.h; sourceTree = "<group>"; };
-		A9D47A9A1C70DCFE00726B1B /* LQWebSocketRailsChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsChannel.m; sourceTree = "<group>"; };
-		A9D47A9B1C70DCFE00726B1B /* LQWebSocketRailsConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsConnection.h; sourceTree = "<group>"; };
-		A9D47A9C1C70DCFE00726B1B /* LQWebSocketRailsConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsConnection.m; sourceTree = "<group>"; };
-		A9D47A9D1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsDispatcher.h; sourceTree = "<group>"; };
-		A9D47A9E1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsDispatcher.m; sourceTree = "<group>"; };
-		A9D47A9F1C70DCFE00726B1B /* LQWebSocketRailsEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsEvent.h; sourceTree = "<group>"; };
-		A9D47AA01C70DCFE00726B1B /* LQWebSocketRailsEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQWebSocketRailsEvent.m; sourceTree = "<group>"; };
-		A9D47AA11C70DCFE00726B1B /* LQWebSocketRailsTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWebSocketRailsTypes.h; sourceTree = "<group>"; };
 		A9E98050193E257C0055D1E7 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E98051193E257C0055D1E7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidTests-Info.plist"; sourceTree = "<group>"; };
@@ -798,32 +784,6 @@
 			path = SocketRocket;
 			sourceTree = "<group>";
 		};
-		A9D47A951C70DCFE00726B1B /* WebSocketRails */ = {
-			isa = PBXGroup;
-			children = (
-				A9D47A961C70DCFE00726B1B /* LICENSE */,
-				A9D47A981C70DCFE00726B1B /* WebSocketRails-iOS */,
-			);
-			name = WebSocketRails;
-			path = Lib/WebSocketRails;
-			sourceTree = "<group>";
-		};
-		A9D47A981C70DCFE00726B1B /* WebSocketRails-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				A9D47A991C70DCFE00726B1B /* LQWebSocketRailsChannel.h */,
-				A9D47A9A1C70DCFE00726B1B /* LQWebSocketRailsChannel.m */,
-				A9D47A9B1C70DCFE00726B1B /* LQWebSocketRailsConnection.h */,
-				A9D47A9C1C70DCFE00726B1B /* LQWebSocketRailsConnection.m */,
-				A9D47A9D1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.h */,
-				A9D47A9E1C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m */,
-				A9D47A9F1C70DCFE00726B1B /* LQWebSocketRailsEvent.h */,
-				A9D47AA01C70DCFE00726B1B /* LQWebSocketRailsEvent.m */,
-				A9D47AA11C70DCFE00726B1B /* LQWebSocketRailsTypes.h */,
-			);
-			path = "WebSocketRails-iOS";
-			sourceTree = "<group>";
-		};
 		A9E98055193E257C0055D1E7 /* LiquidTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -889,7 +849,6 @@
 			isa = PBXGroup;
 			children = (
 				A930CF771C715A71002DA85A /* Aspects */,
-				A9D47A951C70DCFE00726B1B /* WebSocketRails */,
 				A9D47A881C70DC4D00726B1B /* SocketRocket */,
 				A9D47A4E1C70D93900726B1B /* Liquid */,
 			);
@@ -1446,12 +1405,10 @@
 				C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */,
 				A9FBA7AD1B03B0E200900AAC /* LQKeychainItem.m in Sources */,
 				A99EB4FF192447FA0060E484 /* LQTarget.m in Sources */,
-				A9D47AA31C70DCFE00726B1B /* LQWebSocketRailsChannel.m in Sources */,
 				A9D47A681C70D94B00726B1B /* LQKeychain.m in Sources */,
 				A9EA29C41BF52157001BE1B7 /* LQSlideUpMessageViewController.m in Sources */,
 				A9D2F1051C218539007A4DD9 /* LQUIElementChanger.m in Sources */,
 				A9313D5C1C612C42009A5279 /* LQUIElementWelcomeViewControler.m in Sources */,
-				A9D47AA41C70DCFE00726B1B /* LQWebSocketRailsConnection.m in Sources */,
 				A9BA7D2719AA466400E1F0F2 /* LQNetworking.m in Sources */,
 				A9F495841C036E2200B2D376 /* LQNetworkingURLSession.m in Sources */,
 				A99EB4F8192447FA0060E484 /* Liquid.m in Sources */,
@@ -1470,7 +1427,6 @@
 				A9EA29C31BF52157001BE1B7 /* LQModalView.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */,
-				A9D47AA51C70DCFE00726B1B /* LQWebSocketRailsDispatcher.m in Sources */,
 				A96B47C71C19CD9400A6DF8D /* UIView+LQChangeable.m in Sources */,
 				A99EB502192447FA0060E484 /* LQVariable.m in Sources */,
 				A99EB4FE192447FA0060E484 /* LQSession.m in Sources */,
@@ -1481,7 +1437,6 @@
 				A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */,
 				A9EA29C21BF52157001BE1B7 /* LQModalMessageViewController.m in Sources */,
 				A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */,
-				A9D47AA61C70DCFE00726B1B /* LQWebSocketRailsEvent.m in Sources */,
 				A9EA29C11BF52157001BE1B7 /* LQCaret.m in Sources */,
 				A9EA29A61BF520FD001BE1B7 /* LQCallToAction.m in Sources */,
 				A9D47A661C70D94B00726B1B /* LQHelpers.m in Sources */,
@@ -1878,11 +1833,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 08766FE70A158609A783F362 /* Pods-Liquid.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = (
 					"-licucore",
@@ -1892,6 +1849,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -1900,11 +1858,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F18B31254D86713533800882 /* Pods-Liquid.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = (
 					"-licucore",
