@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "LQUIElementChanger.h"
+#import "LQSRWebSocket.h"
 
-@interface LQUIElementSetupService : NSObject
+@interface LQUIElementSetupService : NSObject <SRWebSocketDelegate>
 
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken;
 - (void)exitDevelopmentMode;

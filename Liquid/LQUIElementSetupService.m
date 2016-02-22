@@ -15,11 +15,8 @@
 #import "LQWindow.h"
 #import "LQUIElementWelcomeViewControler.h"
 #import "NSData+LQData.h"
-#import "LQSRWebSocket.h"
-#import "LQWebSocketRailsDispatcher.h"
-#import "LQWebSocketRailsChannel.h"
 
-#define kLQWebSocketServerrUrl @"ws://lqd.io/websocket"
+#define kLQWebSocketServerrUrl @"wss://scable.onliquid.com/cable/"
 
 @interface LQUIElementSetupService()
 
@@ -27,8 +24,7 @@
 @property (nonatomic, assign) BOOL devModeEnabled;
 @property (nonatomic, strong) NSTimer *longPressTimer;
 @property (nonatomic, assign) UIButton *touchingDownButton;
-@property (nonatomic, strong) WebSocketRailsDispatcher *webSocketDispatcher;
-@property (nonatomic, strong) WebSocketRailsChannel *webSocketChannel;
+@property (nonatomic, strong) SRWebSocket *webSocket;
 
 @end
 
@@ -38,7 +34,9 @@
 @synthesize devModeEnabled = _devModeEnabled;
 @synthesize longPressTimer = _longPressTimer;
 @synthesize touchingDownButton = _touchingDownButton;
+@synthesize webSocket = _webSocket;
 
+#pragma mark - Initializers
 
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger {
     self = [super init];
@@ -49,48 +47,32 @@
     return self;
 }
 
+- (SRWebSocket *)webSocket {
+    if (!_webSocket) {
+        _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:kLQWebSocketServerrUrl]];
+        _webSocket.delegate = self;
+    }
+    return _webSocket;
+}
+
 #pragma mark - Enable/disable Development Mode
 
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken {
     if (self.devModeEnabled) {
         return;
     }
-    [self connectWebSocketToChannel:developmentToken];
-    [self.webSocketDispatcher bind:@"connection_opened" callback:^(id data) {
-        self.devModeEnabled = YES;
-        [self presentWelcomeScreen];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.webSocketChannel trigger:@"start_development" message:@""];
-        });
-    }];
-    [self.webSocketDispatcher connect];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (!self.devModeEnabled) {
-            [self showNetworkFailAlert];
-        }
-    });
+    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Trying to enter development mode...");
+    [self.webSocket open];
 }
 
 - (void)exitDevelopmentMode {
     if (!self.devModeEnabled) {
         return;
     }
-    [self.webSocketDispatcher disconnect];
-    self.webSocketChannel = nil;
+    [self.webSocket close];
     if (!self.devModeEnabled) return;
     self.devModeEnabled = NO;
 }
-
-#pragma mark - Web Socket
-
-- (void)connectWebSocketToChannel:(NSString *)channelName {
-    if (self.webSocketDispatcher) {
-        [self.webSocketDispatcher disconnect];
-    }
-    self.webSocketDispatcher = [[WebSocketRailsDispatcher alloc] initWithUrl:[NSURL URLWithString:kLQWebSocketServerrUrl]];
-    self.webSocketChannel = [self.webSocketDispatcher subscribe:channelName];
-}
-
 
 #pragma mark - Change UIButton
 
@@ -135,6 +117,19 @@
     self.touchingDownButton = nil;
     [self.longPressTimer invalidate];
     self.longPressTimer = nil;
+}
+
+#pragma mark - Present Views
+
+- (void)presentWelcomeScreen {
+    LQUIElementWelcomeViewControler *welcomeViewController = [[LQUIElementWelcomeViewControler alloc] init];
+    [self presentViewControllerInTopMost:welcomeViewController];
+}
+
+- (void)presentViewControllerInTopMost:(UIViewController *)viewController {
+    UIWindow *window = [LQWindow fullscreenWindow];
+    [window makeKeyAndVisible];
+    [window.rootViewController presentViewController:viewController animated:YES completion:nil];
 }
 
 #pragma mark - Alerts
@@ -197,7 +192,7 @@
 
 - (void)showNetworkFailAlert {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network error"
-                                                                   message:@"An error occured while configuring your UI element on Liquid. Please try again."
+                                                                   message:@"An error occured while connecting to Liquid servers. Please try again."
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewControllerInTopMost:alert];
@@ -207,40 +202,93 @@
 
 - (void)registerUIElement:(LQUIElement *)element {
     [self.elementChanger addUIElement:element];
-    NSString *message = [[NSString alloc] initWithData:[NSData toJSON:[element jsonDictionary]] encoding:NSUTF8StringEncoding];
-    [self.webSocketChannel trigger:@"add_element" message:message];
+    [self sendMessage:[element jsonDictionary] forAction:@"add_element"];
     LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Registered a new UI Element: %@", element);
 }
 
 - (void)unregisterUIElement:(LQUIElement *)element {
     [self.elementChanger removeUIElement:element];
-    NSString *message = [[NSString alloc] initWithData:[NSData toJSON:[element jsonDictionary]] encoding:NSUTF8StringEncoding];
-    [self.webSocketChannel trigger:@"remove_element" message:message];
+    [self sendMessage:[element jsonDictionary] forAction:@"remove_element"];
     LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Unregistered UI Element %@", element.identifier);
 }
 
 - (void)changeUIElement:(LQUIElement *)element {
     [self.elementChanger removeUIElement:element];
     [self.elementChanger addUIElement:element];
-    NSString *message = [[NSString alloc] initWithData:[NSData toJSON:[element jsonDictionary]] encoding:NSUTF8StringEncoding];
-    [self.webSocketChannel trigger:@"change_element" message:message];
+    [self sendMessage:[element jsonDictionary] forAction:@"change_element"];
     LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Changed UI Element %@", element.identifier);
 }
 
+#pragma mark - WebSocket methods
 
-#pragma mark - Welcome Screen
-
-- (void)presentWelcomeScreen {
-    LQUIElementWelcomeViewControler *welcomeViewController = [[LQUIElementWelcomeViewControler alloc] init];
-    [self presentViewControllerInTopMost:welcomeViewController];
+- (void)sendMessage:(NSDictionary *)messageDict forAction:(NSString *)action {
+    [self sendCommand:@"message" withMessage:messageDict forAction:action];
 }
 
-#pragma mark - Helper methods
+- (void)sendCommand:(NSString *)command withMessage:(NSDictionary *)message forAction:(NSString *)action {
+    NSMutableDictionary *dataDict = [[NSMutableDictionary alloc] initWithDictionary:message];
+    dataDict[@"action"] = action;
+    NSDictionary *payload = @{
+                              @"command": command,
+                              @"identifier": [self identifier],
+                              @"data": [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDict options:0 error:nil] encoding:NSUTF8StringEncoding]
+                            };
+    [self.webSocket send:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] encoding:NSUTF8StringEncoding]];
+}
 
-- (void)presentViewControllerInTopMost:(UIViewController *)viewController {
-    UIWindow *window = [LQWindow fullscreenWindow];
-    [window makeKeyAndVisible];
-    [window.rootViewController presentViewController:viewController animated:YES completion:nil];
+- (void)sendCommand:(NSString *)command {
+    NSDictionary *payload = @{
+                              @"command": command,
+                              @"identifier": [self identifier]
+                              };
+    [self.webSocket send:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] encoding:NSUTF8StringEncoding]];
+}
+
+- (NSString *)identifier {
+    return [NSString stringWithFormat:@"{\"channel\": \"MessageChannel\", \"token\": \"%@\"}", [self channelIdentifier]];
+}
+
+- (NSString *)channelIdentifier {
+    return @"a6b1"; // TMP
+}
+
+#pragma mark - SRWebSocketDelegate methods
+
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)rawMessage {
+    NSError *jsonError;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[(NSString *)rawMessage dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&jsonError];
+    if (jsonError) {
+        NSLog(@"JSON error: %@", [jsonError description]);
+        return;
+    }
+    if ([json[@"identifier"] isEqualToString:@"_ping"]) {
+        return;
+    }
+
+    // TODO: Move this to blocks:
+    if ([json[@"type"] isEqualToString:@"confirm_subscription"]) {
+        self.devModeEnabled = YES;
+        [self presentWelcomeScreen];
+        [self sendMessage:@{} forAction:@"start_development"];
+        LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Started development mode");
+    } else if ([json[@"identifier"] isEqualToString:@"end_development"]) {
+        [self exitDevelopmentMode];
+    }
+}
+
+- (void)webSocketDidOpen:(SRWebSocket *)webSocket {
+    NSLog(@"WebSocket open. Subscribing to channel...");
+    [self sendCommand:@"subscribe"];
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
+    NSLog(@"did fail with error: %@", error);
+    [self showNetworkFailAlert]; // TODO: ?
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+    NSLog(@"Did close with code: %ld. Reason is %@", code, reason);
+    [self showNetworkFailAlert]; // TODO: ?
 }
 
 @end
