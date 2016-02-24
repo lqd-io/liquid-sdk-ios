@@ -27,7 +27,6 @@
 
 @synthesize changedElements = _changedElements;
 @synthesize networking = _networking;
-@synthesize developerToken = _developerToken;
 @synthesize appToken = _appToken;
 
 #pragma mark - Initializers
@@ -81,7 +80,7 @@
 #pragma mark - Request and Register UI Elements from/on server
 
 - (void)requestUiElements {
-    [_networking getDataFromEndpoint:@"ui_elements" withParameters:[self requestParamsWith:@{ @"platform" : @"ios" }]
+    [_networking getDataFromEndpoint:@"ui_elements" withParameters:@{ @"platform" : @"ios" }
                    completionHandler:^(LQQueueStatus queueStatus, NSData *responseData) {
         if (queueStatus == LQQueueStatusOk) {
             NSMutableDictionary *newElements = [[NSMutableDictionary alloc] init];
@@ -126,19 +125,6 @@
         return element;
     }
     return nil;
-}
-
-- (NSDictionary *)requestParams {
-    return [self requestParamsWith:nil];
-}
-
-- (NSDictionary *)requestParamsWith:(NSDictionary *)params {
-    if (!self.developerToken) {
-        return params;
-    }
-    NSMutableDictionary *queryParams = [[NSMutableDictionary alloc] initWithDictionary:params];
-    queryParams[@"token"] = self.developerToken; // TODO: do we really need to do this, now we use websockets?
-    return queryParams;
 }
 
 - (void)logChangedElements {

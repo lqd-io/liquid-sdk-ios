@@ -627,7 +627,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         for (NSURLQueryItem *item in urlComponents.queryItems) {
             if ([item.name isEqualToString:@"token"]) {
                 [self.uiElementSetupService enterDevelopmentModeWithToken:item.value];
-                self.uiElementChanger.developerToken = item.value;
                 return YES;
             }
         }

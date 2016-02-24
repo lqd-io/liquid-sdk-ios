@@ -13,8 +13,6 @@
 
 @interface LQUIElementChanger : NSObject
 
-@property (atomic, strong) NSString *developerToken;
-
 - (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken;
 - (void)interceptUIElementsWithBlock:(void(^)(UIView *view))interceptBlock;
 - (BOOL)applyChangesTo:(UIView *)view;
