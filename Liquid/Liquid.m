@@ -267,9 +267,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     dispatch_async(self.queue, ^{
         [self requestNewLiquidPackageSynced];
     });
-#if LQ_IOS
-    [self.uiElementSetupService exitDevelopmentMode];
-#endif
 }
 
 // Going from background to foreground
