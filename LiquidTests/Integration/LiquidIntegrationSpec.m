@@ -52,8 +52,8 @@ describe(@"Liquid", ^{
                 beforeAll(^{
                     // Simulate an app going in background and foreground again:
                     [NSThread sleepForTimeInterval:0.1f];
-                    [liquid clientApplicationBackground];
-                    [liquid clientApplicationForeground];
+                    [liquid clientApplicationDidEnterBackground];
+                    [liquid clientApplicationWillEnterForeground];
                     [NSThread sleepForTimeInterval:0.1f];
                 });
 
@@ -89,8 +89,8 @@ describe(@"Liquid", ^{
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [liquid clientApplicationBackground];
-                [liquid clientApplicationForeground];
+                [liquid clientApplicationDidEnterBackground];
+                [liquid clientApplicationWillEnterForeground];
                 [NSThread sleepForTimeInterval:0.1f];
             });
 
@@ -99,9 +99,9 @@ describe(@"Liquid", ^{
                 dispatch_queue_t serialQueue = dispatch_queue_create([@"serial" UTF8String], DISPATCH_QUEUE_SERIAL);
                 for(NSInteger i = 0; i < 20; i++) {
                     dispatch_async(serialQueue, ^{
-                        [liquid clientApplicationBackground];
+                        [liquid clientApplicationDidEnterBackground];
                         [NSThread sleepForTimeInterval:0.25f];
-                        [liquid clientApplicationForeground];
+                        [liquid clientApplicationWillEnterForeground];
                         @synchronized(totalOfBlocks) {
                             totalOfBlocks = [NSNumber numberWithInt:([totalOfBlocks intValue] + 1)];
                         }

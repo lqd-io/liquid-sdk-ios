@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "LQEntity.h"
-#import "LQSession.h"
 
 @interface LQEvent : LQEntity <NSCoding, NSCopying>
 

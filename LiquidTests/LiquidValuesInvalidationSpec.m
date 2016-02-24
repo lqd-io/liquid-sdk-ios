@@ -49,8 +49,8 @@ describe(@"Liquid", ^{
                 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [liquid clientApplicationBackground];
-                [liquid clientApplicationForeground];
+                [liquid clientApplicationDidEnterBackground];
+                [liquid clientApplicationWillEnterForeground];
                 [NSThread sleepForTimeInterval:0.1f];
             });
 
@@ -120,8 +120,8 @@ describe(@"Liquid", ^{
 
                 // Simulate an app going in background and foreground again:
                 [NSThread sleepForTimeInterval:0.1f];
-                [liquid applicationDidEnterBackground:nil];
-                [liquid applicationWillEnterForeground:nil];
+                [liquid clientApplicationDidEnterBackground];
+                [liquid clientApplicationWillEnterForeground];
                 [NSThread sleepForTimeInterval:0.1f];
             });
 

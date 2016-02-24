@@ -11,7 +11,6 @@
 #import <UIKit/UIColor.h>
 
 #import "LQEvent.h"
-#import "LQSession.h"
 #import "LQDevice.h"
 #import "LQUser.h"
 #import "LQRequest.h"
@@ -41,15 +40,12 @@ extern NSString * const LQDidIdentifyUser;
 @property (nonatomic, assign) BOOL sendFallbackValuesInDevelopmentMode;
 @property (nonatomic, assign) NSUInteger queueSizeLimit;
 @property (atomic) BOOL autoLoadValues;
-@property (nonatomic, assign) NSInteger sessionTimeout;
 
 @property(nonatomic, strong) NSString *apiToken;
 @property(nonatomic, assign) BOOL developmentMode;
 @property(atomic, strong) LQUser *currentUser;
 @property(atomic, strong) LQUser *previousUser;
 @property(atomic, strong) LQDevice *device;
-@property(atomic, strong) LQSession *currentSession;
-@property(nonatomic, strong) NSDate *enterBackgroundTime;
 @property(nonatomic, assign) BOOL inBackground;
 #if OS_OBJECT_USE_OBJC
 @property(atomic, strong) dispatch_queue_t queue;
@@ -82,14 +78,13 @@ extern NSString * const LQDidIdentifyUser;
 - (BOOL)sendFallbackValuesInDevelopmentMode;
 - (NSUInteger)flushInterval;
 - (void)setFlushInterval:(NSUInteger)interval;
-- (NSInteger)sessionTimeout;
-- (void)setSessionTimeout:(NSInteger)sessionTimeout;
 - (NSString *)liquidUserAgent;
 
 #pragma mark - UIApplication notifications
 
-- (void)clientApplicationForeground;
-- (void)clientApplicationBackground;
+- (void)clientApplicationDidBecomeActive;
+- (void)clientApplicationDidEnterBackground;
+- (void)clientApplicationWillEnterForeground;
 
 #pragma mark - User Interaction
 
@@ -105,18 +100,11 @@ extern NSString * const LQDidIdentifyUser;
 
 - (NSString *)userIdentifier;
 - (NSString *)deviceIdentifier;
-- (NSString *)sessionIdentifier;
 - (void)setUserAttribute:(id)attribute forKey:(NSString *)key;
 - (void)setUserAttributes:(NSDictionary *)attributes;
 - (void)setUserLocation:(CLLocation *)location;
 + (void)assertUserAttributeType:(id)attribute;
 + (void)assertUserAttributesTypes:(NSDictionary *)attributes;
-
-#pragma mark - Session
-
-- (void)destroySessionIfExists;
-- (void)startSession;
-- (BOOL)checkSessionTimeout;
 
 #pragma mark - Event
 

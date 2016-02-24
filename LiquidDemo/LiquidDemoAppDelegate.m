@@ -30,9 +30,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Liquid sharedInstanceWithToken:@"YOUR-DEVELOPMENT-APP-TOKEN" development:YES];
 
-    // if the application goes into background for more than 30 seconds, a new session is considered:. default is 30:
-    [[Liquid sharedInstance] setSessionTimeout:30];
-
 #if TARGET_IPHONE_SIMULATOR
     NSLog(@"Push Notifications only work on real devices, not on iPhone Simulator.");
 #else
@@ -61,7 +58,7 @@
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    //e.g: [[Liquid sharedInstance] setCurrentLocation:newLocation];
+    [[Liquid sharedInstance] setCurrentLocation:newLocation];
 }
 
 #pragma mark - Push Notifications < iOS 8
@@ -73,10 +70,18 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // Notify LiquidDemoViewController about a new Push Notification:
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Push Notification Received" object:userInfo];
+    [[Liquid sharedInstance] handleRemoteNotification:userInfo forApplication:application];
 }
 
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
     NSLog(@"%@", [NSString stringWithFormat: @"Error obtaining push notification token: %@", err]);
+}
+
+#pragma mark - Background fetch
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    NSLog(@"Updated data in Background");
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
 @end

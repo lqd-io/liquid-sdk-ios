@@ -19,7 +19,7 @@
 #define LQ_IOS TARGET_OS_IOS
 #define LQ_INAPP_MESSAGES_SUPPORT LQ_IOS
 
-#define kLQVersion @"2.1.0-rc4"
+#define kLQVersion @"2.1.1"
 
 #if LQ_WATCHOS
 #define kLQBundle @"io.lqd.watchos"
@@ -48,12 +48,10 @@
 #    define kLQLogLevel kLQLogLevelNone
 #endif
 
-#define kLQDefaultSessionTimeout 30 //seconds
 #define kLQSendFallbackValuesInDevelopmentMode YES
 
 #define kLQErrorValueNotFound 1
 #define kLQErrorNoUser 2
-#define kLQErrorNoSession 3
 
 #define LQLog(level,...) if(level<=kLQLogLevel) NSLog(__VA_ARGS__)
 

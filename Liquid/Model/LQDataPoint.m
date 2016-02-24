@@ -12,12 +12,11 @@
 
 @implementation LQDataPoint
 
--(id)initWithDate:(NSDate *)date user:(LQUser *)user device:(LQDevice *)device session:(LQSession *)session event:(LQEvent *)event values:(NSArray *)values{
+-(id)initWithDate:(NSDate *)date user:(LQUser *)user device:(LQDevice *)device event:(LQEvent *)event values:(NSArray *)values{
     self = [super init];
     if(self) {
         _user = user;
         _device = device;
-        _session = session;
         _event = event;
         _values = values;
         _timestamp = event.date;
@@ -32,7 +31,6 @@
     if (self) {
         _user = [aDecoder decodeObjectForKey:@"user"];
         _device = [aDecoder decodeObjectForKey:@"device"];
-        _session = [aDecoder decodeObjectForKey:@"session"];
         _event = [aDecoder decodeObjectForKey:@"event"];
         _targets = [aDecoder decodeObjectForKey:@"targets"];
         _values = [aDecoder decodeObjectForKey:@"values"];
@@ -44,7 +42,6 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:_user forKey:@"user"];
     [aCoder encodeObject:_device forKey:@"device"];
-    [aCoder encodeObject:_session forKey:@"session"];
     [aCoder encodeObject:_event forKey:@"event"];
     [aCoder encodeObject:_targets forKey:@"targets"];
     [aCoder encodeObject:_values forKey:@"values"];
@@ -62,14 +59,11 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     NSDictionary *userDict = [_user jsonDictionary];
     NSDictionary *deviceDict = [_device jsonDictionary];
-    NSDictionary *sessionDict = [_session jsonDictionary];
     NSDictionary *eventDict = [_event jsonDictionary];
     if (userDict)
         [dictionary setObject:userDict forKey:@"user"];
     if (deviceDict)
         [dictionary setObject:deviceDict forKey:@"device"];
-    if (sessionDict)
-        [dictionary setObject:sessionDict forKey:@"session"];
     if (eventDict)
         [dictionary setObject:eventDict forKey:@"event"];
 

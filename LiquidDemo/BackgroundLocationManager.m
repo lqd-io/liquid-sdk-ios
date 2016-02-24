@@ -9,7 +9,7 @@
 #import "BackgroundLocationManager.h"
 #import "Liquid.h"
 
-@interface BackgroundLocationManager ()
+@interface BackgroundLocationManager () <CLLocationManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) NSDate *lastTimestamp;
