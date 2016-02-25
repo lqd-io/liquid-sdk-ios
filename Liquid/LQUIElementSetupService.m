@@ -233,7 +233,7 @@
     dataDict[@"action"] = action;
     NSDictionary *payload = @{
                               @"command": command,
-                              @"identifier": [self identifier],
+                              @"identifier": [self websocketIdentifier],
                               @"data": [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dataDict options:0 error:nil] encoding:NSUTF8StringEncoding]
                             };
     [self.webSocket send:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] encoding:NSUTF8StringEncoding]];
@@ -242,12 +242,12 @@
 - (void)sendCommand:(NSString *)command {
     NSDictionary *payload = @{
                               @"command": command,
-                              @"identifier": [self identifier]
+                              @"identifier": [self websocketIdentifier]
                               };
     [self.webSocket send:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] encoding:NSUTF8StringEncoding]];
 }
 
-- (NSString *)identifier {
+- (NSString *)websocketIdentifier {
     return [NSString stringWithFormat:@"{\"channel\": \"MessageChannel\", \"token\": \"%@\"}", self.developerToken];
 }
 
@@ -264,30 +264,34 @@
         return;
     }
 
-    // TODO: Move this to blocks:
     if ([json[@"type"] isEqualToString:@"confirm_subscription"]) {
         self.devModeEnabled = YES;
         [self presentWelcomeScreen];
         [self sendMessage:@{} forAction:@"start_development"];
         LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Started development mode");
-    } else if ([json[@"identifier"] isEqualToString:@"end_development"]) {
+    } else if (json[@"message"]) {
+        [self handleReceivedMessage:json[@"message"]];
+    }
+}
+
+- (void)handleReceivedMessage:(NSDictionary *)message {
+    if ([message[@"action"] isEqualToString:@"end_development"]) {
         [self exitDevelopmentMode];
     }
 }
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket {
-    NSLog(@"WebSocket open. Subscribing to channel...");
+    NSLog(@"WebSocket open. Subscribing to channel..."); // TODO message
     [self sendCommand:@"subscribe"];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
-    NSLog(@"did fail with error: %@", error);
-    [self showNetworkFailAlert]; // TODO: ?
+    NSLog(@"did fail with error: %@", error); // TODO message
+    [self showNetworkFailAlert];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    NSLog(@"Did close with code: %ld. Reason is %@", code, reason);
-    [self showNetworkFailAlert]; // TODO: ?
+    NSLog(@"Did close with code: %ld. Reason is %@", code, reason); // TODO message
 }
 
 @end
