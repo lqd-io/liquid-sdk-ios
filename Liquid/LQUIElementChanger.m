@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSDictionary<NSString *, LQUIElement *> *changedElements;
 @property (nonatomic, strong) LQNetworking *networking;
 @property (nonatomic, strong) NSString *appToken;
+@property (nonatomic, strong) LQEventTracker *eventTracker;
 
 @end
 
@@ -28,14 +29,18 @@
 @synthesize changedElements = _changedElements;
 @synthesize networking = _networking;
 @synthesize appToken = _appToken;
+@synthesize eventTracker = _eventTracker;
+@synthesize eventTrackingDisabled = _eventTrackingDisabled;
 
 #pragma mark - Initializers
 
-- (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken {
+- (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken eventTracker:(LQEventTracker *)eventTracker {
     self = [super init];
     if (self) {
-        self.networking = networking;
-        self.appToken = appToken;
+        _networking = networking;
+        _appToken = appToken;
+        _eventTracker = eventTracker;
+        _eventTrackingDisabled = NO;
     }
     return self;
 }
@@ -69,11 +74,15 @@
 }
 
 - (void)touchUpButton:(UIButton *)button {
+    if (self.eventTrackingDisabled) {
+        return;
+    }
     LQUIElement *uiElement = [self uiElementFor:button];
     if (![uiElement eventName]) {
         return;
     }
-    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger>Touched button %@ with identifier %@ to track event named %@",
+    [self.eventTracker track:uiElement.eventName attributes:nil loadedValues:nil withDate:nil];
+    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Touched button %@ with identifier %@ to track event named %@",
           button.titleLabel.text, button.liquidIdentifier, uiElement.eventName);
 }
 

@@ -21,7 +21,6 @@
 @interface LQUIElementSetupService()
 
 @property (nonatomic, strong) LQUIElementChanger *elementChanger;
-@property (nonatomic, assign) BOOL devModeEnabled;
 @property (nonatomic, strong) NSTimer *longPressTimer;
 @property (nonatomic, assign) UIButton *touchingDownButton;
 @property (nonatomic, strong) SRWebSocket *webSocket;
@@ -63,8 +62,9 @@
     if (self.devModeEnabled) {
         return;
     }
-    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Trying to enter development mode...");
+    self.elementChanger.eventTrackingDisabled = YES;
     self.developerToken = developmentToken;
+    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Trying to enter development mode...");
     [self.webSocket open];
 }
 
@@ -72,9 +72,10 @@
     if (!self.devModeEnabled) {
         return;
     }
+    self.elementChanger.eventTrackingDisabled = NO;
     [self.webSocket close];
     if (!self.devModeEnabled) return;
-    self.devModeEnabled = NO;
+    _devModeEnabled = NO;
 }
 
 #pragma mark - Change UIButton
@@ -99,12 +100,12 @@
     self.touchingDownButton = button;
     self.longPressTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                       target:self
-                                                         selector:@selector(longPressCode:)
+                                                         selector:@selector(longPressedButton:)
                                                     userInfo:button
                                                      repeats:YES];
 }
 
-- (void)longPressCode:(NSTimer *)timer {
+- (void)longPressedButton:(NSTimer *)timer {
     UIButton *button = self.touchingDownButton;
     if (button && button == timer.userInfo) {
         self.touchingDownButton = nil;
@@ -265,7 +266,7 @@
     }
 
     if ([json[@"type"] isEqualToString:@"confirm_subscription"]) {
-        self.devModeEnabled = YES;
+        _devModeEnabled = YES;
         [self presentWelcomeScreen];
         [self sendMessage:@{} forAction:@"start_development"];
         LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Started development mode");

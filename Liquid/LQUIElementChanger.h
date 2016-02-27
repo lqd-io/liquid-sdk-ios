@@ -10,10 +10,13 @@
 #import "LQNetworking.h"
 #import "LQUser.h"
 #import "LQUIElement.h"
+#import "LQEventTracker.h"
 
 @interface LQUIElementChanger : NSObject
 
-- (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken;
+@property (nonatomic, assign) BOOL eventTrackingDisabled;
+
+- (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken eventTracker:(LQEventTracker *)eventTracker;
 - (void)interceptUIElementsWithBlock:(void(^)(UIView *view))interceptBlock;
 - (BOOL)applyChangesTo:(UIView *)view;
 - (void)requestUiElements;

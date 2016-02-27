@@ -12,6 +12,8 @@
 
 @interface LQUIElementSetupService : NSObject <SRWebSocketDelegate>
 
+@property (nonatomic, assign, readonly) BOOL devModeEnabled;
+
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken;
 - (void)exitDevelopmentMode;
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger;
