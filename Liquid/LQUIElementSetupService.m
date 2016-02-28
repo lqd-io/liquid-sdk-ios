@@ -259,7 +259,7 @@
     NSError *jsonError;
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[(NSString *)rawMessage dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&jsonError];
     if (jsonError) {
-        NSLog(@"JSON error: %@", [jsonError description]);
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> Error while parsing JSON.");
         return;
     }
     if ([json[@"identifier"] isEqualToString:@"_ping"]) {
@@ -283,17 +283,17 @@
 }
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket {
-    NSLog(@"WebSocket open. Subscribing to channel..."); // TODO message
+    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> WebSocket open. Subscribing to channel...");
     [self sendCommand:@"subscribe"];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
-    NSLog(@"did fail with error: %@", error); // TODO message
+    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> WebSocket failed with error: %@", error);
     [self showNetworkFailAlert];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    NSLog(@"Did close with code: %ld. Reason is %@", code, reason); // TODO message
+    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> WebSocket close with code: %ld. Reason is %@.", code, reason);
 }
 
 @end
