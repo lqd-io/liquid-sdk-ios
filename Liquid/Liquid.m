@@ -164,11 +164,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)loadModules {
-    self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
-    self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
+    self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken
+                                                              dipatchQueue:self.queue];
+    self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking
+                                                     dispatchQueue:self.queue];
 #if LQ_IOS
-    self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
-    self.uiElementChanger = [[LQUIElementChanger alloc] initWithNetworking:self.networking appToken:self.apiToken eventTracker:self.eventTracker];
+    self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking
+                                                       dispatchQueue:self.queue
+                                                        eventTracker:self.eventTracker];
+    self.uiElementChanger = [[LQUIElementChanger alloc] initWithNetworking:self.networking
+                                                                  appToken:self.apiToken
+                                                              eventTracker:self.eventTracker];
     self.uiElementSetupService = [[LQUIElementSetupService alloc] initWithUIElementChanger:self.uiElementChanger];
 #endif
 }

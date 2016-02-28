@@ -74,6 +74,7 @@
     }
     self.elementChanger.eventTrackingDisabled = NO;
     [self.webSocket close];
+    [self.elementChanger requestUiElements];
     if (!self.devModeEnabled) return;
     _devModeEnabled = NO;
 }

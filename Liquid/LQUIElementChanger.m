@@ -15,7 +15,9 @@
 #import "NSData+LQData.h"
 #import "LQStorage.h"
 
-@interface LQUIElementChanger ()
+@interface LQUIElementChanger () {
+    dispatch_queue_t _backgroundQueue;
+}
 
 @property (nonatomic, strong) NSDictionary<NSString *, LQUIElement *> *changedElements;
 @property (nonatomic, strong) LQNetworking *networking;
@@ -41,6 +43,7 @@
         _appToken = appToken;
         _eventTracker = eventTracker;
         _eventTrackingDisabled = NO;
+        _backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     }
     return self;
 }
@@ -99,7 +102,7 @@
             }
             self.changedElements = newElements;
             LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Received %ld UI Elements from server", (unsigned long) newElements.count);
-            [self archiveUIElements]; // TODO: only archive if they are different (with an md5)?
+            [self archiveUIElements];
             [self logChangedElements];
         } else {
             LQLog(kLQLogLevelHttpError, @"<Liquid/UIElementChanger> Error requesting UI Elements: %@", responseData);
@@ -146,14 +149,19 @@
 
 #pragma mark - Save and Restore to/from Disk
 
-- (BOOL)archiveUIElements {
-    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Saving %ld UI Elements to disk", (unsigned long) self.changedElements.count);
-    return [NSKeyedArchiver archiveRootObject:self.changedElements toFile:[[self class] uiElementsFilePathForToken:self.appToken]];
+- (void)archiveUIElements {
+    dispatch_async(_backgroundQueue, ^{
+        NSDictionary *changedElements = self.changedElements;
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Saving %ld UI Elements to disk", (unsigned long) changedElements.count);
+        [NSKeyedArchiver archiveRootObject:changedElements toFile:[[self class] uiElementsFilePathForToken:self.appToken]];
+    });
 }
 
 - (void)unarchiveUIElements {
-    self.changedElements = [[self class] unarchiveUIElementsForToken:self.appToken];
-    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Unarchavied %ld UI Elements from disk", (unsigned long) self.changedElements.count);
+    dispatch_async(_backgroundQueue, ^{
+        self.changedElements = [[self class] unarchiveUIElementsForToken:self.appToken];
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Unarchavied %ld UI Elements from disk", (unsigned long) self.changedElements.count);
+    });
     return;
 }
 

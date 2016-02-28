@@ -24,7 +24,7 @@
 - (void)removeUIElement:(LQUIElement *)element;
 - (LQUIElement *)uiElementFor:(UIView *)view;
 - (BOOL)viewIsTrackingEvent:(UIView *)view;
-- (BOOL)archiveUIElements;
+- (void)archiveUIElements;
 - (void)unarchiveUIElements;
 
 @end
