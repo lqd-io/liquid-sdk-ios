@@ -7,7 +7,7 @@
 //
 
 #import "InterfaceController.h"
-#import "Liquid.h"
+#import <Liquid/Liquid.h>
 
 @interface InterfaceController()
 
