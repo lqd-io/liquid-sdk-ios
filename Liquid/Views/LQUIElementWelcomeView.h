@@ -11,7 +11,9 @@
 @interface LQUIElementWelcomeView : UIView
 
 @property (nonatomic, strong) UIButton *dismissButton;
-@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) UIImageView *sketchImageView;
 @property (nonatomic, strong) UIImageView *checkImageView;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *messageText;
 
 @end

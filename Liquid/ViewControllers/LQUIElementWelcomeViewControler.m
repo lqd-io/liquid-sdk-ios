@@ -46,7 +46,7 @@
 #pragma mark - Helper methods
 
 - (void)downloadAssets {
-    self.welcomeView.backgroundImageView.image = [self getImageFromURL:@"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/add_event_phone_sketch.png"];
+    self.welcomeView.sketchImageView.image = [self getImageFromURL:@"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/add_event_phone_sketch.png"];
     self.welcomeView.checkImageView.image = [self getImageFromURL:@"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/check.png"];
 }
 
