@@ -19,7 +19,10 @@ Pod::Spec.new do |s|
   s.ios.libraries = %w(icucore)
   s.watchos.frameworks = []
 
-  s.xcconfig = {
+  s.ios.xcconfig = {
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load -licucore',
+  }
+  s.watchos.xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load',
   }
   s.source_files = 'Liquid/**/*.{m,h}'
@@ -32,5 +35,10 @@ Pod::Spec.new do |s|
                             'Liquid/Model/LQInAppMessage*.[mh]',
                             'Liquid/LQNetworkingURLConnection.[mh]',
                             'Liquid/Views/*.{m,h,xib}',
-                            'Liquid/ViewControllers/*.[mh]'
+                            'Liquid/ViewControllers/*.[mh]',
+                            'Liquid/LQUIElement*.[mh]',
+                            'Liquid/Model/LQUIElement.[mh]',
+                            'Liquid/Lib/Aspects/**/*',
+                            'Liquid/Lib/SocketRocket/**/*',
+                            'Liquid/Categories/*+LQChangeable.[mh]'
 end
