@@ -59,6 +59,10 @@
 #pragma mark - Enable/disable Development Mode
 
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken {
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        LQLog(kLQLogLevelNone, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
+        return;
+    }
     if (self.devModeEnabled) {
         return;
     }

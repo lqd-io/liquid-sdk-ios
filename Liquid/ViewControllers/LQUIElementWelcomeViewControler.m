@@ -7,11 +7,14 @@
 //
 
 #import "LQUIElementWelcomeViewControler.h"
+#import "LQUIElementWelcomeView.h"
 
 #define SKETCH_IMG_URL @"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/add_event_phone_sketch.png"
 #define CHECK_IMG_URL @"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/check.png"
 
 @interface LQUIElementWelcomeViewControler ()
+
+@property (nonatomic, strong) LQUIElementWelcomeView *welcomeView;
 
 @end
 

@@ -524,7 +524,11 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     if (![url.scheme hasPrefix:@"lqd"]) {
         return NO;
     }
-#if LQ_IOS // TODO: only support iOS 8+
+#if LQ_IOS
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        LQLog(kLQLogLevelNone, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
+        return NO;
+    }
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
     if ([urlComponents.host isEqualToString:@"edit"]) {
         for (NSURLQueryItem *item in urlComponents.queryItems) {
