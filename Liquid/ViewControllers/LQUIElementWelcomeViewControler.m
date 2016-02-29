@@ -6,12 +6,12 @@
 //  Copyright © 2016 Liquid. All rights reserved.
 //
 
-#import "LQUIElementWelcomeView.h"
 #import "LQUIElementWelcomeViewControler.h"
 
-@interface LQUIElementWelcomeViewControler ()
+#define SKETCH_IMG_URL @"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/add_event_phone_sketch.png"
+#define CHECK_IMG_URL @"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/check.png"
 
-@property (nonatomic, strong) LQUIElementWelcomeView *welcomeView;
+@interface LQUIElementWelcomeViewControler ()
 
 @end
 
@@ -21,12 +21,19 @@
 
 #pragma mark - Initializers
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self downloadAssets];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.welcomeView];
     [self.welcomeView.dismissButton addTarget:self action:@selector(dismissButtonPressed:)
                              forControlEvents:UIControlEventTouchUpInside];
-    [self downloadAssets];
 }
 
 - (LQUIElementWelcomeView *)welcomeView {
@@ -46,11 +53,23 @@
 #pragma mark - Helper methods
 
 - (void)downloadAssets {
-    self.welcomeView.sketchImageView.image = [self getImageFromURL:@"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/add_event_phone_sketch.png"];
-    self.welcomeView.checkImageView.image = [self getImageFromURL:@"https://s3-eu-west-1.amazonaws.com/lqd-io/public/event_tracking/check.png"];
+    [[[NSURLSession sharedSession] downloadTaskWithURL:[NSURL URLWithString:SKETCH_IMG_URL] completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                self.welcomeView.sketchImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+            });
+        }
+    }] resume];
+    [[[NSURLSession sharedSession] downloadTaskWithURL:[NSURL URLWithString:CHECK_IMG_URL] completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                self.welcomeView.checkImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+            });
+        }
+    }] resume];
 }
 
-- (UIImage *)getImageFromURL:(NSString *)fileURL { // TODO: move to Controller
+- (UIImage *)getImageFromURL:(NSString *)fileURL {
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:fileURL]]];
 }
 

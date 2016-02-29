@@ -64,7 +64,7 @@
         _dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _dismissButton.backgroundColor = [UIColor colorWithRed:58.0f/255 green:152.0f/255 blue:252.0f/255 alpha:1.0f];
         [_dismissButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_dismissButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+        [_dismissButton setTitleColor:[UIColor colorWithWhite:0.8f alpha:1.0f] forState:UIControlStateHighlighted];
         [_dismissButton setTitle:@"LET'S GO!" forState:UIControlStateNormal];
         _dismissButton.layer.cornerRadius = 4;
         _dismissButton.clipsToBounds = YES;

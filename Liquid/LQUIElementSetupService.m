@@ -94,7 +94,7 @@
 
 #pragma mark - UI Elements events
 
-- (void)buttonTouchDown:(UIButton *)button { // TODO: UIAlertController is only supported in iOS 8
+- (void)buttonTouchDown:(UIButton *)button {
     if (!self.devModeEnabled) {
         return;
     }
@@ -103,7 +103,7 @@
                                                       target:self
                                                          selector:@selector(longPressedButton:)
                                                     userInfo:button
-                                                     repeats:YES];
+                                                     repeats:NO];
 }
 
 - (void)longPressedButton:(NSTimer *)timer {
