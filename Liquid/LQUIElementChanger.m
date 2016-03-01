@@ -63,14 +63,18 @@
 #pragma mark - Change Elements
 
 - (BOOL)applyChangesTo:(UIView *)view {
+    if (![view isChangeable]) {
+        return false;
+    }
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid/UIElementChanger> Applying changes to %@ with identifier %@.", [view class], [view liquidIdentifier]);
     LQUIElement *uiElement = [self uiElementFor:view];
-    if (!uiElement || ![view isChangeable]) {
+    if (!uiElement) {
         return false;
     }
     if ([view isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)view;
         [button addTarget:self action:@selector(touchUpButton:) forControlEvents:UIControlEventTouchUpInside];
-        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger>Tracking events in UIButton with identifier \"%@\" and label \"%@\"", [uiElement identifier], button.titleLabel.text);
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Tracking events in UIButton with identifier \"%@\" and label \"%@\"", [uiElement identifier], button.titleLabel.text);
         return true;
     }
     return false;

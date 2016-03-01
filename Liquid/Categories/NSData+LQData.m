@@ -9,6 +9,7 @@
 #import "NSData+LQData.h"
 #import "LQHelpers.h"
 #import "LQDefaults.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @implementation NSData (LQData)
 
@@ -55,6 +56,20 @@
         return nil;
     }
     return result;
+}
+
+- (NSString *)md5digest {
+    return [[self class] md5digest:self];
+}
+
++ (NSString *)md5digest:(NSData *)input {
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(input.bytes, (unsigned int)input.length, result);
+    NSMutableString *ret = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH*2];
+    for (int i = 0; i<CC_MD5_DIGEST_LENGTH; i++) {
+        [ret appendFormat:@"%02x",result[i]];
+    }
+    return ret;
 }
 
 @end

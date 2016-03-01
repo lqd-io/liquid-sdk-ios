@@ -15,6 +15,7 @@
 #import "LQWindow.h"
 #import "LQUIElementWelcomeViewControler.h"
 #import "NSData+LQData.h"
+#import "UIButton+LQChangeable.h"
 
 #define kLQWebSocketServerrUrl @"wss://cable.onliquid.com/"
 
@@ -76,6 +77,7 @@
     if (!self.devModeEnabled) {
         return;
     }
+    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Ended development mode");
     self.elementChanger.eventTrackingDisabled = NO;
     [self.webSocket close];
     [self.elementChanger requestUiElements];
@@ -115,7 +117,7 @@
     if (button && button == timer.userInfo) {
         self.touchingDownButton = nil;
         [self presentTrackingAlertForView:button];
-        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService>Configuring button with title %@", button.titleLabel.text);
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> Configuring button with identifier %@", [button liquidIdentifier]);
     }
 }
 
@@ -212,20 +214,20 @@
 - (void)registerUIElement:(LQUIElement *)element {
     [self.elementChanger addUIElement:element];
     [self sendMessage:[element jsonDictionary] forAction:@"add_element"];
-    LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Registered a new UI Element: %@", element);
+    LQLog(kLQLogLevelDevMode, @"<Liquid/LQUIElementChanger> Registered a new UI Element: %@", element);
 }
 
 - (void)unregisterUIElement:(LQUIElement *)element {
     [self.elementChanger removeUIElement:element];
     [self sendMessage:[element jsonDictionary] forAction:@"remove_element"];
-    LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Unregistered UI Element %@", element.identifier);
+    LQLog(kLQLogLevelDevMode, @"<Liquid/LQUIElementChanger> Unregistered UI Element %@", element.identifier);
 }
 
 - (void)changeUIElement:(LQUIElement *)element {
     [self.elementChanger removeUIElement:element];
     [self.elementChanger addUIElement:element];
     [self sendMessage:[element jsonDictionary] forAction:@"change_element"];
-    LQLog(kLQLogLevelInfo, @"<Liquid/LQUIElementChanger> Changed UI Element %@", element.identifier);
+    LQLog(kLQLogLevelDevMode, @"<Liquid/LQUIElementChanger> Changed UI Element %@", element.identifier);
 }
 
 #pragma mark - WebSocket methods
