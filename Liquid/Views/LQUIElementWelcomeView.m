@@ -113,7 +113,7 @@
                                       @"message": self.messageText,
                                       @"dismiss": self.dismissButton
                                      };
-    NSString *format = @"V:|-(>=15)-[check(==36)]-(==15)-[title]-(==20)-[image(==240)]-(==20)-[message]-(==20)-[dismiss(==30)]-(>=15)-|";
+    NSString *format = @"V:|-(>=15)-[check(==36)]-(==15)-[title]-(>=20)-[image(==240)]-(>=20)-[message]-(==20)-[dismiss(==30)]-(>=15)-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:NSLayoutFormatDirectionLeadingToTrailing
                                                                  metrics:nil

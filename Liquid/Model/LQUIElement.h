@@ -15,9 +15,7 @@
 @property (nonatomic, strong, readonly) NSString *eventName;
 @property (nonatomic, strong, readonly) NSDictionary *jsonDictionary;
 
-- (instancetype)initFromUIView:(UIView *)view evetName:(NSString *)eventName;
-- (instancetype)initFromUIView:(UIView *)view;
+- (instancetype)initWithIdentifier:(NSString *)identifier eventName:(NSString *)eventName;
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
-- (BOOL)matchesUIView:(UIView *)view;
 
 @end

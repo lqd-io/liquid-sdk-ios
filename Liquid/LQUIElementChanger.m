@@ -130,11 +130,6 @@
 
 #pragma mark - Helper methods
 
-- (BOOL)viewIsTrackingEvent:(UIView *)view {
-    LQUIElement *element = [self uiElementFor:view];
-    return element && element.eventName;
-}
-
 - (LQUIElement *)uiElementFor:(UIView *)view {
     LQUIElement *element = [self.changedElements objectForKey:[view liquidIdentifier]];
     if (element) {

@@ -24,6 +24,7 @@
 @property (nonatomic, strong) LQUIElementChanger *elementChanger;
 @property (nonatomic, strong) NSTimer *longPressTimer;
 @property (nonatomic, assign) UIButton *touchingDownButton;
+@property (nonatomic, assign) NSString *touchingDownButtonIdentifier;
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *developerToken;
 
@@ -35,6 +36,7 @@
 @synthesize devModeEnabled = _devModeEnabled;
 @synthesize longPressTimer = _longPressTimer;
 @synthesize touchingDownButton = _touchingDownButton;
+@synthesize touchingDownButtonIdentifier = _touchingDownButtonIdentifier;
 @synthesize webSocket = _webSocket;
 @synthesize developerToken = _developerToken;
 
@@ -105,18 +107,19 @@
         return;
     }
     self.touchingDownButton = button;
+    self.touchingDownButtonIdentifier = [button liquidIdentifier];
     self.longPressTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                      target:self
+                                                           target:self
                                                          selector:@selector(longPressedButton:)
-                                                    userInfo:button
-                                                     repeats:NO];
+                                                         userInfo:@{ @"button": button, @"identifier": [button liquidIdentifier] }
+                                                          repeats:NO];
 }
 
 - (void)longPressedButton:(NSTimer *)timer {
     UIButton *button = self.touchingDownButton;
-    if (button && button == timer.userInfo) {
+    if (button && button == timer.userInfo[@"button"]) {
         self.touchingDownButton = nil;
-        [self presentTrackingAlertForView:button];
+        [self presentTrackingAlertForViewWithUIView:button andIdentifier:timer.userInfo[@"identifier"]];
         LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> Configuring button with identifier %@", [button liquidIdentifier]);
     }
 }
@@ -145,10 +148,11 @@
 
 #pragma mark - Alerts
 
-- (void)presentTrackingAlertForView:(UIView *)view {
+- (void)presentTrackingAlertForViewWithUIView:(UIView *)view andIdentifier:(NSString *)identifier {
     UIAlertController *alert;
+    LQUIElement *element = [self.elementChanger.changedElements objectForKey:identifier];
     NSString *klass = [[view class] description];
-    if ([self.elementChanger viewIsTrackingEvent:view]) {
+    if (element && element.eventName) {
         LQUIElement *element = [self.elementChanger uiElementFor:view];
         alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                     message:[NSString stringWithFormat:@"This %@ is being tracked, with event named '%@'", klass, element.eventName]
@@ -158,21 +162,22 @@
             [self unregisterUIElement:element];
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"Change Element" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self presentChangeTrackingEventNameForView:view currentElement:element];
+            [self presentChangeTrackingEventNameForView:view identifier:identifier currentElement:element];
         }]];
     } else {
         alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                     message:[NSString stringWithFormat:@"This %@ isn't being tracked.", klass]
                                              preferredStyle:UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self presentSetTrackingEventNameForView:view];
+            [self presentSetTrackingEventNameForView:view identifier:identifier];
+            NSLog(@"CHECKPOINT: %@", identifier);
         }]];
     }
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewControllerInTopMost:alert];
 }
 
-- (void)presentSetTrackingEventNameForView:(UIView *)view {
+- (void)presentSetTrackingEventNameForView:(UIView *)view identifier:(NSString *)identifier {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                                    message:@"Write down the name of the event"
                                                             preferredStyle:UIAlertControllerStyleAlert];
@@ -181,12 +186,13 @@
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        [self registerUIElement:[[LQUIElement alloc] initFromUIView:view evetName:alert.textFields.firstObject.text]];
+        [self registerUIElement:[[LQUIElement alloc] initWithIdentifier:identifier
+                                                              eventName:alert.textFields.firstObject.text]];
     }]];
     [self presentViewControllerInTopMost:alert];
 }
 
-- (void)presentChangeTrackingEventNameForView:(UIView *)view currentElement:(LQUIElement *)element {
+- (void)presentChangeTrackingEventNameForView:(UIView *)view identifier:(NSString *)identifier currentElement:(LQUIElement *)element {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid"
                                                                    message:@"Write down the name of the new event"
                                                             preferredStyle:UIAlertControllerStyleAlert];
@@ -196,7 +202,8 @@
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Change Event Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        [self changeUIElement:[[LQUIElement alloc] initFromUIView:view evetName:alert.textFields.firstObject.text]];
+        [self registerUIElement:[[LQUIElement alloc] initWithIdentifier:identifier
+                                                              eventName:alert.textFields.firstObject.text]];
     }]];
     [self presentViewControllerInTopMost:alert];
 }

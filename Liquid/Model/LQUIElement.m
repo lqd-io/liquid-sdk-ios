@@ -20,19 +20,11 @@
 
 #pragma mark - Initializers
 
-- (instancetype)initFromUIView:(id)view evetName:(NSString *)eventName {
-    id me = [self initFromUIView:view];
-    _eventName = eventName;
-    return me;
-}
-
-- (instancetype)initFromUIView:(UIView *)view {
+- (instancetype)initWithIdentifier:(NSString *)identifier eventName:(NSString *)eventName {
     self = [super init];
     if (self) {
-        if (![view isChangeable]) {
-            [NSException raise:NSInternalInconsistencyException format:@"Liquid: View %@ is not changeable", [view liquidIdentifier]];
-        }
-        _identifier = [NSString stringWithString:[view liquidIdentifier]];
+        _identifier = identifier;
+        _eventName = eventName;
     }
     return self;
 }
@@ -50,10 +42,6 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@", self.identifier];
-}
-
-- (BOOL)matchesUIView:(UIView *)view {
-    return [self.identifier isEqualToString:view.liquidIdentifier];
 }
 
 - (NSDictionary *)jsonDictionary {

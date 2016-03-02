@@ -14,6 +14,7 @@
 
 @interface LQUIElementChanger : NSObject
 
+@property (nonatomic, strong, readonly) NSDictionary<NSString *, LQUIElement *> *changedElements;
 @property (nonatomic, assign) BOOL eventTrackingDisabled;
 
 - (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken eventTracker:(LQEventTracker *)eventTracker;
@@ -23,7 +24,6 @@
 - (void)addUIElement:(LQUIElement *)element;
 - (void)removeUIElement:(LQUIElement *)element;
 - (LQUIElement *)uiElementFor:(UIView *)view;
-- (BOOL)viewIsTrackingEvent:(UIView *)view;
 - (void)archiveUIElements;
 - (void)unarchiveUIElements;
 
