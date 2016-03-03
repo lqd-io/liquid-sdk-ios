@@ -113,7 +113,7 @@
                                       @"message": self.messageText,
                                       @"dismiss": self.dismissButton
                                      };
-    NSString *format = @"V:|-(>=15)-[check(==36)]-(==15)-[title]-(>=20)-[image(==240)]-(>=20)-[message]-(==20)-[dismiss(==30)]-(>=15)-|";
+    NSString *format = @"V:|-(>=15)-[check(==36)]-(==15)-[title]-(==20)-[image(==240)]-(==20)-[message]-(==20)-[dismiss(==30)]-(>=15)-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:NSLayoutFormatDirectionLeadingToTrailing
                                                                  metrics:nil
@@ -125,11 +125,10 @@
     [self applyCenterXConstraintTo:self.sketchImageView];
     [self applyCenterXConstraintTo:self.titleLabel];
     [self applyCenterXConstraintTo:self.messageText];
-    NSString *format = @"H:|-(==15)-[message]-(==15)-|";
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=20)-[image(<=300)]-(>=20)-|"
                                                                  options:NSLayoutFormatDirectionLeadingToTrailing
                                                                  metrics:nil
-                                                                   views:@{ @"message": self.messageText }]];
+                                                                   views:@{ @"image": self.sketchImageView }]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(==20)-[button]-(==20)-|"
                                                                  options:0
                                                                  metrics:nil
