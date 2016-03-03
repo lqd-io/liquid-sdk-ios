@@ -46,6 +46,7 @@
 - (UIImageView *)sketchImageView {
     if (!_sketchImageView) {
         _sketchImageView = [[UIImageView alloc] init];
+        _sketchImageView.image = [[self class] placeholder:CGSizeMake(300, 300)];
         _sketchImageView.frame = self.bounds;
         _sketchImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_sketchImageView
@@ -145,5 +146,18 @@
                                                       constant:0]];
 }
 
++ (UIImage*)placeholder:(CGSize)size {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    label.backgroundColor = [UIColor colorWithWhite:0.85 alpha:0.25];
+    label.textColor = [UIColor colorWithWhite:0.7 alpha:1];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = @"loading...";
+    label.font = [UIFont systemFontOfSize:MIN(size.width, size.height) * 0.15];
+    UIGraphicsBeginImageContext(size);
+    [label.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
 
 @end
