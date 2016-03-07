@@ -16,6 +16,7 @@
 #import "LQUIElementWelcomeViewControler.h"
 #import "NSData+LQData.h"
 #import "UIButton+LQChangeable.h"
+#import "LQUIViewRecurringChanger.h"
 
 #define kLQWebSocketServerrUrl @"wss://cable.onliquid.com/"
 
@@ -27,12 +28,14 @@
 @property (nonatomic, assign) NSString *touchingDownButtonIdentifier;
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *developerToken;
+@property (nonatomic, strong) LQUIViewRecurringChanger *recurringChanger;
 
 @end
 
 @implementation LQUIElementSetupService
 
 @synthesize elementChanger = _elementChanger;
+@synthesize recurringChanger = _recurringChanger;
 @synthesize devModeEnabled = _devModeEnabled;
 @synthesize longPressTimer = _longPressTimer;
 @synthesize touchingDownButton = _touchingDownButton;
@@ -59,6 +62,14 @@
     return _webSocket;
 }
 
+- (LQUIViewRecurringChanger *)recurringChanger {
+    if (!_recurringChanger) {
+        _recurringChanger = [[LQUIViewRecurringChanger alloc] init];
+        _recurringChanger.delegate = self;
+    }
+    return _recurringChanger;
+}
+
 #pragma mark - Enable/disable Development Mode
 
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken {
@@ -73,6 +84,7 @@
     self.developerToken = developmentToken;
     LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Trying to enter development mode...");
     [self.webSocket open];
+    [self.recurringChanger enableTimer];
 }
 
 - (void)exitDevelopmentMode {
@@ -85,19 +97,7 @@
     [self.elementChanger requestUiElements];
     if (!self.devModeEnabled) return;
     _devModeEnabled = NO;
-}
-
-#pragma mark - Change UIButton
-
-- (BOOL)applySetupMenuTargetsTo:(UIView *)view {
-    if ([view isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)view;
-        [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
-        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
-        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-        return true;
-    }
-    return false;
+    [self.recurringChanger disableTimer];
 }
 
 #pragma mark - UI Elements events
@@ -307,6 +307,22 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
     LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> WebSocket close with code: %ld. Reason is %@.", code, reason);
+}
+
+#pragma mark - LQUIElementFramerDelegate methods
+
+- (BOOL)didFindView:(UIView *)view {
+    if ([view isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)view;
+        view.layer.borderColor = [UIColor greenColor].CGColor;
+        view.layer.borderWidth = 1.0f;
+        view.layer.cornerRadius = 2.0f;
+        [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
+        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
+        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+        return YES;
+    }
+    return NO;
 }
 
 @end

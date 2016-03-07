@@ -33,7 +33,7 @@
     return @"";
 }
 
-#pragma mark - Helper methods
+#pragma mark - Path generation
 
 - (NSString *)path {
     NSString *path = [NSString stringWithFormat:@"%@", [self class]];
@@ -55,6 +55,8 @@
     }
     return [NSString stringWithFormat:@"/%@", path];
 }
+
+#pragma mark - Identifiers generatiosn
 
 - (NSString *)imagePathidentifier {
     UIImage *image = [self imageForState:UIControlStateNormal];

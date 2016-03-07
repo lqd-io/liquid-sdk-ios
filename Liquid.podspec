@@ -40,5 +40,6 @@ Pod::Spec.new do |s|
                             'Liquid/Model/LQUIElement.[mh]',
                             'Liquid/Lib/Aspects/**/*',
                             'Liquid/Lib/SocketRocket/**/*',
+                            'Liquid/Lib/Liquid/LQUIViewRecurringChanger.[mh]',
                             'Liquid/Categories/*+LQChangeable.[mh]'
 end

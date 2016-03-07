@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "LQUIElementChanger.h"
 #import "LQSRWebSocket.h"
+#import "LQUIViewRecurringChanger.h"
 
-@interface LQUIElementSetupService : NSObject <SRWebSocketDelegate>
+@interface LQUIElementSetupService : NSObject <SRWebSocketDelegate, LQUIViewRecurringChangerDelegate>
 
 @property (nonatomic, assign, readonly) BOOL devModeEnabled;
 
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken;
 - (void)exitDevelopmentMode;
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger;
-- (BOOL)applySetupMenuTargetsTo:(UIView *)view;
 
 @end
