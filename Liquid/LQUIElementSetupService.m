@@ -91,13 +91,13 @@
     if (!self.devModeEnabled) {
         return;
     }
-    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Ended development mode");
+    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Exiting development mode...");
     self.elementChanger.eventTrackingDisabled = NO;
     [self.webSocket close];
     [self.elementChanger requestUiElements];
-    if (!self.devModeEnabled) return;
-    _devModeEnabled = NO;
     [self.recurringChanger disableTimer];
+    [self showEndDevelopmentModeAlert];
+    _devModeEnabled = NO;
 }
 
 #pragma mark - UI Elements events
@@ -213,6 +213,17 @@
                                                                    message:@"An error occured while connecting to Liquid servers. Please try again."
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewControllerInTopMost:alert];
+}
+
+- (void)showEndDevelopmentModeAlert {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Exiting Event Tracking Mode"
+                                                                   message:@"To exit event tracking mode your app needs to be closed."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Keep app open" style:UIAlertActionStyleDefault handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Close app (recommended)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        exit(0);
+    }]];
     [self presentViewControllerInTopMost:alert];
 }
 
