@@ -101,6 +101,31 @@
     }];
 }
 
+- (void)exitDevelopmentMode {
+    if (!self.devModeEnabled) {
+        return;
+    }
+    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Exiting development mode...");
+    self.elementChanger.eventTrackingDisabled = NO;
+    [self.webSocket close];
+    [self.elementChanger requestUiElements];
+    [self.recurringChanger disableTimer];
+    [self showEndDevelopmentModeAlert];
+    _devModeEnabled = NO;
+
+    // Disable dev mode for already created views:
+    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSSet *weakValues) {
+        for (LQWeakValue *weakValue in weakValues) {
+            __block UIView *view = [weakValue nominalValue];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if (view) {
+                    [self unsetWireFrameOnView:view];
+                }
+            });
+        }
+    }];
+}
+
 - (BOOL)enableSetupOnView:(UIView *)view {
     if (![view isChangeable]) {
         return NO;
@@ -116,19 +141,29 @@
     return NO;
 }
 
+#pragma mark - Wirelframe actions
+
+- (void)setWireframeOnView:(UIView *)view enabled:(BOOL)enabled {
+    LQWireframeLayer *wireframe;
+    for (CALayer *sublayer in view.layer.sublayers) {
+        if ([sublayer isKindOfClass:[LQWireframeLayer class]]) {
+            wireframe = (LQWireframeLayer *)sublayer;
+        }
+    }
+    UIColor *color = (enabled ? [UIColor redColor] : [UIColor blueColor]);
+    if (wireframe) {
+        wireframe.borderColor = color.CGColor;
+    } else {
+        [view.layer addSublayer:[[LQWireframeLayer alloc] initWithFrame:view.bounds color:color]];
+    }
 }
 
-- (void)exitDevelopmentMode {
-    if (!self.devModeEnabled) {
-        return;
+- (void)unsetWireFrameOnView:(UIView *)view {
+    for (CALayer *sublayer in view.layer.sublayers) {
+        if ([sublayer isKindOfClass:[LQWireframeLayer class]]) {
+            [sublayer removeFromSuperlayer];
+        }
     }
-    LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Exiting development mode...");
-    self.elementChanger.eventTrackingDisabled = NO;
-    [self.webSocket close];
-    [self.elementChanger requestUiElements];
-    [self.recurringChanger disableTimer];
-    [self showEndDevelopmentModeAlert];
-    _devModeEnabled = NO;
 }
 
 #pragma mark - UI Elements events
@@ -258,24 +293,6 @@
     }]];
     [self presentViewControllerInTopMost:alert];
 }
-
-#pragma mark - Wirelframe actions
-
-- (void)setWireframeOnView:(UIView *)view enabled:(BOOL)enabled {
-    LQWireframeLayer *wireframe;
-    for (CALayer *sublayer in view.layer.sublayers) {
-        if ([sublayer isKindOfClass:[LQWireframeLayer class]]) {
-            wireframe = (LQWireframeLayer *)sublayer;
-        }
-    }
-    UIColor *color = (enabled ? [UIColor redColor] : [UIColor blueColor]);
-    if (wireframe) {
-        wireframe.borderColor = color.CGColor;
-    } else {
-        [view.layer addSublayer:[[LQWireframeLayer alloc] initWithFrame:view.bounds color:color]];
-    }
-}
-
 
 #pragma mark - Button actions
 
