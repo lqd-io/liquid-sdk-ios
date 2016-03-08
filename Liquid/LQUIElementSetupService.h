@@ -18,5 +18,7 @@
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken;
 - (void)exitDevelopmentMode;
 - (instancetype)initWithUIElementChanger:(LQUIElementChanger *)elementChanger;
+- (BOOL)enableSetupOnView:(UIView *)view;
+- (BOOL)disableSetupOnView:(UIView *)view;
 
 @end

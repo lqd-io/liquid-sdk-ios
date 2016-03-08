@@ -11,15 +11,18 @@
 #import "LQUser.h"
 #import "LQUIElement.h"
 #import "LQEventTracker.h"
+#import "LQLightweightSet.h"
 
 @interface LQUIElementChanger : NSObject
 
 @property (nonatomic, strong, readonly) NSDictionary<NSString *, LQUIElement *> *changedElements;
+@property (nonatomic, strong, readonly) LQLightweightSet *registeredViews;
 @property (nonatomic, assign) BOOL eventTrackingDisabled;
 
 - (instancetype)initWithNetworking:(LQNetworking *)networking appToken:(NSString *)appToken eventTracker:(LQEventTracker *)eventTracker;
 - (void)interceptUIElementsWithBlock:(void(^)(UIView *view))interceptBlock;
 - (BOOL)applyChangesTo:(UIView *)view;
+- (BOOL)registerView:(UIView *)view;
 - (void)requestUiElements;
 - (void)addUIElement:(LQUIElement *)element;
 - (void)removeUIElement:(LQUIElement *)element;

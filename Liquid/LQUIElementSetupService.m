@@ -85,6 +85,40 @@
     LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Trying to enter development mode...");
     [self.webSocket open];
     [self.recurringChanger enableTimer];
+    
+    // Enable dev mode for already created views:
+    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSSet *weakValues) {
+        for (LQWeakValue *weakValue in weakValues) {
+            __block UIView *view = [weakValue nominalValue];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if (view) {
+                    [self enableSetupOnView:view];
+                }
+            });
+        }
+    }];
+}
+
+- (BOOL)enableSetupOnView:(UIView *)view {
+    if ([view isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)view;
+
+        CALayer *layer = [[CALayer alloc] init];
+        layer.frame = button.bounds;
+        layer.borderColor = [UIColor greenColor].CGColor;
+        layer.borderWidth = 1.0f;
+        layer.cornerRadius = 2.0f;
+        layer.zPosition = 999999999;
+        [button.layer addSublayer:layer];
+
+        [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
+        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
+        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+        return YES;
+    }
+    return NO;
+}
+
 }
 
 - (void)exitDevelopmentMode {

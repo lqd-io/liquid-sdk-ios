@@ -195,6 +195,8 @@
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
 		A972C91E1C8B0B21003A47C1 /* LQUIViewRecurringChanger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQUIViewRecurringChanger.h; sourceTree = "<group>"; };
 		A972C91F1C8B0B21003A47C1 /* LQUIViewRecurringChanger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQUIViewRecurringChanger.m; sourceTree = "<group>"; };
+		A97DF0091C8EFEC400D4CAA5 /* LQLightweightSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQLightweightSet.h; sourceTree = "<group>"; };
+		A97DF00A1C8EFEC400D4CAA5 /* LQLightweightSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQLightweightSet.m; sourceTree = "<group>"; };
 		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98CF0071949C7A3003DF949 /* LiquidDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidDemo-Info.plist"; sourceTree = "<group>"; };
 		A98CF0091949C7A3003DF949 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -237,6 +239,8 @@
 		A99EB5521924DB730060E484 /* UIColor+LQColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+LQColor.h"; sourceTree = "<group>"; };
 		A99EB5531924DB730060E484 /* UIColor+LQColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+LQColor.m"; sourceTree = "<group>"; };
 		A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQLiquidPackageSpec.m; path = Model/LQLiquidPackageSpec.m; sourceTree = "<group>"; };
+		A9A51D641C8DDB1F0033FEE8 /* LQWeakValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQWeakValue.h; sourceTree = "<group>"; };
+		A9A51D651C8DDB1F0033FEE8 /* LQWeakValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQWeakValue.m; sourceTree = "<group>"; };
 		A9A58B2A19736B27007085C9 /* LQUserSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQUserSpec.m; path = Model/LQUserSpec.m; sourceTree = "<group>"; };
 		A9A602D21C209BAD001EE078 /* UIButton+LQChangeable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+LQChangeable.h"; sourceTree = "<group>"; };
 		A9A602D31C209BAD001EE078 /* UIButton+LQChangeable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+LQChangeable.m"; sourceTree = "<group>"; };
@@ -569,6 +573,10 @@
 				A9FBA7AC1B03B0E200900AAC /* LQKeychainItem.m */,
 				A96B47BF1C199E1600A6DF8D /* LQUIElement.h */,
 				A96B47C01C199E1600A6DF8D /* LQUIElement.m */,
+				A9A51D641C8DDB1F0033FEE8 /* LQWeakValue.h */,
+				A9A51D651C8DDB1F0033FEE8 /* LQWeakValue.m */,
+				A97DF0091C8EFEC400D4CAA5 /* LQLightweightSet.h */,
+				A97DF00A1C8EFEC400D4CAA5 /* LQLightweightSet.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";

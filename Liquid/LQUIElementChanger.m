@@ -20,6 +20,7 @@
 }
 
 @property (nonatomic, strong) NSDictionary<NSString *, LQUIElement *> *changedElements;
+@property (nonatomic, strong) LQLightweightSet *registeredViews;
 @property (nonatomic, strong) LQNetworking *networking;
 @property (nonatomic, strong) NSString *appToken;
 @property (nonatomic, strong) LQEventTracker *eventTracker;
@@ -29,6 +30,7 @@
 @implementation LQUIElementChanger
 
 @synthesize changedElements = _changedElements;
+@synthesize registeredViews = _registeredViews;
 @synthesize networking = _networking;
 @synthesize appToken = _appToken;
 @synthesize eventTracker = _eventTracker;
@@ -60,24 +62,40 @@
     });
 }
 
+- (LQLightweightSet *)registeredViews {
+    if (!_registeredViews) {
+        _registeredViews = [[LQLightweightSet alloc] init];
+    }
+    return _registeredViews;
+}
+
 #pragma mark - Change Elements
 
-- (BOOL)applyChangesTo:(UIView *)view {
+- (BOOL)registerView:(UIView *)view {
     if (![view isChangeable]) {
-        return false;
+        return NO;
     }
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid/UIElementChanger> Applying changes to %@ with identifier %@.", [view class], [view liquidIdentifier]);
-    LQUIElement *uiElement = [self uiElementFor:view];
-    if (!uiElement) {
-        return false;
+    NSString *identifier = [view liquidIdentifier];
+    LQLog(kLQLogLevelInfoVerbose, @"<Liquid/UIElementChanger> Registering %@ with identifier %@.", [view class], identifier);
+
+    // Register view for future usage:
+    [self.registeredViews addObject:view];
+
+    return [self applyChangesTo:view];
+}
+
+- (BOOL)applyChangesTo:(UIView *)view {
+    LQUIElement *element = [self uiElementFor:view];
+    if (!element) {
+        return NO;
     }
     if ([view isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)view;
         [button addTarget:self action:@selector(touchUpButton:) forControlEvents:UIControlEventTouchUpInside];
-        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Tracking events in UIButton with identifier \"%@\" and label \"%@\"", [uiElement identifier], button.titleLabel.text);
-        return true;
+        LQLog(kLQLogLevelInfo, @"<Liquid/UIElementChanger> Tracking events in UIButton with identifier \"%@\" and label \"%@\"", [element identifier], button.titleLabel.text);
+        return YES;
     }
-    return false;
+    return NO;
 }
 
 - (void)touchUpButton:(UIButton *)button {
