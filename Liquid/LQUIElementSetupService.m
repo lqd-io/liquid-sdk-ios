@@ -89,7 +89,7 @@
     [self.recurringChanger enableTimer];
     
     // Enable dev mode for already created views:
-    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSSet *weakValues) {
+    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSArray *weakValues) {
         for (LQWeakValue *weakValue in weakValues) {
             __block UIView *view = [weakValue nominalValue];
             dispatch_sync(dispatch_get_main_queue(), ^{
@@ -114,7 +114,7 @@
     _devModeEnabled = NO;
 
     // Disable dev mode for already created views:
-    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSSet *weakValues) {
+    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSArray *weakValues) {
         for (LQWeakValue *weakValue in weakValues) {
             __block UIView *view = [weakValue nominalValue];
             dispatch_sync(dispatch_get_main_queue(), ^{

@@ -12,6 +12,6 @@
 @interface LQLightweightSet : NSObject
 
 - (void)addObject:(id)object;
-- (void)getExistingWeakValuesWithCompletionHandler:(void(^)(NSSet *weakValues))completionBlock;
+- (void)getExistingWeakValuesWithCompletionHandler:(void(^)(NSArray *weakValues))completionBlock;
 
 @end
