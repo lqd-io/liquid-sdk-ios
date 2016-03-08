@@ -184,12 +184,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [self.uiElementChanger unarchiveUIElements];
     [self.uiElementChanger requestUiElements];
     [self.uiElementChanger interceptUIElementsWithBlock:^(UIView *addedView) {
-        // Apply tracking capabilities:
-        [self.uiElementChanger applyChangesTo:addedView];
-        // Register views to have their weak references later:
-        [self.uiElementChanger registerView:addedView];
-        // Enable dev mode for the new views:
-        if ([self.uiElementSetupService devModeEnabled]) {
+        [self.uiElementChanger applyChangesTo:addedView]; // apply tracking capabilities
+        [self.uiElementChanger registerView:addedView]; // register views to have their weak references later
+        if ([self.uiElementSetupService devModeEnabled]) { // enable dev mode for new views
             [self.uiElementSetupService enableSetupOnView:addedView];
         }
     }];

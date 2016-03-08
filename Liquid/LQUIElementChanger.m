@@ -77,11 +77,8 @@
     }
     NSString *identifier = [view liquidIdentifier];
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid/UIElementChanger> Registering %@ with identifier %@.", [view class], identifier);
-
-    // Register view for future usage:
     [self.registeredViews addObject:view];
-
-    return [self applyChangesTo:view];
+    return YES;
 }
 
 - (BOOL)applyChangesTo:(UIView *)view {
