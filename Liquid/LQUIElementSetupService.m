@@ -15,8 +15,10 @@
 #import "LQWindow.h"
 #import "LQUIElementWelcomeViewControler.h"
 #import "NSData+LQData.h"
+#import "UIView+LQChangeable.h"
 #import "UIButton+LQChangeable.h"
 #import "LQUIViewRecurringChanger.h"
+#import "LQWireframeLayer.h"
 
 #define kLQWebSocketServerrUrl @"wss://cable.onliquid.com/"
 
@@ -100,17 +102,12 @@
 }
 
 - (BOOL)enableSetupOnView:(UIView *)view {
+    if (![view isChangeable]) {
+        return NO;
+    }
     if ([view isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)view;
-
-        CALayer *layer = [[CALayer alloc] init];
-        layer.frame = button.bounds;
-        layer.borderColor = [UIColor greenColor].CGColor;
-        layer.borderWidth = 1.0f;
-        layer.cornerRadius = 2.0f;
-        layer.zPosition = 999999999;
-        [button.layer addSublayer:layer];
-
+        [self setWireframeOnView:button enabled:([self.elementChanger.changedElements objectForKey:[view liquidIdentifier]])];
         [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
         [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
         [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside];
@@ -193,6 +190,7 @@
                                              preferredStyle:UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking"
                                                   style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+            [self setWireframeOnView:view enabled:NO];
             [self unregisterUIElement:element];
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"Change Element" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -204,7 +202,6 @@
                                              preferredStyle:UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             [self presentSetTrackingEventNameForView:view identifier:identifier];
-            NSLog(@"CHECKPOINT: %@", identifier);
         }]];
     }
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
@@ -220,6 +217,7 @@
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [self setWireframeOnView:view enabled:YES];
         [self registerUIElement:[[LQUIElement alloc] initWithIdentifier:identifier
                                                               eventName:alert.textFields.firstObject.text]];
     }]];
@@ -260,6 +258,24 @@
     }]];
     [self presentViewControllerInTopMost:alert];
 }
+
+#pragma mark - Wirelframe actions
+
+- (void)setWireframeOnView:(UIView *)view enabled:(BOOL)enabled {
+    LQWireframeLayer *wireframe;
+    for (CALayer *sublayer in view.layer.sublayers) {
+        if ([sublayer isKindOfClass:[LQWireframeLayer class]]) {
+            wireframe = (LQWireframeLayer *)sublayer;
+        }
+    }
+    UIColor *color = (enabled ? [UIColor redColor] : [UIColor blueColor]);
+    if (wireframe) {
+        wireframe.borderColor = color.CGColor;
+    } else {
+        [view.layer addSublayer:[[LQWireframeLayer alloc] initWithFrame:view.bounds color:color]];
+    }
+}
+
 
 #pragma mark - Button actions
 
@@ -357,17 +373,7 @@
 #pragma mark - LQUIElementFramerDelegate methods
 
 - (BOOL)didFindView:(UIView *)view {
-    if ([view isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)view;
-        view.layer.borderColor = [UIColor greenColor].CGColor;
-        view.layer.borderWidth = 1.0f;
-        view.layer.cornerRadius = 2.0f;
-        [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
-        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
-        [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-        return YES;
-    }
-    return NO;
+    return [self enableSetupOnView:view];
 }
 
 @end
