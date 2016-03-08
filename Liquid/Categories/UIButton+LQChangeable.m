@@ -30,7 +30,7 @@
     if ((identifier = [self textIdentifier])) {
         return [NSString stringWithFormat:@"?title=%@", identifier];
     }
-    return @"";
+    return @"?undefined";
 }
 
 #pragma mark - Path generation
