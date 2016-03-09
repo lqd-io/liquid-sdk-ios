@@ -144,17 +144,25 @@
 #pragma mark - Wirelframe actions
 
 - (void)setWireframeOnView:(UIView *)view enabled:(BOOL)enabled {
+    UIColor *color = (enabled ? [UIColor redColor] : [UIColor blueColor]);
     LQWireframeLayer *wireframe;
     for (CALayer *sublayer in view.layer.sublayers) {
         if ([sublayer isKindOfClass:[LQWireframeLayer class]]) {
             wireframe = (LQWireframeLayer *)sublayer;
         }
     }
-    UIColor *color = (enabled ? [UIColor redColor] : [UIColor blueColor]);
     if (wireframe) {
         wireframe.borderColor = color.CGColor;
     } else {
         [view.layer addSublayer:[[LQWireframeLayer alloc] initWithFrame:view.bounds color:color]];
+    }
+
+    // Also set wireframe on view layer, if needed:
+    if (view.layer.borderWidth > 0.0f) {
+        view.layer.borderColor = color.CGColor;
+        view.layer.borderWidth = 1.0f;
+        view.layer.cornerRadius = 2.0f;
+        view.layer.zPosition = 999999999;
     }
 }
 
@@ -164,6 +172,20 @@
             [sublayer removeFromSuperlayer];
         }
     }
+}
+
+- (void)refreshAllWireframes {
+    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSArray *weakValues) {
+        for (LQWeakValue *weakValue in weakValues) {
+            __block UIView *view = [weakValue nominalValue];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if (view) {
+                    BOOL enabled = [self.elementChanger.changedElements objectForKey:[view liquidIdentifier]] != nil;
+                    [self setWireframeOnView:view enabled:enabled];
+                }
+            });
+        }
+    }];
 }
 
 #pragma mark - UI Elements events
@@ -226,6 +248,7 @@
         [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking"
                                                   style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
             [self setWireframeOnView:view enabled:NO];
+            [self refreshAllWireframes];
             [self unregisterUIElement:element];
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"Change Element" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -253,6 +276,7 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self setWireframeOnView:view enabled:YES];
+        [self refreshAllWireframes];
         [self registerUIElement:[[LQUIElement alloc] initWithIdentifier:identifier
                                                               eventName:alert.textFields.firstObject.text]];
     }]];
