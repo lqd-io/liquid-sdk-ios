@@ -75,8 +75,6 @@
     if (![view isChangeable] || [[view liquidIdentifier] containsString:@"/LQ"]) {
         return NO;
     }
-    NSString *identifier = [view liquidIdentifier];
-    LQLog(kLQLogLevelInfoVerbose, @"<Liquid/UIElementChanger> Registering %@ with identifier %@.", [view class], identifier);
     [self.registeredViews addObject:view];
     return YES;
 }
