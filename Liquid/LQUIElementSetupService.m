@@ -127,7 +127,7 @@
 }
 
 - (BOOL)enableSetupOnView:(UIView *)view {
-    if (![view isChangeable]) {
+    if (![view isChangeable] || [[view liquidIdentifier] containsString:@"/LQ"]) {
         return NO;
     }
     if ([view isKindOfClass:[UIButton class]]) {

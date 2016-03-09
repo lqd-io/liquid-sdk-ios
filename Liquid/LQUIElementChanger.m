@@ -72,7 +72,7 @@
 #pragma mark - Change Elements
 
 - (BOOL)registerView:(UIView *)view {
-    if (![view isChangeable]) {
+    if (![view isChangeable] || [[view liquidIdentifier] containsString:@"/LQ"]) {
         return NO;
     }
     NSString *identifier = [view liquidIdentifier];
