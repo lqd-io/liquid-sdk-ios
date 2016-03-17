@@ -14,9 +14,13 @@
 #ifndef TARGET_OS_WATCH
 #define TARGET_OS_WATCH 0
 #endif
+#ifndef TARGET_OS_TV
+#define TARGET_OS_TV 0
+#endif
 
 #define LQ_WATCHOS TARGET_OS_WATCH
 #define LQ_IOS TARGET_OS_IOS
+#define LQ_TVOS TARGET_OS_TV
 #define LQ_INAPP_MESSAGES_SUPPORT LQ_IOS
 
 #define kLQVersion @"2.1.1"

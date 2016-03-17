@@ -8,12 +8,17 @@
 
 #import "LQDefaults.h"
 
-#if LQ_WATCHOS
-#import "Liquid+watchOS.h"
-#import "LQDeviceWatchOS.h"
-#else
+#if LQ_IOS
 #import "Liquid+iOS.h"
 #import "LQDeviceIOS.h"
+#elif LQ_WATCHOS
+#import "Liquid+watchOS.h"
+#import "LQDeviceWatchOS.h"
+#elif LQ_TVOS
+#import "Liquid+tvOS.h"
+#import "LQDeviceTVOS.h"
+#endif
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import "LQInAppMessages.h"
 #endif
 #import "LQEvent.h"
@@ -140,19 +145,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
         self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
         self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
-#if LQ_IOS
+#if LQ_INAPP_MESSAGES_SUPPORT
         self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
 #endif
-
-#if LQ_WATCHOS
-        self.device = [LQDeviceWatchOS sharedInstance];
-#else
-        self.device = [LQDeviceIOS sharedInstance];
-#endif
-
         _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
 #if LQ_IOS
+        self.device = [LQDeviceIOS sharedInstance];
         [self initializeBackgroundTaskIdentifier];
+#elif LQ_WATCHOS
+        self.device = [LQDeviceWatchOS sharedInstance];
+#elif LQ_TVOS
+        self.device = [LQDeviceTVOS sharedInstance];
 #endif
 
         // Load Liquid Package from previous launch:
@@ -176,7 +179,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [self bindNotifications];
 
         // Request and present In-App Messages
-#if LQ_IOS
+#if LQ_INAPP_MESSAGES_SUPPORT
         [self.inAppMessages requestAndPresentInAppMessages];
 #endif
 
@@ -201,7 +204,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)setCurrentUser:(LQUser *)currentUser {
     _currentUser = currentUser;
     _eventTracker.currentUser = currentUser;
-#if LQ_IOS
+#if LQ_INAPP_MESSAGES_SUPPORT
     _inAppMessages.currentUser = currentUser;
 #endif
 }

@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 #import "LQNetworkingFactory.h"
 #import "LQDefaults.h"
-#if LQ_IOS
+#if LQ_IOS || LQ_TVOS
 #import <UIKit/UIKit.h>
 #endif
 
@@ -46,14 +46,14 @@ static Class _lqNetworkingClass = nil;
 
 + (Class)lqNetworkingClass {
     if (!_lqNetworkingClass) {
-#if LQ_WATCHOS
-        _lqNetworkingClass = [self classWithName:@"LQNetworkingURLSession"];
-#else
+#if LQ_IOS
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
             _lqNetworkingClass = [self classWithName:@"LQNetworkingURLSession"];
         } else {
             _lqNetworkingClass = [self classWithName:@"LQNetworkingURLConnection"];
         }
+#else
+        _lqNetworkingClass = [self classWithName:@"LQNetworkingURLSession"];
 #endif
     }
     return _lqNetworkingClass;
