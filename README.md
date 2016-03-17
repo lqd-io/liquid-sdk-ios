@@ -36,6 +36,11 @@ target 'ExampleApp WatchKit App' do
   platform :watchos, '2.0'
   pod 'Liquid'
 end
+
+target 'Example TV App' do
+  platform :tvos, '9.0'
+  pod 'Liquid'
+end
 ```
 
 ## Start using Liquid
