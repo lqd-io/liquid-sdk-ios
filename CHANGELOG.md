@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.2.0: Add Apple TV Support
+
+* **[feature]** Add support for Apple TV (tvOS 9.0+)
+
 ## 2.1.1: Better support for Deep Linking in Push Notifications
 
 * **[enhancement]** Add a method to automatically handle deep linking in push notifications: `handleRemoteNotification:forApplication:`, intended to be called when a push nofification is received by `AppDelegate`.
