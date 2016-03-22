@@ -40,13 +40,13 @@
     if ([self isKindOfClass:[UIControl class]]) {
         UIResponder *responder = [self nextResponder];
         do {
-//            if ([responder isKindOfClass:[UIWindow class]]) {
-//                // Stop at /UIWindow, which means removing all the path before it.
-//                // Example:
-//                //   remove /LiquidDemoAppDelegate/UIApplication/UIWindow/
-//                //   and keep just /LiquidDemoViewController/UIView/UIButton?title=Track "Buy Product"
-//                return [NSString stringWithFormat:@"/%@", path];
-//            }
+            if ([responder isKindOfClass:[UIWindow class]]) {
+                // Stop at /UIWindow, which means removing all the path before it.
+                // Example:
+                //   remove /LiquidDemoAppDelegate/UIApplication/UIWindow/
+                //   and keep just /LiquidDemoViewController/UIView/UIButton?title=Track "Buy Product"
+                return [NSString stringWithFormat:@"/%@", path];
+            }
             if ([responder isKindOfClass:[UIViewController class]]) {
                 path = [NSString stringWithFormat:@"%@/%@", [responder class], path];
             }
