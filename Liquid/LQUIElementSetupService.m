@@ -104,21 +104,8 @@
     [self.webSocket close];
     self.webSocket = nil;
     [self.elementChanger requestUiElements];
-    [self.recurringChanger disableTimer];
-    [self showEndDevelopmentModeAlert];
     _devModeEnabled = NO;
-
-    // Disable dev mode for already created views:
-    [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSArray *weakValues) {
-        for (LQWeakValue *weakValue in weakValues) {
-            __block UIView *view = [weakValue nominalValue];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                if (view) {
-                    [self unsetWireFrameOnView:view];
-                }
-            });
-        }
-    }];
+    [self showEndDevelopmentModeAlert];
 }
 
 - (BOOL)enableSetupOnView:(UIView *)view {
@@ -153,12 +140,10 @@
     }
 
     // Also set wireframe on view layer, if needed:
-    if (view.layer.borderWidth > 0.0f) {
-        view.layer.borderColor = color.CGColor;
-        view.layer.borderWidth = 1.0f;
-        view.layer.cornerRadius = 2.0f;
-        view.layer.zPosition = 999999999;
-    }
+    view.layer.borderColor = color.CGColor;
+    view.layer.borderWidth = 1.0f;
+    view.layer.cornerRadius = 2.0f;
+    view.layer.zPosition = 999999999;
 }
 
 - (void)unsetWireFrameOnView:(UIView *)view {
