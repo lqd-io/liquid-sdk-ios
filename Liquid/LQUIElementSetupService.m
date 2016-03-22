@@ -77,6 +77,11 @@
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken {
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
         LQLog(kLQLogLevelNone, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid Event Tracking Mode"
+                                                                       message:@"Error: You need iOS 8+ to use Event Tracking Mode."
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewControllerInTopMost:alert];
         return;
     }
     if (self.devModeEnabled) {
@@ -242,23 +247,23 @@
     NSString *klass = [[view class] description];
     if (element && element.eventName) {
         LQUIElement *element = [self.elementChanger uiElementFor:view];
-        alert = [UIAlertController alertControllerWithTitle:@"Liquid"
-                                                    message:[NSString stringWithFormat:@"This %@ is being tracked, with event named '%@'", klass, element.eventName]
+        alert = [UIAlertController alertControllerWithTitle:@"Liquid Event Tracking Mode"
+                                                    message:[NSString stringWithFormat:@"This %@ is being tracked by Liquid as the event '%@'", klass, element.eventName]
                                              preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Stop Tracking"
+        [alert addAction:[UIAlertAction actionWithTitle:@"Remove Event"
                                                   style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
             [self setWireframeOnView:view enabled:NO];
             [self refreshAllWireframes];
             [self unregisterUIElement:element];
         }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Change Element" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"Rename Event" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             [self presentChangeTrackingEventNameForView:view identifier:identifier currentElement:element];
         }]];
     } else {
-        alert = [UIAlertController alertControllerWithTitle:@"Liquid"
+        alert = [UIAlertController alertControllerWithTitle:@"Liquid Event Tracking Mode"
                                                     message:[NSString stringWithFormat:@"This %@ isn't being tracked.", klass]
                                              preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"Add Event" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             [self presentSetTrackingEventNameForView:view identifier:identifier];
         }]];
     }
@@ -267,14 +272,14 @@
 }
 
 - (void)presentSetTrackingEventNameForView:(UIView *)view identifier:(NSString *)identifier {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid"
-                                                                   message:@"Write down the name of the event"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set the Event Name"
+                                                                   message:[[NSString alloc] initWithFormat:@"Identifier for element is:\n%@", [view liquidIdentifier]]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = NSLocalizedString(@"e.g: Button Pressed", @"");
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Start Tracking" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self setWireframeOnView:view enabled:YES];
         [self refreshAllWireframes];
         [self registerUIElement:[[LQUIElement alloc] initWithIdentifier:identifier
@@ -284,17 +289,16 @@
 }
 
 - (void)presentChangeTrackingEventNameForView:(UIView *)view identifier:(NSString *)identifier currentElement:(LQUIElement *)element {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid"
-                                                                   message:@"Write down the name of the new event"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Rename the Event Name"
+                                                                   message:[[NSString alloc] initWithFormat:@"Identifier for element is:\n%@", [view liquidIdentifier]]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        NSString *currentEventName = [NSString stringWithFormat:@"Current: %@", element.eventName];
-        textField.placeholder = NSLocalizedString(currentEventName, @"");
+        textField.text = [NSString stringWithFormat:@"%@", element.eventName];
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Change Event Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        [self registerUIElement:[[LQUIElement alloc] initWithIdentifier:identifier
-                                                              eventName:alert.textFields.firstObject.text]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [self changeUIElement:[[LQUIElement alloc] initWithIdentifier:identifier
+                                                            eventName:alert.textFields.firstObject.text]];
     }]];
     [self presentViewControllerInTopMost:alert];
 }
@@ -309,10 +313,9 @@
 
 - (void)showEndDevelopmentModeAlert {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Exiting Event Tracking Mode"
-                                                                   message:@"To exit event tracking mode your app needs to be closed."
+                                                                   message:@"To exit Event Tracking Mode your app needs to be closed."
                                                             preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Keep app open" style:UIAlertActionStyleDefault handler:nil]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Close app (recommended)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"Close App" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         exit(0);
     }]];
     [self presentViewControllerInTopMost:alert];
