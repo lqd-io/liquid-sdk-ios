@@ -85,7 +85,8 @@
         return;
     }
     if (self.devModeEnabled) {
-        return;
+        [self.webSocket close];
+        self.webSocket = nil;
     }
     self.elementChanger.eventTrackingDisabled = YES;
     self.developerToken = developmentToken;
@@ -113,6 +114,7 @@
     LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Exiting development mode...");
     self.elementChanger.eventTrackingDisabled = NO;
     [self.webSocket close];
+    self.webSocket = nil;
     [self.elementChanger requestUiElements];
     [self.recurringChanger disableTimer];
     [self showEndDevelopmentModeAlert];
