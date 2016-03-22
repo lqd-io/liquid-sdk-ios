@@ -193,8 +193,6 @@
 		A96D872F1BD2B2E2003158EB /* LQNetworkingFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQNetworkingFactory.h; sourceTree = "<group>"; };
 		A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQNetworkingFactory.m; sourceTree = "<group>"; };
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
-		A972C91E1C8B0B21003A47C1 /* LQUIViewRecurringChanger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQUIViewRecurringChanger.h; sourceTree = "<group>"; };
-		A972C91F1C8B0B21003A47C1 /* LQUIViewRecurringChanger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQUIViewRecurringChanger.m; sourceTree = "<group>"; };
 		A97DF0091C8EFEC400D4CAA5 /* LQLightweightSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQLightweightSet.h; sourceTree = "<group>"; };
 		A97DF00A1C8EFEC400D4CAA5 /* LQLightweightSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQLightweightSet.m; sourceTree = "<group>"; };
 		A97DF00B1C8F4E1500D4CAA5 /* LQWireframeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQWireframeLayer.h; sourceTree = "<group>"; };
@@ -616,8 +614,6 @@
 				A9D47A631C70D94B00726B1B /* LQStorage.m */,
 				A9D47A641C70D94B00726B1B /* LQUserDefaults.h */,
 				A9D47A651C70D94B00726B1B /* LQUserDefaults.m */,
-				A972C91E1C8B0B21003A47C1 /* LQUIViewRecurringChanger.h */,
-				A972C91F1C8B0B21003A47C1 /* LQUIViewRecurringChanger.m */,
 			);
 			name = Liquid;
 			path = Lib/Liquid;

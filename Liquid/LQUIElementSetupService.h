@@ -9,9 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "LQUIElementChanger.h"
 #import "LQSRWebSocket.h"
-#import "LQUIViewRecurringChanger.h"
 
-@interface LQUIElementSetupService : NSObject <SRWebSocketDelegate, LQUIViewRecurringChangerDelegate>
+@interface LQUIElementSetupService : NSObject <SRWebSocketDelegate>
 
 @property (nonatomic, assign, readonly) BOOL devModeEnabled;
 

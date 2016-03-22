@@ -17,7 +17,6 @@
 #import "NSData+LQData.h"
 #import "UIView+LQChangeable.h"
 #import "UIButton+LQChangeable.h"
-#import "LQUIViewRecurringChanger.h"
 #import "LQWireframeLayer.h"
 
 #define kLQWebSocketServerrUrl @"wss://cable.onliquid.com/"
@@ -30,14 +29,12 @@
 @property (nonatomic, assign) NSString *touchingDownButtonIdentifier;
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *developerToken;
-@property (nonatomic, strong) LQUIViewRecurringChanger *recurringChanger;
 
 @end
 
 @implementation LQUIElementSetupService
 
 @synthesize elementChanger = _elementChanger;
-@synthesize recurringChanger = _recurringChanger;
 @synthesize devModeEnabled = _devModeEnabled;
 @synthesize longPressTimer = _longPressTimer;
 @synthesize touchingDownButton = _touchingDownButton;
@@ -64,14 +61,6 @@
     return _webSocket;
 }
 
-- (LQUIViewRecurringChanger *)recurringChanger {
-    if (!_recurringChanger) {
-        _recurringChanger = [[LQUIViewRecurringChanger alloc] init];
-        _recurringChanger.delegate = self;
-    }
-    return _recurringChanger;
-}
-
 #pragma mark - Enable/disable Development Mode
 
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken {
@@ -92,7 +81,6 @@
     self.developerToken = developmentToken;
     LQLog(kLQLogLevelDevMode, @"<Liquid/EventTracking> Trying to enter development mode...");
     [self.webSocket open];
-    [self.recurringChanger enableTimer];
     
     // Enable dev mode for already created views:
     [self.elementChanger.registeredViews getExistingWeakValuesWithCompletionHandler:^(NSArray *weakValues) {
