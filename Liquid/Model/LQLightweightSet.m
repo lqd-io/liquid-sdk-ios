@@ -9,8 +9,8 @@
 #import "LQLightweightSet.h"
 #import "LQDefaults.h"
 
-#define cleaningInterval 40
-#define arrayMaxLength 250
+#define cleaningInterval 50
+#define arrayMaxLength 300
 
 @interface LQLightweightSet ()
 
@@ -88,7 +88,7 @@
             LQLog(kLQLogLevelInfoVerbose, @"<Liquid/LightweightSet> Cleaned. We had %ld and have %ld values now.",
                   (unsigned long) [self.array count], (unsigned long) [array count]); // TODO: msg
             if ([array count] < [self.array count]) {
-                LQLog(kLQLogLevelInfoVerbose, @"<Liquid/LightweightSet> Set was reduced by %d", ([self.array count] - [array count]));
+                LQLog(kLQLogLevelInfoVerbose, @"<Liquid/LightweightSet> Set was reduced by %lu", (unsigned long) ([self.array count] - [array count]));
             }
         }
         self.array = [NSMutableArray arrayWithArray:array];
