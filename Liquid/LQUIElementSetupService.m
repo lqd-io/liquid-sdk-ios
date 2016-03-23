@@ -226,7 +226,7 @@
 
 - (void)presentSetTrackingEventNameForView:(UIView *)view identifier:(NSString *)identifier {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set the Event Name"
-                                                                   message:[[NSString alloc] initWithFormat:@"Identifier for element is:\n%@", [view liquidIdentifier]]
+                                                                   message:[[NSString alloc] initWithFormat:@"Element Identifier:\n%@", [view liquidIdentifier]]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = NSLocalizedString(@"e.g: Button Pressed", @"");
@@ -243,7 +243,7 @@
 
 - (void)presentChangeTrackingEventNameForView:(UIView *)view identifier:(NSString *)identifier currentElement:(LQUIElement *)element {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Rename the Event Name"
-                                                                   message:[[NSString alloc] initWithFormat:@"Identifier for element is:\n%@", [view liquidIdentifier]]
+                                                                   message:[[NSString alloc] initWithFormat:@"Element Identifier:\n%@", [view liquidIdentifier]]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.text = [NSString stringWithFormat:@"%@", element.eventName];
