@@ -17,7 +17,6 @@
 #import "NSData+LQData.h"
 #import "UIView+LQChangeable.h"
 #import "UIButton+LQChangeable.h"
-#import "LQWireframeLayer.h"
 
 #define kLQWebSocketServerrUrl @"wss://cable.onliquid.com/"
 
@@ -127,31 +126,10 @@
 
 - (void)setWireframeOnView:(UIView *)view enabled:(BOOL)enabled {
     UIColor *color = (enabled ? [UIColor redColor] : [UIColor blueColor]);
-    LQWireframeLayer *wireframe;
-    for (CALayer *sublayer in view.layer.sublayers) {
-        if ([sublayer isKindOfClass:[LQWireframeLayer class]]) {
-            wireframe = (LQWireframeLayer *)sublayer;
-        }
-    }
-    if (wireframe) {
-        wireframe.borderColor = color.CGColor;
-    } else {
-        [view.layer addSublayer:[[LQWireframeLayer alloc] initWithFrame:view.bounds color:color]];
-    }
-
-    // Also set wireframe on view layer, if needed:
     view.layer.borderColor = color.CGColor;
     view.layer.borderWidth = 1.0f;
     view.layer.cornerRadius = 2.0f;
     view.layer.zPosition = 999999999;
-}
-
-- (void)unsetWireFrameOnView:(UIView *)view {
-    for (CALayer *sublayer in view.layer.sublayers) {
-        if ([sublayer isKindOfClass:[LQWireframeLayer class]]) {
-            [sublayer removeFromSuperlayer];
-        }
-    }
 }
 
 - (void)refreshAllWireframes {
