@@ -79,28 +79,26 @@
         LQLog(kLQLogLevelInfo, @"<Liquid/InAppMessages> Will not request more In-App Messages while showing one.");
         return;
     }
-    dispatch_async(self.queue, ^{
-        [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
-            if (!dataFromServer) {
-                return;
+    [self requestMessagesWithCompletionHandler:^(NSData *dataFromServer) {
+        if (!dataFromServer) {
+            return;
+        }
+        NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
+        for (NSDictionary *inAppMessageDict in inAppMessages) {
+            id message;
+            if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
+                message = [[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict];
+            } else if ([inAppMessageDict[@"layout"] isEqualToString:@"slide_up"]) {
+                message = [[LQInAppMessageSlideUp alloc] initFromDictionary:inAppMessageDict];
             }
-            NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
-            for (NSDictionary *inAppMessageDict in inAppMessages) {
-                id message;
-                if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
-                    message = [[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict];
-                } else if ([inAppMessageDict[@"layout"] isEqualToString:@"slide_up"]) {
-                    message = [[LQInAppMessageSlideUp alloc] initFromDictionary:inAppMessageDict];
-                }
-                if (message) {
-                    @synchronized(self.messagesQueue) {
-                        [self.messagesQueue addObject:message];
-                    }
+            if (message) {
+                @synchronized(self.messagesQueue) {
+                    [self.messagesQueue addObject:message];
                 }
             }
-        }];
-        [self presentNextMessageInQueue];
-    });
+        }
+    }];
+    [self presentNextMessageInQueue];
 }
 
 - (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock {

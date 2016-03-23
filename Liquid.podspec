@@ -16,11 +16,15 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.preserve_paths = %w(Liquid.xcodeproj)
 
-  s.ios.frameworks = %w(Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
+  s.ios.frameworks = %w(CFNetwork Security Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
+  s.ios.libraries = %w(icucore)
   s.watchos.frameworks = []
   s.tvos.frameworks = %w(Foundation SystemConfiguration CoreLocation CoreGraphics UIKit)
 
-  s.xcconfig = {
+  s.ios.xcconfig = {
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load -licucore',
+  }
+  s.watchos.xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load',
   }
   s.source_files = 'Liquid/**/*.{m,h}'
@@ -38,7 +42,6 @@ Pod::Spec.new do |s|
                    'Liquid/Lib/Aspects/**/*',
                    'Liquid/Lib/SocketRocket/**/*',
                    'Liquid/Model/LQWireframeLayer.[mh]',
-                   'Liquid/Lib/Liquid/LQUIViewRecurringChanger.[mh]',
                    'Liquid/Categories/*+LQChangeable.[mh]'
   s.ios.exclude_files =     'Liquid/**/*[wW]atchOS*.[mh]'
                             'Liquid/**/*[tT]vOS*.[mh]'

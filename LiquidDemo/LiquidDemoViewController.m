@@ -102,7 +102,6 @@ BOOL const defaultShowAds = YES;
     [self.view endEditing:YES];
 }
 
-
 #pragma mark - UI Elements Actions for Demo App
 
 - (IBAction)resetSDKButtonPressed:(id)sender {

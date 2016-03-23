@@ -20,6 +20,8 @@
 #endif
 #if LQ_INAPP_MESSAGES_SUPPORT
 #import "LQInAppMessages.h"
+#import "LQUIElementChanger.h"
+#import "LQUIElementSetupService.h"
 #endif
 #import "LQEvent.h"
 #import "LQUser.h"
@@ -54,11 +56,16 @@
 @property (atomic, strong) LQLiquidPackage *loadedLiquidPackage; // (includes loaded Targets and loaded Values)
 @property (nonatomic, strong) NSMutableArray *valuesSentToServer;
 @property (atomic, strong) LQNetworking *networking;
+@property (nonatomic, strong) LQEventTracker *eventTracker;
+
 #if LQ_IOS
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @property (nonatomic, strong) LQInAppMessages *inAppMessages;
+@property (nonatomic, strong) LQUIElementChanger *uiElementChanger;
+@property (nonatomic, strong) LQUIElementSetupService *uiElementSetupService;
 #endif
-@property (nonatomic, strong) LQEventTracker *eventTracker;
+
+
 #if OS_OBJECT_USE_OBJC
 @property (atomic, strong) dispatch_queue_t queue;
 #else
@@ -79,6 +86,8 @@ static Liquid *sharedInstance = nil;
 #if LQ_IOS
 @synthesize backgroundUpdateTask = _backgroundUpdateTask;
 @synthesize inAppMessages = _inAppMessages;
+@synthesize uiElementChanger = _uiElementChanger;
+@synthesize uiElementSetupService = _uiElementSetupService;
 #endif
 @synthesize eventTracker = _eventTracker;
 
@@ -129,63 +138,87 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (instancetype)initWithToken:(NSString *)apiToken development:(BOOL)development {
-    if (development) {
-        _developmentMode = YES;
-    } else {
-        _developmentMode = NO;
-    }
-    if (apiToken == nil) apiToken = @"";
-    if ([apiToken length] == 0) {
+    _developmentMode = development;
+    self.apiToken = (apiToken ? apiToken: @"");
+    if ([self.apiToken length] == 0) {
         NSAssert(false, @"<Liquid> Error: %@ empty API Token", self);
         LQLog(kLQLogLevelError, @"<Liquid> Error: %@ empty API Token", self);
     }
     if (self = [self init]) {
-        self.apiToken = apiToken;
-        NSString *queueLabel = [NSString stringWithFormat:@"%@.%@.%p", kLQBundle, apiToken, self];
-        self.queue = dispatch_queue_create([queueLabel UTF8String], DISPATCH_QUEUE_SERIAL);
-        self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken dipatchQueue:self.queue];
-        self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking dispatchQueue:self.queue];
-#if LQ_INAPP_MESSAGES_SUPPORT
-        self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking dispatchQueue:self.queue eventTracker:self.eventTracker];
-#endif
-        _sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
-#if LQ_IOS
-        self.device = [LQDeviceIOS sharedInstance];
-        [self initializeBackgroundTaskIdentifier];
-#elif LQ_WATCHOS
-        self.device = [LQDeviceWatchOS sharedInstance];
-#elif LQ_TVOS
-        self.device = [LQDeviceTVOS sharedInstance];
-#endif
-
-        // Load Liquid Package from previous launch:
-        if(!_loadedLiquidPackage) {
-            [self loadLiquidPackageSynced:YES];
-        }
-
-        // Load user from previous launch:
-        _previousUser = [LQUser unarchiveUserForToken:_apiToken];
-        if (_previousUser) {
-            [self identifyUser:_previousUser alias:NO];
-            LQLog(kLQLogLevelInfo, @"<Liquid> Found a cached user (%@). Identified using it.", _previousUser.identifier);
-        } else {
-            [self resetUser];
-            LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", self.currentUser.identifier);
-        }
-
-        // Start auto flush timer
-        [_networking startFlushTimer];
-
-        [self bindNotifications];
-
-        // Request and present In-App Messages
-#if LQ_INAPP_MESSAGES_SUPPORT
-        [self.inAppMessages requestAndPresentInAppMessages];
-#endif
-
-        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", apiToken);
+        [self initializeVariables];
+        [self loadModules];
+        [self loadCachedDataFromPreviousLaucnh];
+        [self configureModules];
+        LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Initialized Liquid with API Token %@", self.apiToken);
     }
     return self;
+}
+
+- (void)initializeVariables {
+    self.queue = dispatch_queue_create([[NSString stringWithFormat:@"%@.%@.%p", kLQBundle, self.apiToken, self] UTF8String], DISPATCH_QUEUE_SERIAL);
+    self.sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
+#if LQ_IOS
+    self.device = [LQDeviceIOS sharedInstance];
+    [self initializeBackgroundTaskIdentifier];
+#elif LQ_WATCHOS
+    self.device = [LQDeviceWatchOS sharedInstance];
+#elif LQ_TVOS
+    self.device = [LQDeviceTVOS sharedInstance];
+#endif
+}
+
+- (void)loadModules {
+    self.networking = [[LQNetworkingFactory alloc] createFromDiskWithToken:self.apiToken
+                                                              dipatchQueue:self.queue];
+    self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking
+                                                     dispatchQueue:self.queue];
+#if LQ_INAPP_MESSAGES_SUPPORT
+    self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking
+                                                       dispatchQueue:self.queue
+                                                        eventTracker:self.eventTracker];
+#endif
+#if LQ_IOS
+    self.uiElementChanger = [[LQUIElementChanger alloc] initWithNetworking:self.networking
+                                                                  appToken:self.apiToken
+                                                              eventTracker:self.eventTracker];
+    self.uiElementSetupService = [[LQUIElementSetupService alloc] initWithUIElementChanger:self.uiElementChanger];
+#endif
+}
+
+- (void)configureModules {
+#if LQ_IOS
+    [self.uiElementChanger unarchiveUIElements];
+    [self.uiElementChanger requestUiElements];
+    [self.uiElementChanger interceptUIElementsWithBlock:^(UIView *addedView) {
+        [self.uiElementChanger applyChangesTo:addedView]; // apply tracking capabilities
+        [self.uiElementChanger registerView:addedView]; // register views to have their weak references later
+        if ([self.uiElementSetupService devModeEnabled]) { // enable dev mode for new views
+            [self.uiElementSetupService enableSetupOnView:addedView];
+        }
+    }];
+#endif
+#if LQ_INAPP_MESSAGES_SUPPORT
+    [self.inAppMessages requestAndPresentInAppMessages];
+#endif
+    [self.networking startFlushTimer];
+    [self bindNotifications];
+}
+
+- (void)loadCachedDataFromPreviousLaucnh {
+    // Load Liquid Package from previous launch:
+    if (!_loadedLiquidPackage) {
+        [self loadLiquidPackageSynced:YES];
+    }
+
+    // Load user from previous launch:
+    _previousUser = [LQUser unarchiveUserForToken:_apiToken];
+    if (_previousUser) {
+        [self identifyUser:_previousUser alias:NO];
+        LQLog(kLQLogLevelInfo, @"<Liquid> Found a cached user (%@). Identified using it.", _previousUser.identifier);
+    } else {
+        [self resetUser];
+        LQLog(kLQLogLevelInfo, @"<Liquid> Identifying user anonymously, creating a new anonymous user (%@)", self.currentUser.identifier);
+    }
 }
 
 #pragma mark - Lazy initialization
@@ -231,6 +264,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     [LQDate resetUniqueNow];
     [_networking startFlushTimer];
     [self loadLiquidPackageSynced:YES];
+#if LQ_IOS
+    [self.uiElementChanger requestUiElements];
+#endif
 }
 
 #pragma mark - User identification
@@ -489,6 +525,30 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         [self.delegate performSelectorOnMainThread:@selector(liquidDidLoadValues) withObject:nil waitUntilDone:NO];
     }
     LQLog(kLQLogLevelInfoVerbose, @"<Liquid> Loaded Values: %@", [_loadedLiquidPackage dictOfVariablesAndValues]);
+}
+
+#pragma mark - Handle Deep Linking URLs
+
+- (BOOL)handleOpenURL:(NSURL *)url {
+    if (![url.scheme hasPrefix:@"lqd"]) {
+        return NO;
+    }
+#if LQ_IOS
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        LQLog(kLQLogLevelNone, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
+        return NO;
+    }
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    if ([urlComponents.host isEqualToString:@"edit"]) {
+        for (NSURLQueryItem *item in urlComponents.queryItems) {
+            if ([item.name isEqualToString:@"token"]) {
+                [self.uiElementSetupService enterDevelopmentModeWithToken:item.value];
+                return YES;
+            }
+        }
+    }
+#endif
+    return NO;
 }
 
 #pragma mark - Handle Remote Notifications (Push Notifications)

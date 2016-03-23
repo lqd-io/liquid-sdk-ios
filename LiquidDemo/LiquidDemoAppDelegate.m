@@ -7,7 +7,7 @@
 //
 
 #import "LiquidDemoAppDelegate.h"
-#import "Liquid.h"
+#import <Liquid/Liquid.h>
 #import "BackgroundLocationManager.h"
 
 @interface LiquidDemoAppDelegate ()
@@ -43,13 +43,16 @@
     }
 #endif
     [self.locationManager startUpdatingLocation];
-
-    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-    if (UIApplicationStateBackground == application.applicationState) {
-        NSLog(@"Launched in background");
-    }
-
     return YES;
+}
+
+#pragma mark - Deep Linking
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if ([[Liquid sharedInstance] handleOpenURL:url]) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -65,7 +68,6 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    // Notify LiquidDemoViewController about a new Push Notification:
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Push Notification Received" object:userInfo];
     [[Liquid sharedInstance] handleRemoteNotification:userInfo forApplication:application];
 }

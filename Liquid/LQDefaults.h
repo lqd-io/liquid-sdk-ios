@@ -43,6 +43,7 @@
 #define kLQLogLevelInfo        4
 #define kLQLogLevelError       3
 #define kLQLogLevelWarning     2
+#define kLQLogLevelDevMode     1
 #define kLQLogLevelNone        0
 
 #ifdef DEBUG

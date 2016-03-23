@@ -29,8 +29,12 @@
 + (NSMutableArray*)unarchiveHttpQueueForToken:(NSString*)apiToken;
 + (void)deleteHttpQueueFileForToken:(NSString *)token;
 
-- (void)sendData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler;
+- (void)sendData:(NSData *)data toEndpoint:(NSString *)endpoint
+     usingMethod:(NSString *)method completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler;
+- (void)sendData:(NSData *)data toEndpoint:(NSString *)endpoint
+     usingMethod:(NSString *)method withParameters:(NSDictionary *)params completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData))completionHandler;
 - (void)getDataFromEndpoint:(NSString *)endpoint completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData)) completionHandler;
+- (void)getDataFromEndpoint:(NSString *)endpoint withParameters:(NSDictionary *)params completionHandler:(void(^)(LQQueueStatus queueStatus, NSData *responseData)) completionHandler;
 - (LQQueueStatus)sendSynchronousData:(NSData *)data toEndpoint:(NSString *)endpoint usingMethod:(NSString *)method;
 - (NSData *)getSynchronousDataFromEndpoint:(NSString *)endpoint;
 

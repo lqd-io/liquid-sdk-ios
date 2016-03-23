@@ -14,5 +14,6 @@
 - (NSString *)hexadecimalString;
 + (id)fromJSON:(NSData *)data;
 + (NSData *)toJSON:(NSDictionary *)object;
+- (NSString *)md5digest;
 
 @end
