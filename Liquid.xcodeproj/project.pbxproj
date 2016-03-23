@@ -47,6 +47,8 @@
 		A9A3FC3D199298830094A2B6 /* LQLiquidPackageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */; };
 		A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A58B2A19736B27007085C9 /* LQUserSpec.m */; };
 		A9B434EB1C07817900A59926 /* BackgroundLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B434EA1C07817900A59926 /* BackgroundLocationManager.m */; };
+		A9E384751CA2D61700356BB1 /* LiquidDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9E384741CA2D61700356BB1 /* LiquidDemo-Info.plist */; };
+		A9E384771CA2D63000356BB1 /* liquidLogo144.png in Resources */ = {isa = PBXBuildFile; fileRef = A9E384761CA2D63000356BB1 /* liquidLogo144.png */; };
 		A9E98052193E257C0055D1E7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E98051193E257C0055D1E7 /* XCTest.framework */; };
 		A9E98053193E257C0055D1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A9E98054193E257C0055D1E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -272,6 +274,8 @@
 		A9D47A891C70DC4D00726B1B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A9D47A901C70DC4D00726B1B /* LQSRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQSRWebSocket.h; sourceTree = "<group>"; };
 		A9D47A911C70DC4D00726B1B /* LQSRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQSRWebSocket.m; sourceTree = "<group>"; };
+		A9E384741CA2D61700356BB1 /* LiquidDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LiquidDemo-Info.plist"; sourceTree = "<group>"; };
+		A9E384761CA2D63000356BB1 /* liquidLogo144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liquidLogo144.png; sourceTree = "<group>"; };
 		A9E98050193E257C0055D1E7 /* LiquidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiquidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E98051193E257C0055D1E7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A9E98057193E257C0055D1E7 /* LiquidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidTests-Info.plist"; sourceTree = "<group>"; };
@@ -514,6 +518,8 @@
 				A9B434E91C07817900A59926 /* BackgroundLocationManager.h */,
 				A9B434EA1C07817900A59926 /* BackgroundLocationManager.m */,
 				A98CF0171949C7A3003DF949 /* Images.xcassets */,
+				A9E384741CA2D61700356BB1 /* LiquidDemo-Info.plist */,
+				A9E384761CA2D63000356BB1 /* liquidLogo144.png */,
 				A98CF0061949C7A3003DF949 /* Supporting Files */,
 			);
 			path = LiquidDemo;
@@ -807,8 +813,8 @@
 				A99EB4E2192447FA0060E484 /* LQDefaults.h */,
 				A99EB4DF192447FA0060E484 /* Liquid-Prefix.pch */,
 				A9EA29D41BF52826001BE1B7 /* Liquid Modules */,
-				A9EA29D11BF52302001BE1B7 /* Lib */,
 				A9EA29D51BF5283E001BE1B7 /* Factories */,
+				A9EA29D11BF52302001BE1B7 /* Lib */,
 				A9EA29B41BF5213A001BE1B7 /* Views */,
 				A9EA29B01BF52117001BE1B7 /* View Controllers */,
 				A99EB54F1924DB730060E484 /* Categories */,
@@ -971,6 +977,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A98CF0181949C7A3003DF949 /* Images.xcassets in Resources */,
+				A9E384751CA2D61700356BB1 /* LiquidDemo-Info.plist in Resources */,
+				A9E384771CA2D63000356BB1 /* liquidLogo144.png in Resources */,
 				A98CF00A1949C7A3003DF949 /* InfoPlist.strings in Resources */,
 				A98CF0131949C7A3003DF949 /* LiquidDemo.storyboard in Resources */,
 				A9EA29D21BF52651001BE1B7 /* LQModalMessage.xib in Resources */,

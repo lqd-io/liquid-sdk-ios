@@ -24,8 +24,11 @@
 
 - (NSString *)bestIdentifier {
     NSString *identifier;
-    if ((identifier = [self imagePathidentifier])) {
+    if ((identifier = [self imageIdentifier])) {
         return [NSString stringWithFormat:@"?image=%@", identifier];
+    }
+    if ((identifier = [self backgroundImageIdentifier])) {
+        return [NSString stringWithFormat:@"?background=%@", identifier];
     }
     if ((identifier = [self textIdentifier])) {
         return [NSString stringWithFormat:@"?title=%@", identifier];
@@ -58,9 +61,17 @@
 
 #pragma mark - Identifiers generatiosn
 
-- (NSString *)imagePathidentifier {
+- (NSString *)imageIdentifier {
     UIImage *image = [self imageForState:UIControlStateNormal];
     if (!image) {
+        return nil;
+    }
+    return [UIImagePNGRepresentation(image) md5digest];
+}
+
+- (NSString *)backgroundImageIdentifier {
+    UIImage *image = [self backgroundImageForState:UIControlStateNormal];
+    if (!image && !image.imageAsset) {
         return nil;
     }
     return [UIImagePNGRepresentation(image) md5digest];
