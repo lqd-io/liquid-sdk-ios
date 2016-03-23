@@ -9,15 +9,17 @@ Pod::Spec.new do |s|
   s.social_media_url  = 'https://twitter.com/onliquid'
   s.documentation_url = "https://lqd.io/documentation/ios"
 
-  s.platform     = :ios, :watchos
+  s.platform     = :ios, :watchos, :tvos
   s.ios.deployment_target = '5.0'
   s.watchos.deployment_target = '2.0'
+  s.tvos.deployment_target = '9.0'
   s.requires_arc = true
   s.preserve_paths = %w(Liquid.xcodeproj)
 
   s.ios.frameworks = %w(CFNetwork Security Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
   s.ios.libraries = %w(icucore)
   s.watchos.frameworks = []
+  s.tvos.frameworks = %w(Foundation SystemConfiguration CoreLocation CoreGraphics UIKit)
 
   s.ios.xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load -licucore',
@@ -29,17 +31,22 @@ Pod::Spec.new do |s|
   s.public_header_files = 'Liquid/**/*.h'
   s.ios.resources = 'Liquid/**/*.xib'
   s.watchos.resources = []
-  s.ios.exclude_files = 'Liquid/**/*[wW]atchOS*.[mh]'
-  s.watchos.exclude_files = 'Liquid/**/*[iI]OS*.[mh]',
-                            'Liquid/Model/LQCallToAction.[mh]',
-                            'Liquid/Model/LQInAppMessage*.[mh]',
-                            'Liquid/LQNetworkingURLConnection.[mh]',
-                            'Liquid/Views/*.{m,h,xib}',
-                            'Liquid/ViewControllers/*.[mh]',
-                            'Liquid/LQUIElement*.[mh]',
-                            'Liquid/Model/LQUIElement.[mh]',
-                            'Liquid/Lib/Aspects/**/*',
-                            'Liquid/Lib/SocketRocket/**/*',
-                            'Liquid/Model/LQWireframeLayer.[mh]',
-                            'Liquid/Categories/*+LQChangeable.[mh]'
+  s.tvos.resources = []
+  excluded_files = 'Liquid/Model/LQCallToAction.[mh]',
+                   'Liquid/Model/LQInAppMessage*.[mh]',
+                   'Liquid/LQNetworkingURLConnection.[mh]',
+                   'Liquid/Views/*.{m,h,xib}',
+                   'Liquid/ViewControllers/*.[mh]',
+                   'Liquid/LQUIElement*.[mh]',
+                   'Liquid/Model/LQUIElement.[mh]',
+                   'Liquid/Lib/Aspects/**/*',
+                   'Liquid/Lib/SocketRocket/**/*',
+                   'Liquid/Model/LQWireframeLayer.[mh]',
+                   'Liquid/Categories/*+LQChangeable.[mh]'
+  s.ios.exclude_files =     'Liquid/**/*[wW]atchOS*.[mh]'
+                            'Liquid/**/*[tT]vOS*.[mh]'
+  s.watchos.exclude_files = ['Liquid/**/*[iI]OS*.[mh]',
+                            'Liquid/**/*[tV]vOS*.[mh]'] + excluded_files
+  s.tvos.exclude_files =    ['Liquid/**/*[iI]OS*.[mh]',
+                            'Liquid/**/*[wW]atchOS*.[mh]'] + excluded_files
 end

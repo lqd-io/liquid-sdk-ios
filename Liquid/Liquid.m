@@ -8,13 +8,17 @@
 
 #import "LQDefaults.h"
 
-#if LQ_WATCHOS
-#import "Liquid+watchOS.h"
-#import "LQDeviceWatchOS.h"
-#endif
 #if LQ_IOS
 #import "Liquid+iOS.h"
 #import "LQDeviceIOS.h"
+#elif LQ_WATCHOS
+#import "Liquid+watchOS.h"
+#import "LQDeviceWatchOS.h"
+#elif LQ_TVOS
+#import "Liquid+tvOS.h"
+#import "LQDeviceTVOS.h"
+#endif
+#if LQ_INAPP_MESSAGES_SUPPORT
 #import "LQInAppMessages.h"
 #import "LQUIElementChanger.h"
 #import "LQUIElementSetupService.h"
@@ -153,13 +157,13 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 - (void)initializeVariables {
     self.queue = dispatch_queue_create([[NSString stringWithFormat:@"%@.%@.%p", kLQBundle, self.apiToken, self] UTF8String], DISPATCH_QUEUE_SERIAL);
     self.sendFallbackValuesInDevelopmentMode = kLQSendFallbackValuesInDevelopmentMode;
-#if LQ_WATCHOS
-    self.device = [LQDeviceWatchOS sharedInstance];
-#else
-    self.device = [LQDeviceIOS sharedInstance];
-#endif
 #if LQ_IOS
+    self.device = [LQDeviceIOS sharedInstance];
     [self initializeBackgroundTaskIdentifier];
+#elif LQ_WATCHOS
+    self.device = [LQDeviceWatchOS sharedInstance];
+#elif LQ_TVOS
+    self.device = [LQDeviceTVOS sharedInstance];
 #endif
 }
 
@@ -168,10 +172,12 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
                                                               dipatchQueue:self.queue];
     self.eventTracker = [[LQEventTracker alloc] initWithNetworking:self.networking
                                                      dispatchQueue:self.queue];
-#if LQ_IOS
+#if LQ_INAPP_MESSAGES_SUPPORT
     self.inAppMessages = [[LQInAppMessages alloc] initWithNetworking:self.networking
                                                        dispatchQueue:self.queue
                                                         eventTracker:self.eventTracker];
+#endif
+#if LQ_IOS
     self.uiElementChanger = [[LQUIElementChanger alloc] initWithNetworking:self.networking
                                                                   appToken:self.apiToken
                                                               eventTracker:self.eventTracker];

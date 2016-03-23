@@ -10,7 +10,7 @@
 #import "NSData+LQData.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "LQDefaults.h"
-#if LQ_IOS
+#if LQ_IOS || LQ_TVOS
 #import <UIKit/UIDevice.h>
 #endif
 
