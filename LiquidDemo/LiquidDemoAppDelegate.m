@@ -7,7 +7,7 @@
 //
 
 #import "LiquidDemoAppDelegate.h"
-#import <Liquid/Liquid.h>
+#import "Liquid.h"
 #import "BackgroundLocationManager.h"
 
 @interface LiquidDemoAppDelegate ()

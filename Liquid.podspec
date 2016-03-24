@@ -38,6 +38,8 @@ Pod::Spec.new do |s|
                    'Liquid/Views/*.{m,h,xib}',
                    'Liquid/ViewControllers/*.[mh]',
                    'Liquid/LQUIElement*.[mh]',
+                   'Liquid/Model/LQWeakValue.[mh]',
+                   'Liquid/Model/LQLightweightSet.[mh]',
                    'Liquid/Model/LQUIElement.[mh]',
                    'Liquid/Lib/Aspects/**/*',
                    'Liquid/Lib/SocketRocket/**/*',
