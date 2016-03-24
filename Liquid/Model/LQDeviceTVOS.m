@@ -78,5 +78,11 @@
     return [NSString generateRandomUUID];
 }
 
+#pragma mark - Reachability
+
+- (BOOL)reachesInternet {
+    return true;
+}
+
 @end
 #endif

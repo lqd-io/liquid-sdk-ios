@@ -14,4 +14,6 @@
 + (NSString *)platform;
 + (NSString *)systemVersion;
 
+- (BOOL)reachesInternet;
+
 @end
