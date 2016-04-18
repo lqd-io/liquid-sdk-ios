@@ -246,11 +246,11 @@ static LQDevice *sharedInstance = nil;
 }
 
 + (NSString*)appVersion {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
 + (NSString*)releaseVersion {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 }
 
 #pragma mark - Reachability
