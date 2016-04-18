@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef __IPHONE_8_0
+#define LQGregorianCalendar NSCalendarIdentifierGregorian
+#else
+#define LQGregorianCalendar NSGregorianCalendar
+#endif
+
 @interface NSDateFormatter (LQDateFormatter)
 
 + (NSString *)iso8601StringFromDate:(NSDate *)date;

@@ -89,6 +89,7 @@
 		A99EB5541924DB730060E484 /* NSDateFormatter+LQDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5511924DB730060E484 /* NSDateFormatter+LQDateFormatter.m */; };
 		A99EB5551924DB730060E484 /* UIColor+LQColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EB5531924DB730060E484 /* UIColor+LQColor.m */; };
 		A9A3FC3D199298830094A2B6 /* LQLiquidPackageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */; };
+		A9A459931CC52FE30020B683 /* NSDate+LQDateFormats.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A459921CC52FE30020B683 /* NSDate+LQDateFormats.m */; };
 		A9A58B2B19736B27007085C9 /* LQUserSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A58B2A19736B27007085C9 /* LQUserSpec.m */; };
 		A9ACB2EF1CA44A1000AFE82A /* LQUIElementChanger.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB2EC1CA44A1000AFE82A /* LQUIElementChanger.m */; };
 		A9ACB2F01CA44A1000AFE82A /* LQUIElementSetupService.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB2EE1CA44A1000AFE82A /* LQUIElementSetupService.m */; };
@@ -386,6 +387,8 @@
 		A99EB5521924DB730060E484 /* UIColor+LQColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+LQColor.h"; sourceTree = "<group>"; };
 		A99EB5531924DB730060E484 /* UIColor+LQColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+LQColor.m"; sourceTree = "<group>"; };
 		A9A3FC3C199298830094A2B6 /* LQLiquidPackageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQLiquidPackageSpec.m; path = Model/LQLiquidPackageSpec.m; sourceTree = "<group>"; };
+		A9A459911CC52FE30020B683 /* NSDate+LQDateFormats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+LQDateFormats.h"; sourceTree = "<group>"; };
+		A9A459921CC52FE30020B683 /* NSDate+LQDateFormats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+LQDateFormats.m"; sourceTree = "<group>"; };
 		A9A58B2A19736B27007085C9 /* LQUserSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LQUserSpec.m; path = Model/LQUserSpec.m; sourceTree = "<group>"; };
 		A9ACB2EB1CA44A1000AFE82A /* LQUIElementChanger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQUIElementChanger.h; sourceTree = "<group>"; };
 		A9ACB2EC1CA44A1000AFE82A /* LQUIElementChanger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQUIElementChanger.m; sourceTree = "<group>"; };
@@ -777,6 +780,8 @@
 				A9ACB2FB1CA44A5700AFE82A /* UIButton+LQChangeable.m */,
 				A9ACB2FC1CA44A5700AFE82A /* UIView+LQChangeable.h */,
 				A9ACB2FD1CA44A5700AFE82A /* UIView+LQChangeable.m */,
+				A9A459911CC52FE30020B683 /* NSDate+LQDateFormats.h */,
+				A9A459921CC52FE30020B683 /* NSDate+LQDateFormats.m */,
 			);
 			name = Categories;
 			path = Liquid/Categories;
@@ -1495,6 +1500,7 @@
 				A99EB4FC192447FA0060E484 /* LQLiquidPackage.m in Sources */,
 				A99EB4F9192447FA0060E484 /* LQDataPoint.m in Sources */,
 				A9EA29AF1BF5210A001BE1B7 /* LQInAppMessageSlideUp.m in Sources */,
+				A9A459931CC52FE30020B683 /* NSDate+LQDateFormats.m in Sources */,
 				A9ACB3CE1CA4513F00AFE82A /* LQUIElementWelcomeView.m in Sources */,
 				A9EA29C21BF52157001BE1B7 /* LQModalMessageViewController.m in Sources */,
 				A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */,
@@ -2071,6 +2077,7 @@
 				A9ACB3DB1CA453E600AFE82A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A9ACB4291CA454F800AFE82A /* Build configuration list for PBXNativeTarget "LiquidTVDemo" */ = {
 			isa = XCConfigurationList;
@@ -2079,6 +2086,7 @@
 				A9ACB42B1CA454F800AFE82A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A9E98060193E257C0055D1E7 /* Build configuration list for PBXNativeTarget "LiquidTests" */ = {
 			isa = XCConfigurationList;

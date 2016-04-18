@@ -34,4 +34,12 @@ static NSNumber *uniqueNowIncrement;
     return [[NSDate new] dateByAddingTimeInterval:millisecondsIncrement];
 }
 
++ (NSDate *)currentNow {
+    NSTimeInterval millisecondsIncrement;
+    @synchronized(uniqueNowIncrement) {
+        millisecondsIncrement = ([uniqueNowIncrement intValue] % 1000) * 0.001;
+    }
+    return [[NSDate new] dateByAddingTimeInterval:millisecondsIncrement];
+}
+
 @end

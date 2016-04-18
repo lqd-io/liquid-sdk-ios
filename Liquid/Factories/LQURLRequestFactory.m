@@ -9,6 +9,8 @@
 #import "LQURLRequestFactory.h"
 #import "LQDevice.h"
 #import "LQDefaults.h"
+#import "LQDate.h"
+#import "NSDate+LQDateFormats.h"
 
 #define kLQServerUrl @"https://api.lqd.io/collect/"
 
@@ -61,7 +63,8 @@ NSString * const serverUrl = kLQServerUrl;
                      @"Content-Type": @"application/json",
                      @"Accept-Encoding": @"gzip",
                      @"User-Agent": self.liquidUserAgent,
-                     @"Authorization": [NSString stringWithFormat:@"Token %@", self.appToken]
+                     @"Authorization": [NSString stringWithFormat:@"Token %@", self.appToken],
+                     @"Date": [self dateHeader]
                     };
     }
     return _headers;
@@ -76,6 +79,10 @@ NSString * const serverUrl = kLQServerUrl;
         _liquidUserAgent = [[self class] liquidUserAgent];
     }
     return _liquidUserAgent;
+}
+
+- (NSString *)dateHeader {
+    return [[LQDate currentNow] rfc1123String];
 }
 
 #pragma mark - Class methods
