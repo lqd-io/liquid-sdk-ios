@@ -88,7 +88,28 @@ Or:
                     attributes:@{ @"productId": 123 }];
 ```
 
-### 4. Personalize your app (with dynamic variables)
+### 4. Configure Push Notifications and In-App Messages
+
+To send Push Notifications or In-App Messages to your users' devices through Liquid formulas you just need to configure those three delegation methods:
+
+```objective-c
+// AppDelegate.m
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+    return YES;
+}
+
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [[Liquid sharedInstance] setApplePushNotificationToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [[Liquid sharedInstance] handleRemoteNotification:userInfo forApplication:application];
+}
+```
+
+### 5. Personalize your app (with dynamic variables)
 
 You can transform any old-fashioned static variable into a "Liquid" dynamic variable just by replacing it with a Liquid method. You can use a dynamic variable like this:
 

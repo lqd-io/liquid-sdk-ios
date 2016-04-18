@@ -1,5 +1,11 @@
 # Liquid iOS SDK Change Log
 
+## 2.3.0: Add support for event based In-App Messages
+
+* **[feature]** In-App Notifications are now sent via push notifications, allowing event-based notifications (and not only when the app is open).
+* **[feature]** Users with "dates in the future" or "dates in the past" (with the wrong hour and date set on their phone clocks) are now automatically fixed for the correct date.
+* **[bugfix]** Release Version and App Version device attributes were swtiched.
+
 ## 2.2.0: Add Apple TV Support
 
 * **[feature]** Add support for Apple TV (tvOS 9.0+)
