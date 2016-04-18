@@ -18,11 +18,11 @@
 
 #define kLQDefaultHttpQueueSizeLimit 500 // number of requests (data points) to keep in queue
 #ifdef DEBUG
-#define kLQDefaultFlushInterval 5 //seconds
+#define kLQDefaultFlushInterval 1 //seconds
 #else
-#define kLQDefaultFlushInterval 10 //seconds
+#define kLQDefaultFlushInterval 1 //seconds
 #endif
-#define kLQMinFlushInterval 5 // seconds
+#define kLQMinFlushInterval 1 // seconds
 #define kLQHttpUnreachableWait 60 // seconds
 #define kLQHttpRejectedWait 3600 // seconds
 #define kLQHttpMaxTries 40

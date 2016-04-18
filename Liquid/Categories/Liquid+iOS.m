@@ -55,7 +55,6 @@
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification {
     [self clientApplicationWillEnterForeground];
-    [self.inAppMessages requestAndPresentInAppMessages];
 }
 
 - (void)applicationDidEnterBackground:(NSNotificationCenter *)notification {

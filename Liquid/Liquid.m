@@ -197,9 +197,6 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
     }];
 #endif
-#if LQ_INAPP_MESSAGES_SUPPORT
-    [self.inAppMessages requestAndPresentInAppMessages];
-#endif
     [self.networking startFlushTimer];
     [self bindNotifications];
 }
@@ -563,6 +560,16 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
         }
         LQLog(kLQLogLevelError, @"<Liquid/PushNotification> Could not follow an invalid URL.");
     }
+#if LQ_INAPP_MESSAGES_SUPPORT
+    else if ([userInfo objectForKey:@"lqd_inapp"]) {
+        if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
+            LQLog(kLQLogLevelInfo, @"<Liquid/InAppMessages> In-App Messages are only supported in iOS >= 6.0.");
+        } else {
+            [self.inAppMessages addToQueueInAppMessageFromJson:[userInfo objectForKey:@"lqd_inapp"]];
+            [self.inAppMessages presentNextMessageInQueue];
+        }
+    }
+#endif
     return NO;
 }
 #endif
