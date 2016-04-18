@@ -11,6 +11,7 @@
 @interface LQDate : NSDate
 
 + (NSDate *)uniqueNow;
++ (NSDate *)currentNow;
 + (void)resetUniqueNow;
 
 @end

@@ -15,12 +15,6 @@
 #define kLQISO8601DateFormatISO5 @"yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 #define kLQISO8601DateFormatWithoutMillisecondsISO5 @"yyyy-MM-dd'T'HH:mm:ssZ"
 
-#ifdef __IPHONE_8_0
-#define LQGregorianCalendar NSCalendarIdentifierGregorian
-#else
-#define LQGregorianCalendar NSGregorianCalendar
-#endif
-
 @implementation NSDateFormatter (LQDateFormatter)
 
 + (NSDateFormatter *)iso8601DateFormatterWithFormat:(NSString *)format {
