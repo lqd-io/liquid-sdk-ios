@@ -113,7 +113,8 @@
     }
     if ([view isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)view;
-        [self setWireframeOnView:button enabled:([self.elementChanger.changedElements objectForKey:[view liquidIdentifier]])];
+        BOOL enabled = !!([self.elementChanger.changedElements objectForKey:[view liquidIdentifier]]);
+        [self setWireframeOnView:button enabled:enabled];
         [button addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
         [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
         [button addTarget:self action:@selector(buttonTouchesEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside];
@@ -364,7 +365,7 @@
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> WebSocket close with code: %ld. Reason is %@.", code, reason);
+    LQLog(kLQLogLevelInfo, @"<Liquid/UIElementSetupService> WebSocket close with code: %ld. Reason is %@.", (long) code, reason);
 }
 
 #pragma mark - LQUIElementFramerDelegate methods
