@@ -16,8 +16,10 @@
 @property (nonatomic, strong) LQUser *currentUser;
 
 - (instancetype)initWithNetworking:(LQNetworking *)networking dispatchQueue:(dispatch_queue_t)queue eventTracker:(LQEventTracker *)eventTracker;
-- (void)requestAndPresentInAppMessages;
+- (void)requestInAppMessages;
 - (void)requestMessagesWithCompletionHandler:(void(^)(NSData *data))completionBlock;
 - (void)presentInAppMessage:(id)message;
+- (void)addToQueueInAppMessageFromJson:(NSDictionary *)inAppMessageDict;
+- (void)presentNextMessageInQueue;
 
 @end

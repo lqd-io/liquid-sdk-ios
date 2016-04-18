@@ -68,7 +68,9 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Push Notification Received" object:userInfo];
+    if (![userInfo objectForKey:@"lqd_inapp"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Push Notification Received" object:userInfo];
+    }
     [[Liquid sharedInstance] handleRemoteNotification:userInfo forApplication:application];
 }
 

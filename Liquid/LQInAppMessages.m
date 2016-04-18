@@ -70,7 +70,7 @@
 
 #pragma mark - Request and Present Messages
 
-- (void)requestAndPresentInAppMessages {
+- (void)requestInAppMessages {
     if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
         LQLog(kLQLogLevelInfo, @"<Liquid/InAppMessages> In-App Messages are only supported in iOS >= 6.0.");
         return;
@@ -85,19 +85,23 @@
         }
         NSArray *inAppMessages = [NSData fromJSON:dataFromServer];
         for (NSDictionary *inAppMessageDict in inAppMessages) {
-            id message;
-            if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
-                message = [[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict];
-            } else if ([inAppMessageDict[@"layout"] isEqualToString:@"slide_up"]) {
-                message = [[LQInAppMessageSlideUp alloc] initFromDictionary:inAppMessageDict];
-            }
-            if (message) {
-                @synchronized(self.messagesQueue) {
-                    [self.messagesQueue addObject:message];
-                }
-            }
+            [self addToQueueInAppMessageFromJson:inAppMessageDict];
         }
     }];
+}
+
+- (void)addToQueueInAppMessageFromJson:(NSDictionary *)inAppMessageDict {
+    id message;
+    if ([inAppMessageDict[@"layout"] isEqualToString:@"modal"]) {
+        message = [[LQInAppMessageModal alloc] initFromDictionary:inAppMessageDict];
+    } else if ([inAppMessageDict[@"layout"] isEqualToString:@"slide_up"]) {
+        message = [[LQInAppMessageSlideUp alloc] initFromDictionary:inAppMessageDict];
+    }
+    if (message) {
+        @synchronized(self.messagesQueue) {
+            [self.messagesQueue addObject:message];
+        }
+    }
     [self presentNextMessageInQueue];
 }
 
