@@ -1,7 +1,8 @@
 # Liquid iOS SDK Change Log
 
-## 2.3.0: Add support for event based In-App Messages
+## 2.3.0: Event based In-App Messages + Event Tracking Mode
 
+* **[feature]** Event Tracking Mode: allow publishers to add/change/remove events to buttons directly on the App (and Liquid dashboard). Yup, without coding ;)
 * **[feature]** In-App Notifications are now sent via push notifications, allowing event-based notifications (and not only when the app is open).
 * **[feature]** Users with "dates in the future" or "dates in the past" (with the wrong hour and date set on their phone clocks) are now automatically fixed for the correct date.
 * **[bugfix]** Release Version and App Version device attributes were swtiched.
