@@ -10,16 +10,21 @@ Pod::Spec.new do |s|
   s.documentation_url = "https://lqd.io/documentation/ios"
 
   s.platform     = :ios, :watchos, :tvos
-  s.ios.deployment_target = '5.0'
+  s.ios.deployment_target = '6.0'
   s.watchos.deployment_target = '2.0'
   s.tvos.deployment_target = '9.0'
   s.requires_arc = true
   s.preserve_paths = %w(Liquid.xcodeproj)
 
   s.ios.frameworks = %w(CFNetwork Security Foundation SystemConfiguration CoreTelephony CoreLocation CoreGraphics UIKit)
-  s.ios.libraries = %w(icucore)
-  s.watchos.frameworks = []
   s.tvos.frameworks = %w(Foundation SystemConfiguration CoreLocation CoreGraphics UIKit)
+  s.watchos.frameworks = []
+
+  s.ios.libraries = %w(icucore)
+  s.ios.dependencies = {
+    'SocketRocket' => '~> 0.5',
+    'Aspects' => '~> 1.4'
+  }
 
   s.ios.xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load -licucore',
@@ -42,7 +47,6 @@ Pod::Spec.new do |s|
                    'Liquid/Model/LQLightweightSet.[mh]',
                    'Liquid/Model/LQUIElement.[mh]',
                    'Liquid/Lib/Aspects/**/*',
-                   'Liquid/Lib/SocketRocket/**/*',
                    'Liquid/Model/LQWireframeLayer.[mh]',
                    'Liquid/Categories/*+LQChangeable.[mh]'
   s.ios.exclude_files =     'Liquid/**/*[wW]atchOS*.[mh]'
