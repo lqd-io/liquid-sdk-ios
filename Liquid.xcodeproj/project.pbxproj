@@ -64,6 +64,8 @@
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
 		A977E2DE1CC7EE46005E4903 /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = A977E2DC1CC7EE46005E4903 /* Aspects.m */; };
 		A977E2E31CC7EE8D005E4903 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A977E2E21CC7EE8D005E4903 /* SRWebSocket.m */; };
+		A977E2E51CC7F886005E4903 /* NSDate+LQDateFormats.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A459921CC52FE30020B683 /* NSDate+LQDateFormats.m */; };
+		A977E2E61CC7F8A4005E4903 /* NSDate+LQDateFormats.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A459921CC52FE30020B683 /* NSDate+LQDateFormats.m */; };
 		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
 		A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -1364,6 +1366,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A977E2E51CC7F886005E4903 /* NSDate+LQDateFormats.m in Sources */,
 				A909AD7B1BFE2B2E006D5EDD /* LQEventTracker.m in Sources */,
 				A909AD7C1BFE2B2E006D5EDD /* LQURLRequestFactory.m in Sources */,
 				A92016C51BCF101600859450 /* Liquid.m in Sources */,
@@ -1422,6 +1425,7 @@
 				A9ACB3EB1CA4546400AFE82A /* LQURLRequestFactory.m in Sources */,
 				A9ACB3EC1CA4546400AFE82A /* UIColor+LQColor.m in Sources */,
 				A9ACB3ED1CA4546400AFE82A /* NSData+LQData.m in Sources */,
+				A977E2E61CC7F8A4005E4903 /* NSDate+LQDateFormats.m in Sources */,
 				A9ACB3EE1CA4546400AFE82A /* NSString+LQString.m in Sources */,
 				A9ACB3EF1CA4546400AFE82A /* NSDateFormatter+LQDateFormatter.m in Sources */,
 				A9ACB3F01CA4546400AFE82A /* LQDate.m in Sources */,
