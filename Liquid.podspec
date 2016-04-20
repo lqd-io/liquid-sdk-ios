@@ -46,7 +46,6 @@ Pod::Spec.new do |s|
                    'Liquid/Model/LQWeakValue.[mh]',
                    'Liquid/Model/LQLightweightSet.[mh]',
                    'Liquid/Model/LQUIElement.[mh]',
-                   'Liquid/Lib/Aspects/**/*',
                    'Liquid/Model/LQWireframeLayer.[mh]',
                    'Liquid/Categories/*+LQChangeable.[mh]'
   s.ios.exclude_files =     'Liquid/**/*[wW]atchOS*.[mh]'
