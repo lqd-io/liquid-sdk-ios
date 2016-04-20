@@ -37,6 +37,8 @@ Pod::Spec.new do |s|
   s.ios.resources = 'Liquid/**/*.xib'
   s.watchos.resources = []
   s.tvos.resources = []
+  s.exclude_files = 'Liquid/Lib/Aspects/**/*',
+                    'Liquid/Lib/SocketRocket/**/*'
   excluded_files = 'Liquid/Model/LQCallToAction.[mh]',
                    'Liquid/Model/LQInAppMessage*.[mh]',
                    'Liquid/LQNetworkingURLConnection.[mh]',

@@ -8,7 +8,7 @@
 
 #import "LQUIElementSetupService.h"
 #import <objc/runtime.h>
-#import <Aspects/Aspects.h>
+#import "Aspects.h"
 #import <UIKit/UIKit.h>
 #import "LQDefaults.h"
 #import "LQUIElement.h"

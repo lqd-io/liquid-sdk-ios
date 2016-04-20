@@ -62,6 +62,8 @@
 		A96D87311BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; };
 		A96D87321BD2B2E2003158EB /* LQNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */; };
 		A971B10219EDF986002E6F93 /* NSDateFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */; };
+		A977E2DE1CC7EE46005E4903 /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = A977E2DC1CC7EE46005E4903 /* Aspects.m */; };
+		A977E2E31CC7EE8D005E4903 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A977E2E21CC7EE8D005E4903 /* SRWebSocket.m */; };
 		A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		A98CF0031949C7A3003DF949 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EB204519353CD200191F7E /* CoreGraphics.framework */; };
 		A98CF0041949C7A3003DF949 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D12F0E1935076A00D0E0A1 /* UIKit.framework */; };
@@ -347,6 +349,12 @@
 		A96D872F1BD2B2E2003158EB /* LQNetworkingFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LQNetworkingFactory.h; sourceTree = "<group>"; };
 		A96D87301BD2B2E2003158EB /* LQNetworkingFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LQNetworkingFactory.m; sourceTree = "<group>"; };
 		A971B10119EDF986002E6F93 /* NSDateFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDateFormatterSpec.m; path = Model/NSDateFormatterSpec.m; sourceTree = "<group>"; };
+		A977E2DB1CC7EE46005E4903 /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
+		A977E2DC1CC7EE46005E4903 /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
+		A977E2DD1CC7EE46005E4903 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A977E2E01CC7EE8D005E4903 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A977E2E11CC7EE8D005E4903 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		A977E2E21CC7EE8D005E4903 /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
 		A98CF0011949C7A3003DF949 /* LiquidDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiquidDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98CF0071949C7A3003DF949 /* LiquidDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LiquidDemo-Info.plist"; sourceTree = "<group>"; };
 		A98CF0091949C7A3003DF949 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -691,6 +699,28 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A977E2DA1CC7EE46005E4903 /* Aspects */ = {
+			isa = PBXGroup;
+			children = (
+				A977E2DB1CC7EE46005E4903 /* Aspects.h */,
+				A977E2DC1CC7EE46005E4903 /* Aspects.m */,
+				A977E2DD1CC7EE46005E4903 /* LICENSE */,
+			);
+			name = Aspects;
+			path = Lib/Aspects;
+			sourceTree = "<group>";
+		};
+		A977E2DF1CC7EE8D005E4903 /* SocketRocket */ = {
+			isa = PBXGroup;
+			children = (
+				A977E2E01CC7EE8D005E4903 /* LICENSE */,
+				A977E2E11CC7EE8D005E4903 /* SRWebSocket.h */,
+				A977E2E21CC7EE8D005E4903 /* SRWebSocket.m */,
+			);
+			name = SocketRocket;
+			path = Lib/SocketRocket;
+			sourceTree = "<group>";
+		};
 		A98CF0051949C7A3003DF949 /* LiquidDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -896,6 +926,8 @@
 			isa = PBXGroup;
 			children = (
 				A9ACB3CB1CA44FFA00AFE82A /* Liquid */,
+				A977E2DF1CC7EE8D005E4903 /* SocketRocket */,
+				A977E2DA1CC7EE46005E4903 /* Aspects */,
 			);
 			name = Lib;
 			sourceTree = "<group>";
@@ -1065,13 +1097,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A98CF02F1949C7A4003DF949 /* Build configuration list for PBXNativeTarget "LiquidDemo" */;
 			buildPhases = (
-				5C65376B7302F2B872490F6C /* Check Pods Manifest.lock */,
 				A98CEFFD1949C7A3003DF949 /* Sources */,
 				A98CEFFE1949C7A3003DF949 /* Frameworks */,
 				A98CEFFF1949C7A3003DF949 /* Resources */,
 				A949FB851BCE75ED00F7C48E /* Embed Watch Content */,
-				5ACC78DCB8A5288E1CB59949 /* Embed Pods Frameworks */,
-				79A6E09DE7FB51BBA439FBE3 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1145,11 +1174,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C73E4B021923C61D001EF2E6 /* Build configuration list for PBXNativeTarget "Liquid" */;
 			buildPhases = (
-				E405B5BE04D0CEBE9DCDADDE /* Check Pods Manifest.lock */,
 				C73E4ADB1923C61D001EF2E6 /* Sources */,
 				C73E4ADC1923C61D001EF2E6 /* Frameworks */,
 				C73E4ADD1923C61D001EF2E6 /* CopyFiles */,
-				96A51EEFA700EF9AB339B26D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1275,66 +1302,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5ACC78DCB8A5288E1CB59949 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidDemo/Pods-LiquidDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5C65376B7302F2B872490F6C /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		79A6E09DE7FB51BBA439FBE3 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidDemo/Pods-LiquidDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		96A51EEFA700EF9AB339B26D /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B4BDBE5490AE2A97587311AC /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1363,21 +1330,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiquidTests/Pods-LiquidTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E405B5BE04D0CEBE9DCDADDE /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FE6C6D3BBB0542DCB80EA44D /* Check Pods Manifest.lock */ = {
@@ -1548,7 +1500,9 @@
 				A99EB4FA192447FA0060E484 /* LQDevice.m in Sources */,
 				A9EA29D01BF522FF001BE1B7 /* LQWindow.m in Sources */,
 				A9EA29CD1BF52201001BE1B7 /* LQInAppMessages.m in Sources */,
+				A977E2DE1CC7EE46005E4903 /* Aspects.m in Sources */,
 				A9EA29C31BF52157001BE1B7 /* LQModalView.m in Sources */,
+				A977E2E31CC7EE8D005E4903 /* SRWebSocket.m in Sources */,
 				A99EB501192447FA0060E484 /* LQValue.m in Sources */,
 				A9ACB2F01CA44A1000AFE82A /* LQUIElementSetupService.m in Sources */,
 				A9EA29B31BF52131001BE1B7 /* LQRootViewController.m in Sources */,
@@ -1804,7 +1758,6 @@
 		};
 		A98CF02B1949C7A4003DF949 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E0D5F4A6684301A5313D35DA /* Pods-LiquidDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1834,7 +1787,6 @@
 		};
 		A98CF02C1949C7A4003DF949 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C6B069E500393E6E088D987 /* Pods-LiquidDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2057,7 +2009,6 @@
 		};
 		C73E4B031923C61D001EF2E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A991FA1948B66655871E2050 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2075,7 +2026,6 @@
 		};
 		C73E4B041923C61D001EF2E6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0A9D5D257C9C7198834AD79 /* Pods.release.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

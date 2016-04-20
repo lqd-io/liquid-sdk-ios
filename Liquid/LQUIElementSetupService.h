@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LQUIElementChanger.h"
-#import <SocketRocket/SRWebSocket.h>
+#import "SRWebSocket.h"
 
 @interface LQUIElementSetupService : NSObject <SRWebSocketDelegate>
 
