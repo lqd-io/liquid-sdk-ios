@@ -14,15 +14,12 @@
 @implementation NSDate (LQDateFormats)
 
 - (NSString *)rfc1123String {
-    static NSDateFormatter *dateFormatter = nil;
-    if (!dateFormatter) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-        dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-        dateFormatter.dateFormat = kLQRFC1123DateFormat;
-        dateFormatter.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:LQGregorianCalendar];
-    }
-    return [dateFormatter stringFromDate:self];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    formatter.dateFormat = kLQRFC1123DateFormat;
+    formatter.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:LQGregorianCalendar];
+    return [formatter stringFromDate:self];
 }
 
 @end
