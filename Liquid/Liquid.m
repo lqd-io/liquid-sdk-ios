@@ -186,7 +186,17 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)configureModules {
+    [self configureEventTrackingMode];
+    [self.networking startFlushTimer];
+    [self bindNotifications];
+}
+
+- (BOOL)configureEventTrackingMode {
 #if LQ_IOS
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        LQLog(kLQLogLevelInfo, @"<Liquid> Event Tracking Mode is only supported in iOS 8+");
+        return false;
+    }
     [self.uiElementChanger unarchiveUIElements];
     [self.uiElementChanger requestUiElements];
     [self.uiElementChanger interceptUIElementsWithBlock:^(UIView *addedView) {
@@ -196,9 +206,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
             [self.uiElementSetupService enableSetupOnView:addedView];
         }
     }];
+    return true;
 #endif
-    [self.networking startFlushTimer];
-    [self bindNotifications];
+    return false;
 }
 
 - (void)loadCachedDataFromPreviousLaucnh {
@@ -532,7 +542,7 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
     }
 #if LQ_IOS
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-        LQLog(kLQLogLevelNone, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
+        LQLog(kLQLogLevelInfo, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
         return NO;
     }
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];

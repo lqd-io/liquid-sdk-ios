@@ -64,7 +64,7 @@
 
 - (void)enterDevelopmentModeWithToken:(NSString *)developmentToken {
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-        LQLog(kLQLogLevelNone, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
+        LQLog(kLQLogLevelInfo, @"<Liquid> ERROR: Event Tracking Mode is only supported in iOS 8+");
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Liquid Event Tracking Mode"
                                                                        message:@"Error: You need iOS 8+ to use Event Tracking Mode."
                                                                 preferredStyle:UIAlertControllerStyleAlert];
