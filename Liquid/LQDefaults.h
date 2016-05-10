@@ -23,7 +23,7 @@
 #define LQ_TVOS TARGET_OS_TV
 #define LQ_INAPP_MESSAGES_SUPPORT LQ_IOS
 
-#define kLQVersion @"2.3.1"
+#define kLQVersion @"2.3.2"
 
 #if LQ_WATCHOS
 #define kLQBundle @"io.lqd.watchos"

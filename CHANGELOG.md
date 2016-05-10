@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.3.2: Bugfix on iOS 7 for Event Tracking Mode
+
+**[bugfix]** Avoid a crash on iOS 7 and 6 when using Event Tracking Mode.
+
 ## 2.3.1: Use external libs as Cocoapods dependencies
 
 * **[bugfix]** Use external libraries (`Aspects` and `SocketRocket`) as Cocoapods dependencies to avoid name colisions. (Note: original files are still included on the codebase to allow Liquid manual integration, but are excluded from Liquid Pod).
