@@ -8,7 +8,6 @@
 
 #import "LQUIElementSetupService.h"
 #import <objc/runtime.h>
-#import "Aspects.h"
 #import <UIKit/UIKit.h>
 #import "LQDefaults.h"
 #import "LQUIElement.h"
@@ -17,6 +16,11 @@
 #import "NSData+LQData.h"
 #import "UIView+LQChangeable.h"
 #import "UIButton+LQChangeable.h"
+#ifdef LQ_MANUAL_INTEGRATION
+#import "Aspects.h"
+#else
+#import <Aspects/Aspects.h>
+#endif
 
 #define kLQWebSocketServerrUrl @"wss://cable.onliquid.com/"
 

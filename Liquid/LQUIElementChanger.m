@@ -9,11 +9,15 @@
 #import "LQDefaults.h"
 #import "LQUIElementChanger.h"
 #import <objc/runtime.h>
-#import "Aspects.h"
 #import <UIKit/UIKit.h>
 #import "UIView+LQChangeable.h"
 #import "NSData+LQData.h"
 #import "LQStorage.h"
+#ifdef LQ_MANUAL_INTEGRATION
+#import "Aspects.h"
+#else
+#import <Aspects/Aspects.h>
+#endif
 
 @interface LQUIElementChanger () {
     dispatch_queue_t _backgroundQueue;

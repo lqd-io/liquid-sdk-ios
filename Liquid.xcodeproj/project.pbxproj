@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		36251DEE0A42A43C5DB91F4E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13535A173280E3F90F06ECFE /* libPods.a */; };
 		92E71585BB5944A394C1AC93 /* libPods-LiquidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378F89CFA38E41EEB5CCBD27 /* libPods-LiquidTests.a */; };
 		A9035321193FA0C8005110DF /* liquid_package1.json in Resources */ = {isa = PBXBuildFile; fileRef = A9035320193FA0C8005110DF /* liquid_package1.json */; };
 		A909AD741BFE2853006D5EDD /* LQDeviceWatchOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A909AD731BFE2853006D5EDD /* LQDeviceWatchOS.m */; };
@@ -178,7 +177,6 @@
 		A9FF7A9619350C9500DB73C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C73E4AE21923C61D001EF2E6 /* Foundation.framework */; };
 		C7DB3A831924FE4200CC5D64 /* NSData+LQData.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A821924FE4200CC5D64 /* NSData+LQData.m */; };
 		C7DB3A861924FF0B00CC5D64 /* NSString+LQString.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DB3A851924FF0B00CC5D64 /* NSString+LQString.m */; };
-		EABE0FF40006293B5261B3D6 /* libPods-LiquidDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F6D5FC178100BE7C0CE95E /* libPods-LiquidDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -533,7 +531,6 @@
 				A98CF0331949F627003DF949 /* CoreTelephony.framework in Frameworks */,
 				A98CF0321949F61E003DF949 /* SystemConfiguration.framework in Frameworks */,
 				A98CF0021949C7A3003DF949 /* Foundation.framework in Frameworks */,
-				EABE0FF40006293B5261B3D6 /* libPods-LiquidDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,7 +571,6 @@
 				A9FF7A9319350C7F00DB73C7 /* CoreTelephony.framework in Frameworks */,
 				A9EB204619353CD200191F7E /* CoreGraphics.framework in Frameworks */,
 				A9FF7A9419350C8400DB73C7 /* UIKit.framework in Frameworks */,
-				36251DEE0A42A43C5DB91F4E /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1734,6 +1730,11 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+					"LQ_MANUAL_INTEGRATION=1",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1751,6 +1752,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "LQ_MANUAL_INTEGRATION=1";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1821,6 +1823,11 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"LQ_MANUAL_INTEGRATION=1",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1838,6 +1845,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "LQ_MANUAL_INTEGRATION=1";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2013,14 +2021,21 @@
 		};
 		C73E4B031923C61D001EF2E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A991FA1948B66655871E2050 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"LQ_MANUAL_INTEGRATION=1",
+				);
 				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
+				PODS_ROOT = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2030,14 +2045,18 @@
 		};
 		C73E4B041923C61D001EF2E6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F0A9D5D257C9C7198834AD79 /* Pods.release.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/Liquid.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Liquid/Liquid-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "LQ_MANUAL_INTEGRATION=1";
 				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
+				PODS_ROOT = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
