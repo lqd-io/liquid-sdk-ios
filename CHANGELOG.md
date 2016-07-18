@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.3.3: Fix compiling errors for Swift apps
+
+**[bugfix]** Fix compiling errors for external libs (SocketRocket and Aspects) on Swift apps, if Liquid is installed via Cocoapods.
+
 ## 2.3.2: Bugfix on iOS 7 for Event Tracking Mode
 
 **[bugfix]** Avoid a crash on iOS 7 and 6 when using Event Tracking Mode.
