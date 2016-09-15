@@ -186,7 +186,9 @@ NSString * const LQDidIdentifyUser = kLQNotificationLQDidIdentifyUser;
 }
 
 - (void)configureModules {
-    [self configureEventTrackingMode];
+    if (kLQEventTrackingModeEnabled) {
+        [self configureEventTrackingMode];
+    }
     [self.networking startFlushTimer];
     [self bindNotifications];
 }

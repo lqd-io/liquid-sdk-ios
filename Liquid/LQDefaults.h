@@ -53,6 +53,7 @@
 #endif
 
 #define kLQSendFallbackValuesInDevelopmentMode YES
+#define kLQEventTrackingModeEnabled NO
 
 #define kLQErrorValueNotFound 1
 #define kLQErrorNoUser 2
