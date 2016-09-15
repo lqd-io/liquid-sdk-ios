@@ -1,5 +1,9 @@
 # Liquid iOS SDK Change Log
 
+## 2.3.4: Event Tracking mode disabled by default
+
+**[configuration]** Changed Event Tracking mode to be disabled by default, until it's final stable release.
+
 ## 2.3.3: Fix compiling errors for Swift apps
 
 **[bugfix]** Fix compiling errors for external libs (SocketRocket and Aspects) on Swift apps, if Liquid is installed via Cocoapods.
